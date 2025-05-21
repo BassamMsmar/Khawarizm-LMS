@@ -1,0 +1,242 @@
+/*------------------------
+    Edu Badge Styles  
+--------------------------*/
+.rbt-badge-group {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    margin: -10px;
+
+    div,
+    span {
+        margin: 10px;
+    }
+}
+
+.rbt-default-badge {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: var(--color-white);
+    box-shadow: var(--shadow-2);
+    border-radius: 500px;
+    padding: 0px 20px;
+    font-size: 12px;
+    font-weight: 500;
+    z-index: 1;
+    letter-spacing: 0.5px;
+    transition: 0.4s;
+    height: 35px;
+    line-height: 34px;
+
+    &:hover {
+        background: var(--color-primary);
+        color: var(--color-white);
+    }
+}
+
+.rbt-badge {
+    display: inline-block;
+    height: 30px;
+    line-height: 30px;
+    padding: 0 22px;
+    background: var(--color-gray-light);
+    font-size: 14px;
+    letter-spacing: 0.3px;
+    border-radius: 6px;
+    color: var(--color-body);
+
+    &.variation-02 {
+        padding: 0 16px;
+        height: 30px;
+        line-height: 30px;
+        font-size: 12px;
+        letter-spacing: 0.5px;
+    }
+
+    &.variation-03 {
+        padding: 0 12px;
+    }
+}
+
+.rbt-badge-2 {
+    display: flex;
+    align-items: center;
+    background: rgba(226, 213, 252, .8);
+    box-shadow: 0 12px 22px 0 rgb(214 191 242 / 28%);
+    padding: 0 20px;
+    border: 1px solid #fff;
+    border-radius: 500px;
+    height: 50px;
+    line-height: 50px;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: -0.50px;
+    justify-content: center;
+    color: var(--color-heading);
+    width: max-content;
+
+    img {
+        max-height: 30px;
+        border-radius: 100%;
+    }
+
+    .image {
+        margin: 0;
+        margin-right: 10px;
+    }
+
+    strong {
+        margin-left: 5px;
+        display: inline-block;
+        color: var(--color-primary);
+    }
+
+    &.badge-full-height {
+        height: 100%;
+        border-radius: 10px;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        font-size: 20px;
+        padding: 20px;
+
+        img {
+            max-height: 50px;
+        }
+
+        .image {
+            margin-right: 0;
+        }
+    }
+}
+
+.rbt-badge-3 {
+    position: absolute;
+    bottom: 23px;
+    right: 20px;
+    height: 60px;
+    width: 60px;
+    border-radius: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+    background: transparent !important;
+
+    span {
+        font-size: var(--font-size-b4);
+        line-height: 1.2;
+        color: #ffffff;
+        display: block;
+        font-weight: var(--f-bold);
+        font-family: var(--font-secondary);
+    }
+}
+
+
+// .rbt-badge-3::before, 
+// .rbt-badge-3::after {
+//     content: "";
+//     width: calc(100% + 10px);
+//     height: calc(100% + 10px);
+//     left: -5px;
+//     top: -5px;
+//     position: absolute;
+//     border-radius: 100%;
+//     border: 10px dotted var(--color-white);
+//     right: -5px;
+//     bottom: -5px;
+//     transform: rotate(0deg);
+//     box-sizing: border-box;
+// }
+
+.rbt-badge-3::before {
+    content: "";
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background: url(../images/icons/offer-badge-bg-color.svg);
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    left: 0;
+    top: 0;
+    z-index: -1;
+    right: 0;
+    bottom: 0;
+}
+
+
+
+.rbt-badge-3::after {
+    transform: rotate(90deg);
+}
+
+
+.rbt-badge-4 {
+    display: inline-block;
+    height: auto;
+    line-height: initial;
+    padding: 6px 10px;
+    background: var(--white-opacity);
+    font-size: 14px;
+    letter-spacing: 0.3px;
+    border-radius: 6px;
+    color: var(--color-heading);
+    position: relative;
+
+    &::after {
+        position: absolute;
+        content: "";
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: var(--primary-opacity);
+        transition: 0.4s;
+        opacity: 0;
+        transform: scale(0.9);
+        border-radius: 6px;
+    }
+
+    &:hover {
+        color: var(--color-primary);
+
+        &::after {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+}
+
+
+.rbt-badge-5 {
+    background: var(--color-gray-light);
+    padding: 5px 7px;
+    font-size: 12px;
+    display: flex;
+    height: 22px;
+    align-items: center;
+    border-radius: var(--radius-small);
+    justify-content: center;
+    width: max-content;
+}
+
+
+.rbt-badge-6 {
+    font-size: 14px;
+    line-height: 15px;
+    font-weight: 500;
+    color: var(--color-heading);
+    margin-bottom: 15px;
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 100px;
+    text-transform: uppercase;
+    display: inline-block;
+    background: var(--color-primary);
+    color: var(--color-primary);
+}

@@ -1,0 +1,306 @@
+/*--------------------------
+    Lesson Styles  
+-----------------------------*/
+.rbt-lesson-content-wrapper {
+    display: flex;
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+
+    @media #{$md-layout} {
+        flex-direction: column;
+    }
+
+    @media #{$sm-layout} {
+        flex-direction: column;
+    }
+
+    .rbt-lesson-leftsidebar {
+        flex: 0 0 400px;
+        width: 400px;
+        background-color: var(--color-extra2);
+        border-right: 1px solid var(--color-border);
+        max-height: 100%;
+        overflow-y: auto;
+
+        @media #{$md-layout} {
+            width: 100%;
+            border-right: 0 none;
+        }
+
+        @media #{$sm-layout} {
+            width: 100%;
+            border-right: 0 none;
+        }
+    }
+
+    .rbt-lesson-rightsidebar {
+        position: relative;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+
+
+
+    }
+}
+
+
+
+
+/*-------------------------
+    Lesson Page Style  
+--------------------------*/
+
+.rbt-lesson-leftsidebar {
+
+    .rbt-title-style-3,
+    .lesson-search-wrapper {
+        padding: 16px;
+    }
+
+    .rbt-course-main-content {
+        li {
+            a {
+                @media #{$md-layout} {
+                    display: flex;
+                }
+
+                @media #{$sm-layout} {
+                    display: flex;
+                }
+            }
+        }
+    }
+
+    .rbt-title-style-3 {
+        margin-bottom: 10px;
+    }
+}
+
+
+.rbt-lesson-rightsidebar {
+    display: flex;
+
+    .inner {
+        padding: 100px 0;
+
+        @media #{$md-layout} {
+            padding: 30px 0;
+        }
+
+        @media #{$sm-layout} {
+            padding: 30px 0;
+        }
+    }
+
+    .content {
+        padding: 40px 50px;
+        // width: 85%;
+        width: 95%;
+        margin: 0 auto;
+
+        @media #{$md-layout} {
+            padding: 40px 30px;
+            width: 100%;
+        }
+
+        @media #{$sm-layout} {
+            padding: 40px 30px;
+            width: 100%;
+        }
+    }
+
+    .rbt-checkbox-wrapper,
+    .rbt-form-check {
+        label {
+            border: 2px solid var(--color-border);
+            height: 40px;
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            border-radius: 6px;
+            padding-left: 30px;
+            cursor: pointer;
+        }
+
+        input[type=checkbox]:checked~label,
+        input[type=radio]:checked~label {
+            border-color: var(--color-primary);
+        }
+
+        input[type=checkbox]~label::before,
+        input[type=radio]~label::before {
+            top: 50%;
+            left: 10px;
+            transform: translateY(-50%);
+        }
+
+        input[type=checkbox]~label::after {
+            top: 44%;
+            left: 12px;
+        }
+
+        input[type=radio]~label::after {
+            top: 41%;
+            left: 13px;
+        }
+    }
+
+}
+
+.quiz-result-enter {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+}
+
+.quiz-result-enter-active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    transition: opacity 300ms, transform 300ms;
+}
+
+.quiz-result-exit {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.quiz-result-exit-active {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: opacity 300ms, transform 300ms;
+}
+
+.rbt-lesson-rightsidebar {
+    &.lesson-video {
+        .inner {
+            padding: 0;
+        }
+    }
+}
+
+.quize-top-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 30px;
+
+    span {
+        color: var(--color-body);
+
+        &+span {
+            padding-left: 30px;
+        }
+    }
+}
+
+
+.rbt-custom-file-upload {
+    position: relative;
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    padding: 20px;
+    border-radius: 6px;
+    border: var(--border-width) dashed var(--color-border);
+    cursor: pointer;
+    box-shadow: var(--shadow-10);
+    transition: background .3s ease-in-out, border .3s ease-in-out;
+
+    &:hover {
+        background: var(--black-opacity) !important;
+        border-color: var(--color-primary);
+    }
+
+    input[type=file] {
+        width: 350px;
+        max-width: 100%;
+        padding: 5px;
+        border-radius: 6px;
+        border: var(--border-width) solid var(--color-border);
+        height: auto !important;
+
+        &::file-selector-button {
+            margin-right: 20px;
+            border: none;
+            background: var(--primary-opacity) !important;
+            padding: 10px 20px;
+            border-radius: 10px;
+            color: var(--color-primary) !important;
+            cursor: pointer;
+        }
+
+        &::file-selector-button:hover {
+            background: var(--color-primary) !important;
+            color: var(--color-white) !important;
+        }
+    }
+}
+
+
+
+/*----------------------
+    Lesson Top Bar  
+-------------------------*/
+
+.lesson-top-bar {
+    background: var(--color-primary);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 20px;
+    padding-right: 10px;
+
+    h5 {
+        margin-bottom: 0;
+        color: #fff;
+        font-weight: 500;
+    }
+
+    .rbt-round-btn {
+        i {
+            color: #fff;
+        }
+
+        &:hover {
+            i {
+                color: var(--color-primary);
+            }
+        }
+    }
+
+    .lesson-top-left {
+        display: flex;
+        align-items: center;
+
+        .rbt-lesson-toggle {
+            margin-right: 20px;
+
+            .sidebar-hide {
+                i {
+                    &::before {
+                        transition: 0.3s;
+                    }
+
+                    &::before {
+                        content: "\e912";
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+.rbt-lesson-leftsidebar {
+    &.sibebar-none {
+        display: none;
+    }
+}

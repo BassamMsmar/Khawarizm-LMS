@@ -1,0 +1,201 @@
+/*---------------------------------------
+    13. Checkout
+-----------------------------------------*/
+
+
+.checkout-title {
+    font-size: 20px;
+    line-height: 23px;
+    text-transform: capitalize;
+    font-weight: 700;
+    margin-bottom: 30px;
+}
+
+
+.checkout-content-wrapper {
+    background: var(--color-white);
+    box-shadow: var(--shadow-1);
+    padding: 30px;
+    border-radius: 6px;
+}
+
+/*-- Checkout Form --*/
+
+.checkout-form,
+.rbt-default-form {
+    & label {
+        display: block;
+        font-size: 14px;
+        margin-bottom: 12px;
+        font-weight: 600;
+        text-transform: capitalize;
+        color: var(--color-heading);
+    }
+    & .nice-select {
+        width: 100%;
+        background-color: transparent;
+        border: 1px solid var(--color-border);
+        border-radius: 6px;
+        line-height: 23px;
+        padding: 10px 20px;
+        font-size: 14px;
+        height: 45px;
+        color: var(--color-body);
+        margin-bottom: 15px;
+        &::after {
+            width: 6px;
+            height: 6px;
+            border-width: 1px;
+            right: 20px;
+            border-color: var(--color-body);
+        }
+        & .current {
+            color: var(--color-body);
+            display: block;
+            line-height: 23px;
+        }
+        & .list {
+            width: 100%;
+        }
+    }
+    & input,
+    textarea {
+        width: 100%;
+        background-color: transparent;
+        border: 2px solid var(--color-border);
+        border-radius: 6px;
+        line-height: 23px;
+        padding: 10px 20px;
+        font-size: 14px;
+        color: var(--color-body);
+        margin-bottom: 15px;
+        &[type="checkbox"] {
+            width: auto;
+        }
+    }
+    textarea {
+
+    }
+    & .check-box {
+        float: left;
+        margin-right: 70px;
+        &:last-child {
+            margin-right: 0;
+        }
+        
+    }
+}
+
+/*-- Shipping Form --*/
+
+#shipping-form {
+    display: none;
+}
+
+/*-- Checkout Cart Total --*/
+
+.checkout-cart-total {
+    background-color: var(--color-white);
+    box-shadow: var(--shadow-1);
+    padding: 30px;
+    position: relative;
+    border-radius: 6px;
+
+    @media #{$small-mobile} {
+        padding: 30px 19px;
+    }
+    & h4 {
+        flex-basis: 18px;
+        line-height: 23px;
+        font-weight: 700;
+        &:first-child {
+            margin-top: 0;
+            margin-bottom: 25px;
+        }
+        &:last-child {
+            margin-top: 15px;
+            margin-bottom: 0;
+        }
+        & span {
+            float: right;
+            display: block;
+        }
+    }
+    & ul {
+        border-bottom: 1px solid var(--color-border);
+        padding: 0;
+        margin: 0;
+        & li {
+            color: var(--color-body);
+            font-size: 14px;
+            line-height: 23px;
+            font-weight: 600;
+            display: block;
+            margin-bottom: 16px;
+            & span {
+                color: var(--color-body);
+                float: right;
+            }
+        }
+    }
+    & p {
+        font-size: 14px;
+        line-height: 30px;
+        font-weight: 600;
+        color: var(--color-body);
+        padding: 10px 0;
+        border-bottom: 1px solid var(--color-border);
+        margin: 0;
+        & span {
+            float: right;
+        }
+    }
+}
+
+/*-- Checkout Payment Method --*/
+
+.checkout-payment-method {
+    background-color: var(--color-white);
+    box-shadow: var(--shadow-1);
+    padding: 30px;
+    position: relative;
+    border-radius: 6px;
+    @media #{$small-mobile} {
+        padding: 30px;
+    }
+}
+
+/*-- Single Payment Method --*/
+
+.single-method {
+    margin-bottom: 20px;
+    &:last-child {
+        margin-bottom: 0;
+    }
+   
+    & p {
+        display: none;
+        margin-top: 8px;
+        font-size: 14px;
+        color: var(--color-heading);
+        line-height: 23px;
+    }
+}
+
+/*-- Place Order --*/
+
+.place-order {
+    background-color: var(--color-heading);
+    border: medium none;
+    border-radius: 50px;
+    color: #fff;
+    float: left;
+    font-size: 14px;
+    font-weight: 700;
+    height: 36px;
+    line-height: 24px;
+    margin-top: 40px;
+    padding: 6px 20px;
+    text-transform: uppercase;
+    width: 158px;
+}

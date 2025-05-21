@@ -1,0 +1,278 @@
+/*===========================
+    Start Footer Area 
+=============================*/
+/*-----------------------
+    Footer Style One  
+-------------------------*/
+.footer-style-1 {
+    .footer-top {
+        padding-top: 80px;
+        padding-bottom: 90px;
+        @media #{$sm-layout} {
+            padding-top: 60px;
+            padding-bottom: 60px;
+        }
+    }
+    .ft-title {
+        color: var(--color-heading);
+        margin-bottom: 20px;
+        @media #{$lg-layout} {
+            font-size: 18px;
+        }
+    }
+    .description {
+        font-size: 16px;
+        line-height: 25px;
+    }
+    .newsletter-form  {
+        input {
+            min-width: 100%;
+        }
+        .right-icon {
+            display: block;
+            input {
+                padding-right: 30px;
+            }
+            &::after {
+                position: absolute;
+                right: 0;
+                top: 50%;
+                transform: translateY(-50%);
+                font-family: 'feather' !important;
+            }
+            &.icon-email {
+                &::after {
+                    content: "\e98a";
+                }
+            }
+        }
+
+
+    }
+
+    .logo {
+        a {
+            display: inline-block;
+        }
+    }
+    
+    &.footer-islamic {
+        position: relative;
+
+        .shape-bg {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+
+        .moon {
+            position: absolute;
+            right: 120px;
+            top: 157px;
+
+            @media #{$laptop-device} {
+                right: 60px;
+            }
+
+            @media #{$lg-layout, $md-layout, $sm-layout, $large-mobile} {
+                display: none;
+            }
+        }
+
+        .star {
+            position: absolute;
+            left: 113px;
+            bottom: 162px;
+
+            @media #{$laptop-device} {
+                left: 60px;
+            }
+
+            @media #{$lg-layout, $md-layout, $sm-layout, $large-mobile} {
+                display: none;
+            }
+        }
+    }
+
+    &.footer-art-section {
+        position: relative;
+        overflow: hidden;
+
+        .shapes {
+            .shape-1 {
+                position: absolute;
+                left: 85px;
+                bottom: 72px;
+
+                @media #{$laptop-device, $lg-layout, $md-layout, $sm-layout, $large-mobile}{
+                    display: none;
+                }
+            }
+
+            .shape-2 {
+                position: absolute;
+                right: 45px;
+                bottom: 40px;
+
+                @media #{$laptop-device, $lg-layout, $md-layout, $sm-layout, $large-mobile}{
+                    display: none;
+                }
+            }
+        }
+    }
+
+    &.rbt-footer-shadow-1 {
+        position: relative;
+        overflow: hidden;
+
+        .gradient-shadow-top {
+            position: absolute;
+            width: 282px;
+            height: 282px;
+            border-radius: 50%;
+            top: -240px;
+            right: 86px;
+            background: linear-gradient(180deg, #FB64AD 0%, var(--color-primary) 100%);
+            filter: blur(150px);
+            transform: rotate(-45deg);
+
+            @media #{$lg-layout, $md-layout, $sm-layout, $large-mobile} {
+                display: none;
+            }
+        }
+
+        .gradient-shadow-bottom {
+            position: absolute;
+            width: 226px;
+            height: 107px;
+            border-radius: 50%;
+            left: 108px;
+            bottom: -74px;
+            background: linear-gradient(180deg, #FB64AD 0%, var(--color-primary) 100%);
+            filter: blur(100px);
+
+            @media #{$lg-layout, $md-layout, $sm-layout, $large-mobile} {
+                display: none;
+            }
+        }
+    }
+}
+
+.footer-widget {
+    .ft-link {
+        @extend %liststyle;
+        li {
+            margin: 0;
+            color: var(--color-body);
+            font-size: 16px;
+            line-height: 25px;
+            span {
+                font-weight: 500;
+            }
+            a {
+                color: var(--color-body);
+                display: inline-block;
+                position: relative;
+                &:after {
+                    content: '';
+                    position: absolute;
+                    width: 100%;
+                    height: 2px;
+                    bottom: 0;
+                    left: 0;
+                    background-color: currentColor;
+                    transform: scaleX(0);
+                    transform-origin: bottom right;
+                    transition: transform 0.3s;
+                }
+                &:hover {
+                    color: var(--color-primary) !important;
+                    &:after {
+                        transform-origin: bottom left;
+                        transform: scaleX(1);
+                    }
+                }
+            }
+            & + li {
+                margin-top: 10px;
+            }
+        }
+    }
+    .form-group {
+        label {
+            font-size: 16px;
+            line-height: 31px;
+        }
+    }
+}
+
+
+/* Footer Style Two  */
+.footer-style-2 {
+    .logo {
+        margin-bottom: 30px;
+        position: relative;
+    }
+    .text {
+        p {
+            margin-top: 30px;
+            a {
+                transition: 0.3s;
+                &:hover {
+                    color: var(--color-primary);
+                }
+            }
+        }
+    }
+}
+
+
+/* Footer Style Three  */
+.footer-style-3 {
+    .shape-gd-1 {
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .big-title {
+        text-align: center;
+        font-size: 200px;
+        font-weight: 600;
+        line-height: 100%;
+        text-transform: uppercase;
+        background: linear-gradient(180deg, rgba(47, 87, 239, 0.12) 0%, rgba(197, 134, 238, 0.00) 100%);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 50px;
+
+        @media #{$laptop-device} {
+            font-size: 150px;
+        }
+
+        @media #{$lg-layout} {
+            font-size: 120px;
+            margin-top: 15px;
+        }
+
+        @media #{$md-layout} {
+            font-size: 100px;
+            margin-top: 20px;
+        }
+
+        @media #{$sm-layout} {
+            font-size: 70px;
+            margin-top: 20px;
+        }
+
+        @media #{$large-mobile} {
+            font-size: 60px;
+            margin-top: 20px;
+            margin-bottom: 30px;
+        }
+    }
+}

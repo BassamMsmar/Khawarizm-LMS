@@ -1,0 +1,372 @@
+/*------------------------
+    Feature Styles  
+-------------------------*/
+.rbt-feature {
+    display: flex;
+    transition: var(--transition-3);
+    .icon {
+        width: 50px;
+        min-width: 50px;
+        height: 50px;
+        background: var(--color-secondary);
+        display: flex;
+        border-radius: 100%;
+        align-items: center;
+        justify-content: center;
+        margin-right: 15px;
+
+        i {
+            color: var(--color-white);
+            font-size: 24px;
+        }
+
+        &.bg-primary-opacity {
+            i {
+                color: var(--color-primary);
+            }
+        }
+
+        &.bg-pink-opacity {
+            i {
+                color: var(--color-pink);
+            }
+        }
+
+        &.bg-coral-opacity {
+            i {
+                color: var(--color-coral);
+            }
+        }
+
+        &.bg-secondary-opacity {
+            i {
+                color: var(--color-secondary);
+            }
+        }
+    }
+
+    .number {
+        width: 50px;
+        min-width: 50px;
+        height: 50px;
+        display: flex;
+        border-radius: 100%;
+        align-items: center;
+        justify-content: center;
+        margin-right: 15px;
+        position: relative;
+        font-weight: var(--f-medium);
+        font-size: var(--font-size-b3);
+        line-height: 26px;
+        color: var(--color-heading);
+        transition: var(--transition-3);
+
+        &::before {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 100%;
+            background: linear-gradient(90deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+            opacity: 0.1;
+            transition: var(--transition-3);
+        }
+
+        &::after {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 100%;
+            background: linear-gradient(90deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+            transform: scale(0);
+            transition: var(--transition-3);
+        }
+
+        span {
+            position: relative;
+            z-index: 2;
+        }
+    }
+
+    .feature-content {
+        .feature-title {
+            font-weight: 500;
+            font-size: 20px;
+            line-height: 32px;
+            margin-bottom: 0;
+        }
+        .feature-description {
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 26px;
+            margin-bottom: 0;
+            margin-top: 5px;
+        }
+    }
+    & + .rbt-feature {
+        margin-top: 30px;
+        @media #{$sm-layout} {
+            margin-top: 20px;
+        }
+    }
+    &.feature-style-2 {
+        padding: 20px;
+        &:hover {
+            box-shadow: var(--shadow-5);
+            transform: scale(1.1);
+            @media #{$sm-layout} {
+                transform: scale(1);
+            }
+
+            .number {
+                color: var(--color-white);
+
+                &::before {
+                    opacity: 0;
+                }
+
+                &::after {
+                    transform: scale(1);
+                }
+            }
+        }
+        & + .feature-style-2 {
+            margin-top: 10px;
+        }
+    }
+}
+
+.rbt-round-icon {
+    width: 50px;
+    min-width: 50px;
+    height: 50px;
+    background: var(--color-secondary);
+    display: flex;
+    border-radius: 100%;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+    i {
+        color: var(--color-white);
+        font-size: 24px;
+    }
+
+    &.bg-primary-opacity {
+        i {
+            color: var(--color-primary);
+        }
+    }
+
+    &.bg-pink-opacity {
+        i {
+            color: var(--color-pink);
+        }
+    }
+
+    &.bg-coral-opacity {
+        i {
+            color: var(--color-coral);
+        }
+    }
+
+    &.bg-secondary-opacity {
+        i {
+            color: var(--color-secondary);
+        }
+    }
+
+    &.bg-violet-opacity {
+        i {
+            color: var(--color-violet);
+        }
+    }
+
+    &.bg-warning-opacity {
+        i {
+            color: var(--color-warning);
+        }
+    }
+}
+
+
+.rbt-single-course-features {
+    .subtitle {
+        margin-top: 40px;
+        margin-bottom: 40px;
+        @media #{$lg-layout} {
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+        @media #{$md-layout} {
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+        @media #{$sm-layout} {
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+    }
+}
+
+.feature-section-02 {
+    margin-top: -100px;
+
+    @media #{$lg-layout, $md-layout, $sm-layout, $large-mobile} {
+        margin-top: 0;
+        padding-top: 80px;
+    }
+}
+
+.rbt-feature-card {
+    background: var(--color-white);
+    box-shadow: var(--shadow-1);
+    border-radius: 10px;
+    padding: 30px 30px 40px 30px;
+    position: relative;
+
+    &::after {
+        content: "";
+        position: absolute;
+        left: -2px;
+        top: -2px;
+        width: calc(100% + 4px);
+        height: calc(100% + 4px);
+        background: var(--gradient-8);
+        border-radius: 12px;
+        z-index: -1;
+        opacity: 0;
+        transition: var(--transition);
+    }
+
+    .icon {
+        width: 60px;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: var(--color-pink);
+        flex: 0 0 auto;
+    }
+
+    .card-title {
+        font-weight: 500;
+        font-size: 20px;
+        line-height: 30px;
+        color: var(--color-heading);
+        margin-bottom: 0;
+    }
+
+    .description {
+        font-size: 16px;
+        line-height: 26px;
+        margin-top: 20px;
+    }
+
+    &:hover {
+        &::after {
+            opacity: 1;
+        }
+
+        .icon {
+            img {
+                animation: bounceIn 0.6s ease;
+            }
+        }
+    }
+}
+
+@keyframes bounceIn {
+
+    0%,
+    20%,
+    40%,
+    60%,
+    80%,
+    100% {
+        -webkit-animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+        animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+    }
+
+    0% {
+        opacity: 0;
+        -webkit-transform: scale3d(0.3, 0.3, 0.3);
+        transform: scale3d(0.3, 0.3, 0.3);
+    }
+
+    20% {
+        -webkit-transform: scale3d(1.1, 1.1, 1.1);
+        transform: scale3d(1.1, 1.1, 1.1);
+    }
+
+    40% {
+        -webkit-transform: scale3d(0.9, 0.9, 0.9);
+        transform: scale3d(0.9, 0.9, 0.9);
+    }
+
+    60% {
+        opacity: 1;
+        -webkit-transform: scale3d(1.03, 1.03, 1.03);
+        transform: scale3d(1.03, 1.03, 1.03);
+    }
+
+    80% {
+        -webkit-transform: scale3d(0.97, 0.97, 0.97);
+        transform: scale3d(0.97, 0.97, 0.97);
+    }
+
+    100% {
+        opacity: 1;
+        -webkit-transform: scale3d(1, 1, 1);
+        transform: scale3d(1, 1, 1);
+    }
+}
+
+.rbt-feature-card-two {
+    text-align: center;
+    padding: 88px 40px 109px;
+    position: relative;
+    min-height: 410px;
+
+    &::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url('../images/shape/feature-card-bg.png');
+        background-position: center center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        z-index: -1;
+    }
+
+    @media #{$large-mobile} {
+        padding: 70px 20px 90px;
+        min-height: 360px;
+    }
+    
+    .feature-body {
+        max-width: 300px;
+        margin: 0 auto;
+    }
+
+    .icon {
+        width: 60px;
+        height: 60px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        font-size: 30px;
+        color: var(--color-white);
+    }
+
+    .description {
+        font-size: 17px;
+        line-height: 28px;
+    }
+}

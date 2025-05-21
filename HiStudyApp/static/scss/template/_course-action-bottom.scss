@@ -1,0 +1,60 @@
+.rbt-course-action-bottom {
+    background-color: var(--color-white);
+    box-shadow: var(--shadow-1);
+    position: fixed;
+    bottom: -75px;
+    left: 0;
+    right: 0;
+    z-index: 99;
+    overflow: hidden;
+    padding: 10px 0;
+    transition: all .3s;
+    @media #{$sm-layout} {
+        bottom: -128px;
+        padding: 20px 0;
+    }
+    @media #{$large-mobile} {
+        bottom: -150px;
+    }
+    &.rbt-course-action-active {
+        bottom: 0 !important; 
+        @media #{$sm-layout} {
+            bottom: 0 !important;
+        }
+        @media #{$large-mobile} {
+            bottom: 0 !important;
+        }
+    }
+    .course-action-bottom-right {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        @media #{$sm-layout} {
+            justify-content: center;
+        }
+    }
+    .rbt-price.large-size .current-price {
+        @media #{$md-layout} {
+            font-size: 24px;
+        }
+        @media #{$sm-layout} {
+            font-size: 24px;
+        }
+    }
+    .rbt-price.large-size .off-price {
+        @media #{$md-layout} {
+            font-size: 13px;
+        }
+        @media #{$sm-layout} {
+            font-size: 13px;
+        }
+    }
+
+    .rbt-price {
+        @media #{$large-mobile} {
+            display: none;
+        }
+    }
+}
+
+

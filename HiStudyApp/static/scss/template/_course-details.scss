@@ -1,0 +1,407 @@
+/*-------------------------
+    Course Details  
+--------------------------*/
+
+/*-------------------------
+    Single Course Meta  
+--------------------------*/
+
+.rbt-single-course-meta {
+    .rbt-course-review {
+        margin-left: 15px;
+    }
+}
+
+
+/*---------------------------
+    Video Course Content  
+----------------------------*/
+.rbt-course-main-content {
+    li {
+        a {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            @media #{$large-mobile} {
+                display: block;
+            }
+            &.active {
+                color: var(--color-primary);
+            }
+        }
+        &:first-child {
+            margin-top: 0;
+        }
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+    .course-content-left {
+        display: flex;
+        align-items: center;
+        @media #{$large-mobile} {
+            margin-bottom: 12px;
+        }
+        i {
+            padding-right: 6px;
+        }
+        span {
+            font-size: 16px;
+        }
+    }
+    .course-content-right {
+        margin: 0 -5px;
+        margin-bottom: -10px;
+        span {
+            display: inline-block;
+            margin: 0 5px;
+            margin-bottom: 10px;
+        }
+        .min-lable,
+        .course-lock {
+            font-size: 16px;
+        }
+        
+        &.only-lock {
+            margin: 0;
+            margin-bottom: -10px;
+        }
+    }
+}
+
+.about-author-list {
+    .about-author {
+        &:last-child {
+            border-bottom: 0;
+            padding-bottom: 0;
+        }
+    }
+}
+
+.rbt-instructor {
+    .about-author {
+        .media {
+            @media #{$large-mobile} {
+                display: block;
+            }
+        }
+        .thumbnail {
+            a {
+                img {
+                    margin-bottom: 0;
+                    min-width: 250px;
+                    max-height: 250px;
+                    object-fit: cover;
+                    border-radius: 100%;
+                    @media #{$large-mobile} {
+                        margin-bottom: 0;
+                        min-width: 100%;
+                        max-height: initial;
+                        margin-right: 0;
+                    }
+                }
+            }
+        }
+        .media-body {
+            @media #{$large-mobile} {
+                margin-top: 20px;
+            }
+            .rbt-meta {
+                display: flex;
+                align-items: center;
+                flex-wrap: wrap;
+                li {
+                    display: flex;
+                    align-items: center;
+                }
+            }
+        }
+    }
+}
+
+
+.video-course-content {
+    li {
+        a {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+    }
+}
+
+
+
+
+/*----------------------------
+    Rbt rating Styles  
+------------------------------*/
+
+.rating-box {
+    border-radius: 5px;
+    background: var(--warning-opacity);
+    text-align: center;
+    padding: 22px 10px;
+    padding-top: 10px;
+    .rating-number {
+        font-weight: 800;
+        font-size: 66px;
+        line-height: 80px;
+        color: var(--color-heading);
+    }
+    span {
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 26px;
+    }
+    .rating {
+        svg {
+            color: var(--color-warning);
+        }
+    }
+    .sub-title {
+        color: var(--color-warning);
+    }
+}
+
+
+.rating-text {
+    display: inline-block;
+    position: relative;
+    top: 14px;
+    @media #{$sm-layout} {
+        top: 0;
+        margin-bottom: 8px;
+    }
+    svg {
+        color: var(--color-warning);
+    }
+}
+
+
+.review-wrapper {
+    .single-progress-bar {
+        position: relative;
+        top: -14px;
+        @media #{$sm-layout} {
+            margin-bottom: 15px;
+        }
+    }
+    .progress {
+        max-width: 70%;
+        margin-left: 115px;
+        height: 6px;
+        background: #EEEEEE;
+        border-radius: 0;
+        @media #{$lg-layout} {
+            max-width: 61%;
+        }
+        @media #{$sm-layout} {
+            max-width: 83%;
+            margin-left: 0;
+        }
+        .progress-bar {
+            background-color: var(--color-warning);
+            border-radius: 0;
+        }
+    }
+    span {
+        &.value-text {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            font-weight: 500;
+            font-size: 16px;
+        }
+    }
+}
+
+
+
+/*---------------------------------
+    Featured Review List Wrapper  
+-----------------------------------*/
+
+.rbt-course-review {
+    &.about-author {
+        padding: 25px 0;
+        &:first-child {
+            padding-top: 0;
+        }
+        .rating {
+            margin-top: 5px;
+            margin-bottom: 10px;
+        }
+    }
+}
+
+
+/*---------------------------
+    Course Top  
+----------------------------*/
+
+.rbt-course-top-wrapper {
+    .select-label {
+        opacity: 0.8;
+        color: var(--color-heading);
+    }
+    .default-exp-wrapper {
+        border-top: 1px solid var(--color-border-2);
+        margin-top: 30px;
+        .filter-inner {
+            padding-bottom: 0;
+            .bootstrap-select {
+                width: 100% !important;
+                max-width: 245px;
+            }
+        }
+        
+        &.top-border-less {
+            border: 0 none;
+            margin-top: 0;
+        }
+    }
+    .price__output--wrap {
+        .price--output {
+            input,
+            span {
+                opacity: 0.8;
+                color: var(--color-heading);
+            }
+        }
+    }
+    .ui-widget-content {
+        background: var(--white-opacity) none repeat scroll 0 0;
+    }
+}
+
+.rbt-sorting-list {
+    margin: -10px -10px;
+    .rbt-short-item {
+        margin: 10px 10px;
+    }
+    .course-switch-layout {
+        @extend %liststyle;
+        display: flex;
+        align-items: center;
+        background: var(--white-opacity);
+        border-radius: 500px;
+        padding: 8px;
+        margin: 0;
+        li {
+            margin: 0;
+            button {
+                background: transparent;
+                display: block;
+                padding: 7px 16px;
+                border-radius: 500px;
+                font-size: 16px;
+                transition: 0.4s;
+                border: 0 none;
+                box-shadow: none;
+                i {
+                    font-size: 14px;
+                    transition: 0.4s;
+                }
+
+                &.active {
+                    background: var(--color-white);
+                    color: var(--color-primary);
+                    i {
+                        color: var(--color-primary);
+                    }
+                }
+            }
+        }
+    }
+}
+
+.rbt-short-item {
+    .course-index {
+        color: var(--color-heading);
+        font-size: 16px;
+    }
+}
+
+
+
+
+/*-------------------------
+    Course Grid Column  
+---------------------------*/
+
+.rbt-course-grid-column {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+    margin-top: -30px;
+    .course-grid-3,
+    .course-grid-2,
+    .course-grid-4 {
+        padding-right: 15px;
+        padding-left: 15px;
+        margin-top: 30px;
+        .rbt-card {
+            transition: 0.4s;
+        }
+    }
+    .course-grid-4 {
+        flex: 0 0 auto;
+        width: 25%;
+        @media #{$lg-layout} {
+            width: 33.33%;
+        }
+        @media #{$md-layout} {
+            width: 50%; 
+        }
+        @media #{$sm-layout} {
+            width: 100%; 
+        }
+    }
+    .course-grid-3 {
+        flex: 0 0 auto;
+        width: 33.33%;
+        @media #{$md-layout} {
+            width: 50%; 
+        }
+        @media #{$sm-layout} {
+            width: 100%; 
+        }
+    }
+    .course-grid-2 {
+        flex: 0 0 auto;
+        width: 50%;
+    }
+    &.active-list-view {
+        .course-grid-3,
+        .course-grid-2 {
+            width: 100%;
+        }
+    }
+    &.list-column-half {
+        &.active-list-view {
+            .course-grid-3,
+            .course-grid-2,
+            .course-grid-4 {
+                width: 50%;
+                @media #{$sm-layout} {
+                    width: 100%; 
+                }
+            }
+        }
+    }
+    .rbt-card {
+        .rbt-card-img {
+            transition: none;
+            a {
+                transition: none;
+                img {
+                    transition: none;
+                }
+            }
+        }
+    }
+}
+
