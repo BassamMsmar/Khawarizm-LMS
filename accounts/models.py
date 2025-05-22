@@ -4,51 +4,119 @@ from django_countries.fields import CountryField
 from phonenumber_field.modelfields import PhoneNumberField
 from django.utils.text import slugify
 from django.urls import reverse
-
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from django.contrib.auth.models import Group, Permission
 
 class User(AbstractUser):
     USER_TYPE_CHOICES = (
         ('student', 'Student'),
-        ('instructor', 'Instructor'),
+        ('lecturer', 'Lecturer'),
+        ('teaching_assistant', 'Teaching Assistant'),
         ('admin', 'Admin'),
     )
-    
+
     user_type = models.CharField(
         max_length=20,
         choices=USER_TYPE_CHOICES,
         default='student'
     )
+
     phone_number = PhoneNumberField(blank=True, null=True)
+    gender = models.CharField(max_length=10, choices=[('male', 'Male'), ('female', 'Female')], blank=True, null=True)
+    date_of_birth = models.DateField(blank=True, null=True)
     email_verified = models.BooleanField(default=False)
     phone_verified = models.BooleanField(default=False)
+
+    profile_picture = models.ImageField(upload_to='profile_pictures/', blank=True, null=True)
+
     country = CountryField(blank=True, null=True)
     city = models.CharField(max_length=100, blank=True, null=True)
     address = models.TextField(blank=True, null=True)
     postal_code = models.CharField(max_length=20, blank=True, null=True)
-    profile_picture = models.ImageField(upload_to='profile_pictures/', blank=True, null=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    groups = models.ManyToManyField(
+        Group,
+        related_name='accounts_user_groups',  
+        blank=True,
+        verbose_name='groups'
+    )
+    user_permissions = models.ManyToManyField(
+        Permission,
+        related_name='accounts_user_permissions', 
+        blank=True,
+        verbose_name='user permissions'
+    )
+
+
+
+    def __str__(self):
+        return self.username
+
+    def save(self, *args, **kwargs):
+        # ضبط الصلاحيات بناءً على نوع المستخدم
+        if self.user_type == 'admin':
+            self.is_superuser = True
+            self.is_staff = True
+        elif self.user_type in ['lecturer', 'teaching_assistant']:
+            self.is_superuser = False
+            self.is_staff = True
+        else:  # student
+            self.is_superuser = False
+            self.is_staff = False
+
+        self.is_active = True
+        super().save(*args, **kwargs)
+
+    @property
+    def full_name(self):
+        return f"{self.first_name} {self.last_name}"
+
+class StudentProfile(models.Model):
+    """Additional profile information for students"""
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='student_profile')
+    
+    # Education
+    education_level = models.CharField(max_length=100, blank=True, null=True)
+    graduation_year = models.IntegerField(blank=True, null=True)
+    major = models.CharField(max_length=100, blank=True, null=True)
+    
+    # Documents
+    passport_number = models.CharField(max_length=50, blank=True, null=True)
+    certificate_number = models.CharField(max_length=50, blank=True, null=True)
+    certificate_file = models.FileField(upload_to='student_certificates/', blank=True, null=True)
+    
+    # Emergency Contact
+    emergency_contact_name = models.CharField(max_length=100, blank=True, null=True)
+    emergency_contact_phone = PhoneNumberField(blank=True, null=True)
+    
+    # Additional Information
+    student_id = models.CharField(max_length=50, blank=True, null=True, unique=True)
+    enrollment_date = models.DateField(blank=True, null=True)
     
     # Timestamps
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
     def __str__(self):
-        return self.username
+        return f"Student Profile - {self.user.username}"
 
-    @property
-    def full_name(self):
-        return f"{self.first_name} {self.last_name}"
 
-    @property
-    def is_instructor(self):
-        return self.user_type == 'instructor'
-
-    def get_absolute_url(self):
-        if self.is_instructor:
-            return reverse('instructor_profile', kwargs={'username': self.username})
-        return reverse('profile', kwargs={'username': self.username})
+class Language(models.Model):
+    """Language model for user preferences"""
+    name = models.CharField(max_length=100)
+    code = models.CharField(max_length=10, unique=True)
+    is_active = models.BooleanField(default=True)
+    
+    def __str__(self):
+        return self.name
 
 
 class Skill(models.Model):
+    """Skill model for user capabilities"""
     name = models.CharField(max_length=100, unique=True)
     slug = models.SlugField(unique=True, max_length=100)
     description = models.TextField(blank=True, null=True)
@@ -63,24 +131,17 @@ class Skill(models.Model):
         super().save(*args, **kwargs)
 
 
-class Language(models.Model):
-    name = models.CharField(max_length=100)
-    code = models.CharField(max_length=10, unique=True)
-    is_active = models.BooleanField(default=True)
-    
-    def __str__(self):
-        return self.name
-
-
 class LecturerProfile(models.Model):
+    """Profile information for lecturers"""
     user = models.OneToOneField(
         User,
         on_delete=models.CASCADE,
-        related_name='profile'
+        related_name='lecturer_profile'
     )
+    
     headline = models.CharField(max_length=255, blank=True, null=True)
     bio = models.TextField(blank=True, null=True)
-    experience = models.PositiveIntegerField(default=0)  # سنوات الخبرة
+    experience = models.PositiveIntegerField(default=0)
     education = models.TextField(blank=True, null=True)
     certification = models.TextField(blank=True, null=True)
     hourly_rate = models.DecimalField(
@@ -89,8 +150,6 @@ class LecturerProfile(models.Model):
         blank=True,
         null=True
     )
-    skills = models.ManyToManyField(Skill, blank=True, related_name='instructors')
-    languages = models.ManyToManyField(Language, blank=True, related_name='instructors')
     available_for_consulting = models.BooleanField(default=False)
     consultation_fee = models.DecimalField(
         max_digits=10,
@@ -98,38 +157,55 @@ class LecturerProfile(models.Model):
         blank=True,
         null=True
     )
-    social_links = models.JSONField(default=dict, blank=True)
-    cv = models.FileField(
-        upload_to='instructor_cvs/',
-        blank=True,
-        null=True
-    )
-    is_approved = models.BooleanField(default=False)
-    is_featured = models.BooleanField(default=False)
     
+    # Relations
+    skills = models.ManyToManyField(
+        Skill,
+        blank=True,
+        related_name='lecturers'
+    )
+    languages = models.ManyToManyField(
+        Language,
+        blank=True,
+        related_name='lecturers'
+    )
+    
+    # Social Links
+    social_links = models.JSONField(default=dict, blank=True)
+    
+    # Statistics
     total_students = models.PositiveIntegerField(default=0)
     total_courses = models.PositiveIntegerField(default=0)
     total_reviews = models.PositiveIntegerField(default=0)
-    rating = models.DecimalField(
-        max_digits=3,
-        decimal_places=2,
-        default=0.00
-    )
+    rating = models.DecimalField(max_digits=3, decimal_places=2, default=0.00)
+    
+    # Approval Status
+    is_approved = models.BooleanField(default=False)
+    is_featured = models.BooleanField(default=False)
     
     # Timestamps
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
     def __str__(self):
-        return f"LecturerProfile - {self.user.username}"
-
-    @property
-    def full_name(self):
-        return self.user.get_full_name()
-
+        return f"Lecturer Profile - {self.user.username}"
+    
     def update_stats(self):
-        """تحديث إحصائيات المدرس مثل عدد الطلاب والدورات."""
+        """Update lecturer's statistics"""
         from courses.models import Course
         self.total_courses = Course.objects.filter(instructor=self.user).count()
-        # أضف تحديثات أخرى حسب الحاجة
         self.save()
+
+
+# Signal to create StudentProfile when User is created
+@receiver(post_save, sender=User)
+def create_student_profile(sender, instance, created, **kwargs):
+    """Create a StudentProfile when a User is created with user_type='student'"""
+    if created and instance.user_type == 'student':
+        StudentProfile.objects.create(user=instance)
+
+@receiver(post_save, sender=User)
+def save_student_profile(sender, instance, **kwargs):
+    """Save the StudentProfile when the User is saved"""
+    if hasattr(instance, 'student_profile'):
+        instance.student_profile.save()
