@@ -4,7 +4,7 @@ from department.models import Program
 from django.utils.text import slugify
 from django.contrib.auth import get_user_model
 from django.urls import reverse
-from ckeditor.fields import RichTextField
+from django_ckeditor_5.fields import CKEditor5Field
 User = get_user_model()
 
 # Create your models here.
@@ -23,12 +23,12 @@ class Course(models.Model):
     )
     academic_hours = models.IntegerField(default=0)
     short_description = models.TextField(max_length=300)
-    description = models.TextField()
+    description = CKEditor5Field('Description', blank=True, null=True)
     program = models.ManyToManyField(Program)
     image = models.ImageField(upload_to='courses/images/')
     thumbnail = models.ImageField(upload_to='courses/images/thumbnails/')
-    what_youll_learn = RichTextField(blank=True, null=True)
-    who_this_course_is_for = RichTextField(blank=True, null=True)
+    what_youll_learn = CKEditor5Field(blank=True, null=True)
+    who_this_course_is_for = CKEditor5Field(blank=True, null=True)
     students_enrolled = models.ManyToManyField(
         get_user_model(),
         related_name='enrolled_courses',
@@ -74,8 +74,8 @@ class Lesson(models.Model):
     
 
     title = models.CharField(max_length=200)
-    description = RichTextField(blank=True, null=True)
-    content = RichTextField(blank=True, null=True)
+    description = CKEditor5Field(blank=True, null=True)
+    content = CKEditor5Field(blank=True, null=True)
     video_url = models.URLField(blank=True, null=True)
     video_file = models.FileField(
         upload_to='lesson_videos/',

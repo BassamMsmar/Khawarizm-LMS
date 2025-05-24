@@ -1,0 +1,48 @@
+/*----------------------
+    Copyright Styles  
+-----------------------*/
+.copyright-style-1 {
+    p {
+        color: var(--color-body);
+        font-size: 16px;
+        line-height: 25px;
+    }
+    .copyright-link {
+        @extend %liststyle;
+        display: flex;
+        flex-wrap: wrap;
+        margin: 0 -10px;
+        margin-top: -5px;
+        margin-bottom: -5px;
+
+        li {
+            font-size: 16px;
+            line-height: 25px;
+            padding: 0 10px;
+            position: relative;
+            margin-top: 5px;
+            margin-bottom: 5px;
+            a {
+                color: var(--color-body);
+                transition: 0.4s;
+                &:hover {
+                    color: var(--color-primary);
+                }
+            }
+            & + li {
+                &::after {
+                    position: absolute;
+                    content: "";
+                    height: 14px;
+                    width: 1px;
+                    background: var(--color-border);
+                    left: -1px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                }
+            }
+        }
+    }
+}
+
+

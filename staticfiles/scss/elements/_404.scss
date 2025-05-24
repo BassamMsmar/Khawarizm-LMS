@@ -1,0 +1,43 @@
+/*----------------------
+    Error Styles  
+------------------------*/
+
+.rbt-error-area {
+    .title {
+        font-size: 150px;
+        @media #{$md-layout} {
+            font-size: 70px;
+        }
+        @media #{$sm-layout} {
+            font-size: 50px;
+        }
+    }
+    .sub-title {
+        font-size: 50px;
+        @media #{$sm-layout} {
+            font-size: 40px;
+        }
+    }
+}
+
+
+
+.rbt-maintenance-area {
+    
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

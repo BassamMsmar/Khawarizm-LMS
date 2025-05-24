@@ -1,0 +1,137 @@
+/*----------------------
+    My Account  
+------------------------*/
+
+.rbt-my-account-tab-button {
+    flex-direction: column;
+    background-color: #fff;
+    box-shadow: var(--shadow-1);
+    border: 0 none;
+    border-radius: 6px;
+    overflow: hidden;
+
+    a {
+        border: 1px solid var(--color-border);
+        border-bottom: none;
+        color: var(--color-body);
+        font-weight: 500;
+        font-size: 16px;
+        display: block;
+        padding: 20px 25px;
+        border-right-color: transparent;
+        border-left-color: transparent;
+        &:last-child {
+            border-bottom: 1px solid transparent;
+        }
+        &:first-child {
+            border-top: 1px solid transparent;
+        }
+        &.active,
+        &:hover {
+            background-color: var(--color-primary);
+            background-image: linear-gradient(to right, var(--color-primary), var(--color-secondary), var(--color-secondary), var(--color-primary));
+            color: #fff;
+            background-size: 300% 100%;
+        }
+        i {
+            font-size: 14px;
+            text-align: center;
+            width: 25px
+        }
+    }
+}
+
+.rbt-my-account-inner {
+    background-color: #fff;
+    font-size: 14px;
+    border: 0 none;
+    padding: 35px 30px 40px;
+    box-shadow: var(--shadow-1);
+    border-radius: 6px;
+    overflow: hidden;
+    @media #{$large-mobile} {
+        padding: 20px 15px
+    }
+    h3 {
+        border-bottom: 1px dashed var(--color-border);
+        padding-bottom: 10px;
+        margin-bottom: 25px
+    }
+    .about-address {
+        a {
+            color: var(--color-body);
+            &:hover {
+                color: var(--color-primary)
+            }
+        }
+    }
+}
+
+
+
+.rbt-my-account-table {
+    white-space: nowrap;
+    font-size: 15px
+}
+
+.rbt-my-account-table .table th,
+.rbt-my-account-table table th {
+    padding: 10px;
+    font-weight: 600
+}
+
+.rbt-my-account-table .table td,
+.rbt-my-account-table table td {
+    padding: 20px 10px;
+    vertical-align: middle
+}
+
+.rbt-my-account-table .table td a:hover,
+.rbt-my-account-table table td a:hover {
+    color: #fff
+}
+
+.rbt-saved-message {
+    border-top: 2px solid var(--color-primary);
+    border-radius: 0;
+    font-weight: 600;
+    font-size: 13px;
+    padding: 20px;
+    background: #fff;
+    box-shadow: var(--shadow-1);
+}
+
+.account-details-form h4 {
+    margin: 0
+}
+
+.account-details-form {
+    input {
+        height: 50px;
+    }
+}
+
+.table>:not(:first-child) {
+    border-top: 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

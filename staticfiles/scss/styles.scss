@@ -1,0 +1,246 @@
+/*********************************************************************************
+
+	Template Name: Histudy - Online Courses & Education NEXTJS14 Template
+	Description: A perfect Template For Education. It comes with nice and clean design.
+
+	Note: This is style css.
+
+**********************************************************************************/
+
+/**************************************************************
+	
+	STYLESHEET INDEXING
+	|
+	|
+	|___ Default Styles
+	|	|
+	|	|___ variables
+	|	|___ mixins
+	|	|___ reset
+	|	|___ typography
+	|	|___ extend
+	|	|___ animations
+	|	|___ shortcode
+	|	|___ spacing
+	|	|___ edu-common
+	|	|___ forms
+	|	|___ text-animation
+	|
+	|
+	|___Header Styles
+	|	|___ header-common
+	|	|___ headertop
+	|	|___ offertopbar
+	|	|___ headermid
+	|	|___ social-share
+	|	|___ header
+	|	|___ nav
+	|	|___ mega-menu
+	|	|___ mobilemenu
+	|	|___ offcanvas
+	|	|___ one-page-navigation
+	|
+	|
+	|___Elements Styles
+	|	|___ button 
+	|	|___ section-title
+	|	|___ breadcrumb
+	|	|___ card
+	|	|___ course-meta
+	|	|___ service
+	|	|___ feature
+	|	|___ about
+	|	|___ callto-action
+	|	|___ accordion
+	|	|___ image-gallery
+	|	|___ counterup
+	|	|___ pricingtable
+	|	|___ badge
+	|	|___ team
+	|	|___ social
+	|	|___ pagination
+	|	|___ backtotop
+	|	|___ multistepform
+	|	|___ newsletterform
+	|	|___ brand
+	|	|___ portfolio
+	|	|___ contact
+	|	|___ testimonial
+	|	|___ advance-tab
+	|	|___ category
+	|	|___ instagram
+	|	|___ split
+	|	|___ countdown
+	|	|___ progressbar
+	|	|___ category-box
+	|	|___ course-filter
+	|	|___ modal
+	|	|___ list
+	|	|___ search
+	|	|___ video
+	|	|___ 404
+
+	|___Blog Styles
+	|	|___ blog 
+	|	|___ post-default 
+	|	|___ sidebar 
+	|	|___ blog-details 
+	|	|___ unit-test 
+
+	|___Shop Styles
+	|	|___ shop 
+	|	|___ product-details 
+	|	|___ my-account 
+	|	|___ cart 
+	|	|___ checkout 
+	|	|___ minicart 
+
+	|___Template Styles
+	|	|___ banner 
+	|	|___ course-details 
+	|	|___ course-sidebar 
+	|	|___ contact 
+	|	|___ sidebar 
+	|	|___ course-action-bottom 
+
+
+	|___Footer Styles
+	|	|___ footer 
+	|	|___ copyright 
+	|	|___ back-to-top 
+	|	|___ dark 
+	|
+	|
+	|___ END STYLESHEET INDEXING
+
+***************************************************************/
+
+
+
+/**************************************
+    Default Styles
+***************************************/
+@import 'default/variables';
+@import 'default/mixins';
+@import 'default/reset';
+@import 'default/typography';
+@import 'default/extend';
+@import 'default/animations';
+@import 'default/shortcode';
+@import 'default/spacing';
+@import 'default/edu-common';
+@import 'default/forms';
+@import 'default/text-animation';
+
+
+
+/**************************************
+	Header Styles
+***************************************/
+
+@import 'header/common/header-common';
+@import 'header/common/headertop';
+@import 'header/topoffer/offertopbar';
+@import 'header/headermiddle/headermid';
+@import 'header/social-share';
+@import 'header/header';
+@import 'header/nav';
+@import 'header/mega-menu';
+@import 'header/mobilemenu';
+@import 'header/offcanvas';
+@import 'header/one-page-navigation';
+
+
+
+/**************************************
+	Elements Styles
+***************************************/
+@import 'elements/button';
+@import 'elements/section-title';
+@import 'elements/breadcrumb';
+@import 'elements/card';
+@import 'elements/course-meta';
+@import 'elements/service';
+@import 'elements/swiper';
+@import 'elements/feature';
+@import 'elements/about';
+@import 'elements/callto-action';
+@import 'elements/accordion';
+@import 'elements/image-gallery';
+@import 'elements/counterup';
+@import 'elements/pricingtable';
+@import 'elements/badge';
+@import 'elements/team';
+@import 'elements/social';
+@import 'elements/pagination';
+@import 'elements/backtotop';
+@import 'elements/multistepform';
+@import 'elements/newsletterform';
+@import 'elements/brand';
+@import 'elements/portfolio';
+@import 'elements/contact';
+@import 'elements/testimonial';
+@import 'elements/advance-tab';
+@import 'elements/category';
+@import 'elements/instagram';
+@import 'elements/split';
+@import 'elements/countdown';
+@import 'elements/progressbar';
+@import 'elements/category-box';
+@import 'elements/course-filter';
+@import 'elements/modal';
+@import 'elements/list';
+@import 'elements/search';
+@import 'elements/video';
+@import 'elements/switcher';
+@import 'elements/404';
+
+/**************************************
+	Blog Styles
+***************************************/
+@import 'blog/blog';
+@import 'blog/post-default';
+@import 'blog/sidebar';
+@import 'blog/blog-details';
+@import 'blog/unit-test';
+
+
+/**************************************
+	Shop Styles
+***************************************/
+
+@import 'shop/shop';
+@import 'shop/product-details';
+@import 'shop/my-account';
+@import 'shop/cart';
+@import 'shop/checkout';
+@import 'shop/minicart';
+
+
+/**************************************
+	Template Styles
+***************************************/
+@import 'template/banner';
+@import 'template/course-details';
+@import 'template/course-sidebar';
+@import 'template/contact';
+@import 'template/sidebar';
+@import 'template/course-action-bottom';
+@import 'template/instructor-dashboard';
+@import 'template/lesson';
+
+
+/**************************************
+	Footer Styles
+***************************************/
+@import 'footer/footer';
+@import 'footer/copyright';
+@import 'footer/back-to-top';
+@import 'footer/dark';
+@import 'template/preview';
+@import 'template/preview';
+
+/**************************************
+	Dark Mode
+***************************************/
+@import 'dark-mode/dark-mode';

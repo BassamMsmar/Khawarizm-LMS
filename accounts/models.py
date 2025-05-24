@@ -3,12 +3,10 @@ from django.contrib.auth.models import AbstractUser
 from django_countries.fields import CountryField
 from phonenumber_field.modelfields import PhoneNumberField
 from django.utils.text import slugify
-from django.urls import reverse
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from django.contrib.auth.models import Group, Permission
 
-class User(AbstractUser):
+class CustomUser(AbstractUser):
     USER_TYPE_CHOICES = (
         ('student', 'Student'),
         ('lecturer', 'Lecturer'),
@@ -38,38 +36,25 @@ class User(AbstractUser):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    groups = models.ManyToManyField(
-        Group,
-        related_name='accounts_user_groups',  
-        blank=True,
-        verbose_name='groups'
-    )
-    user_permissions = models.ManyToManyField(
-        Permission,
-        related_name='accounts_user_permissions', 
-        blank=True,
-        verbose_name='user permissions'
-    )
+    def save(self, *args, **kwargs):
+        if not self.pk:  # يعني مستخدم جديد
+            if self.user_type == 'admin':
+                self.is_superuser = True
+                self.is_staff = True
+            elif self.user_type in ['lecturer', 'teaching_assistant']:
+                self.is_superuser = False
+                self.is_staff = True
+            else:
+                self.is_superuser = False
+                self.is_staff = False
+        super().save(*args, **kwargs)
 
 
 
     def __str__(self):
-        return self.username
+        return f"{self.username} ({self.user_type})"
 
-    def save(self, *args, **kwargs):
-        # ضبط الصلاحيات بناءً على نوع المستخدم
-        if self.user_type == 'admin':
-            self.is_superuser = True
-            self.is_staff = True
-        elif self.user_type in ['lecturer', 'teaching_assistant']:
-            self.is_superuser = False
-            self.is_staff = True
-        else:  # student
-            self.is_superuser = False
-            self.is_staff = False
 
-        self.is_active = True
-        super().save(*args, **kwargs)
 
     @property
     def full_name(self):
@@ -77,7 +62,7 @@ class User(AbstractUser):
 
 class StudentProfile(models.Model):
     """Additional profile information for students"""
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='student_profile')
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='student_profile')
     
     # Education
     education_level = models.CharField(max_length=100, blank=True, null=True)
@@ -94,7 +79,7 @@ class StudentProfile(models.Model):
     emergency_contact_phone = PhoneNumberField(blank=True, null=True)
     
     # Additional Information
-    student_id = models.CharField(max_length=50, blank=True, null=True, unique=True)
+    student_id = models.CharField(max_length=50, unique=True)
     enrollment_date = models.DateField(blank=True, null=True)
     
     # Timestamps
@@ -134,7 +119,7 @@ class Skill(models.Model):
 class LecturerProfile(models.Model):
     """Profile information for lecturers"""
     user = models.OneToOneField(
-        User,
+        CustomUser,
         on_delete=models.CASCADE,
         related_name='lecturer_profile'
     )
@@ -159,16 +144,8 @@ class LecturerProfile(models.Model):
     )
     
     # Relations
-    skills = models.ManyToManyField(
-        Skill,
-        blank=True,
-        related_name='lecturers'
-    )
-    languages = models.ManyToManyField(
-        Language,
-        blank=True,
-        related_name='lecturers'
-    )
+    skills = models.ManyToManyField(Skill, blank=True, related_name='lecturer_profiles')
+    languages = models.ManyToManyField(Language, blank=True, related_name='lecturer_profiles')
     
     # Social Links
     social_links = models.JSONField(default=dict, blank=True)
@@ -198,14 +175,16 @@ class LecturerProfile(models.Model):
 
 
 # Signal to create StudentProfile when User is created
-@receiver(post_save, sender=User)
+@receiver(post_save, sender=CustomUser)
 def create_student_profile(sender, instance, created, **kwargs):
     """Create a StudentProfile when a User is created with user_type='student'"""
     if created and instance.user_type == 'student':
         StudentProfile.objects.create(user=instance)
 
-@receiver(post_save, sender=User)
+@receiver(post_save, sender=CustomUser)
 def save_student_profile(sender, instance, **kwargs):
     """Save the StudentProfile when the User is saved"""
     if hasattr(instance, 'student_profile'):
         instance.student_profile.save()
+
+

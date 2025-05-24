@@ -1,0 +1,201 @@
+/*---------------------
+    Brand Styles 
+----------------------*/
+.brand-style-1 {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    border-bottom: 1px solid var(--color-border-2);
+    border-right: 1px solid var(--color-border-2);
+    li {
+        flex-basis: 25%;
+        border-width: 1px 0px 0px 1px;
+        border-style: solid;
+        margin: 0px 0px -1px 0px;
+        border-color: var(--color-border-2);
+        padding: 70px 0;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        @media #{$sm-layout} {
+            flex-basis: 50%;
+        }
+        @media #{$large-mobile} {
+            flex-basis: 33.33%;
+        }
+        @media #{$small-mobile} {
+            flex-basis: 50%;
+        }
+        a {
+            display: block;
+            img {
+                max-height: 32px;
+                @media #{$md-layout} {
+                    max-height: 25px;
+                }
+                @media #{$sm-layout} {
+                    max-height: 25px;
+                }
+            }
+        }
+    }
+}
+
+// Brand Style Two 
+.brand-style-2 {
+    padding: 0;
+    margin: -10px;
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    @media #{$md-layout} {
+        justify-content: flex-start !important;
+    }
+    @media #{$sm-layout} {
+        justify-content: flex-start !important;
+    }
+    li {
+        flex-basis: 16.666%;
+        text-align: center;
+        margin: 10px;
+        @media #{$md-layout} {
+            flex-basis: 25%;
+            text-align: left;
+        }
+        @media #{$sm-layout} {
+            flex-basis: 25%;
+            text-align: left;
+        }
+        @media #{$large-mobile} {
+            flex-basis: 33.33%;
+        }
+        @media #{$small-mobile} {
+            flex-basis: 50%;
+        }
+        a {
+            display: block;
+            img {
+                max-width: 160px;
+                max-height: 30px;
+                @media #{$md-layout} {
+                    max-width: inherit;
+                    max-height: 20px;
+                }
+                @media #{$sm-layout} {
+                    max-width: inherit;
+                    max-height: 20px;
+                }
+            }
+        }
+    }
+
+    &.variation-2 {
+        li {
+            flex-basis: 25%;
+            text-align: center;
+
+            @media #{$sm-layout} {
+                flex-basis: 33.33%;
+            }
+
+            @media #{$small-mobile} {
+                flex-basis: 50%;
+            }
+        }
+    }
+}
+
+// Brand Style Three 
+.brand-style-3 {
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: -10px;
+    li {
+        flex-basis: 14.28%;
+        text-align: center;
+        padding: 10px;
+
+        @media #{$md-layout} {
+            flex-basis: 25%;
+        }
+
+        @media #{$sm-layout} {
+            flex-basis: 25%;
+        }
+
+        @media #{$large-mobile} {
+            flex-basis: 33.33%;
+        }
+
+        @media #{$small-mobile} {
+            flex-basis: 50%;
+        }
+        a {
+            display: block;
+            img {
+                max-height: 35px;
+                @media #{$md-layout} {
+                    max-height: 25px;
+                }
+                @media #{$sm-layout} {
+                    max-height: 25px;
+                }
+            }
+
+            &:hover {
+                img {
+                    animation: bounceIn 0.8s ease;
+                }
+            }
+        }
+    }
+    &.variation-2 {
+        li {
+            flex-basis: 25%;
+            text-align: center;
+
+            @media #{$sm-layout} {
+                flex-basis: 33.33%;
+            }
+
+            @media #{$small-mobile} {
+                flex-basis: 50%;
+            }
+        }
+    }
+}
+
+
+// Brand titel 
+.rbt-brand-title-wrap {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+
+    &::before {
+        content: "";
+        height: 1px;;
+        flex: 1;
+        background: linear-gradient(90deg, rgba(81, 99, 255, 0.50) 0%, rgba(25, 35, 53, 0.00) 100%);
+        transform: rotate(180deg);
+    }
+
+    &::after {
+        content: "";
+        height: 1px;
+        flex: 1;
+        background: linear-gradient(90deg, rgba(81, 99, 255, 0.50) 0%, rgba(25, 35, 53, 0.00) 100%);
+    }
+}
+
+.rbt-brand-title {
+    font-size: var(--font-size-b1);
+}

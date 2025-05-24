@@ -1,0 +1,181 @@
+/*---------------------------
+    Product Details 
+----------------------------*/
+.pro-qty {
+    max-width: 120px;
+    height: 50px;
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    padding: 0;
+    display: flex;
+    margin: auto;
+    min-width: 50px;
+    align-items: center;
+    & .qtybtn {
+        width: 45px;
+        display: block;
+        float: left;
+        line-height: 50px;
+        cursor: pointer;
+        text-align: center;
+        font-size: 20px;
+        font-weight: 700;
+        color: var(--color-body);
+        height: 50px;
+    }
+    & input {
+        width: 28px;
+        float: left;
+        border: none;
+        height: 33px;
+        line-height: 33px;
+        padding: 0;
+        text-align: center;
+        background-color: transparent;
+        box-shadow: none;
+    } 
+    @media #{$large-mobile} {
+        margin: 0;
+    }
+}
+
+
+.rbt-single-product {
+    .product-action {
+        display: inline-flex;
+        @media #{$large-mobile} {
+            display: block;
+        }
+    }
+    .pro-qty {
+        margin-right: 20px;
+        height: 60px;
+        @media #{$large-mobile} {
+            margin-right: 0;
+            margin-bottom: 20px;
+        }
+    }
+
+    .product-feature {
+        @extend %liststyle;
+        margin-top: 40px;
+        @media #{$lg-layout} {
+            margin-top: 10px;
+        }
+        @media #{$md-layout} {
+            margin-top: 10px;
+        }
+        @media #{$sm-layout} {
+            margin-top: 10px;
+        }
+        li {
+            font-weight: 400;
+            margin: 5px 0;
+            span {
+                font-weight: 700;
+                color: var(--color-heading);
+            }
+            a {
+                position: relative;
+                display: inline-block;
+                padding: 3px;
+                color: var(--color-body);
+                &::after {
+                    position: absolute;
+                    content: ",";
+                    right: -3px;
+                }
+                &:hover {
+                    color: var(--color-primary);
+                }
+            }
+            a:last-child:after { 
+                display: none;
+            }
+        }
+    }
+}
+
+
+
+
+.product-description-nav {
+    border-bottom: 1px solid #EEEEEE;
+    justify-content: center;
+    margin-bottom: 35px;
+
+    .nav-item {
+        margin: 0 25px;
+        button {
+            &.nav-link {
+                background: transparent;
+                border: 0 none;
+                font-weight: 700;
+                font-size: 18px;
+                line-height: 28px;
+                padding: 0;
+                padding-bottom: 15px;
+                color: var(--color-heading);
+                position: relative;
+                transition: 0.4s;
+                &::after {
+                    position: absolute;
+                    content: "";
+                    bottom: 0;
+                    left: 0;
+                    height: 2px;
+                    background: var(--color-primary);
+                    transition: 0.4s;
+                    width: 0;
+                }
+                &:hover,
+                &.active {
+                    color: var(--color-primary);
+                    &::after {
+                        width: 100%;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.product-description-content {
+    p {
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+    .comment-top {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+
+    .notification-text {
+        .title {
+            font-size: 16px;
+            line-height: 26px;
+            margin-right: 10px;
+        }
+    }
+}
+
+
+
+.product-description-content .comment-list .comment .commenter {
+    margin-bottom: 10px;
+}
+
+.product-description-content .comment-list .comment .comment-meta {
+    margin-bottom: 16px;
+}
+
+
+.rbt-product-description {
+    
+}
+
+
+
+

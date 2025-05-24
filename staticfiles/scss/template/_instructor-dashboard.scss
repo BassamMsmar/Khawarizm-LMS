@@ -1,0 +1,108 @@
+/*-----------------------------------
+    Instructor Dashboard Style  
+----------------------------------*/
+
+.tutor-bg-photo {
+    border-radius: 10px;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+
+    &::before {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 50%;
+        display: block;
+        z-index: -1;
+        content: "";
+        background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(0, 0, 0, 0.5) 90%);
+        transition: opacity 0.65s cubic-bezier(0.05, 0.2, 0.1, 1);
+        cursor: pointer;
+        border-radius: 6px;
+    }
+}
+
+.rbt-dashboard-content-wrapper {
+    position: relative;
+    margin-bottom: 30px;
+}
+
+.rbt-tutor-information {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    position: absolute;
+    bottom: 30px;
+    padding: 0 40px;
+    width: 100%;
+    z-index: 2;
+
+    @media #{$sm-layout} {
+        padding: 0 30px;
+        display: block;
+    }
+
+    .rbt-tutor-information-left {
+        display: flex;
+        align-items: center;
+
+        @media #{$large-mobile} {
+            display: block;
+        }
+
+        .thumbnail {
+            margin-right: 20px;
+            position: relative;
+
+            @media #{$large-mobile} {
+                margin-right: 0;
+                margin-bottom: 20px;
+            }
+        }
+
+        .tutor-content {
+            .title {
+                margin-bottom: 8px;
+                color: var(--color-white);
+            }
+
+            .rbt-review {
+                .rating-count {
+                    color: var(--color-white);
+                }
+            }
+        }
+
+    }
+
+    .rbt-tutor-information-right {
+        @media #{$sm-layout} {
+            margin-top: 20px;
+        }
+    }
+}
+
+
+/*----------------------------
+    Instructor Dashboard  
+------------------------------*/
+
+.rbt-dashboard-table {
+    .rbt-table {
+        @media #{$sm-layout} {
+            min-width: 450px;
+        }
+    }
+
+
+}
+
+.mobile-table-750 {
+    .rbt-table {
+        @media #{$sm-layout} {
+            min-width: 750px;
+        }
+    }
+}

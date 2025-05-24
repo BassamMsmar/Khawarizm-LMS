@@ -1,0 +1,568 @@
+/*---------------------------
+    Filter Exanded  
+-----------------------------*/
+.default-exp-wrapper {
+    border-top: 1px solid var(--color-border);
+
+    .filter-inner {
+        display: flex;
+        padding: 40px 0;
+        justify-content: flex-end;
+        margin: -10px;
+        flex-wrap: wrap;
+
+        @media #{$lg-layout} {
+            justify-content: flex-start;
+        }
+
+        @media #{$md-layout} {
+            justify-content: start;
+        }
+
+        @media #{$sm-layout} {
+            justify-content: start;
+        }
+
+        .filter-select-option {
+            flex-basis: 20%;
+            padding: 10px;
+            position: relative;
+
+            @media #{$lg-layout} {
+                flex-basis: 33.33%;
+            }
+
+            @media #{$md-layout} {
+                flex-basis: 50%;
+            }
+
+            @media #{$sm-layout} {
+                flex-basis: 50%;
+            }
+
+            @media #{$large-mobile} {
+                flex-basis: 100%;
+            }
+
+            .filter-leble {
+                display: block;
+                font-size: 12px;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                margin-bottom: 10px;
+            }
+
+            .nice-select {
+                width: 100%;
+                padding-left: 20px;
+                padding-right: 40px;
+
+                &::after {
+                    right: 22px;
+                    height: 8px;
+                    width: 8px;
+                    opacity: 0.5;
+                }
+
+                .list {
+                    min-width: 100%;
+                    max-height: 300px;
+                    overflow-y: auto;
+                }
+            }
+        }
+    }
+
+    .filter-select {
+        select {
+            width: 100%;
+            min-width: 100%;
+        }
+    }
+}
+
+.default-exp-expand {
+    display: none;
+}
+
+
+.jodit-add-new-line {
+    display: none;
+    visibility: hidden;
+}
+
+/*-------------------------
+    Price Filter  
+--------------------------*/
+
+.price--output input {
+    border: 0 none;
+}
+
+.price--output span {
+    color: var(--color-body);
+    font-size: 14px;
+}
+
+.price--filter {
+    display: inline-block;
+}
+
+.price--output {
+    display: inline-block;
+}
+
+.ui-widget-content {
+    background: var(--color-gray-lighter) none repeat scroll 0 0;
+    border: 0 none;
+    color: var(--color-primary);
+}
+
+.ui-slider-range.ui-widget-header.ui-corner-all {
+    background: var(--color-primary) none repeat scroll 0 0;
+}
+
+.ui-slider-horizontal {
+    height: 4px;
+}
+
+.ui-slider .ui-slider-handle {
+    border-radius: 100%;
+    cursor: default;
+    height: 10px;
+    position: absolute;
+    touch-action: none;
+    width: 10px;
+    z-index: 2;
+    outline: none;
+    cursor: pointer;
+}
+
+.ui-slider-horizontal .ui-slider-handle {
+    top: -3px;
+    margin-left: -3px;
+}
+
+.ui-state-default,
+.ui-widget-content .ui-state-default,
+.ui-widget-header .ui-state-default {
+    background: var(--color-primary) none repeat scroll 0 0;
+    border: 0 none;
+    color: var(--color-primary);
+}
+
+.ui-slider-range.ui-widget-header.ui-corner-all {
+    background: var(--color-primary) none repeat scroll 0 0;
+}
+
+.ui-slider-horizontal {
+    margin-bottom: 8px;
+    margin-top: 15px;
+}
+
+
+.price__output--wrap {
+    display: flex;
+    align-items: center;
+
+    .price--output {
+        display: flex;
+        align-items: center;
+        flex-grow: 1;
+
+        span {
+            color: var(--color-body);
+            font-size: 12px;
+            display: inline-block;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+            opacity: 0.5;
+            text-transform: uppercase;
+        }
+
+        input {
+            border: 0 none;
+            flex-grow: 1;
+            font-size: 12px;
+            font-weight: 400;
+            width: 100px;
+            letter-spacing: 0.5px;
+            box-shadow: none;
+            font-weight: 600;
+            opacity: 0.5;
+        }
+    }
+
+    .price--filter {
+        display: inline-block;
+        margin-top: -2px;
+
+        a {
+            &.rbt-btn {
+                padding: 6px 10px;
+                font-size: 12px;
+                letter-spacing: 0.5px;
+                text-transform: uppercase;
+                border-radius: 6px;
+                line-height: 16px;
+                height: auto;
+            }
+        }
+    }
+}
+
+
+/*-------------------
+    Bootstrap Select  
+----------------------*/
+
+.rbt-modern-select {
+    .bootstrap-select button.btn-light {
+        border: 0 none;
+        box-shadow: var(--shadow-1);
+        height: 50px;
+        padding: 10px 20px;
+        outline: none;
+        color: var(--color-body);
+        border-radius: var(--radius);
+        font-size: 16px;
+        line-height: 28px;
+        font-weight: 400;
+        padding-right: 30px;
+        background-color: var(--color-white);
+        outline: none;
+    }
+
+    &.bg-transparent {
+        .bootstrap-select button.btn-light {
+            box-shadow: none;
+            background-color: transparent;
+            border: 1px solid var(--color-border);
+        }
+    }
+
+    &.height-45 {
+        .bootstrap-select button.btn-light {
+            height: 45px;
+        }
+    }
+
+    .bootstrap-select {
+        button {
+            &.actions-btn {
+                padding: 7px 6px;
+                font-size: 13px;
+                box-shadow: none;
+                background: #f8f9fa;
+                height: 38px;
+                line-height: 24px;
+                transition: 0.4s;
+
+                &:hover {
+                    background: var(--color-primary);
+                    color: var(--color-white);
+                }
+            }
+        }
+    }
+
+    .bootstrap-select .dropdown-menu.inner {
+        display: block;
+        padding: 10px;
+        margin: 0;
+    }
+
+    .bootstrap-select.show-tick .dropdown-menu .selected span.check-mark {
+        top: 11px;
+    }
+
+    .dropdown-menu {
+        padding: 0;
+        box-shadow: var(--shadow-1);
+        border: 0 none;
+        border-radius: 6px !important;
+        background-color: var(--color-white);
+        min-width: 100%;
+        max-width: 100%;
+    }
+
+    .dropdown-item {
+        padding: 5px 10px;
+        color: var(--color-body);
+        border-radius: 4px;
+    }
+
+    .bootstrap-select {
+        .dropdown-menu {
+            li {
+                margin: 0;
+                padding: 0;
+
+                &.no-results {
+                    padding: 4px 8px;
+                    background: transparent;
+                    white-space: nowrap;
+                    font-size: 16px;
+                    color: var(--color-danger);
+                    padding-bottom: 10px;
+                }
+            }
+        }
+    }
+
+    .dropdown-item.active,
+    .dropdown-item:active {
+        background-color: var(--black-opacity);
+        color: var(--color-primary);
+    }
+
+    .bootstrap-select .dropdown-menu li a span.text {
+        font-size: 16px;
+    }
+
+    .bootstrap-select .dropdown-toggle .filter-option {
+        display: flex;
+        width: 100%;
+        position: relative;
+        flex: inherit;
+        min-width: 100%;
+        align-items: center;
+    }
+
+    .filter-option-inner {
+        display: block;
+        width: 100%;
+    }
+
+    .bootstrap-select .dropdown-toggle .filter-option-inner-inner {
+        overflow: hidden;
+        display: block;
+    }
+
+    .bootstrap-select .dropdown-toggle:focus {
+        outline: none !important;
+    }
+
+    .dropdown-toggle::after {
+        border-top: 5px solid;
+        border-right: 5px solid transparent;
+        border-bottom: 0;
+        border-left: 5px solid transparent;
+        opacity: 0.5;
+    }
+
+    .btn-check:active+.btn-light:focus,
+    .btn-check:checked+.btn-light:focus,
+    .btn-light.active:focus,
+    .btn-light:active:focus,
+    .show>.btn-light.dropdown-toggle:focus {
+        box-shadow: none;
+    }
+
+    .bs-searchbox .form-control {
+        outline: none;
+        box-shadow: none;
+        border: 2px solid var(--color-border);
+        border-radius: 6px;
+        margin-bottom: 2px;
+        font-size: 16px;
+    }
+
+    .dropdown-item:focus,
+    .dropdown-item:hover {
+        color: var(--color-primary);
+        background-color: var(--black-opacity);
+    }
+
+    .btn-group>.btn-group:not(:last-child)>.btn,
+    .btn-group>.btn:not(:last-child):not(.dropdown-toggle) {
+        border-top-right-radius: var(--radius);
+        border-bottom-right-radius: var(--radius);
+    }
+
+    .bs-actionsbox,
+    .bs-donebutton,
+    .bs-searchbox {
+        padding: 10px;
+        padding-bottom: 5px;
+    }
+
+    .bs-searchbox+.bs-actionsbox {
+        padding: 0 10px 4px;
+    }
+
+    .bs-actionsbox .btn-group button {
+        width: calc(50% - 10px);
+        margin: 5px;
+        margin-left: 5px !important;
+    }
+
+    .bs-actionsbox .btn-group {
+        display: block;
+        margin: -5px;
+    }
+
+    .bootstrap-select>select {
+        left: 0;
+    }
+
+}
+
+
+
+.rbt-course {
+    position: relative;
+    background-color: var(--color-grey) !important;
+    border-radius: 8px !important;
+
+    .rbt-course-icon {
+        cursor: pointer;
+
+        &::before,
+        &::after {
+            position: absolute;
+            color: var(--color-heading);
+            font-family: "feather" !important;
+            font-size: 18px;
+            transform: translateY(-50%);
+            top: 50%;
+            transition: 0.4s;
+            z-index: 9;
+
+        }
+
+        &.rbt-course-edit {
+
+            &::after {
+                content: "\e958";
+                right: 100px;
+            }
+        }
+
+        &.rbt-course-del {
+            &::before {
+                content: "\e9e3";
+                right: 70px;
+            }
+        }
+    }
+
+    &-list {
+        margin: 0;
+        padding: 0;
+
+        li {
+            margin: 0 !important;
+
+            i {
+                margin: 0 !important;
+                color: var(--color-body) !important;
+                background: transparent;
+                padding: 7px !important;
+                border-radius: 50px;
+                transition: 0.4s;
+                cursor: pointer;
+
+                &:hover {
+                    transition: 0.4s;
+                    background: var(--color-grey) !important;
+                }
+            }
+        }
+    }
+
+    &-wrape {
+        border: 1px solid var(--color-border) !important;
+        border-radius: 4px;
+        padding: 10px 16px;
+        cursor: pointer;
+
+        .cursor-scroll {
+            cursor: all-scroll;
+        }
+
+    }
+}
+
+.rbt-sm-btn-2 {
+    padding: 0 14px;
+    font-size: 14px;
+    height: 34px;
+    line-height: 28px !important;
+}
+
+
+/*-------------------
+    Tab Button  
+----------------------*/
+
+.rbt-course-tab-button {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px 16px;
+    position: relative;
+    z-index: 1;
+
+    li {
+        button {
+            color: var(--color-body);
+            font-family: var(--font-primary);
+            font-size: 15px;
+            font-weight: var(--f-semi-bold);
+            line-height: var(--line-height-b4);
+            padding: 14px 24px;
+            white-space: nowrap;
+            border-radius: var(--radius-10);
+            transition: var(--transition);
+            border: none;
+            position: relative;
+            z-index: 1;
+            background: transparent;
+    
+            &::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                color: var(--color-white);
+                border-radius: var(--radius-10);
+                z-index: -1;
+                scale: 0.2;
+                opacity: 0;
+                transition: 0.3s;
+                background: radial-gradient(64.58% 59% at 37.13% 12%, rgba(255, 255, 255, 0.315) 0%, rgba(255, 255, 255, 0) 55.41%, rgba(255, 255, 255, 0) 100%), var(--color-primary);
+                box-shadow: 4px 10px 20px rgba(81, 99, 255, 0.26), inset -3px -4px 7px rgba(255, 255, 255, 0.15);
+            }
+
+            .icon {
+                img {
+                    margin-right: 8px;
+                    width: 20px;
+                    height: 20px;
+                    border-radius: 50%;
+                    display: inline-block;
+                }
+            }
+    
+            &.active {
+                color: var(--color-white);
+                background: none;
+    
+                &::before {
+                    opacity: 1;
+                    scale: 1;
+                }
+
+            }
+    
+            &:not(.active) {
+                &:hover {
+                    color: var(--color-primary);
+                }
+            }
+        }
+    }
+}
