@@ -1,0 +1,243 @@
+.filter-button-default,
+.filter-tab-button {
+    display: flex;
+    justify-content: center;
+    margin: -10px;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 1;
+
+    @media #{$sm-layout} {
+        margin: -5px;
+    }
+
+    button,
+    a {
+        border: 0 none;
+        padding: 0px 35px;
+        text-transform: capitalize;
+        background: var(--color-white);
+        color: var(--color-body);
+        margin: 10px;
+        box-shadow: var(--shadow-1);
+        height: 65px;
+        line-height: 65px;
+        border-radius: 500px;
+        font-size: 18px;
+        letter-spacing: -0.6px;
+        transition: 0.4s;
+        position: relative;
+
+        @media #{$lg-layout} {
+            padding: 0px 20px;
+        }
+
+        @media #{$md-layout} {
+            padding: 0px 24px;
+        }
+
+        @media #{$sm-layout} {
+            padding: 0 20px;
+            height: 48px;
+            line-height: 48px;
+            margin: 5px;
+            font-size: 16px;
+        }
+
+        .course-number {
+            position: absolute;
+            display: inline-block;
+            right: 20px;
+            font-size: 14px;
+            top: 8px;
+            line-height: initial;
+            opacity: 0.5;
+
+            @media #{$sm-layout} {
+                right: 10px;
+                top: 4px;
+            }
+        }
+
+        &.is-checked,
+        &.active,
+        &:hover {
+            background-color: var(--color-primary);
+            color: var(--color-white) !important;
+        }
+    }
+}
+
+.filter-tab-button,
+.rbt-default-tab-button {
+    @extend %liststyle;
+
+    li {
+        margin: 0;
+    }
+}
+
+
+.rbt-default-tab-button {
+    li {
+        margin-top: 0;
+        margin-bottom: 0;
+        position: relative;
+        margin: 3px;
+        flex-grow: 1;
+        text-align: center;
+        a {
+            margin: 0;
+            position: relative;
+            display: block;
+            color: var(--color-heading);
+            z-index: 2;
+            padding: 10px 25px;
+            border-radius: 500px;
+            outline: none;
+            &::after {
+                position: absolute;
+                content: "";
+                left: 0;
+                background: var(--black-opacity);
+                width: 100%;
+                height: 100%;
+                bottom: 0;
+                opacity: 1;
+                transition: 0.4s;
+                z-index: -1;
+                border-radius: 500px;
+            }
+            &.current,
+            &.active,
+            &:hover {
+                color: var(--color-white);
+                &::after {
+                    width: 100%;
+                    opacity: 1;
+                    background: var(--color-primary);
+                }
+            }
+        }
+    }
+}
+
+
+
+
+/*----------------------------------
+    Portfolio Grid Layout  
+----------------------------------*/
+
+.grid-metro2 {
+    margin: 0 -15px;
+
+    .maso-item {
+        width: 50%;
+        padding: 0 15px;
+        margin-top: 30px;
+
+        @media #{$large-mobile} {
+            width: 100%;
+        }
+    }
+
+    .resizer {
+        width: 50%;
+
+        @media #{$large-mobile} {
+            width: 100%;
+        }
+    }
+}
+
+.grid-metro3 {
+    margin: 0 -15px;
+
+    .maso-item {
+        width: 33.33%;
+        padding: 0 15px;
+        margin-top: 30px;
+
+        @media #{$md-layout} {
+            width: 50%;
+        }
+
+        @media #{$sm-layout} {
+            width: 50%;
+        }
+
+        @media #{$large-mobile} {
+            width: 100%;
+        }
+    }
+
+    .resizer {
+        width: 33.33%;
+
+        @media #{$md-layout} {
+            width: 50%;
+        }
+
+        @media #{$sm-layout} {
+            width: 50%;
+        }
+
+        @media #{$large-mobile} {
+            width: 100%;
+        }
+    }
+}
+
+.demo-presentation-mesonry {
+    &.grid-metro3 {
+        margin: 0 -60px;
+
+        @media #{$lg-layout} {
+            margin: 0 -15px;
+        }
+
+        @media #{$md-layout} {
+            margin: 0 -15px;
+        }
+
+        @media #{$sm-layout} {
+            margin: 0 -15px;
+        }
+
+        .maso-item {
+            padding: 0 60px;
+            margin-top: 60px;
+
+            @media #{$lg-layout} {
+                padding: 0 15px;
+            }
+
+            @media #{$md-layout} {
+                padding: 0 15px;
+            }
+
+            @media #{$sm-layout} {
+                padding: 0 15px;
+                margin-top: 30px;
+            }
+        }
+    }
+}
+
+
+/*---------------------
+    Extra Css  
+-----------------------*/
+.bg-gradient-8 {
+
+    .filter-button-default button,
+    .filter-tab-button button {
+        box-shadow: var(--shadow-5);
+    }
+
+    .rbt-team-modal-thumb .rbt-team-thumbnail {
+        box-shadow: var(--shadow-2);
+        background: var(--white-opacity);
+    }
+}

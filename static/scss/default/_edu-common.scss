@@ -1,0 +1,935 @@
+/*------------------------
+    Edu Common Styles  
+--------------------------*/
+
+/*-------------------------
+    Rbt Default
+-------------------------*/
+.rbt-index-upper {
+    position: relative;
+    z-index: 1;
+}
+
+.rbt-index-upper-2 {
+    position: relative;
+    z-index: 2;
+}
+
+.sticky-top {
+    top: 30px;
+    z-index: 9;
+}
+
+.rbt-single-group {
+    margin: -5px;
+
+    .rbt-single-list {
+        margin: 5px;
+    }
+}
+
+.transform-sm-none {
+    @media #{$sm-layout} {
+        transform: none !important;
+    }
+}
+
+/*-------------------------
+    Rbt Round Btn
+-------------------------*/
+
+.rbt-round-btn {
+    width: 40px;
+    height: 40px;
+    line-height: 41px;
+    text-align: center;
+    border-radius: 100%;
+    position: relative;
+    z-index: 1;
+    background: transparent;
+    padding: 0;
+    border: 0 none;
+    display: block;
+
+    @media #{$sm-layout} {
+        width: 30px;
+        height: 30px;
+        line-height: 30px;
+    }
+
+    i {
+        margin-right: 0;
+    }
+
+    &::after {
+        background: var(--color-gray-light);
+        position: absolute;
+        content: "";
+        width: 100%;
+        height: 100%;
+        left: 0;
+        top: 0;
+        transition: 0.4s;
+        opacity: 0;
+        transform: scale(0.8);
+        border-radius: 100%;
+        z-index: -1;
+    }
+
+    &.btn-white-off {
+        color: var(--color-white-off);
+    }
+
+    &:hover,
+    &.open {
+        color: var(--color-primary);
+
+        &::after {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+}
+
+
+/*------------------------------
+    Rbt Hover Style
+-------------------------------*/
+
+.rbt-hover {
+    transition: var(--transition-2);
+
+    &:hover {
+        transform: scale(1.02);
+    }
+}
+
+.rbt-hover-02 {
+    transition: var(--transition-2);
+
+    &:hover {
+        transform: translateY(-10px);
+    }
+}
+
+.rbt-hover-03 {
+    transition: transform .65s cubic-bezier(.23, 1, .32, 1);
+
+    &:hover {
+        transform: translateY(-3px);
+    }
+}
+
+.rbt-link-hover {
+    a {
+        position: relative;
+
+        &::after {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: currentColor;
+            transform: scaleX(0);
+            transform-origin: bottom right;
+            transition: transform 0.3s;
+        }
+
+        &:hover {
+            &::after {
+                transform-origin: bottom left;
+                transform: scaleX(1);
+            }
+        }
+    }
+}
+
+/*------------------------------
+    Rbt Theme Gradient
+-------------------------------*/
+
+.theme-gradient {
+    background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: rgba(255, 255, 255, 0.001);
+}
+
+%theme-gradient {
+    background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: rgba(255, 255, 255, 0.001);
+    white-space: nowrap;
+}
+
+.theme-gradient {
+    &.new-big-heading-gradient {
+        background: linear-gradient(180deg, rgb(228 226 250) 0%, rgb(57 78 244 / 3%) 80%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: rgba(255, 255, 255, 0.001);
+        white-space: nowrap;
+    }
+}
+
+.rbt-gradient-border {
+    background: linear-gradient(-145deg, #CFA2E8, #637FEA) !important;
+    z-index: 10;
+
+    &::before {
+        content: "";
+        z-index: -1;
+        top: 3px;
+        left: 3px;
+        position: absolute;
+        background: #fff;
+        width: calc(100% - 6px);
+        height: calc(100% - 6px);
+        border-radius: var(--radius);
+    }
+}
+
+
+
+/*------------------------------
+    Rbt Slider Gutter
+-------------------------------*/
+.gutter-swiper-30 {
+    margin: -15px;
+
+    .single-slide {
+        padding: 15px;
+    }
+}
+
+.gutter-swiper-20 {
+    margin: -10px;
+
+    .single-slide {
+        padding: 10px;
+    }
+}
+
+.gutter-swiper-10 {
+    margin: -5px;
+
+    .single-slide {
+        padding: 5px;
+    }
+}
+
+/*------------------------------
+    Rbt rating
+-------------------------------*/
+
+.rating {
+    a {
+        display: inline-block;
+
+        i {
+            color: var(--color-warning);
+            font-style: normal;
+        }
+    }
+}
+
+/*------------------------------
+    Rbt Shape Style
+-------------------------------*/
+
+.theme-shape {
+    position: relative;
+    z-index: 2;
+    overflow: hidden;
+
+    &::before {
+        position: absolute;
+        left: -250px;
+        top: 250px;
+        right: auto;
+        bottom: auto;
+        z-index: -1;
+        width: 500px;
+        height: 500px;
+        border-radius: 1000px;
+        background-image: linear-gradient(45deg, var(--color-primary), var(--color-secondary));
+        opacity: 0.2;
+        filter: blur(100px);
+        content: "";
+    }
+
+    &::after {
+        position: absolute;
+        z-index: -1;
+        width: 500px;
+        height: 500px;
+        border-radius: 1000px;
+        opacity: 0.2;
+        filter: blur(100px);
+        content: "";
+        left: auto;
+        top: -250px;
+        right: -250px;
+        bottom: auto;
+        background-image: linear-gradient(45deg, var(--color-violet), var(--color-pink));
+    }
+}
+
+
+.rbt-round-bottom-shape {
+    position: relative;
+    z-index: 1;
+
+    &::after {
+        content: "";
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        background: url(../images/bg/banner-bg-shape-1.png);
+        background-size: cover;
+        background-position: center center;
+        background-repeat: no-repeat;
+        width: 100%;
+        height: 148px;
+        z-index: -1;
+    }
+}
+
+
+.edu-bg-shade {
+    background: var(--color-white);
+    box-shadow: var(--shadow-1);
+    border-radius: 6px;
+    padding: 30px;
+}
+
+.edu-bg-gray {
+    background: var(--color-grey);
+    border-radius: 6px;
+    padding: 20px;
+}
+
+
+.card-info {
+    display: inline-block;
+
+    .inner {
+        background: var(--color-white);
+        box-shadow: var(--shadow-1);
+        border-radius: 5px;
+        padding: 20px 30px;
+
+        .name {
+            font-weight: bold;
+            font-size: 18px;
+            line-height: 28px;
+            color: var(--color-heading);
+
+            span {
+                font-size: 14px;
+                color: var(--color-body);
+                font-weight: 400;
+            }
+        }
+
+        .rating-wrapper {
+            span {
+                display: inline-block;
+                margin-left: 10px;
+                font-weight: 500;
+                font-size: 16px;
+                line-height: 26px;
+
+                @media #{$large-mobile} {
+                    margin-left: 0;
+                }
+            }
+
+            i {
+                color: #ffa41b;
+            }
+        }
+    }
+
+    .notify-icon {
+        width: 100px;
+        border-radius: 100%;
+        position: absolute;
+        top: -50px;
+        left: -50px;
+        text-align: center;
+        height: 100px;
+
+        .icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+
+            svg {
+                color: var(--color-white);
+                width: 28px;
+            }
+        }
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+}
+
+
+/*-------------------------
+    Card Author Meta 
+-------------------------*/
+.rbt-author-meta {
+    display: flex;
+    align-items: center;
+
+    .rbt-avater {
+        margin-right: 10px;
+
+        a {
+            display: block;
+        }
+
+        img {
+            width: 40px;
+            max-width: 40px;
+            height: 40px;
+            border-radius: 100%;
+            object-fit: cover;
+            border: 2px solid var(--primary-opacity);
+            padding: 2px;
+        }
+    }
+
+    .rbt-author-info {
+        font-size: 14px;
+
+        a {
+            color: var(--color-heading);
+            font-weight: 500;
+            @extend %transition;
+
+            &:hover {
+                color: var(--color-primary);
+            }
+        }
+    }
+}
+
+/*-----------------------------
+    Rbt Border Style  
+------------------------------*/
+hr {
+    background-color: var(--color-border);
+    opacity: 1;
+}
+
+.rbt-border-none {
+    border: 0 none !important;
+}
+
+.rbt-border {
+    border: 1px solid var(--color-border) !important;
+}
+
+.rbt-border-2 {
+    border: 2px solid var(--color-border) !important;
+}
+
+.rbt-border-dashed {
+    border: 2px dashed var(--color-border) !important;
+}
+
+.rbt-border-with-box {
+    padding: 30px;
+    border-radius: var(--radius);
+    background: var(--color-white);
+    overflow: hidden;
+    border: 1px solid var(--color-border);
+
+    @media #{$sm-layout} {
+        padding: 15px;
+    }
+}
+
+.rbt-border-bottom {
+    border-bottom: 1px solid var(--color-border);
+}
+
+.rbt-border-top {
+    border-top: 1px solid var(--color-border);
+}
+
+.rbt-border-bottom-light {
+    border-bottom: 1px solid var(--color-border-2);
+}
+
+.border-bottom-4 {
+    border-bottom: 4px solid var(--color-primary);
+}
+
+.border-top-bar-primary-color {
+    border-top: 5px solid var(--color-primary);
+}
+
+.border-top-bar-secondary-color {
+    border-top: 5px solid var(--color-secondary);
+}
+
+.rbt-separator {
+    position: relative;
+
+    &::after {
+        position: absolute;
+        content: "";
+        height: 20px;
+        width: 1px;
+        background: var(--color-border);
+        top: 50%;
+        transform: translateY(-50%);
+    }
+}
+
+// Border Color
+
+.border-color-primary {
+    border-color: var(--color-primary);
+}
+
+.border-color-secondary {
+    border-color: var(--color-secondary);
+}
+
+.border-color-coral {
+    border-color: var(--color-coral);
+}
+
+.border-color-violet {
+    border-color: var(--color-violet);
+}
+
+.border-color-pink {
+    border-color: var(--color-pink);
+}
+
+.border-color-card-1 {
+    border-color: var(--color-card-1);
+}
+
+.border-color-card-2 {
+    border-color: var(--color-card-2);
+}
+
+.border-color-card-3 {
+    border-color: var(--color-card-3);
+}
+
+.border-color-card-4 {
+    border-color: var(--color-card-4);
+}
+
+
+/*-----------------------------
+    Rbt Border Radius  
+-------------------------------*/
+
+.square {
+    border-radius: 0 !important;
+}
+
+.rbt-radius {
+    border-radius: 6px !important;
+}
+
+.radius {
+    border-radius: 6px !important;
+}
+
+.radius-4 {
+    border-radius: 4px !important;
+}
+
+.radius-6 {
+    border-radius: 6px !important;
+}
+
+.radius-10 {
+    border-radius: 10px !important;
+}
+
+.radius-round {
+    border-radius: 500px !important;
+}
+
+
+/*-----------------------------
+    Rbt Shadow
+-------------------------------*/
+
+.rbt-shadow-box {
+    border-radius: var(--radius);
+    background: var(--color-white);
+    overflow: hidden;
+    box-shadow: var(--shadow-1);
+    padding: 30px;
+
+    @media #{$lg-layout} {
+        padding: 20px;
+    }
+
+    @media #{$md-layout} {
+        padding: 20px;
+    }
+
+    @media #{$sm-layout} {
+        padding: 20px;
+    }
+}
+
+.bg-no-shadow {
+    box-shadow: none !important;
+}
+
+.shadow-1 {
+    box-shadow: var(--shadow-1);
+}
+
+.shadow-2 {
+    box-shadow: var(--shadow-2);
+}
+
+.shadow-3 {
+    box-shadow: var(--shadow-3);
+}
+
+.shadow-4 {
+    box-shadow: var(--shadow-1);
+}
+
+.shadow-5 {
+    box-shadow: var(--shadow-5);
+}
+
+.shadow-6 {
+    box-shadow: var(--shadow-1);
+}
+
+.shadow-7 {
+    box-shadow: var(--shadow-7);
+}
+
+.shadow-8 {
+    box-shadow: var(--shadow-8);
+}
+
+.shadow-11 {
+    box-shadow: var(--shadow-11) !important;
+}
+
+/*--------------------------
+    Font Weight 
+---------------------------*/
+
+.w-300 {
+    font-weight: 300 !important;
+}
+
+.w-400 {
+    font-weight: 400 !important;
+}
+
+.w-500 {
+    font-weight: 500 !important;
+}
+
+.w-600 {
+    font-weight: 600 !important;
+}
+
+.w-700 {
+    font-weight: 700 !important;
+}
+
+.w-800 {
+    font-weight: 800 !important;
+}
+
+.w-900 {
+    font-weight: 900 !important;
+}
+
+/*-----------------------------
+    Card bg Inner Color 
+--------------------------------*/
+
+.bg-card-color-1 {
+    .inner {
+        background: #fde29275 !important;
+    }
+}
+
+.bg-card-color-2 {
+    .inner {
+        background: #ffdbe175 !important;
+    }
+}
+
+.bg-card-color-3 {
+    .inner {
+        background: #ffc5fa75 !important;
+    }
+}
+
+.bg-card-color-4 {
+    .inner {
+        background: #c8ffe975 !important;
+    }
+}
+
+.bg-card-color-5 {
+    .inner {
+        background: #e4a7f675 !important;
+    }
+}
+
+
+/*-----------------------------
+    Rbt Background Image
+--------------------------------*/
+
+.bgImagePosition {
+    @extend %bgImagePosition;
+}
+
+.bg_image_fixed {
+    background-attachment: fixed !important;
+}
+
+.bg_image {
+    @extend %bgImagePosition;
+}
+
+.bg--fixed {
+    background-attachment: fixed !important;
+}
+
+.bg--sticky {
+    position: sticky !important;
+    top: 3.75rem;
+}
+
+@for $i from 1 through 29 {
+    .bg_image--#{$i} {
+        background-image: url(../images/bg/bg-image-#{$i}.jpg);
+    }
+}
+
+.bg_image--9 {
+    background-position: bottom 44% center;
+}
+
+.rbt-alert-success {
+    &.alert-success {
+        color: var(--color-body);
+        background-color: var(--color-grey);
+        border: 0 none;
+        border-top: 5px solid var(--color-success);
+        padding: 10px 0;
+        text-align: center;
+
+        a {
+            color: var(--color-heading);
+        }
+    }
+}
+
+
+.rbt-avatars {
+    min-width: 70px;
+    max-width: 70px;
+
+    &.size-lg {
+        min-width: 120px;
+        max-width: 120px;
+        width: 120px;
+        height: 120px;
+    }
+
+    &.size-sm {
+        min-width: 52px;
+        max-width: 52px;
+    }
+
+    img {
+        border-radius: 100%;
+        width: 100%;
+        background: var(--color-white);
+        padding: 4px;
+        border: 2px solid var(--primary-opacity);
+        object-fit: cover;
+    }
+}
+
+
+.rbt-edit-photo-inner {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+
+    .rbt-edit-photo {
+        background: var(--color-gray-light);
+        border-radius: 100%;
+        color: var(--color-primary);
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        border: 0 none;
+        transition: 0.3s;
+
+        &:hover {
+            background: var(--color-primary);
+            color: var(--color-white);
+        }
+    }
+}
+
+.bg_image--19 {
+    @media #{$md-layout} {
+        background-position: center right 25%;
+    }
+
+    @media #{$sm-layout} {
+        background-position: center right 25%;
+    }
+}
+
+.bg_image--22 {
+    @media #{$md-layout} {
+        background-position: center right 33%;
+    }
+
+    @media #{$sm-layout} {
+        background-position: center right 33%;
+    }
+}
+
+/*-----------------------------
+    Section Circle Shadow
+--------------------------------*/ 
+
+.rbt-sec-cir-shadow-1 {
+    position: relative;
+    overflow: hidden;
+
+    .gradient-shape-top {
+        position: absolute;
+        width: 347px;
+        height: 347px;
+        border-radius: 50%;
+        right: 262px;
+        top: -96px;
+        background: linear-gradient(180deg, var(--color-primary) 0%, #C586EE 100%);
+        filter: blur(300px);
+        transform: rotate(-45deg);
+
+        &.version-02 {
+            width: 262px;
+            height: 262px;
+            right: 271px;
+            top: -106px;
+        }
+
+        &.version-03 {
+            right: 194px;
+            top: -150px;
+        }
+
+        &.version-04 {
+            width: 262px;
+            height: 262px;
+            right: 261px;
+            top: -156px;
+        }
+    }
+
+    .gradient-shape-bottom {
+        position: absolute;
+        width: 282px;
+        height: 282px;
+        border-radius: 50%;
+        left: 327px;
+        bottom: -68px;
+        background: linear-gradient(180deg, #FB64AD 0%, #C586EE 100%);
+        filter: blur(300px);
+        transform: rotate(-45deg);
+
+        &.version-02 {
+            left: 252px;
+            bottom: -50px;
+        }
+
+        &.version-03 {
+            left: 264px;
+            bottom: -445px;
+        }
+
+        &.version-04 {
+            left: 212px;
+            bottom: -280px;
+        }
+    }
+}
+
+
+
+/*-----------------------------
+    Section Box
+--------------------------------*/ 
+
+.rbt-section-box {
+    margin: 0 50px;
+    border-radius: var(--radius-10);
+
+    @media #{$laptop-device} {
+        margin: 0 25px;
+    }
+
+    @media #{$lg-layout, $md-layout, $sm-layout, $large-mobile} {
+        margin: 0;
+        border-radius: 0;
+    }
+
+    &.box-footer {
+        margin-bottom: 50px;
+
+        @media #{$laptop-device} {
+            margin-bottom: 25px;
+        }
+
+        @media #{$lg-layout, $md-layout, $sm-layout, $large-mobile} {
+            margin-bottom: 0;
+        }
+    }
+}
+
+
+/*-----------------------------
+    Primary Font Class
+--------------------------------*/ 
+.rbt-font-primary {
+    font-family: var(--font-primary) !important;
+}

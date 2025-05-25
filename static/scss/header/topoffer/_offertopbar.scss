@@ -1,0 +1,107 @@
+/*--------------------------
+    Header Top Styles  
+-----------------------------*/
+.rbt-header-campaign {
+    padding: 8px 0;
+
+    &.bg-image1 {
+        background-image: url(../images/bg/top-banner.png);
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center center;
+    }
+
+    .icon-close {
+        &.position-right {
+            position: absolute;
+            right: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+
+            @media #{$sm-layout} {
+                right: 10px;
+                top: 9px;
+                transform: none;
+            }
+        }
+    }
+
+    &.deactive {
+        display: none !important;
+    }
+}
+
+
+
+.rbt-header-top-news {
+    position: relative;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: auto;
+    z-index: 9;
+    transition: 0.4s;
+
+    .inner {
+        display: flex;
+        align-items: center;
+        position: relative;
+
+        @media #{$sm-layout} {
+            text-align: start;
+            justify-content: space-between !important;
+            padding-right: 25px;
+        }
+
+        .content {
+            .news-text {
+                display: inline-block;
+                margin-left: 7px;
+                color: var(--color-body);
+                font-size: 14px;
+                font-weight: 500;
+
+                @media #{$laptop-device} {
+                    font-size: 12px;
+                }
+
+                @media #{$large-mobile} {
+                    margin-left: 0;
+                    margin-top: 10px;
+                }
+
+                img {
+                    width: 22px;
+                    margin-right: 5px;
+                }
+            }
+        }
+
+        .right-button {
+            margin-left: 30px;
+            margin-top: -4px;
+
+            @media #{$sm-layout} {
+                margin-left: 0;
+            }
+        }
+    }
+}
+
+
+.rbt-header-campaign-1 {
+    &.rbt-header-top-news {
+        .inner {
+            @media #{$sm-layout} {
+                display: block;
+            }
+
+            .right-button {
+                @media #{$sm-layout} {
+                    margin-left: 0;
+                    margin-top: 6px;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,92 @@
+/*---------------------------------------
+    One Page Navigation Inner Section 
+------------------------------------------*/
+.rbt-inner-onepage-navigation {
+    border-radius: 500px;
+    background: var(--color-white);
+    overflow: hidden;
+    box-shadow: var(--shadow-1);
+    padding: 7px;
+    @media #{$lg-layout} {
+        padding: 0;
+        border-radius: 10px;
+    }
+    @media #{$md-layout} {
+        padding: 0;
+        border-radius: 10px;
+    }
+    @media #{$sm-layout} {
+        padding: 0;
+        border-radius: 10px;
+    }
+    @media #{$large-mobile} {
+        position: static;
+    }
+    .mainmenu-nav {
+        .mainmenu {
+            display: flex;
+            padding: 0;
+            justify-content: space-between;
+            margin: -3px;
+            flex-wrap: wrap;
+            @media #{$lg-layout} {
+                padding: 20px;
+            }
+            @media #{$md-layout} {
+                padding: 20px;
+            }
+            @media #{$sm-layout} {
+                padding: 17px;
+            }
+            li {
+                margin-top: 0;
+                margin-bottom: 0;
+                position: relative;
+                margin: 3px;
+                flex-grow: 1;
+                text-align: center;
+                a {
+                    margin: 0;
+                    position: relative;
+                    display: block;
+                    color: var(--color-heading);
+                    z-index: 2;
+                    padding: 10px 25px;
+                    border-radius: 500px;
+                    &::after {
+                        position: absolute;
+                        content: "";
+                        left: 0;
+                        background: var(--black-opacity);
+                        width: 100%;
+                        height: 100%;
+                        bottom: 0;
+                        opacity: 1;
+                        transition: 0.4s;
+                        z-index: -1;
+                        border-radius: 500px;
+                    }
+                }
+                &.current,
+                &:hover {
+                    a {
+                        color: var(--color-white);
+                        &::after {
+                            width: 100%;
+                            opacity: 1;
+                            background: var(--color-primary);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+
+
+
+
+
+

@@ -1,0 +1,63 @@
+/*------------------------
+    Countdown Styles  
+-------------------------*/
+.countdown-style-1 {
+    .countdown {
+        display: flex;
+        margin: 0 -20px;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+        margin: -10px;
+        .countdown-container {
+            margin: 10px;
+            position: relative;
+            transition: 0.4s;
+            text-align: center;
+            padding: 15px 20px;
+            background: var(--white-opacity);
+            border-radius: 10px;
+            min-width: 120px;
+            .countdown-heading {
+                display: block;
+                color: var(--color-white);
+                text-align: center;
+                text-transform: uppercase;
+                margin-top: 0;
+                display: block;
+                font-weight: 300;
+                font-size: 18px;
+                line-height: 36px;
+                transition: 0.4s;
+                opacity: 0.7;
+            }
+            .countdown-value {
+                display: block;
+                font-weight: 600;
+                font-size: 40px;
+                line-height: 1.24;
+                color: var(--color-white);
+                text-align: center;
+                position: relative;
+                transition: 0.4s;
+                
+                @media #{$sm-layout} {
+                    font-size: 24px;
+                }
+            }
+        }
+    }
+
+    &.version-02 {
+        max-width: max-content;
+        border-radius: var(--radius-10);
+        
+        .countdown {
+            gap: 10px;
+            justify-content: center;
+        }
+        .countdown-container {
+            margin: 0;
+            background-color: var(--color-white-off);
+        }
+    }
+}

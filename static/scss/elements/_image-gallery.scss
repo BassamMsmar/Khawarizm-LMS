@@ -1,0 +1,90 @@
+/*----------------------
+    Edu Image Gallery  
+------------------------*/
+
+.rbt-image-gallery-1 {
+    position: relative;
+    @media #{$lg-layout} {
+        padding-right: 40px;
+    }
+    @media #{$md-layout} {
+        padding-right: 40px;
+    }
+    @media #{$sm-layout} {
+        padding-right: 40px;
+    }
+    @media #{$large-mobile} {
+        padding-right: 0;
+        margin-bottom: 0 !important;
+    }
+    .image-1 {
+        max-height: 600px;
+        @media #{$large-mobile} {
+            width: 100%;
+            transform: none !important;
+        }
+    }
+    .image-2 {
+        max-height: 500px;
+        position: absolute;
+        right: 10%;
+        top: 30%;
+        @media #{$lg-layout} {
+            right: 0;
+            top: 18%;
+        }
+        @media #{$md-layout} {
+            top: 16%;
+        }
+        @media #{$sm-layout} {
+            top: 16%;
+            right: -1%;
+        }
+        @media #{$large-mobile} {
+            display: none;
+        }
+    }
+    &.text-end {
+        .image-2 {
+            left: 10%;
+            right: auto;
+            top: 30%;
+            @media #{$lg-layout} {
+                top: 18%;
+            }
+            @media #{$md-layout} {
+                top: 16%;
+                left: 0;
+            }
+            @media #{$sm-layout} {
+                top: 16%;
+                left: 22%;
+            }
+            @media #{$large-mobile} {
+                display: none;
+            }
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
