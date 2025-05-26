@@ -1,0 +1,78 @@
+{% extends '../layout/base.html' %}
+{% load static %}
+
+{% block content %}
+    <!-- Start breadcrumb Area -->
+    <div class="rbt-breadcrumb-default ptb--100 ptb_md--50 ptb_sm--30 bg-gradient-1">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb-inner text-center">
+                        <h2 class="title">Login</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Breadcrumb Area -->
+
+    <div class="rbt-elements-area bg-color-white rbt-section-gap">
+        <div class="container">
+            <div class="row gy-5 row--30 justify-content-center">
+                <!-- Login -->
+                <div class="col-lg-6 col-md-12 col-12">
+                    <div class="rbt-contact-form contact-form-style-1 max-width-auto">
+                        <h3 class="title">Login</h3>
+                        <form method="post" class="max-width-auto">
+                            {% csrf_token %}
+                            {{ form.non_field_errors }}
+                        
+                            <div class="form-group">
+                                <label for="id_username">Username or email *</label>
+                                <input type="text" name="username" id="id_username" value="{{ form.username.value|default_if_none:'' }}" required />
+                                <span class="focus-border"></span>
+                                {{ form.username.errors }}
+                            </div>
+                        
+                            <div class="form-group">
+                                <label for="id_password">Password *</label>
+                                <input type="password" name="password" id="id_password" value="{{ form.password.value|default_if_none:'' }}" required />
+                                <span class="focus-border"></span>
+                                {{ form.password.errors }}
+                            </div>
+                        
+                            <div class="row mb--30">
+                                <div class="col-lg-6">
+                                    <div class="rbt-checkbox">
+                                        <input type="checkbox" id="rememberme" name="rememberme">
+                                        <label for="rememberme">Remember me</label>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="rbt-lost-password text-end">
+                                        <a class="rbt-btn-link" href="#">Lost your password?</a>
+                                    </div>
+                                </div>
+                            </div>
+                        
+                            <div class="form-submit-group">
+                                <button type="submit" class="rbt-btn btn-md btn-gradient hover-icon-reverse w-100">
+                                    <span class="icon-reverse-wrapper">
+                                        <span class="btn-text">Log In</span>
+                                        <span class="btn-icon"><i class="feather-arrow-right"></i></span>
+                                        <span class="btn-icon"><i class="feather-arrow-right"></i></span>
+                                    </span>
+                                </button>
+                            </div>
+                        </form>
+                        
+                    </div>
+                </div>
+                <!-- end Login -->
+            </div>
+        </div>
+    </div>
+
+
+
+{% endblock content %}

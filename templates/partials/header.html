@@ -359,14 +359,9 @@
                             </a>
                         </li>
 
-                        <li class="access-icon rbt-mini-cart">
-                            <a class="rbt-cart-sidenav-activation rbt-round-btn" href="#">
-                                <i class="feather-shopping-cart"></i>
-                                <span class="rbt-cart-count">4</span>
-                            </a>
-                        </li>
 
                         <li class="account-access rbt-user-wrapper d-none d-xl-block">
+                            {% if user.is_authenticated %}
                             <a href="#"><i class="feather-user"></i>Admin</a>
                             <div class="rbt-user-menu-list-wrapper">
                                 <div class="inner">
@@ -455,9 +450,13 @@
                                     </ul>
                                 </div>
                             </div>
+                            {% else %}
+                            <a href="{% url 'accounts:login' %}"><i class="feather-user"></i>Login</a>
+                            {% endif %}
                         </li>
 
                         <li class="access-icon rbt-user-wrapper d-block d-xl-none">
+                            {% if user.is_authenticated %}
                             <a class="rbt-round-btn" href="#"><i class="feather-user"></i></a>
                             <div class="rbt-user-menu-list-wrapper">
                                 <div class="inner">
@@ -546,6 +545,9 @@
                                     </ul>
                                 </div>
                             </div>
+                            {% else %}
+                            <a href="{% url 'accounts:login' %}"><i class="feather-user"></i>Login</a>
+                            {% endif %}
                         </li>
 
                     </ul>

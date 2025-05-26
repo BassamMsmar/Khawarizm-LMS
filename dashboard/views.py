@@ -4,7 +4,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 
 
-class BaseDashboardView(TemplateView):
+class BaseDashboardView(LoginRequiredMixin, UserTypeRedirectMixin, TemplateView):
     """كلاس أساسي يمكن الوراثة منه"""
     template_name = ''  # يتم تحديده في الفروع
 
@@ -15,15 +15,15 @@ class BaseDashboardView(TemplateView):
         if user.user_type == 'lecturer' and not isinstance(self, LecturerDashboardView):
             return redirect('dashboard:lecturer')
         if user.user_type in ['admin', 'teaching_assistant'] and not isinstance(self, AdminDashboardView):
-            return redirect('dashboard:admin')
+            return redirect('dashboard:adminDashboard')
         return super().dispatch(request, *args, **kwargs)
 
 
-class StudentDashboardView(UserTypeRedirectMixin, TemplateView):
+class StudentDashboardView(LoginRequiredMixin, UserTypeRedirectMixin, TemplateView):
     template_name = 'dashboard/StudentDashboard/studentDashboard.html'
 
-class LecturerDashboardView(UserTypeRedirectMixin, TemplateView):
+class LecturerDashboardView(LoginRequiredMixin, UserTypeRedirectMixin, TemplateView):
     template_name = 'dashboard/LecturerDashboard/lecturerDashboard.html'
 
-class AdminDashboardView(UserTypeRedirectMixin, TemplateView):
+class AdminDashboardView(LoginRequiredMixin, UserTypeRedirectMixin, TemplateView):
     template_name = 'dashboard/AdminDashboard/adminDashboard.html'
