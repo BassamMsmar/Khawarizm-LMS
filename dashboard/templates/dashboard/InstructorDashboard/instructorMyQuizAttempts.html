@@ -816,26 +816,32 @@
                 <div class="col-lg-12">
                     <!-- Start Dashboard Top  -->
                     <div class="rbt-dashboard-content-wrapper">
-                        <div class="tutor-bg-photo bg_image bg_image--23 height-350"></div>
+                        <div class="tutor-bg-photo bg_image bg_image--22 height-350"></div>
                         <!-- Start Tutor Information  -->
                         <div class="rbt-tutor-information">
                             <div class="rbt-tutor-information-left">
                                 <div class="thumbnail rbt-avatars size-lg">
-                                    <img src="/static/images/team/avatar-2.jpg" alt="Instructor">
+                                    <img src="/static/images/team/avatar.jpg" alt="Instructor">
                                 </div>
                                 <div class="tutor-content">
-                                    <h5 class="title">Emily Hannah</h5>
-                                    <ul class="rbt-meta rbt-meta-white mt--5">
-                                        <li><i class="feather-book"></i>5 Courses Enroled</li>
-                                        <li><i class="feather-award"></i>4 Certificate</li>
-                                    </ul>
+                                    <h5 class="title">John Due</h5>
+                                    <div class="rbt-review">
+                                        <div class="rating">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                        </div>
+                                        <span class="rating-count"> (15 Reviews)</span>
+                                    </div>
                                 </div>
                             </div>
                             <div class="rbt-tutor-information-right">
                                 <div class="tutor-btn">
-                                    <a class="rbt-btn btn-md hover-icon-reverse" href="#">
+                                    <a class="rbt-btn btn-md hover-icon-reverse" href="{% url 'createCourse' %}">
                                         <span class="icon-reverse-wrapper">
-                        <span class="btn-text">Become an Instructor</span>
+                        <span class="btn-text">Create a New Course</span>
                                         <span class="btn-icon"><i class="feather-arrow-right"></i></span>
                                         <span class="btn-icon"><i class="feather-arrow-right"></i></span>
                                         </span>
@@ -860,13 +866,26 @@
                                             </div>
                                             <nav class="mainmenu-nav">
                                                 <ul class="dashboard-mainmenu rbt-default-sidebar-list">
-                                                    <li><a href="{% url 'studentDashboard' %}"><i class="feather-home"></i><span>Dashboard</span></a></li>
-                                                    <li><a href="{% url 'studentProfile' %}"><i class="feather-user"></i><span>My Profile</span></a></li>
-                                                    <li><a href="{% url 'studentEnrolledCourses' %}"><i class="feather-book-open"></i><span>Enrolled Courses</span></a></li>
-                                                    <li><a href="{% url 'studentWishlist' %}"><i class="feather-bookmark"></i><span>Wishlist</span></a></li>
-                                                    <li><a href="{% url 'studentReviews' %}"><i class="feather-star"></i><span>Reviews</span></a></li>
-                                                    <li><a href="{% url 'studentMyQuizAttempts' %}"><i class="feather-help-circle"></i><span>My Quiz Attempts</span></a></li>
-                                                    <li><a href="{% url 'studentOrderHistory' %}"><i class="feather-shopping-bag"></i><span>Order History</span></a></li>
+                                                    <li><a href="{% url 'instructorDashboard' %}"><i class="feather-home"></i><span>Dashboard</span></a></li>
+                                                    <li><a href="{% url 'instructorProfile' %}"><i class="feather-user"></i><span>My Profile</span></a></li>
+                                                    <li><a href="{% url 'instructorEnrolledCourses' %}"><i class="feather-book-open"></i><span>Enrolled Courses</span></a></li>
+                                                    <li><a href="{% url 'instructorWishlist' %}"><i class="feather-bookmark"></i><span>Wishlist</span></a></li>
+                                                    <li><a href="{% url 'instructorReviews' %}"><i class="feather-star"></i><span>Reviews</span></a></li>
+                                                    <li><a href="{% url 'instructorMyQuizAttempts' %}"><i class="feather-help-circle"></i><span>My Quiz Attempts</span></a></li>
+                                                    <li><a href="{% url 'instructorOrderHistory' %}"><i class="feather-shopping-bag"></i><span>Order History</span></a></li>
+                                                </ul>
+                                            </nav>
+
+                                            <div class="section-title mt--40 mb--20">
+                                                <h6 class="rbt-title-style-2">Instructor</h6>
+                                            </div>
+
+                                            <nav class="mainmenu-nav">
+                                                <ul class="dashboard-mainmenu rbt-default-sidebar-list">
+                                                    <li><a href="{% url 'instructorCourse' %}"><i class="feather-monitor"></i><span>My Courses</span></a></li>
+                                                    <li><a href="{% url 'instructorAnnouncements' %}"><i class="feather-volume-2"></i><span>Announcements</span></a></li>
+                                                    <li><a href="{% url 'instructorQuizAttempts' %}"><i class="feather-message-square"></i><span>Quiz Attempts</span></a></li>
+                                                    <li><a href="{% url 'instructorAssignments' %}"><i class="feather-list"></i><span>Assignments</span></a></li>
                                                 </ul>
                                             </nav>
 
@@ -876,7 +895,7 @@
 
                                             <nav class="mainmenu-nav">
                                                 <ul class="dashboard-mainmenu rbt-default-sidebar-list">
-                                                    <li><a href="{% url 'studentSettings' %}"><i class="feather-settings"></i><span>Settings</span></a></li>
+                                                    <li><a href="{% url 'instructorSettings' %}"><i class="feather-settings"></i><span>Settings</span></a></li>
                                                     <li><a href="#"><i class="feather-log-out"></i><span>Logout</span></a></li>
                                                 </ul>
                                             </nav>
@@ -889,70 +908,204 @@
                         </div>
 
                         <div class="col-lg-9">
-                            <div class="rbt-dashboard-content bg-color-white rbt-shadow-box mb--60">
+                            <!-- Start Enrole Course  -->
+                            <div class="rbt-dashboard-content bg-color-white rbt-shadow-box">
                                 <div class="content">
                                     <div class="section-title">
-                                        <h4 class="rbt-title-style-3">Dashboard</h4>
+                                        <h4 class="rbt-title-style-3">My Quiz Attempts
+                                        </h4>
                                     </div>
-                                    <div class="row g-5">
 
-                                        <!-- Start Single Card  -->
-                                        <div class="col-lg-4 col-md-4 col-sm-6 col-12">
-                                            <div class="rbt-counterup variation-01 rbt-hover-03 rbt-border-dashed bg-primary-opacity">
-                                                <div class="inner">
-                                                    <div class="rbt-round-icon bg-primary-opacity">
-                                                        <i class="feather-book-open"></i>
-                                                    </div>
-                                                    <div class="content">
-                                                        <h3 class="counter without-icon color-primary"><span class="odometer" data-count="30">00</span>
-                                                        </h3>
-                                                        <span class="rbt-title-style-2 d-block">Enrolled Courses</span>
-                                                    </div>
+
+                                    <!-- Start Filter -->
+                                    <div class="rbt-dashboard-filter-wrapper">
+                                        <div class="row g-5">
+                                            <div class="col-lg-6">
+                                                <div class="filter-select rbt-modern-select">
+                                                    <span class="select-label d-block">Courses</span>
+                                                    <select class="w-100" data-live-search="true" title="All" multiple data-size="7" data-actions-box="true" data-selected-text-format="count > 2">
+                                                        <option data-subtext="HTML">Web Design</option>
+                                                        <option data-subtext="Photoshop">Graphic</option>
+                                                        <option data-subtext="Career">English</option>
+                                                        <option data-subtext="Career">Spoken English</option>
+                                                        <option data-subtext="Experts">Art Painting</option>
+                                                        <option data-subtext="Experts">App Development</option>
+                                                        <option data-subtext="Experts">Web Application</option>
+                                                        <option data-subtext="Experts">Php Development</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <div class="filter-select rbt-modern-select">
+                                                    <span class="select-label d-block">Short By</span>
+                                                    <select class="w-100">
+                                                        <option>Default</option>
+                                                        <option>Latest</option>
+                                                        <option>Popularity</option>
+                                                        <option>Trending</option>
+                                                        <option>Price: low to high</option>
+                                                        <option>Price: high to low</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <div class="filter-select rbt-modern-select">
+                                                    <span class="select-label d-block">Short By Offer</span>
+                                                    <select class="w-100">
+                                                        <option>Free</option>
+                                                        <option>Paid</option>
+                                                        <option>Premium</option>
+                                                    </select>
                                                 </div>
                                             </div>
                                         </div>
-                                        <!-- End Single Card  -->
-
-                                        <!-- Start Single Card  -->
-                                        <div class="col-lg-4 col-md-4 col-sm-6 col-12">
-                                            <div class="rbt-counterup variation-01 rbt-hover-03 rbt-border-dashed bg-secondary-opacity">
-                                                <div class="inner">
-                                                    <div class="rbt-round-icon bg-secondary-opacity">
-                                                        <i class="feather-monitor"></i>
-                                                    </div>
-                                                    <div class="content">
-                                                        <h3 class="counter without-icon color-secondary"><span class="odometer" data-count="10">00</span>
-                                                        </h3>
-                                                        <span class="rbt-title-style-2 d-block">ACTIVE COURSES</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                        <!-- End Single Card  -->
-
-                                        <!-- Start Single Card  -->
-                                        <div class="col-lg-4 col-md-4 col-sm-6 col-12">
-                                            <div class="rbt-counterup variation-01 rbt-hover-03 rbt-border-dashed bg-violet-opacity">
-                                                <div class="inner">
-                                                    <div class="rbt-round-icon bg-violet-opacity">
-                                                        <i class="feather-award"></i>
-                                                    </div>
-                                                    <div class="content">
-                                                        <h3 class="counter without-icon color-violet"><span class="odometer" data-count="7">00</span>
-                                                        </h3>
-                                                        <span class="rbt-title-style-2 d-block">Completed Courses</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- End Single Card  -->
-
                                     </div>
+                                    <!-- End Filter -->
+
+                                    <hr class="mt--30">
+
+                                    <div class="rbt-dashboard-table table-responsive mobile-table-750 mt--30">
+                                        <table class="rbt-table table table-borderless">
+                                            <thead>
+                                                <tr>
+                                                    <th>Quiz</th>
+                                                    <th>Qus</th>
+                                                    <th>TM</th>
+                                                    <th>CA</th>
+                                                    <th>Result</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <th>
+                                                        <p class="b3 mb--5">December 26, 2024</p>
+                                                        <span class="h6 mb--5">Write a short essay on yourself using the
+                                                            5</span>
+                                                        <p class="b3">Student: <a href="#">John Due</a></p>
+                                                    </th>
+                                                    <td>
+                                                        <p class="b3">4</p>
+                                                    </td>
+                                                    <td>
+                                                        <p class="b3">8</p>
+                                                    </td>
+                                                    <td>
+                                                        <p class="b3">4</p>
+                                                    </td>
+                                                    <td>
+                                                        <span
+                                                            class="rbt-badge-5 bg-color-success-opacity color-success">Pass</span>
+                                                    </td>
+                                                    <td>
+                                                        <div class="rbt-button-group justify-content-end">
+                                                            <a class="rbt-btn btn-xs bg-primary-opacity radius-round" href="#" title="Edit"><i
+                                                                    class="feather-edit pl--0"></i></a>
+                                                            <a class="rbt-btn btn-xs bg-color-danger-opacity radius-round color-danger" href="#" title="Delete"><i
+                                                                    class="feather-trash-2 pl--0"></i></a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th>
+                                                        <p class="b3 mb--5">December 26, 2024</p>
+                                                        <span class="h6 mb--5">Write a short essay on yourself using the
+                                                            5</span>
+                                                        <p class="b3">Student: <a href="#">John Due</a></p>
+                                                    </th>
+                                                    <td>
+                                                        <p class="b3">4</p>
+                                                    </td>
+                                                    <td>
+                                                        <p class="b3">8</p>
+                                                    </td>
+                                                    <td>
+                                                        <p class="b3">4</p>
+                                                    </td>
+                                                    <td>
+                                                        <span
+                                                            class="rbt-badge-5 bg-color-danger-opacity color-danger">Fail</span>
+                                                    </td>
+                                                    <td>
+                                                        <div class="rbt-button-group justify-content-end">
+                                                            <a class="rbt-btn btn-xs bg-primary-opacity radius-round" href="#" title="Edit"><i
+                                                                    class="feather-edit pl--0"></i></a>
+                                                            <a class="rbt-btn btn-xs bg-color-danger-opacity radius-round color-danger" href="#" title="Delete"><i
+                                                                    class="feather-trash-2 pl--0"></i></a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th>
+                                                        <p class="b3 mb--5">December 26, 2024</p>
+                                                        <span class="h6 mb--5">Write a short essay on yourself using the
+                                                            5</span>
+                                                        <p class="b3">Student: <a href="#">John Due</a></p>
+                                                    </th>
+                                                    <td>
+                                                        <p class="b3">4</p>
+                                                    </td>
+                                                    <td>
+                                                        <p class="b3">8</p>
+                                                    </td>
+                                                    <td>
+                                                        <p class="b3">4</p>
+                                                    </td>
+                                                    <td>
+                                                        <span
+                                                            class="rbt-badge-5 bg-color-success-opacity color-success">Pass</span>
+                                                    </td>
+                                                    <td>
+                                                        <div class="rbt-button-group justify-content-end">
+                                                            <a class="rbt-btn btn-xs bg-primary-opacity radius-round" href="#" title="Edit"><i
+                                                                    class="feather-edit pl--0"></i></a>
+                                                            <a class="rbt-btn btn-xs bg-color-danger-opacity radius-round color-danger" href="#" title="Delete"><i
+                                                                    class="feather-trash-2 pl--0"></i></a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th>
+                                                        <p class="b3 mb--5">December 26, 2024</p>
+                                                        <span class="h6 mb--5">Write a short essay on yourself using the
+                                                            5</span>
+                                                        <p class="b3">Student: <a href="#">John Due</a></p>
+                                                    </th>
+                                                    <td>
+                                                        <p class="b3">4</p>
+                                                    </td>
+                                                    <td>
+                                                        <p class="b3">8</p>
+                                                    </td>
+                                                    <td>
+                                                        <p class="b3">4</p>
+                                                    </td>
+                                                    <td>
+                                                        <span
+                                                            class="rbt-badge-5 bg-color-danger-opacity color-danger">Fail</span>
+                                                    </td>
+                                                    <td>
+                                                        <div class="rbt-button-group justify-content-end">
+                                                            <a class="rbt-btn btn-xs bg-primary-opacity radius-round" href="#" title="Edit"><i
+                                                                    class="feather-edit pl--0"></i></a>
+                                                            <a class="rbt-btn btn-xs bg-color-danger-opacity radius-round color-danger" href="#" title="Delete"><i
+                                                                    class="feather-trash-2 pl--0"></i></a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+
+
+                                            </tbody>
+
+                                        </table>
+                                    </div>
+
                                 </div>
                             </div>
+                            <!-- End Enrole Course  -->
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -960,5 +1113,5 @@
     <!-- End Card Style -->
 
     {% include "partials/separator.html" %}
-
+    
 {% endblock content %}

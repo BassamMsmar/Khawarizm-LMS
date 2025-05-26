@@ -39,12 +39,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'HiStudyApp',
+
+    'django_ckeditor_5',  
 
     'accounts',
+    'about',
     'courses',
     'department',
-    'django_ckeditor_5',  
+    'dashboard',
 ]
 
 MIDDLEWARE = [
