@@ -25,8 +25,7 @@ from about import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home, name='home'),
-    
-    
+    path('dashboard/', include(('dashboard.urls', 'dashboard'), namespace='dashboard')),
     
     path("ckeditor5/", include('django_ckeditor_5.urls')),
     path('accounts/', include('accounts.urls')),

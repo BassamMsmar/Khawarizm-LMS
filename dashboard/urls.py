@@ -1,11 +1,10 @@
-from django.urls import path
-from . import views
+from django.urls import path, include
 
 app_name = 'dashboard'
 
 urlpatterns = [
-    path('admin/', views.AdminDashboardView.as_view(), name='adminDashboard'),
-    path('lecturer/', views.LecturerDashboardView.as_view(), name='lecturerDashboard'),
-    path('student/', views.StudentDashboardView.as_view(), name='studentDashboard'),
+    path('admin/', include('dashboard.urls.admin_urls')),
+    path('lecturer/', include('dashboard.urls.lecturer_urls')),
+    path('student/', include('dashboard.urls.student_urls')),
     ]
     

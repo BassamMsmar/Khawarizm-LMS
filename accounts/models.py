@@ -8,10 +8,9 @@ from django.dispatch import receiver
 
 class CustomUser(AbstractUser):
     USER_TYPE_CHOICES = (
-        ('student', 'Student'),
-        ('lecturer', 'Lecturer'),
-        ('teaching_assistant', 'Teaching Assistant'),
         ('admin', 'Admin'),
+        ('lecturer', 'Lecturer'),
+        ('student', 'Student'),
     )
 
     user_type = models.CharField(
@@ -41,7 +40,7 @@ class CustomUser(AbstractUser):
             if self.user_type == 'admin':
                 self.is_superuser = True
                 self.is_staff = True
-            elif self.user_type in ['lecturer', 'teaching_assistant']:
+            elif self.user_type in ['lecturer']:
                 self.is_superuser = False
                 self.is_staff = True
             else:
