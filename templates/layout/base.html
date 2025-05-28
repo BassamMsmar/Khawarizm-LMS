@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
+{% block extra_css %}{% endblock %}
 {% include  'partials/head.html' %}
 
 <body class="{{ bodyClass|default:'' }}">
@@ -25,6 +26,8 @@
     {% endif %}
 
     {% include "partials/script.html"%}
+
+    {% block extra_js %}{% endblock %}
 
 </body>
 
