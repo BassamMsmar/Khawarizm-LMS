@@ -917,10 +917,10 @@
                     <div class="rbt-tutor-information">
                         <div class="rbt-tutor-information-left">
                             <div class="thumbnail rbt-avatars size-lg">
-                                <img src="/static/images/team/avatar.jpg" alt="Instructor">
+                                <img src="{% if user.profile_picture %}{{ user.profile_picture.url }}{% else %}/static/images/team/avatar.jpg{% endif %}" alt="Instructor">
                             </div>
                             <div class="tutor-content">
-                                <h5 class="title">John Due</h5>
+                                <h5 class="title">{{user.first_name}} {{user.last_name}}</h5>
                                 <div class="rbt-review">
                                     <div class="rating">
                                         <i class="fas fa-star"></i>

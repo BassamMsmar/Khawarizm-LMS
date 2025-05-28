@@ -78,7 +78,7 @@ class StudentProfile(models.Model):
     emergency_contact_phone = PhoneNumberField(blank=True, null=True)
     
     # Additional Information
-    student_id = models.CharField(max_length=50, unique=True)
+    student_id = models.CharField(max_length=50, unique=True, blank=True, null=True)
     enrollment_date = models.DateField(blank=True, null=True)
     
     # Timestamps
