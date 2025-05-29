@@ -2,6 +2,8 @@ from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from ..mixins import UserTypeRedirectMixin
 
+from accounts.models import CustomUser
+
 class AdminDashboardView(LoginRequiredMixin, UserTypeRedirectMixin, TemplateView):
     required_user_type = 'admin'
     template_name = 'dashboard/AdminDashboard/adminDashboard.html'
@@ -25,6 +27,11 @@ class LecturersView(LoginRequiredMixin, UserTypeRedirectMixin, TemplateView):
 class StudentsView(LoginRequiredMixin, UserTypeRedirectMixin, TemplateView):
     required_user_type = 'admin'
     template_name = 'dashboard/AdminDashboard/adminStudents.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['users'] = CustomUser.objects.filter(user_type='student')
+        return context
 
 class ExamsView(LoginRequiredMixin, UserTypeRedirectMixin, TemplateView):
     required_user_type = 'admin'

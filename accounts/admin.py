@@ -1,16 +1,16 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import CustomUser, StudentProfile, LecturerProfile
-
+from .models import CustomUser, Role
 
 class CustomUserAdmin(UserAdmin):
     model = CustomUser
+
     fieldsets = (
         (None, {'fields': ('username', 'password')}),
         ('Personal info', {'fields': (
             'first_name', 'last_name', 'email', 'phone_number', 'gender',
             'date_of_birth', 'profile_picture', 'country', 'city', 'address', 'postal_code',
-            'user_type',
+            'roles',
         )}),
         ('Permissions', {'fields': (
             'is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions',
@@ -21,17 +21,19 @@ class CustomUserAdmin(UserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('username', 'user_type', 'password1', 'password2'),
+            'fields': ('username', 'roles', 'password1', 'password2'),
         }),
     )
 
-    list_display = ('username', 'email', 'first_name', 'last_name', 'user_type', 'is_staff', 'is_superuser')
+    list_display = ('username', 'email', 'first_name', 'last_name', 'display_roles', 'is_staff', 'is_superuser')
     search_fields = ('username', 'email', 'first_name', 'last_name')
     ordering = ('username',)
+    filter_horizontal = ('roles',)  # لتسهيل اختيار الأدوار في الواجهة
+
+    def display_roles(self, obj):
+        return ", ".join([role.name for role in obj.roles.all()])
+    display_roles.short_description = 'Roles'
 
 
 admin.site.register(CustomUser, CustomUserAdmin)
-admin.site.register(StudentProfile)
-admin.site.register(LecturerProfile)
-
-# Register your models here.
+admin.site.register(Role)

@@ -1,7 +1,7 @@
 from django.urls import path
 from ..views.admin_views import AdminDashboardView, AnnouncementsView, DepartmentsView, CoursesView, LecturersView, StudentsView, ExamsView, ProfileView, SettingsView, AboutView
 
-app_name = 'admin'
+app_name = 'dashboard_admin'
 
 urlpatterns = [
     path('', AdminDashboardView.as_view(), name='adminDashboard'),
