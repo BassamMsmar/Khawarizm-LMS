@@ -131,17 +131,3 @@ class LecturerProfile(models.Model):
         self.save()
 
 
-# Signal to create StudentProfile when User is created
-@receiver(post_save, sender=CustomUser)
-def create_student_profile(sender, instance, created, **kwargs):
-    """Create a StudentProfile when a User is created with user_type='student'"""
-    if created and instance.user_type == 'student':
-        StudentProfile.objects.create(user=instance)
-
-@receiver(post_save, sender=CustomUser)
-def save_student_profile(sender, instance, **kwargs):
-    """Save the StudentProfile when the User is saved"""
-    if hasattr(instance, 'student_profile'):
-        instance.student_profile.save()
-
-
