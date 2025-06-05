@@ -1,12 +1,12 @@
 from django.db.models.signals import post_save, m2m_changed
 from django.dispatch import receiver
-from .models import CustomUser, Role
+from .models import User, Role
 from profiles.models import StudentProfile, LecturerProfile, DepartmentManagerProfile, CourseSupervisorProfile, AdminProfile
 
 
 
 
-@receiver(post_save, sender=CustomUser)
+@receiver(post_save, sender=User)
 def create_profiles_on_user_creation(sender, instance, created, **kwargs):
     if created:
         # أنشئ بروفايلات لجميع الأدوار التي يمتلكها المستخدم عند الإنشاء
@@ -28,7 +28,7 @@ def create_profile_for_role(user, role_slug):
         AdminProfile.objects.get_or_create(user=user)
 
 # إشارة ترقب التغييرات في علاقة ManyToMany الأدوار لتحديث البروفايلات حسب الإضافة أو الحذف
-@receiver(m2m_changed, sender=CustomUser.roles.through)
+@receiver(m2m_changed, sender=User.roles.through)
 def update_profiles_on_roles_change(sender, instance, action, pk_set, **kwargs):
     if action in ['post_add', 'post_remove', 'post_clear']:
         # بعد التعديل في الأدوار، نتحقق من الأدوار الحالية

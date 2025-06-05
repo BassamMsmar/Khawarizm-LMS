@@ -1,9 +1,9 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import CustomUser, Role
+from .models import User, Role
 
-class CustomUserAdmin(UserAdmin):
-    model = CustomUser
+class UserAdmin(UserAdmin):
+    model = User
 
     fieldsets = (
         (None, {'fields': ('username', 'password')}),
@@ -35,5 +35,5 @@ class CustomUserAdmin(UserAdmin):
     display_roles.short_description = 'Roles'
 
 
-admin.site.register(CustomUser, CustomUserAdmin)
+admin.site.register(User, UserAdmin)
 admin.site.register(Role)

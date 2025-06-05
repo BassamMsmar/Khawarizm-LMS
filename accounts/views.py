@@ -6,18 +6,18 @@ from django.views.generic import TemplateView
 from django.urls import reverse
 from django.urls import reverse_lazy
 
-from .models import CustomUser
+from .models import User
 
 class UserLoginView(LoginView):
     template_name = 'accounts/login.html'
 
     def get_success_url(self):
         user = self.request.user
-        if user.user_type == 'student':
+        if user.roles == 'student':
             return reverse('dashboard:student:studentDashboard')
-        elif user.user_type == 'lecturer' or user.user_type == 'teaching_assistant':
+        elif user.roles == 'lecturer' or user.roles == 'teaching_assistant':
             return reverse('dashboard:lecturer:lecturerDashboard')
-        elif user.user_type == 'admin'  :
+        elif user.roles == 'admin'  :
             return reverse('dashboard:admin:adminDashboard')
         else:
             return reverse('home')

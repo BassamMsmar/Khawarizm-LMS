@@ -1,25 +1,26 @@
 from django.db import models
-from accounts.models import CustomUser
+from django.conf import settings
+User = settings.AUTH_USER_MODEL
 from phonenumber_field.modelfields import PhoneNumberField
 from django.utils.text import slugify
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 # Create your models here.
 class AdminProfile(models.Model):
-    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='admin_profile')
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='admin_profile')
 
 class DepartmentManagerProfile(models.Model):
-    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='department_manager_profile')
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='department_manager_profile')
     # حقول خاصة بمدير القسم...
 
 class CourseSupervisorProfile(models.Model):
-    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='course_supervisor_profile')
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='course_supervisor_profile')
     # حقول خاصة بمشرف المادة...
 
 
 class StudentProfile(models.Model):
     """Additional profile information for students"""
-    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='student_profile')
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='student_profile')
     
     # Education
     education_level = models.CharField(max_length=100, blank=True, null=True)
@@ -76,7 +77,7 @@ class Skill(models.Model):
 class LecturerProfile(models.Model):
     """Profile information for lecturers"""
     user = models.OneToOneField(
-        CustomUser,
+        User,
         on_delete=models.CASCADE,
         related_name='lecturer_profile'
     )
@@ -132,13 +133,13 @@ class LecturerProfile(models.Model):
 
 
 # Signal to create StudentProfile when User is created
-@receiver(post_save, sender=CustomUser)
+@receiver(post_save, sender=User)
 def create_student_profile(sender, instance, created, **kwargs):
     """Create a StudentProfile when a User is created with user_type='student'"""
     if created and instance.user_type == 'student':
         StudentProfile.objects.create(user=instance)
 
-@receiver(post_save, sender=CustomUser)
+@receiver(post_save, sender=User)
 def save_student_profile(sender, instance, **kwargs):
     """Save the StudentProfile when the User is saved"""
     if hasattr(instance, 'student_profile'):

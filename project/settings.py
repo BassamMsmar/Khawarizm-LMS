@@ -63,7 +63,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'project.urls'
 
-AUTH_USER_MODEL = 'accounts.CustomUser'
+AUTH_USER_MODEL = 'accounts.User'
 
 TEMPLATES = [
     {

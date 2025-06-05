@@ -7,17 +7,16 @@ from django.utils.text import slugify
 # Role choices for use in admin or other parts of the app (optional)
 ROLE_CHOICES = (
     ('admin', 'Admin'),
-    ('department_manager', 'Department Manager'),
+    # ('department_manager', 'Department Manager'),
     ('lecturer', 'Lecturer'),
-    ('course_supervisor', 'Course Supervisor'),
+    # ('course_supervisor', 'Course Supervisor'),
     ('student', 'Student'),
 )
 
 class Role(models.Model):
     name = models.CharField(max_length=100, unique=True, choices=ROLE_CHOICES)
     slug = models.SlugField(unique=True, max_length=100)
-    description = models.TextField(blank=True, null=True)
-    permissions = models.ManyToManyField(Permission, blank=True)
+    description = models.TextField(blank=True)
 
     def save(self, *args, **kwargs):
         # Automatically generate slug from name if not provided
@@ -29,7 +28,7 @@ class Role(models.Model):
         return self.name
 
 
-class CustomUser(AbstractUser):
+class User(AbstractUser):
     # Many-to-many relationship to allow multiple roles per user
     roles = models.ManyToManyField(Role, blank=True)
 

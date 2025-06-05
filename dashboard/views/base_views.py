@@ -10,11 +10,11 @@ class BaseDashboardView(LoginRequiredMixin, UserTypeRedirectMixin, TemplateView)
 
     def dispatch(self, request, *args, **kwargs):
         user = request.user
-        if user.user_type == 'student' and not isinstance(self, StudentDashboardView):
+        if user.roles == 'student' and not isinstance(self, StudentDashboardView):
             return redirect('dashboard:student')
-        if user.user_type == 'lecturer' and not isinstance(self, LecturerDashboardView):
+        if user.roles == 'lecturer' and not isinstance(self, LecturerDashboardView):
             return redirect('dashboard:lecturer')
-        if user.user_type == 'admin' and not isinstance(self, AdminDashboardView):
+        if user.roles == 'admin' and not isinstance(self, AdminDashboardView):
             return redirect('dashboard:adminDashboard')
         return super().dispatch(request, *args, **kwargs)
 
