@@ -75,7 +75,7 @@ class Lesson(models.Model):
         ('url', 'URL'),
     ]
     
-    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='lessons')
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='lessons', null=True, blank=True)
 
     title = models.CharField(max_length=200)
     description = CKEditor5Field(blank=True, null=True)
