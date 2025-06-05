@@ -1,27 +1,43 @@
 from django.db import models
-from django.conf import settings
-User = settings.AUTH_USER_MODEL
+from django.contrib.auth import get_user_model
 from phonenumber_field.modelfields import PhoneNumberField
 from django.utils.text import slugify
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 # Create your models here.
+User = get_user_model()
+
+class Language(models.Model):
+    """Language model for user preferences"""
+    name = models.CharField(max_length=100)
+    code = models.CharField(max_length=10, unique=True)
+    is_active = models.BooleanField(default=True)
+    
+    def __str__(self):
+        return self.name
+
+
 class AdminProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='admin_profile')
+    bio = models.TextField(blank=True, null=True)
+
+
+class CollegeManagerProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='college_manager_profile')
+    bio = models.TextField(blank=True, null=True)
 
 class DepartmentManagerProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='department_manager_profile')
-    # حقول خاصة بمدير القسم...
+    bio = models.TextField(blank=True, null=True)
 
 class CourseSupervisorProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='course_supervisor_profile')
-    # حقول خاصة بمشرف المادة...
-
+    bio = models.TextField(blank=True, null=True)
 
 class StudentProfile(models.Model):
     """Additional profile information for students"""
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='student_profile')
-    
+    bio = models.TextField(blank=True, null=True)
     # Education
     education_level = models.CharField(max_length=100, blank=True, null=True)
     graduation_year = models.IntegerField(blank=True, null=True)
@@ -48,30 +64,6 @@ class StudentProfile(models.Model):
         return f"Student Profile - {self.user.username}"
 
 
-class Language(models.Model):
-    """Language model for user preferences"""
-    name = models.CharField(max_length=100)
-    code = models.CharField(max_length=10, unique=True)
-    is_active = models.BooleanField(default=True)
-    
-    def __str__(self):
-        return self.name
-
-
-class Skill(models.Model):
-    """Skill model for user capabilities"""
-    name = models.CharField(max_length=100, unique=True)
-    slug = models.SlugField(unique=True, max_length=100)
-    description = models.TextField(blank=True, null=True)
-    icon = models.CharField(max_length=50, blank=True, null=True)
-    
-    def __str__(self):
-        return self.name
-    
-    def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(self.name)
-        super().save(*args, **kwargs)
 
 
 class LecturerProfile(models.Model):
@@ -102,22 +94,9 @@ class LecturerProfile(models.Model):
     )
     
     # Relations
-    skills = models.ManyToManyField(Skill, blank=True, related_name='lecturer_profiles')
     languages = models.ManyToManyField(Language, blank=True, related_name='lecturer_profiles')
     
-    # Social Links
-    social_links = models.JSONField(default=dict, blank=True)
-    
-    # Statistics
-    total_students = models.PositiveIntegerField(default=0)
-    total_courses = models.PositiveIntegerField(default=0)
-    total_reviews = models.PositiveIntegerField(default=0)
-    rating = models.DecimalField(max_digits=3, decimal_places=2, default=0.00)
-    
-    # Approval Status
-    is_approved = models.BooleanField(default=False)
-    is_featured = models.BooleanField(default=False)
-    
+
     # Timestamps
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

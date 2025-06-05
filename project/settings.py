@@ -44,10 +44,11 @@ INSTALLED_APPS = [
 
     'accounts',
     'about',
-    'courses',
-    'department',
     'dashboard',
+    'college',
+    'department',
     'profiles',
+    'courses',
     
 ]
 

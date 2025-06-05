@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils import timezone
-from department.models import Program
+from department.models import Department
 from django.utils.text import slugify
 from django.contrib.auth import get_user_model
 from django.urls import reverse
@@ -24,7 +24,7 @@ class Course(models.Model):
     academic_hours = models.IntegerField(default=0)
     short_description = models.TextField(max_length=300)
     description = CKEditor5Field('Description', blank=True, null=True)
-    program = models.ManyToManyField(Program)
+    department = models.ManyToManyField(Department)
     image = models.ImageField(upload_to='courses/images/')
     thumbnail = models.ImageField(upload_to='courses/images/thumbnails/')
     what_youll_learn = CKEditor5Field(blank=True, null=True)
@@ -72,13 +72,10 @@ class Lesson(models.Model):
         ('article', 'Article'),
         ('pdf', 'PDF'),
         ('image', 'Image'),
-        ('audio', 'Audio'),
-        ('document', 'Document'),
-        ('quiz', 'Quiz'),
-        ('assignment', 'Assignment'),
         ('url', 'URL'),
     ]
     
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='lessons')
 
     title = models.CharField(max_length=200)
     description = CKEditor5Field(blank=True, null=True)
@@ -97,6 +94,20 @@ class Lesson(models.Model):
         max_length=20,
         choices=LESSON_TYPES,
         default='video'
+    )
+    pdf_file = models.FileField(
+        upload_to='lesson_pdfs/',
+        blank=True,
+        null=True
+    )
+    image = models.ImageField(
+        upload_to='lesson_images/',
+        blank=True,
+        null=True
+    )
+    url = models.URLField(
+        blank=True,
+        null=True
     )
     order = models.PositiveIntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
