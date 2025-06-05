@@ -48,22 +48,7 @@ class User(AbstractUser):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    def save(self, *args, **kwargs):
-        # For new users, set is_superuser and is_staff based on whether they have the 'admin' role
-        if not self.pk:  # New user instance
-            admin_role = Role.objects.filter(slug='admin').first()
-            if admin_role and admin_role in self.roles.all():
-                self.is_superuser = True
-                self.is_staff = True
-            else:
-                self.is_superuser = False
-                self.is_staff = False
-        super().save(*args, **kwargs)
 
-    def __str__(self):
-        # Display username with all assigned roles separated by commas
-        role_names = ", ".join(role.name for role in self.roles.all())
-        return f"{self.username} ({role_names})"
 
     @property
     def full_name(self):

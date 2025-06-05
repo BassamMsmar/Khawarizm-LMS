@@ -70,6 +70,13 @@ class Lesson(models.Model):
     LESSON_TYPES = [
         ('video', 'Video'),
         ('article', 'Article'),
+        ('pdf', 'PDF'),
+        ('image', 'Image'),
+        ('audio', 'Audio'),
+        ('document', 'Document'),
+        ('quiz', 'Quiz'),
+        ('assignment', 'Assignment'),
+        ('url', 'URL'),
     ]
     
 

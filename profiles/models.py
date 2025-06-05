@@ -136,7 +136,7 @@ class LecturerProfile(models.Model):
 @receiver(post_save, sender=User)
 def create_student_profile(sender, instance, created, **kwargs):
     """Create a StudentProfile when a User is created with user_type='student'"""
-    if created and instance.user_type == 'student':
+    if created and instance.roles.filter(slug='student').exists():
         StudentProfile.objects.create(user=instance)
 
 @receiver(post_save, sender=User)
