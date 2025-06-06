@@ -9,7 +9,7 @@ class DegreeLevel(models.Model):
 class Department(models.Model):
     name = models.CharField(max_length=200)
     slug = models.SlugField(unique=True, max_length=200, null=True, blank=True)
-    description = models.TextField(null=True, blank=True)
+    description = models.TextField(blank=True)
     image = models.ImageField(upload_to='department/images/', null=True, blank=True)
     thumbnail = models.ImageField(upload_to='department/images/thumbnails/', null=True, blank=True)
     created_at = models.DateTimeField(null=True, blank=True)
