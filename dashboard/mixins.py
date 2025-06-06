@@ -17,6 +17,10 @@ class UserTypeRedirectMixin(View):
                 return redirect('dashboard:student:studentDashboard')
             elif user.roles == 'lecturer':
                 return redirect('dashboard:lecturer:lecturerDashboard')
+            elif user.roles == 'department_manager':
+                return redirect('dashboard:department_manager:department_managerDashboard')
+            elif user.roles == 'college_manager':
+                return redirect('dashboard:college_manager:college_managerDashboard')
             elif user.user_type == 'admin':
                 return redirect('dashboard:admin:adminDashboard')
             else:

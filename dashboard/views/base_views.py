@@ -14,6 +14,10 @@ class BaseDashboardView(LoginRequiredMixin, UserTypeRedirectMixin, TemplateView)
             return redirect('dashboard:student')
         if user.roles == 'lecturer' and not isinstance(self, LecturerDashboardView):
             return redirect('dashboard:lecturer')
+        if user.roles == 'department_manager' and not isinstance(self, DepartmentManagerDashboardView):
+            return redirect('dashboard:department_manager')
+        if user.roles == 'college_manager' and not isinstance(self, CollegeManagerDashboardView):
+            return redirect('dashboard:college_manager')
         if user.roles == 'admin' and not isinstance(self, AdminDashboardView):
             return redirect('dashboard:adminDashboard')
         return super().dispatch(request, *args, **kwargs)
