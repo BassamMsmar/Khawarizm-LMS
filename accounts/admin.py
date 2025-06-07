@@ -25,9 +25,9 @@ class UserAdmin(UserAdmin):
         }),
     )
 
-    list_display = ('username', 'email', 'first_name', 'last_name', 'display_roles', 'is_staff', 'is_superuser')
+    list_display = ('id','username', 'email', 'first_name', 'last_name', 'display_roles', 'is_staff', 'is_superuser')
     search_fields = ('username', 'email', 'first_name', 'last_name')
-    ordering = ('username',)
+    ordering = ('id',)
     filter_horizontal = ('roles',)  # لتسهيل اختيار الأدوار في الواجهة
 
     def display_roles(self, obj):
@@ -36,4 +36,7 @@ class UserAdmin(UserAdmin):
 
 
 admin.site.register(User, UserAdmin)
-admin.site.register(Role)
+
+@admin.register(Role)
+class RoleAdmin(admin.ModelAdmin):
+    readonly_fields = ('slug',)
