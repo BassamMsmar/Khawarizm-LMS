@@ -30,7 +30,7 @@ class Role(models.Model):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
-    # Many-to-many relationship to allow multiple roles per user
+    # Many-to-many relationship to allow multiple roles per user for dashboard
     roles = models.ManyToManyField('accounts.Role', blank=True)
 
     # USER_TYPE_CHOICES for profile 
@@ -98,12 +98,13 @@ class User(AbstractBaseUser, PermissionsMixin):
         super().save(*args, **kwargs)
 
         # After saving, handle roles and profiles
-        if self.profile_type == 'lecturer':
-            self.roles.add(Role.objects.get(name='lecturer'))
-            from profiles.models import LecturerProfile
-            LecturerProfile.objects.create(user=self)
-        elif self.profile_type == 'student':
-            self.roles.add(Role.objects.get(name='student'))
-            from profiles.models import StudentProfile
-            StudentProfile.objects.create(user=self)
-        
+        if self.pk is None:
+            if self.profile_type == 'lecturer':
+                self.roles.add(Role.objects.get(name='lecturer'))
+                from profiles.models import LecturerProfile
+                LecturerProfile.objects.create(user=self)
+            elif self.profile_type == 'student':
+                self.roles.add(Role.objects.get(name='student'))
+                from profiles.models import StudentProfile
+                StudentProfile.objects.create(user=self)
+            

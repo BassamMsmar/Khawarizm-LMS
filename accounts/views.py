@@ -11,17 +11,6 @@ from .models import User
 class UserLoginView(LoginView):
     template_name = 'accounts/login.html'
 
-    def get_success_url(self):
-        user = self.request.user
-        if user.roles == 'student':
-            return reverse('dashboard:student:studentDashboard')
-        elif user.roles == 'lecturer' or user.roles == 'teaching_assistant':
-            return reverse('dashboard:lecturer:lecturerDashboard')
-        elif user.roles == 'admin'  :
-            return reverse('dashboard:admin:adminDashboard')
-        else:
-            return reverse('home')
-
 
 class UserLogoutView(LogoutView):
     def get_next_page(self):
