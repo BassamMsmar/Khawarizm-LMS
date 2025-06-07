@@ -1,11 +1,10 @@
 from django.db import models
-from django.contrib.auth import get_user_model
-from phonenumber_field.modelfields import PhoneNumberField
 from django.utils.text import slugify
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from phonenumber_field.modelfields import PhoneNumberField
+
 # Create your models here.
-User = get_user_model()
 
 class Language(models.Model):
     """Language model for user preferences"""
@@ -19,7 +18,7 @@ class Language(models.Model):
 
 class StudentProfile(models.Model):
     """Additional profile information for students"""
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='student_profile')
+    user = models.OneToOneField('accounts.User', on_delete=models.CASCADE, related_name='student_profile')
     bio = models.TextField(blank=True, null=True)
     
     # Documents
@@ -32,7 +31,7 @@ class StudentProfile(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     
     def __str__(self):
-        return f"Student Profile - {self.user.username}"
+        return f"{self.user.first_name} {self.user.last_name}"
 
 
 
@@ -40,7 +39,7 @@ class StudentProfile(models.Model):
 class LecturerProfile(models.Model):
     """Profile information for lecturers"""
     user = models.OneToOneField(
-        User,
+        'accounts.User',
         on_delete=models.CASCADE,
         related_name='lecturer_profile'
     )
@@ -59,4 +58,4 @@ class LecturerProfile(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     
     def __str__(self):
-        return f"Lecturer Profile - {self.user.username}"
+        return f"{self.user.first_name} {self.user.last_name}"

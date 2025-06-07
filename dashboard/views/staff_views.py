@@ -5,5 +5,5 @@ from django.shortcuts import redirect
 
 
 
-class LecturerDashboardView(LoginRequiredMixin, UserTypeRedirectMixin, TemplateView):
-    template_name = 'dashboard/LecturerDashboard/lecturerDashboard.html'
+class StaffDashboardView(LoginRequiredMixin, UserTypeRedirectMixin, TemplateView):
+    template_name = 'dashboard/staff/staffDashboard.html'
