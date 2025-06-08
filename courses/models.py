@@ -7,6 +7,8 @@ from django.urls import reverse
 from django_ckeditor_5.fields import CKEditor5Field
 User = get_user_model()
 
+from college.models import College
+
 # Create your models here.
 
 
@@ -24,7 +26,19 @@ class Course(models.Model):
     academic_hours = models.IntegerField(default=0)
     short_description = models.TextField(max_length=300)
     description = CKEditor5Field('Description', blank=True, null=True)
-    department = models.ManyToManyField(Department)
+    colleges = models.ManyToManyField(
+        College,
+        blank=True,
+        related_name='courses',
+        verbose_name='Colleges offering this course'
+    )
+    
+    departments = models.ManyToManyField(
+        Department,
+        blank=True,
+        related_name='courses',
+        verbose_name='Departments offering this course'
+    )
     image = models.ImageField(upload_to='courses/images/')
     thumbnail = models.ImageField(upload_to='courses/images/thumbnails/')
     what_youll_learn = CKEditor5Field(blank=True, null=True)

@@ -4,6 +4,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 from accounts.models import User
 from college.models import College
+from django.db.models import Count
+from profiles.models import StudentProfile
 
 class AdminDashboardView(RolesRequiredMixin, TemplateView):
     template_name = 'dashboard/AdminDashboard/adminDashboard.html'
@@ -19,12 +21,28 @@ class CollegesView(RolesRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        college = College.objects.all()
 
+        # إجمالي عدد الطلاب في النظام
+        total_students = StudentProfile.objects.count()
 
-        context['colleges'] = College.objects.all()
+        # جلب الكليات مع التعدادات المطلوبة
+        colleges = College.objects.annotate(
+            department_count=Count('departments', distinct=True),
+            course_count=Count('courses', distinct=True),
+            lecturer_count=Count('lecturer_profiles', distinct=True),
+            student_count=Count('student_profiles', distinct=True),
+        )
+
+        # حساب نسبة الطلاب لكل كلية
+        for college in colleges:
+            college.student_ratio = (
+                round((college.student_count / total_students * 100), 2)
+                if total_students > 0 else 0
+            )
+
+        context['colleges'] = colleges
+        context['total_students'] = total_students
         return context
-
 class DepartmentsView(RolesRequiredMixin, TemplateView):
     template_name = 'dashboard/AdminDashboard/adminDepartments.html'
     allowed_roles = ['admin']

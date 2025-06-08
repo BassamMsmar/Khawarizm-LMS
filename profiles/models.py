@@ -26,9 +26,9 @@ class StudentProfile(models.Model):
     user = models.OneToOneField('accounts.User', on_delete=models.CASCADE, related_name='student_profile')
     bio = models.TextField(blank=True, null=True)
 
-    college = models.ForeignKey(College, on_delete=models.SET_NULL, null=True, blank=True)
-    department = models.ForeignKey(Department, on_delete=models.SET_NULL, null=True, blank=True)
-    course = models.ForeignKey(Course, on_delete=models.SET_NULL, null=True, blank=True)
+    college = models.ForeignKey(College, on_delete=models.SET_NULL, null=True, blank=True, related_name='student_profiles')
+    department = models.ForeignKey(Department, on_delete=models.SET_NULL, null=True, blank=True, related_name='student_profiles')
+    course = models.ForeignKey(Course, on_delete=models.SET_NULL, null=True, blank=True, related_name='student_profiles')
     
     # Documents
     certificate_number = models.CharField(max_length=50, blank=True, null=True)
@@ -59,9 +59,9 @@ class LecturerProfile(models.Model):
     education = models.TextField(blank=True, null=True)
     certification = models.TextField(blank=True, null=True)
 
-    college = models.ForeignKey(College, on_delete=models.SET_NULL, null=True, blank=True)
-    department = models.ForeignKey(Department, on_delete=models.SET_NULL, null=True, blank=True)
-    course = models.ForeignKey(Course, on_delete=models.SET_NULL, null=True, blank=True)
+    college = models.ForeignKey(College, on_delete=models.SET_NULL, null=True, blank=True, related_name='lecturer_profiles')
+    department = models.ForeignKey(Department, on_delete=models.SET_NULL, null=True, blank=True, related_name='lecturer_profiles')
+    course = models.ForeignKey(Course, on_delete=models.SET_NULL, null=True, blank=True, related_name='lecturer_profiles')
     
     languages = models.ManyToManyField(Language, blank=True, related_name='lecturer_profiles')
     

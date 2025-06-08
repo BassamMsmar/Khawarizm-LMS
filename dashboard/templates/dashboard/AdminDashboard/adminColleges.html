@@ -12,34 +12,30 @@
             <tr>
                 <th>Name</th>
                 <th>Departments</th>
+                <th>Courses</th>
+                <th>Lecturers</th>
                 <th>Students</th>
-                <th>Start Date</th>
                 <th>Student Ratio</th>
-                <th>Admin</th>
+                <th>admin</th>
+                <th>Is Active</th>
             </tr>
         </thead>
         <tbody>
             {% for college in colleges %}
     <tr>
         <td>{{ college.name }}</td>
-        <td>{{ college.department.name }}</td>
-        <td>{{ college.get_user_type_display }}</td>
+        <td>{{ college.department_count }}</td>
+        <td>{{ college.course_count }}</td>
+        <td>{{ college.lecturer_count }}</td>
+        <td>{{ college.student_count }}</td>
+        <td>{{ college.student_ratio }}</td>
+        <td>{{ college.college_admin.full_name }}</td>
         <td>
             {% if college.is_active %}
                 <span class="badge bg-success">Active</span>
             {% else %}
                 <span class="badge bg-danger">Inactive</span>
             {% endif %}
-        </td>
-        <td>
-            <div class="progress" style="height: 5px;">
-                <div class="progress-bar bg-info" role="progressbar" style="width: {{ college.progress }}%;" aria-valuenow="{{ college.progress }}" aria-valuemin="0" aria-valuemax="100"></div>
-            </div>
-            <small>{{ college.progress }}%</small>
-        </td>
-        <td>{{ college.start_date }}</td>
-        <td>
-            <a href="#" class="btn btn-sm btn-primary">Details</a>
         </td>
     </tr>
     {% endfor %}
@@ -48,11 +44,12 @@
             <tr>
                 <th>Name</th>
                 <th>Department</th>
-                <th>Progress</th>
-                <th>Start Date</th>
-                <th>User Type</th>
-                <th>Status</th>
-                <th>Actions</th>
+                <th>Courses</th>
+                <th>Lecturers</th>
+                <th>Students</th>
+                <th>Student Ratio</th>
+                <th>admin</th>
+                <th>Is Active</th>
             </tr>
         </tfoot>
     </table>
