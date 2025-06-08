@@ -1,8 +1,9 @@
 from django.views.generic import TemplateView
-from django.contrib.auth.mixins import LoginRequiredMixin
+from dashboard.mixins import RolesRequiredMixin
 
 
 
 
-class StudentDashboardView(LoginRequiredMixin, TemplateView):
+class StudentDashboardView(RolesRequiredMixin, TemplateView):
     template_name = 'dashboard/StudentDashboard/studentDashboard.html'
+    allowed_roles = ['student']
