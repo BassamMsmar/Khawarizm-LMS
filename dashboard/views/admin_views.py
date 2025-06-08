@@ -30,7 +30,7 @@ class StudentsView(RolesRequiredMixin, TemplateView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['users'] = User.objects.filter(user_type='student')
+        context['users'] = User.objects.filter(roles__name='student')
         return context
 
 class ExamsView(RolesRequiredMixin, TemplateView):

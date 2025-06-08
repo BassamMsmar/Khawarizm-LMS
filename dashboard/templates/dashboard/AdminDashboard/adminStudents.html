@@ -24,7 +24,7 @@
         <tbody>
             {% for user in users %}
     <tr>
-        <td>{{ user.name }}</td>
+        <td>{{ user.full_name }}</td>
         <td>{{ user.department.name }}</td>
         <td>{{ user.get_user_type_display }}</td>
         <td>
@@ -42,7 +42,7 @@
         </td>
         <td>{{ user.start_date }}</td>
         <td>
-            <a href="{% url 'user_detail' user.id %}" class="btn btn-sm btn-primary">Details</a>
+            <a href="#" class="btn btn-sm btn-primary">Details</a>
         </td>
     </tr>
     {% endfor %}
