@@ -3,6 +3,7 @@ from dashboard.mixins import RolesRequiredMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from accounts.models import User
+from college.models import College
 
 class AdminDashboardView(RolesRequiredMixin, TemplateView):
     template_name = 'dashboard/AdminDashboard/adminDashboard.html'
@@ -11,6 +12,18 @@ class AdminDashboardView(RolesRequiredMixin, TemplateView):
 class AnnouncementsView(RolesRequiredMixin, TemplateView):
     template_name = 'dashboard/AdminDashboard/adminAnnouncements.html'
     allowed_roles = ['admin']
+
+class CollegesView(RolesRequiredMixin, TemplateView):
+    template_name = 'dashboard/AdminDashboard/adminColleges.html'
+    allowed_roles = ['admin']
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        college = College.objects.all()
+
+
+        context['colleges'] = College.objects.all()
+        return context
 
 class DepartmentsView(RolesRequiredMixin, TemplateView):
     template_name = 'dashboard/AdminDashboard/adminDepartments.html'

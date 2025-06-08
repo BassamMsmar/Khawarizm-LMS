@@ -1,6 +1,4 @@
 {% extends 'dashboard/AdminDashboard/base_dashboard.html' %}
-{% load static %}
-
 
 {% block dashboard_content %}
 
@@ -13,22 +11,21 @@
         <thead>
             <tr>
                 <th>Name</th>
-                <th>Department</th>
-                <th>Progress</th>
+                <th>Departments</th>
+                <th>Students</th>
                 <th>Start Date</th>
-                <th>User Type</th>
-                <th>Status</th>
-                <th>Actions</th>
+                <th>Student Ratio</th>
+                <th>Admin</th>
             </tr>
         </thead>
         <tbody>
-            {% for user in users %}
+            {% for college in colleges %}
     <tr>
-        <td>{{ user.full_name }}</td>
-        <td>{{ user.college.name }}</td>
-        <td>{{ user.get_user_type_display }}</td>
+        <td>{{ college.name }}</td>
+        <td>{{ college.department.name }}</td>
+        <td>{{ college.get_user_type_display }}</td>
         <td>
-            {% if user.is_active %}
+            {% if college.is_active %}
                 <span class="badge bg-success">Active</span>
             {% else %}
                 <span class="badge bg-danger">Inactive</span>
@@ -36,11 +33,11 @@
         </td>
         <td>
             <div class="progress" style="height: 5px;">
-                <div class="progress-bar bg-info" role="progressbar" style="width: {{ user.progress }}%;" aria-valuenow="{{ user.progress }}" aria-valuemin="0" aria-valuemax="100"></div>
+                <div class="progress-bar bg-info" role="progressbar" style="width: {{ college.progress }}%;" aria-valuenow="{{ college.progress }}" aria-valuemin="0" aria-valuemax="100"></div>
             </div>
-            <small>{{ user.progress }}%</small>
+            <small>{{ college.progress }}%</small>
         </td>
-        <td>{{ user.start_date }}</td>
+        <td>{{ college.start_date }}</td>
         <td>
             <a href="#" class="btn btn-sm btn-primary">Details</a>
         </td>

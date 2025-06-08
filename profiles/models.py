@@ -4,6 +4,11 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from phonenumber_field.modelfields import PhoneNumberField
 
+from college.models import College
+from department.models import Department
+from courses.models import Course
+
+
 # Create your models here.
 
 class Language(models.Model):
@@ -20,6 +25,10 @@ class StudentProfile(models.Model):
     """Additional profile information for students"""
     user = models.OneToOneField('accounts.User', on_delete=models.CASCADE, related_name='student_profile')
     bio = models.TextField(blank=True, null=True)
+
+    college = models.ForeignKey(College, on_delete=models.SET_NULL, null=True, blank=True)
+    department = models.ForeignKey(Department, on_delete=models.SET_NULL, null=True, blank=True)
+    course = models.ForeignKey(Course, on_delete=models.SET_NULL, null=True, blank=True)
     
     # Documents
     certificate_number = models.CharField(max_length=50, blank=True, null=True)
@@ -50,7 +59,10 @@ class LecturerProfile(models.Model):
     education = models.TextField(blank=True, null=True)
     certification = models.TextField(blank=True, null=True)
 
-
+    college = models.ForeignKey(College, on_delete=models.SET_NULL, null=True, blank=True)
+    department = models.ForeignKey(Department, on_delete=models.SET_NULL, null=True, blank=True)
+    course = models.ForeignKey(Course, on_delete=models.SET_NULL, null=True, blank=True)
+    
     languages = models.ManyToManyField(Language, blank=True, related_name='lecturer_profiles')
     
 

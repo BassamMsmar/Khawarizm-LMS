@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'django_ckeditor_5',  
+    'modeltranslation',
 
     'accounts',
     'about',
@@ -239,3 +240,8 @@ CKEDITOR_5_CONFIGS = {
         }
     }
 }
+
+
+LANGUAGE_CODE = 'en'
+MODELTRANSLATION_DEFAULT_LANGUAGE = 'en'
+MODELTRANSLATION_LANGUAGES = ('en', 'ar')

@@ -1,11 +1,12 @@
 from django.urls import path
-from ..views.admin_views import AdminDashboardView, AnnouncementsView, DepartmentsView, CoursesView, LecturersView, StudentsView, ExamsView, ProfileView, SettingsView, AboutView
+from ..views.admin_views import AdminDashboardView, AnnouncementsView, CollegesView, DepartmentsView, CoursesView, LecturersView, StudentsView, ExamsView, ProfileView, SettingsView, AboutView
 
 app_name = 'admin'
 
 urlpatterns = [
     path('', AdminDashboardView.as_view(), name='adminDashboard'),
     path('announcements/', AnnouncementsView.as_view(), name='adminAnnouncements'),
+    path('colleges/', CollegesView.as_view(), name='adminColleges'),
     path('departments/', DepartmentsView.as_view(), name='adminDepartments'),
     path('courses/', CoursesView.as_view(), name='adminCourses'),
     path('lecturers/', LecturersView.as_view(), name='adminLecturers'),
