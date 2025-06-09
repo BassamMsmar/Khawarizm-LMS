@@ -75,11 +75,11 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     objects = UserManager()
 
-    def __str__(self):
-        return self.email
-
     def get_full_name(self):
         return f"{self.first_name} {self.last_name}"
+
+    def __str__(self):
+        return self.get_full_name()
 
     def get_short_name(self):
         return self.first_name
@@ -103,6 +103,7 @@ class User(AbstractBaseUser, PermissionsMixin):
                 self.roles.add(Role.objects.get(name='lecturer'))
                 from profiles.models import LecturerProfile
                 LecturerProfile.objects.create(user=self)
+
             elif self.profile_type == 'student':
                 self.roles.add(Role.objects.get(name='student'))
                 from profiles.models import StudentProfile

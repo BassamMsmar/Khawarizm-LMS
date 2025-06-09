@@ -4,8 +4,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 from accounts.models import User
 from college.models import College
+from department.models import Department
 from django.db.models import Count
 from profiles.models import StudentProfile
+from courses.models import Course
 
 class AdminDashboardView(RolesRequiredMixin, TemplateView):
     template_name = 'dashboard/AdminDashboard/adminDashboard.html'
@@ -47,9 +49,23 @@ class DepartmentsView(RolesRequiredMixin, TemplateView):
     template_name = 'dashboard/AdminDashboard/adminDepartments.html'
     allowed_roles = ['admin']
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['departments'] = Department.objects.annotate(
+            course_count=Count('courses', distinct=True),
+            lecturer_count=Count('lecturer_profiles', distinct=True),
+            student_count=Count('student_profiles', distinct=True),
+        )
+        return context
+
 class CoursesView(RolesRequiredMixin, TemplateView):
     template_name = 'dashboard/AdminDashboard/adminCourses.html'
     allowed_roles = ['admin']
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['courses'] = Course.objects.all()
+        return context
 
 class LecturersView(RolesRequiredMixin, TemplateView):
     template_name = 'dashboard/AdminDashboard/adminLecturers.html'

@@ -1,65 +1,79 @@
 {% extends 'dashboard/AdminDashboard/base_dashboard.html' %}
 
-{% block dashboard_content %}
-
-{% block extra_css %}
-{% include 'partials/datatables.html' %}
+{% block create_button %}
+  <div class="rbt-tutor-information-right">
+    <div class="tutor-btn">
+      {% comment %} <a class="rbt-btn btn-md hover-icon-reverse" href="{% url 'college:create_college' %}"> {% endcomment %}
+      <a class="rbt-btn btn-md hover-icon-reverse" href="#">
+        <span class="icon-reverse-wrapper">
+          <span class="btn-text">Create a New College</span>
+          <span class="btn-icon"><i class="feather-arrow-right"></i></span>
+          <span class="btn-icon"><i class="feather-arrow-right"></i></span>
+        </span>
+      </a>
+    </div>
+  </div>
 {% endblock %}
-<div class="col-lg-9">
-    <!-- List students  -->
+
+{% block dashboard_content %}
+  {% block extra_css %}
+    {% include 'partials/datatables.html' %}
+  {% endblock %}
+
+  <div class="col-lg-9">
+    <!-- List students -->
     <table id="example" class="table table-striped table-bordered">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Departments</th>
-                <th>Courses</th>
-                <th>Lecturers</th>
-                <th>Students</th>
-                <th>Student Ratio</th>
-                <th>admin</th>
-                <th>Is Active</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for college in colleges %}
-    <tr>
-        <td>{{ college.name }}</td>
-        <td>{{ college.department_count }}</td>
-        <td>{{ college.course_count }}</td>
-        <td>{{ college.lecturer_count }}</td>
-        <td>{{ college.student_count }}</td>
-        <td>{{ college.student_ratio }}</td>
-        <td>{{ college.college_admin.full_name }}</td>
-        <td>
-            {% if college.is_active %}
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Departments</th>
+          <th>Courses</th>
+          <th>Lecturers</th>
+          <th>Students</th>
+          <th>Student Ratio</th>
+          <th>admin</th>
+          <th>Is Active</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for college in colleges %}
+          <tr>
+            <td>{{ college.name }}</td>
+            <td>{{ college.department_count }}</td>
+            <td>{{ college.course_count }}</td>
+            <td>{{ college.lecturer_count }}</td>
+            <td>{{ college.student_count }}</td>
+            <td>{{ college.student_ratio }}</td>
+            <td>{{ college.college_admin.full_name }}</td>
+            <td>
+              {% if college.is_active %}
                 <span class="badge bg-success">Active</span>
-            {% else %}
+              {% else %}
                 <span class="badge bg-danger">Inactive</span>
-            {% endif %}
-        </td>
-    </tr>
-    {% endfor %}
-        </tbody>
-        <tfoot>
-            <tr>
-                <th>Name</th>
-                <th>Department</th>
-                <th>Courses</th>
-                <th>Lecturers</th>
-                <th>Students</th>
-                <th>Student Ratio</th>
-                <th>admin</th>
-                <th>Is Active</th>
-            </tr>
-        </tfoot>
+              {% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+      <tfoot>
+        <tr>
+          <th>Name</th>
+          <th>Department</th>
+          <th>Courses</th>
+          <th>Lecturers</th>
+          <th>Students</th>
+          <th>Student Ratio</th>
+          <th>admin</th>
+          <th>Is Active</th>
+        </tr>
+      </tfoot>
     </table>
-    <!-- End List students  -->
+    <!-- End List students -->
 
     {% block extra_js %}
-    <script>
-        new DataTable('#example');
-    </script>
+      <script>
+        new DataTable('#example')
+      </script>
     {% endblock %}
-
-</div>
+  </div>
 {% endblock %}

@@ -1,10 +1,73 @@
 {% extends 'dashboard/AdminDashboard/base_dashboard.html' %}
 
+{% block create_button %}
+  <div class="rbt-tutor-information-right">
+    <div class="tutor-btn">
+      {% comment %} <a class="rbt-btn btn-md hover-icon-reverse" href="{% url 'college:create_college' %}"> {% endcomment %}
+      <a class="rbt-btn btn-md hover-icon-reverse" href="#">
+        <span class="icon-reverse-wrapper">
+          <span class="btn-text">Create a New Department</span>
+          <span class="btn-icon"><i class="feather-arrow-right"></i></span>
+          <span class="btn-icon"><i class="feather-arrow-right"></i></span>
+        </span>
+      </a>
+    </div>
+  </div>
+{% endblock %}
+
 {% block dashboard_content %}
+  {% block extra_css %}
+    {% include 'partials/datatables.html' %}
+  {% endblock %}
 
-<div class="col-lg-9">
-    <!-- departments  -->
+  <div class="col-lg-9">
+    <!-- List students -->
+    <table id="example" class="table table-striped table-bordered">
+      <thead>
+        <tr>
+          <th>Department Name</th>
+          <th>Courses</th>
+          <th>Lecturers</th>
+          <th>Students</th>
+          <th>admin</th>
+          <th>Is Active</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for department in departments %}
+          <tr>
+            <td>{{ department.name }}</td>
+            <td>{{ department.course_count }}</td>
+            <td>{{ department.lecturer_count }}</td>
+            <td>{{ department.student_count }}</td>
+            <td>{{ department.college_admin.full_name }}</td>
+            <td>
+              {% if department.is_active %}
+                <span class="badge bg-success">Active</span>
+              {% else %}
+                <span class="badge bg-danger">Inactive</span>
+              {% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+      <tfoot>
+        <tr>
+          <th>Name</th>
+          <th>Courses</th>
+          <th>Lecturers</th>
+          <th>Students</th>
+          <th>admin</th>
+          <th>Is Active</th>
+        </tr>
+      </tfoot>
+    </table>
+    <!-- End List students -->
 
-    <!-- End departments  -->
-</div>
+    {% block extra_js %}
+      <script>
+        new DataTable('#example')
+      </script>
+    {% endblock %}
+  </div>
 {% endblock %}

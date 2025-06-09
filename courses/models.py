@@ -1,9 +1,9 @@
 from django.db import models
 from django.utils import timezone
 from department.models import Department
-from django.utils.text import slugify
 from django.contrib.auth import get_user_model
 from django.urls import reverse
+from utils.slug import get_unique_slug
 from django_ckeditor_5.fields import CKEditor5Field
 User = get_user_model()
 
@@ -15,7 +15,6 @@ from college.models import College
 
 class Course(models.Model):
     name = models.CharField(max_length=100)
-    slug = models.SlugField(unique=True, max_length=200)
     lecturer = models.ForeignKey(
         User,
         on_delete=models.SET_NULL,
@@ -23,8 +22,8 @@ class Course(models.Model):
         null=True,
         blank=True
     )
-    academic_hours = models.IntegerField(default=0)
-    short_description = models.TextField(max_length=300)
+    academic_hours = models.IntegerField(blank=True, null=True)
+    short_description = models.TextField(max_length=1000, blank=True, null=True)
     description = CKEditor5Field('Description', blank=True, null=True)
     colleges = models.ManyToManyField(
         College,
@@ -39,8 +38,8 @@ class Course(models.Model):
         related_name='courses',
         verbose_name='Departments offering this course'
     )
-    image = models.ImageField(upload_to='courses/images/')
-    thumbnail = models.ImageField(upload_to='courses/images/thumbnails/')
+    image = models.ImageField(upload_to='courses/images/', blank=True, null=True)
+    thumbnail = models.ImageField(upload_to='courses/images/thumbnails/', blank=True, null=True)
     what_youll_learn = CKEditor5Field(blank=True, null=True)
     who_this_course_is_for = CKEditor5Field(blank=True, null=True)
     students_enrolled = models.ManyToManyField(
@@ -50,6 +49,8 @@ class Course(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    slug = models.SlugField(unique=True, max_length=200, null=True, blank=True)
+    is_active = models.BooleanField(default=True)
 
     class Meta:
         ordering = ['-created_at']
@@ -60,14 +61,7 @@ class Course(models.Model):
         return self.name
 
     def save(self, *args, **kwargs):
-        if not self.slug:
-            base_slug = slugify(self.name)
-            slug = base_slug
-            counter = 1
-            while Course.objects.filter(slug=slug).exists():
-                slug = f"{base_slug}-{counter}"
-                counter += 1
-            self.slug = slug
+        self.slug = get_unique_slug(Course, self.name)
         super().save(*args, **kwargs)
 
     def get_absolute_url(self):
@@ -123,9 +117,15 @@ class Lesson(models.Model):
         blank=True,
         null=True
     )
-    order = models.PositiveIntegerField(default=0)
+    order = models.PositiveIntegerField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    slug = models.SlugField(unique=True, max_length=200, null=True, blank=True)
+    is_active = models.BooleanField(default=True)
+    
+    def save(self, *args, **kwargs):
+        self.slug = get_unique_slug(Lesson, self.title)
+        super().save(*args, **kwargs)
     
     class Meta:
         ordering = ['order']
