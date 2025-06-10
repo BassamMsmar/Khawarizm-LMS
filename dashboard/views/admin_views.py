@@ -6,7 +6,7 @@ from accounts.models import User
 from college.models import College
 from department.models import Department
 from django.db.models import Count
-from profiles.models import StudentProfile
+from profiles.models import StudentProfile, LecturerProfile
 from courses.models import Course
 
 class AdminDashboardView(RolesRequiredMixin, TemplateView):
@@ -71,13 +71,18 @@ class LecturersView(RolesRequiredMixin, TemplateView):
     template_name = 'dashboard/AdminDashboard/adminLecturers.html'
     allowed_roles = ['admin']
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['profiles'] = LecturerProfile.objects.all()
+        return context
+
 class StudentsView(RolesRequiredMixin, TemplateView):
     template_name = 'dashboard/AdminDashboard/adminStudents.html'
     allowed_roles = ['admin']
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['users'] = User.objects.filter(roles__name='student')
+        context['students'] = StudentProfile.objects.all()
         return context
 
 class ExamsView(RolesRequiredMixin, TemplateView):

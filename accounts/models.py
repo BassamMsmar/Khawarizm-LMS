@@ -50,13 +50,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     email_verified = models.BooleanField(default=False)
     phone_verified = models.BooleanField(default=False)
 
-    # Profile info
-    profile_picture = models.ImageField(upload_to='profile_pictures/', blank=True, null=True)
-    country = CountryField(blank=True, null=True)
-    city = models.CharField(max_length=100, blank=True, null=True)
-    address = models.TextField(blank=True, null=True)
-    postal_code = models.CharField(max_length=20, blank=True, null=True)
-
     # Authentication fields
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
