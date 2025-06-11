@@ -14,7 +14,7 @@ from college.models import College
 
 
 class Course(models.Model):
-    name = models.CharField(max_length=100)
+    title = models.CharField(max_length=100)
     lecturer = models.ForeignKey(
         User,
         on_delete=models.SET_NULL,
@@ -58,10 +58,10 @@ class Course(models.Model):
         verbose_name_plural = 'Courses'
 
     def __str__(self):
-        return self.name
+        return self.title
 
     def save(self, *args, **kwargs):
-        self.slug = get_unique_slug(Course, self.name)
+        self.slug = get_unique_slug(Course, self.title)
         super().save(*args, **kwargs)
 
     def get_absolute_url(self):

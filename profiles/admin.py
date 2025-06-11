@@ -24,5 +24,5 @@ class LecturerProfileAdmin(admin.ModelAdmin):
     list_display = ('user', 'experience', 'created_at')
     list_filter = ('experience', 'created_at')
     search_fields = ('user__first_name', 'user__last_name', 'user__email')
-    filter_horizontal = ('colleges', 'departments', 'course', 'languages')
+    filter_horizontal = ('colleges', 'departments', 'courses', 'languages')
     readonly_fields = ('created_at', 'updated_at')

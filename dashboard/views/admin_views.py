@@ -5,7 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from accounts.models import User
 from college.models import College
 from department.models import Department
-from django.db.models import Count
+from django.db.models import Count, Prefetch
 from profiles.models import StudentProfile, LecturerProfile
 from courses.models import Course
 
@@ -67,15 +67,44 @@ class CoursesView(RolesRequiredMixin, TemplateView):
         context['courses'] = Course.objects.all()
         return context
 
+
 class LecturersView(RolesRequiredMixin, TemplateView):
     template_name = 'dashboard/AdminDashboard/adminLecturers.html'
     allowed_roles = ['admin']
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['profiles'] = LecturerProfile.objects.all()
-        return context
+        
+        # تحسين الاستعلام لاحتساب عدد الطلاب لكل مقرر
+        courses_prefetch = Prefetch(
+            'courses',
+            queryset=Course.objects.annotate(
+                enrolled_count=Count('students_enrolled')
+            ),
+            to_attr='lecturer_courses'
+        )
 
+        books_prefetch = Prefetch()
+        
+        # جلب البيانات مع التحسينات
+        lecturers = LecturerProfile.objects.prefetch_related(
+            courses_prefetch,
+            Prefetch('departments', queryset=Department.objects.only('name')),
+            Prefetch('colleges', queryset=College.objects.only('name'))
+        ).select_related('user').annotate(
+            total_students=Count('courses__students_enrolled', distinct=True)
+        )
+        
+        # حساب الإجمالي العام لجميع الطلاب (اختياري)
+        total_all_students = Course.objects.aggregate(
+            total=Count('students_enrolled', distinct=True)
+        )['total']
+        
+        context.update({
+            'profiles': lecturers,
+            'total_all_students': total_all_students
+        })
+        return context
 class StudentsView(RolesRequiredMixin, TemplateView):
     template_name = 'dashboard/AdminDashboard/adminStudents.html'
     allowed_roles = ['admin']

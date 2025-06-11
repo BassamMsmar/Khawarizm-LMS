@@ -28,7 +28,7 @@
             <th>Full Name</th>
             <th>colleges</th>
             <th>Departments</th>
-            <th>Level</th>
+            <th>courses</th>
             <th>Students</th>
             <th>Email</th>
             <th>Phone</th>
@@ -43,10 +43,28 @@
         {% for profile in profiles %}
           <tr>
             <td>{{ profile.user.full_name }}</td>
-            <td>{{ profile.colleges }}</td>
-            <td>{{ profile.departments }}</td>
-            <td>{{ profile.level }}</td>
-            <td>{{ profile.students_enrolled.count }}</td>
+            <td>
+              {% for college in profile.colleges.all %}
+                {{ college.name }}{% if not forloop.last %}, {% endif %}
+                {% empty %}
+                  لا يوجد
+              {% endfor %}
+            </td>
+            <td>
+              {% for dept in profile.departments.all %}
+                {{ dept.name }}{% if not forloop.last %}, {% endif %}
+              {% empty %}
+                لا يوجد
+              {% endfor %}
+            </td>
+            <td>
+              {% for course in profile.courses.all %}
+                {{ course.title }}{% if not forloop.last %}, {% endif %}
+              {% empty %}
+                لا يوجد
+              {% endfor %}
+            </td>
+            <td>{{ total_students }}</td>
             <td>{{ profile.user.email }}</td>
             <td>{{ profile.user.phone }}</td>
             <td>{{ profile.country }}</td>
@@ -54,7 +72,7 @@
             <td>{{ profile.created_at | date:"Y-m-d" }}</td>
             <td>{{ profile.updated_at | date:"Y-m-d H:i" }}</td>
             <td>
-              {% if lecturer.is_active %}
+              {% if profile.is_active %}
                 <span class="badge bg-success">Active</span>
               {% else %}
                 <span class="badge bg-danger">Inactive</span>
@@ -68,7 +86,7 @@
           <th>Full Name</th>
           <th>colleges</th>
           <th>Departments</th>
-          <th>Level</th>
+          <th>courses</th>
           <th>Students</th>
           <th>Email</th>
           <th>Phone</th>

@@ -52,7 +52,7 @@ class LecturerProfile(models.Model):
 
     colleges = models.ManyToManyField(College, blank=True, related_name='lecturer_profiles')
     departments = models.ManyToManyField(Department, blank=True, related_name='lecturer_profiles')
-    course = models.ManyToManyField(Course, blank=True, related_name='lecturer_profiles')
+    courses = models.ManyToManyField(Course, blank=True, related_name='lecturer_profiles')
 
     languages = models.ManyToManyField(Language, blank=True, related_name='lecturer_profiles')
 
