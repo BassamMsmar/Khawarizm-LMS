@@ -1,0 +1,332 @@
+/*--------------------------
+    Pricing Table  
+----------------------------*/
+
+.pricing-billing-duration {
+    text-align: right;
+    @media #{$sm-layout} {
+        text-align: left;
+    }
+    ul {
+        @extend %liststyle;
+        background: var(--color-white);
+        border-radius: 500px;
+        padding: 16px 20px;
+        display: inline-block;
+        box-shadow: var(--shadow-1);
+        @media #{$sm-layout} {
+            padding: 6px 6px;
+        }
+        .nav-item {
+            float: left;
+            margin: 0;
+            .nav-link {
+                height: 60px;
+                font-weight: 500;
+                font-size: 20px;
+                color: var(--color-heading);
+                border: 0 none;
+                background: transparent;
+                padding: 0 35px;
+                border-radius: 500px;
+                transition: var(--transition);
+                @media #{$lg-layout} {
+                    font-size: 18px;
+                    padding: 0 25px;
+                }
+                @media #{$md-layout} {
+                    font-size: 17px;
+                    padding: 0 15px;
+                    letter-spacing: -0.5px;
+                }
+                @media #{$sm-layout} {
+                    font-size: 17px;
+                    padding: 0 15px;
+                    letter-spacing: -0.5px;
+                    height: 50px;
+                }
+                &.active {
+                    background-size: 300% 100%;
+                    background-image: linear-gradient(to right, var(--color-primary), var(--color-secondary), var(--color-secondary), var(--color-primary));
+                    color: var(--color-white);
+                }
+            }
+        }
+    }
+}
+
+// Pricing Table Styles 
+.pricing-table {
+    background: var(--color-white);
+    box-shadow: var(--shadow-1);
+    border-radius: 5px;
+    padding: 60px 64px;
+    position: relative;
+    @media #{$md-layout} {
+        padding: 60px 30px;
+    }
+    @media #{$sm-layout} {
+        padding: 40px 20px;
+    }
+    .pricing-header {
+        margin-bottom: 30px;
+        text-align: center;
+        .price-wrap {
+            .monthly-pricing {
+                display: none;
+            }
+            .amount {
+                font-weight: 500;
+                font-size: 50px;
+                line-height: 1.2;
+                color: var(--color-primary);
+                display: inline-block;
+                @media #{$sm-layout} {
+                    font-size: 36px;
+                }
+            }
+            .duration {
+                color: var(--color-primary);
+                font-size: 16px;
+                font-weight: 500;
+                text-transform: capitalize;
+                display: inline-block;
+                margin-left: -4px;
+            }
+        }
+        .title {
+            font-weight: 500;
+            font-size: 24px;
+            line-height: 1.2;
+            margin-bottom: 20px;
+        }
+    }
+    .pricing-body {
+        margin-bottom: 30px;
+        .list-item {
+            @extend %liststyle;
+            li {
+                display: flex;
+                align-items: center;
+                margin: 0;
+                @media #{$sm-layout} {
+                    font-size: 16px;
+                }
+                i {
+                    color: var(--color-success);
+                    margin-right: 10px;
+                }
+                & + li {
+                    margin-top: 16px;
+                    @media #{$sm-layout} {
+                        margin-top: 10px;
+                    }
+                }
+                &.off {
+                    opacity: 0.5;
+                    i {
+                        color: var(--color-danger);
+                    }
+                }
+            }
+        }
+    }
+    &.style-2 {
+        .pricing-body {
+            margin-bottom: 0;
+            margin-top: 30px;
+        }
+    }
+    &.style-3 {
+        padding: 60px 0px;
+        text-align: center;
+        background: transparent;
+        box-shadow: none;
+        @media #{$sm-layout} {
+            padding: 30px 0px;
+        }
+        .icon-image {
+            img {
+                max-height: 100px;
+                object-fit: cover;
+            }
+        }
+        .pricing-body,
+        .pricing-btn,
+        .pricing-header {
+            padding: 0 60px;
+            @media #{$lg-layout} {
+                padding: 0 20px;
+            }
+            @media #{$md-layout} {
+                padding: 0 20px;
+            }
+            @media #{$sm-layout} {
+                padding: 0 20px;
+            }
+        }
+        .pricing-header {
+            border-bottom: 1px solid var(--color-border);
+            padding-bottom: 40px;
+            margin-bottom: 40px;
+            padding-top: 40px;
+            border-top: 1px solid var(--color-border);
+            margin-top: 40px;
+            @media #{$md-layout} {
+                padding-bottom: 20px;
+                margin-bottom: 20px;
+                padding-top: 20px;
+                margin-top: 20px;
+            }
+            @media #{$sm-layout} {
+                padding-bottom: 20px;
+                margin-bottom: 20px;
+                padding-top: 20px;
+                margin-top: 20px;
+            }
+        }
+        .pricing-body {
+            .list-item {
+                li {
+                    justify-content: center;
+                    &.off {
+                        text-decoration: line-through;
+                    }
+                }
+            }
+        }
+        &.active {
+            background: var(--color-white);
+            box-shadow: var(--shadow-1);
+        }
+    }
+}
+
+.pricing-badge {
+    background: var(--color-secondary);
+    padding: 0 17px;
+    position: absolute;
+    right: 0;
+    top: 15px;
+    height: 30px;
+    line-height: 30px;
+    padding-left: 25px;
+    span {
+        font-weight: 700;
+        font-size: 14px;
+        color: var(--color-white);
+        text-align: center;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+    }
+    &::after {
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 24px 0 24px 23px;
+        border-color: transparent transparent transparent #fff;
+        position: absolute;
+        right: 87%;
+        top: 50%;
+        content: "";
+        transform: translateY(-50%);
+    }
+}
+
+/*----------------------------
+    Advance Pricing Table  
+------------------------------*/
+
+.advance-pricing {
+    background: var(--color-white);
+    border-radius: 10px;
+    box-shadow: var(--shadow-1);
+    .pricing-left {
+        height: 100%;
+        background: var(--color-lighter);
+        padding: 60px 50px;
+        border-radius: 10px 0 0 10px;
+        @media #{$sm-layout} {
+            padding: 30px 20px;
+        }
+        .main-title {
+            margin-bottom: 10px;
+        }
+        .price-wrapper {
+            .price-amount {
+                font-size: 60px;
+                text-align: center;
+                display: block;
+                color: var(--color-heading);
+                font-weight: 700;
+                line-height: 1;
+                sup {
+                    font-size: 16px;
+                    top: -34px;
+                }
+            }
+        }
+        .rbt-btn {
+            width: 100%;
+            margin: 10px 0;
+        }
+        .rating {
+            text-align: center;
+            margin-top: 10px;
+            margin-bottom: 15px;
+            a {
+                font-weight: 700;
+                color: #f1b304;
+                svg {
+                    fill: #f1b304;
+                }
+            }
+        }
+        .subtitle {
+            display: block;
+            color: var(--color-body);
+            text-align: center;
+        }
+    }
+
+    .pricing-right {
+        padding: 60px 30px;
+        @media #{$sm-layout} {
+            padding: 60px 20px;
+            padding-bottom: 40px;
+        }
+        .plan-offer-list {
+            @extend %liststyle;
+            li {
+                font-size: 16px;
+                i {
+                    width: 22px;
+                    height: 22px;
+                    background: var(--color-success);
+                    margin: 0 auto;
+                    line-height: 22px;
+                    text-align: center;
+                    border-radius: 100%;
+                    color: var(--color-white);
+                    font-size: 14px;
+                    margin-right: 10px;
+                    display: inline-block;
+                }
+                &.off {
+                    opacity: 0.5;
+                    i {
+                        background: var(--color-danger);
+                    }
+                }
+            }
+        }
+        .price-title {
+            font-size: 20px;
+            margin-bottom: 20px;
+            li {
+                font-size: 16px;
+                margin: 8px 0;
+            }
+        }
+    }
+}

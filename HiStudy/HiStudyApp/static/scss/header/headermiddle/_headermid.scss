@@ -1,0 +1,60 @@
+/*---------------------------
+    Header Mid Style  
+----------------------------*/
+.rbt-header-middle {
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+
+.rbt-header-middle {
+    .rbt-header-sec {
+        .rbt-header-sec-col {
+            flex-basis: inherit;
+            flex-grow: inherit;
+            max-width: inherit;
+            &.rbt-header-right, 
+            &.rbt-header-left {
+                flex: 1 1 0px;
+            }
+
+            &.rbt-header-center {
+                text-align: center;
+                width: 50%;
+                flex-shrink: 0;
+                .rbt-header-content {
+                    .header-info {
+                        width: 100%;
+                    }
+                }
+            }
+
+        }
+    }
+}
+
+
+
+
+.rbt-header-mid-1 {
+    .quick-access > li.account-access {
+        padding-left: 10px;
+        margin-left: 10px;
+        margin-right: 0;
+        position: relative;
+    }
+    .quick-access > li.account-access::after {
+        left: -10px;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,202 @@
+/*----------------------
+    Newsletter Styles  
+------------------------*/
+.newsletter-form {
+    input {
+        flex-grow: 1;
+        width: auto;
+        margin-right: 7px;
+        height: 45px;
+        font-size: 16px;
+        font-weight: 400;
+        border-radius: 500px;
+    }
+}
+
+// Form Style One 
+.newsletter-form-1 {
+    position: relative;
+    max-width: 600px;
+    margin: 0 auto;
+    z-index: 1;
+
+    &.radius-round {
+        input {
+            border-radius: 500px;
+        }
+    }
+
+    input {
+        background: var(--color-white);
+        border: 0 none;
+        height: 70px;
+        line-height: 70px;
+        padding: 0 20px;
+        padding-right: 172px;
+
+        @media #{$sm-layout} {
+            height: 50px;
+            line-height: 50px;
+        }
+
+        @media #{$small-mobile} {
+            padding-right: 20px;
+            font-size: 14px;
+        }
+    }
+
+    .rbt-btn {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+
+        @media #{$sm-layout} {
+            right: 0;
+        }
+
+        @media #{$small-mobile} {
+            position: static;
+            transform: none;
+            margin-top: 20px;
+        }
+
+    }
+
+    &.version-02 {
+        input {
+            @media #{$sm-layout} {
+                padding-right: 20px;
+            }
+        }
+
+        .rbt-btn {
+            @media #{$sm-layout} {
+                position: static;
+                transform: none;
+                margin-top: 20px;
+            }
+        }
+    }
+}
+
+
+/*-------------------------------
+    Newsletter Styles One 
+----------------------------------*/
+
+.newsletter-style-1 {
+    padding: 100px 50px;
+    border-radius: var(--radius);
+    position: relative;
+    z-index: 1;
+
+    @media #{$sm-layout} {
+        padding: 60px 20px;
+    }
+
+    &::after {
+        content: '';
+        display: block;
+        position: absolute;
+        right: 0;
+        height: 100%;
+        width: 50%;
+        background: url(../images/shape/dots.svg) repeat center/auto;
+        top: 0;
+        z-index: 0;
+    }
+}
+
+.newsletter-style-2 {
+    position: relative;
+    z-index: 1;
+
+    &::after {
+        content: '';
+        display: block;
+        position: absolute;
+        right: 0;
+        height: 100%;
+        width: 100%;
+        background: url(../images/shape/dots.png) repeat center/auto;
+        top: 0;
+        z-index: -1;
+    }
+
+    .note-text {
+        font-size: 14px;
+        display: block;
+        opacity: 0.9;
+    }
+}
+
+.newsletter-style-3 {
+    padding: 100px 50px;
+    border-radius: var(--radius-10);
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0px 0px 85.1px -21px rgba(11, 19, 42, 0.08);
+    backdrop-filter: blur(34.55px);
+
+    @media #{$sm-layout} {
+        padding: 60px 20px;
+    }
+
+    .shape-1 {
+        position: absolute;
+        right: -52px;
+        top: -52px;
+
+        @media #{$laptop-device} {
+            max-width: 350px;
+        }
+
+        @media #{$lg-layout} {
+            max-width: 300px;
+        }
+
+        @media #{$md-layout, $sm-layout, $large-mobile} {
+            display: none;
+        }
+    }
+
+    .shape-2 {
+        position: absolute;
+        width: 249px;
+        height: 249px;
+        left: -151px;
+        top: -235px;
+        background: linear-gradient(180deg, rgba(0, 194, 255, 0) 0%, #FF29C3 100%);
+        filter: blur(100px);
+        border-radius: 50%;
+    }
+
+    .shape-union {
+        position: absolute;
+        left: 135px;
+        bottom: 81px;
+        max-width: 93px;
+        animation: roading-falgs 25s linear infinite;
+
+        @media #{$lg-layout} {
+            left: 70px;
+        }
+        @media #{$md-layout, $sm-layout, $large-mobile} {
+            display: none;
+        }
+    }
+}
+
+.newsletter-section-02 {
+    position: relative;
+    z-index: 2;
+    margin-top: -50px;
+
+    @media #{$sm-layout, $large-mobile} {
+        margin-top: 0;
+        padding-top: 50px;
+    }
+}

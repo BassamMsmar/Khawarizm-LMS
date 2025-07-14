@@ -1,0 +1,157 @@
+
+.rbt-meta {
+    @extend %liststyle;
+    margin: -7px;
+    @media #{$lg-layout} {
+        margin: -3px;
+    }
+    @media #{$sm-layout} {
+        margin: -3px;
+    }
+    li {
+        font-size: 14px;
+        line-height: 15px;
+        color: var(--color-body);
+        display: inline-block;
+        margin: 7px;
+        @media #{$lg-layout} {
+            margin: 3px;
+        }
+        @media #{$sm-layout} {
+            margin: 3px;
+            font-size: var(--font-size-b4);
+        }
+        i {
+            margin-right: 5px;
+        }
+    }
+    &.rbt-meta-white {
+        li {
+            color: var(--color-white);
+        }
+    }
+}
+
+
+
+// Category 
+.rbt-category {
+    margin: 0 -5px;
+    display: flex;
+    flex-wrap: wrap;
+    a {
+        display: inline-block;
+        padding: 0 20px;
+        height: 34px;
+        line-height: 33px;
+        border: 1px solid var(--color-border);
+        border-radius: 500px;
+        font-size: 14px;
+        font-weight: 400;
+        color: var(--color-body);
+        transition: 0.4s;
+        margin: 0 5px;
+        min-width: 56px;
+        text-align: center;
+        @media #{$lg-layout} {
+            padding: 0 10px;
+        }
+        @media #{$md-layout} {
+            padding: 0 10px;
+        }
+        @media #{$sm-layout} {
+            padding: 0 10px;
+        }
+        &:hover {
+            background-color: var(--color-grey);
+        }
+    }
+}
+
+// Lesson Number 
+.lesson-number {
+    font-size: 14px;
+    display: inline-block;
+    font-weight: 600;
+    .lesson-time {
+        font-weight: 400;
+    }
+}
+
+// Review 
+.rbt-review {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    .rating {
+        display: flex;
+        align-items: center;
+        margin-right: 6px;
+        i {
+            font-size: 13px;
+            color: #FF9747;
+            transition: 0.3s;
+        }
+    }
+    .rating-count {
+        display: inline-block;
+        font-size: 14px;
+        font-weight: 500;
+    }
+}
+
+.rating {
+    i {
+        font-size: 13px;
+        color: #FF9747;
+        transition: 0.3s;
+        &.off {
+            font-weight: 400;
+        }
+    }
+}
+
+// Price 
+.rbt-price {
+    display: flex;
+    align-items: center;
+    .current-price {
+        font-size: 24px;
+        font-weight: 700;
+    }
+    .off-price {
+        font-size: 20px;
+        font-weight: 500;
+        text-decoration: line-through;
+        opacity: 0.4;
+        margin-left: 7px;
+
+        &.version-02 {
+            font-size: 22px;
+            font-weight: 400;
+            opacity: 0.5;
+        }
+    }
+    &.large-size {
+        .current-price {
+            font-size: 35px;
+            @media #{$md-layout} {
+                font-size: 28px;
+            }
+            @media #{$sm-layout} {
+                font-size: 28px;
+            }
+        }
+        .off-price {
+            font-size: 20px;
+            @media #{$md-layout} {
+                font-size: 16px;
+            }
+            @media #{$sm-layout} {
+                font-size: 16px;
+            }
+        }
+    }
+}
+
+

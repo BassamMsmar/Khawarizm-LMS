@@ -1,0 +1,48 @@
+/*----------------------------
+    Edu Pagination Style  
+------------------------------*/
+.rbt-pagination {
+    margin: -8px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    @media #{$sm-layout} {
+        margin: -4px;
+    }
+    li {
+        margin: 8px;
+        @media #{$sm-layout} {
+            margin: 4px;
+        }
+        a {
+            width: 45px;
+            height: 45px;
+            background: var(--color-white);
+            border-radius: 6px;
+            text-align: center;
+            color: var(--color-body);
+            transition: 0.4s;
+            font-weight: 500;
+            box-shadow: var(--shadow-1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            @media #{$sm-layout} {
+                width: 45px;
+                height: 45px;
+            }
+            i {
+                font-size: 22px;
+                font-weight: 500;
+            }
+        }
+        &.active,
+        &:hover {
+            a {
+                background: var(--color-primary);
+                color: var(--color-white);
+            }
+        }
+    }
+}
