@@ -31,7 +31,7 @@ urlpatterns = [
     path("ckeditor5/", include('django_ckeditor_5.urls')),
     path('accounts/', include('accounts.urls')),
     path('dashboard/', include('dashboard.base_urls')),
-    # path('courses/', include('courses.urls')),
+    path('courses/', include('courses.urls', namespace='courses')),
     # path('department/', include('department.urls')),
 
 
