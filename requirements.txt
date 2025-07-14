@@ -1,7 +1,8 @@
 asgiref==3.8.1
 Django==5.2.1
-django-ckeditor-5==0.2.18  # Only use this CKEditor package, do NOT use other ckeditor versions
+django-ckeditor-5==0.2.18
 django-countries==7.6.1
+django-debug-toolbar==5.2.0
 django-js-asset==3.1.2
 django-phonenumber-field==8.1.0
 phonenumbers==9.0.5

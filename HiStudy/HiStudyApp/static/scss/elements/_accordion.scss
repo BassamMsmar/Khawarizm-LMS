@@ -1,0 +1,511 @@
+/*-------------------------
+    Accordion Area  
+--------------------------*/
+.rbt-accordion-style {
+    .card {
+        background: var(--color-primary-lighter);
+        border: 0;
+        border-radius: var(--radius) !important;
+
+        .card-header {
+            background-color: transparent;
+            border-bottom: 0 none;
+            box-shadow: none;
+            padding: 20px 30px;
+            margin-bottom: 0;
+            padding-right: 38px;
+
+            @media #{$sm-layout} {
+                padding-left: 20px;
+            }
+
+            button {
+                font-size: 18px;
+                line-height: 27px;
+                outline: none;
+                text-decoration: none;
+                box-shadow: none;
+                width: 100%;
+                text-align: left;
+                padding: 0;
+                background-color: transparent;
+                position: relative;
+                font-weight: 600;
+
+                @media #{$large-mobile} {
+                    display: block;
+                }
+
+                .rbt-badge-5 {
+                    @media #{$large-mobile} {
+                        margin-left: 0 !important;
+                        margin-top: 7px;
+                    }
+                }
+
+                &[aria-expanded="true"] {
+                    color: var(--color-primary);
+
+                    &::before {
+                        @extend %theme-gradient;
+                        color: var(--color-primary);
+                    }
+                }
+
+                &::before {
+                    position: absolute;
+                    content: "\e996";
+                    font-family: 'feather' !important;
+                    right: -18px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    transition: 0.4s;
+                }
+
+                &.collapsed {
+                    color: var(--color-heading);
+
+                    &::before {
+                        content: "\e9b1";
+                    }
+                }
+            }
+        }
+
+        .card-body {
+            border-top: 1px solid var(--white-opacity);
+            padding: 20px 30px 25px;
+
+            @media #{$sm-layout} {
+                padding: 20px 20px;
+            }
+        }
+
+        &+.card {
+            margin-top: 20px;
+        }
+    }
+
+    &.rbt-accordion-01 {
+        .card {
+            background: var(--color-white);
+            box-shadow: var(--shadow-10);
+
+            .card-body {
+                background: var(--gradient-6);
+            }
+        }
+    }
+
+    &.rbt-accordion-02 {
+        .card {
+            background: transparent;
+            border-radius: 0 !important;
+
+            .card-header {
+                border-bottom: 1px solid var(--color-border);
+                padding: 0px 20px 20px 0;
+
+                button {
+                    &::before {
+                        right: -20px;
+                    }
+                }
+
+                .accordion-button {
+                    &::after {
+                        display: none;
+                    }
+                }
+            }
+
+            .card-body {
+                padding: 20px 20px 20px 0;
+                border-top: 0;
+                background: transparent;
+            }
+        }
+
+        &.right-no-padding {
+            .card {
+                .card-body {
+                    padding-right: 0;
+                }
+            }
+        }
+
+        &.for-right-content {
+            .card {
+                .card-header {
+                    padding: 12px 44px 12px 16px;
+                }
+
+                .card-body {
+                    padding: 10px 16px;
+                }
+            }
+        }
+
+
+    }
+
+    &.rbt-accordion-03 {
+        .card {
+            background: transparent;
+            border-radius: 0 !important;
+
+            .card-header {
+                border: 1px solid var(--color-border);
+                padding: 15px 20px;
+                border-radius: var(--radius) !important;
+            }
+
+            .card-body {
+                padding: 15px 20px 10px 0;
+                border: 0;
+                background: transparent;
+            }
+        }
+    }
+
+
+    &.rbt-accordion-04 {
+        .card {
+            border: 2px solid var(--color-border);
+            background: transparent;
+            border-radius: var(--radius) !important;
+
+            .card-header {
+                padding: 15px 20px;
+                padding-right: 38px;
+                border-radius: var(--radius) !important;
+            }
+
+            .card-body {
+                border-top: 2px solid var(--color-border);
+                background: transparent;
+            }
+        }
+    }
+
+    &.rbt-accordion-05 {
+        .card {
+            border: 0 none;
+            background: transparent;
+            border-radius: var(--radius) !important;
+
+            .card-header {
+                padding: 0px;
+                border-radius: none !important;
+
+                button {
+                    padding-left: 32px;
+
+                    &::before {
+                        right: auto;
+                        left: 0;
+                    }
+                }
+            }
+
+            .card-body {
+                border-top: 0 none;
+                padding: 0px;
+                margin-top: 12px;
+                background: transparent;
+            }
+        }
+    }
+
+    &.rbt-accordion-06 {
+        .card {
+
+            .card-body {
+                background: transparent;
+                border-top: 1px solid var(--color-border);
+            }
+        }
+    }
+
+
+}
+
+.accordion-button {
+    &::after {
+        visibility: hidden;
+    }
+}
+
+
+// Accordion Thumbails 
+.accordion-thumbnail {
+    position: relative;
+
+    .thumb-1 {
+        max-width: 390px;
+        margin-left: auto;
+    }
+
+    .thumb-2 {
+        margin-top: -244px;
+
+        @media #{$large-mobile} {
+            margin-top: -100px;
+        }
+
+        img {
+            border-radius: var(--radius-10);
+            border: 3px solid var(--color-white);
+        }
+    }
+
+    .moon {
+        position: absolute;
+        top: 55px;
+        left: 85px;
+
+        @media #{$lg-layout, $md-layout, $sm-layout, $large-mobile} {
+            display: none;
+        }
+    }
+
+    .shape {
+        position: absolute;
+        right: 20px;
+        bottom: 9px;
+        z-index: 2;
+
+        @media #{$md-layout, $sm-layout, $large-mobile} {
+            display: none;
+        }
+    }
+}
+
+
+
+/*--------------------------
+    Rbt Card Table  
+--------------------------*/
+.rbt-table {
+    border: 0 none;
+
+    &.rbt-table-scroll {
+        overflow-x: auto;
+        min-width: 1230px;
+    }
+
+    tr {
+
+        th,
+        td {
+            padding: 10px 20px;
+            border: 0 none;
+        }
+    }
+
+    thead {
+        tr {
+
+            th,
+            td {
+                background: var(--primary-opacity);
+            }
+        }
+    }
+
+    thead,
+    tfoot {
+        tr {
+
+            th,
+            td {
+                color: var(--color-heading);
+                font-weight: 600;
+                font-size: 16px;
+            }
+        }
+    }
+
+    tbody {
+        tr {
+
+            th,
+            td {
+                font-weight: 400;
+                color: var(--color-body);
+                font-size: 16px;
+            }
+        }
+    }
+
+    tfoot {
+        tr {
+
+            th,
+            td {
+                background: var(--color-grey);
+            }
+        }
+    }
+
+
+}
+
+
+
+.rbt-table tbody tr:nth-child(even) th,
+.rbt-table tbody tr:nth-child(even) td {
+    background: var(--color-grey);
+}
+
+
+/*-----------------------------
+    Accordion Color White  
+-------------------------------*/
+.rbt-accordion-color-white {
+    .rbt-accordion-style .card .card-header button[aria-expanded=true] {
+        color: var(--color-white);
+    }
+
+    .rbt-accordion-style.rbt-accordion-01 .card .card-body {
+        color: var(--color-white-off);
+    }
+
+    .rbt-accordion-style.rbt-accordion-01 .card {
+        background: var(--primary-opacity);
+        box-shadow: none;
+    }
+
+    .rbt-accordion-style .card .card-header button[aria-expanded=true]::before {
+        color: var(--color-border-2);
+    }
+
+    .rbt-accordion-style .card .card-header button.collapsed {
+        color: var(--color-white-off);
+    }
+
+    .rbt-accordion-style .card .card-header button[aria-expanded=true]::before,
+    .rbt-accordion-style .card .card-header button::before {
+        background: linear-gradient(90deg, var(--color-border-2), var(--color-border-2));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: rgba(255, 255, 255, 0.001);
+        white-space: nowrap;
+    }
+
+    .rbt-accordion-style .card .card-body {
+        border-top: none;
+    }
+
+    .rbt-accordion-style .card .card-body,
+    .rbt-accordion-style .card .card-body a {
+        color: var(--color-white-off);
+    }
+
+    .rbt-accordion-style.rbt-accordion-02 .card .card-header {
+        border-bottom: 2px solid var(--color-border-2);
+    }
+
+
+}
+
+
+
+
+
+/* Accordion New Lesson Page  */
+
+.rbt-accordion-style {
+    &.for-right-content {
+        .rbt-course-main-content {
+            .course-content-right {
+                flex-shrink: 0;
+
+                span {
+                    &.rbt-check {
+                        i {
+                            font-size: 13px;
+                            width: 18px;
+                            height: 18px;
+                            background: var(--color-primary);
+                            border-radius: 100%;
+                            color: var(--color-white);
+                            display: inline-block;
+                            text-align: center;
+                            line-height: 18px;
+                        }
+
+                        &.unread {
+                            i {
+                                background: transparent;
+                                color: var(--color-primary-opacity);
+                                font-size: 16px;
+                                opacity: 0.3;
+                                width: auto;
+                                height: auto;
+                            }
+                        }
+                    }
+                }
+            }
+
+            li {
+                a {
+                    align-items: flex-start;
+                    justify-content: space-between;
+                    flex-wrap: nowrap;
+
+                    .course-content-left {
+                        padding-right: 15px;
+                        align-items: flex-start;
+
+                        i {
+                            margin-top: 3px;
+                        }
+                    }
+                }
+            }
+        }
+
+        .card {
+            .card-header {
+                padding: 12px 32px 12px 16px !important;
+
+                button {
+                    @media #{$md-layout} {
+                        display: flex;
+                    }
+
+                    @media #{$sm-layout} {
+                        display: flex;
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+.accordion-section-02 {
+    overflow: hidden;
+    
+    .union-shape {
+        position: absolute;
+        top: -50px;
+        right: -59px;
+
+        @media #{$lg-layout, $md-layout, $sm-layout, $large-mobile}{
+            display: none;
+        }
+
+        img {
+            animation: edu_rotatation_round 25s linear infinite reverse;
+        }
+    }
+
+    .thumbnail {
+        position: relative;
+        z-index: 2;
+    }
+}

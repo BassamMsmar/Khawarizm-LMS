@@ -1,0 +1,21 @@
+/*-----------------------
+    Event Styles  
+------------------------*/
+
+.rbt-event-area {
+    &.event-style-2 {
+        position: relative;
+
+        &::after {
+            content: "";
+            display: block;
+            position: absolute;
+            right: 0;
+            height: 100%;
+            width: 100%;
+            background: url(../images/shape/bg-arrow.png) repeat center / auto;
+            top: 0;
+            z-index: -1;
+        }
+    }
+}

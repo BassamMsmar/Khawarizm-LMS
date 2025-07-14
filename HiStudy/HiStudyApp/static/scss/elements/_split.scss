@@ -1,0 +1,70 @@
+/*--------------------------
+    split Area Styles  
+----------------------------*/
+.rbt-splite-style {
+    .shape {
+        img {
+            max-height: 96px;
+            margin-bottom: 20px;
+        }
+    }
+    .thumbnail {
+        img {
+            border-radius: 0;
+            width: 100%;
+        }
+        &.image-left-content {
+            img {
+                border-radius: 0 10px 10px 0;
+                @media #{$lg-layout} {
+                    border-radius: 0;
+                }
+                @media #{$md-layout} {
+                    border-radius: 0;
+                }
+                @media #{$sm-layout} {
+                    border-radius: 0;
+                }
+            }
+        }
+    }
+    .split-inner {
+        padding: 30px 115px;
+        @media #{$laptop-device} {
+            padding: 30px 50px;
+        }
+        @media #{$lg-layout} {
+            padding: 40px 80px;
+        }
+        @media #{$md-layout} {
+            padding: 40px 30px;
+        }
+        @media #{$sm-layout} {
+            padding: 30px 10px;
+        }
+        .title {
+            font-size: 36px;
+            line-height: 50px;
+            color: var(--color-heading);
+            font-weight: 700;
+            @media #{$sm-layout} {
+                font-size: 24px;
+                line-height: 30px;
+            }
+        }
+        .description {
+            margin-bottom: 30px;
+        }
+        .split-list {
+            list-style: none;
+            padding-left: 0;
+            margin: 0;
+            li {
+                color: var(--color-body);
+                @media #{$sm-layout} {
+                    font-size: 16px;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,139 @@
+/* Common Style  */
+.alignfull {
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+    max-width: 100vw;
+    width: 100vw;
+}
+.alignwide {
+    margin-left: -100px;
+    margin-right: -100px;
+    max-width: 1400px;
+    width: auto;
+    @media #{$md-layout} {
+        margin-left: 0;
+        margin-right: 0;
+    }
+    @media #{$sm-layout} {
+        margin-left: 0;
+        margin-right: 0;
+    }
+}
+
+figcaption {
+    text-align: center;
+    margin-top: 10px;
+    font-size: 16px;
+    letter-spacing: 0.5px;
+    font-weight: 400;
+}
+
+.wp-block-separator {
+    &.is-style-dots {
+        background: 0 0;
+        border: none;
+        text-align: center;
+        max-width: none;
+        line-height: 1;
+        height: auto;
+        &::before {
+            content: "\00b7 \00b7 \00b7";
+            padding-left: 21px;
+            color: var(--color-dark-alt);
+            font-size: 21px;
+            font-weight: 700;
+            letter-spacing: 21px;
+            font-family: georgia,serif;
+        }
+    }
+}
+
+.blocks-gallery-grid {
+    display: flex;
+    padding: 0;
+    margin: 0 -10px;
+    list-style: none;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    li {
+        &.blocks-gallery-item {
+            padding: 0 10px;
+            flex-basis: 33.33%;
+            img {
+                border-radius: var(--radius);
+                width: 100%;
+            }
+            @media #{$sm-layout} {
+                flex-basis: 50%;
+            }
+            @media #{$large-mobile} {
+                flex-basis: 100%;
+            }
+        }
+    }
+}
+
+.columns-2 {
+    .blocks-gallery-grid {
+        li {
+            &.blocks-gallery-item {
+                flex-basis: 50%;
+                @media #{$sm-layout} {
+                    flex-basis: 50%;
+                }
+                @media #{$large-mobile} {
+                    flex-basis: 100%;
+                }
+            }
+        }
+    }
+}
+
+
+
+/*-----------------------
+    Blog Meta  
+-----------------------*/
+.blog-meta {
+    @extend %liststyle;
+    display: flex;
+    margin: 0 -12px;
+    flex-wrap: wrap;
+    position: relative;
+    padding-left: 0;
+    @media #{$sm-layout} {
+        margin: 0 -7px;
+        padding: 0;
+    }
+    @media #{$md-layout} {
+        padding: 0;
+    }
+    li {
+        font-size: 14px;
+        line-height: 1.3;
+        color: var(--color-body);
+        margin: 0 12px;
+        margin-bottom: 5px;
+        position: relative;
+        @media #{$sm-layout} {
+            font-size: 14px;
+            margin: 0 7px;
+            margin-bottom: 10px;
+        }
+        a {
+            color: var(--color-body);
+            @extend %transition;
+            display: inline-block;
+            line-height: 22px;
+            &:hover {
+                color: var(--color-primary);
+            }
+        }
+        svg {
+            margin-right: 13px;
+            font-size: 22px;
+        }
+    }
+}
+
+
