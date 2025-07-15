@@ -1,14 +1,11 @@
 from django.contrib import admin
-from .models import College
-
+from .models import College, Question
 
 class CollegeAdmin(admin.ModelAdmin):
-
-    readonly_fields = ('created_at', 'updated_at', 'slug')
-    list_display = ('name', 'description', 'created_at', 'updated_at')
-    list_filter = ('name', 'description', 'created_at', 'updated_at')
-    search_fields = ('name', 'description', 'created_at', 'updated_at')
-    ordering = ('name', 'description', 'created_at', 'updated_at')
+    list_display = ('title', 'max_students', 'difficulty_level', 'is_public', 'regular_price', 'discounted_price', 'tags', 'questions')
+    list_filter = ('title', 'max_students', 'difficulty_level', 'is_public', 'regular_price', 'discounted_price', 'tags', 'questions')
+    search_fields = ('title', 'max_students', 'difficulty_level', 'is_public', 'regular_price', 'discounted_price', 'tags', 'questions')
+    ordering = ('title', 'max_students', 'difficulty_level', 'is_public', 'regular_price', 'discounted_price', 'tags', 'questions')
 
 admin.site.register(College, CollegeAdmin)
-# Register your models here.
+admin.site.register(Question)

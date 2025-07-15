@@ -1,12 +1,12 @@
-from site import venv
+
 from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('', views.collegeList, name='collegeList'),
-    path('createCollege', views.createCollege, name='createCollege'),
-    path('collegeDetail', views.collegeDetail, name='collegeDetail'),
-    path('collegeUpdate', views.collegeUpdate, name='collegeUpdate'),
-    path('collegeDelete', views.collegeDelete, name='collegeDelete'),
+    path('', views.CollegeList.as_view(), name='collegeList'),
+    path('create', views.CollegeCreate.as_view(), name='createCollege'),
+    path('<slug:slug>', views.CollegeDetail.as_view(), name='collegeDetail'),
+    path('update/<slug:slug>', views.CollegeUpdate.as_view(), name='collegeUpdate'),
+    path('delete/<slug:slug>', views.CollegeDelete.as_view(), name='collegeDelete'),
     
 ]

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Course, Lesson
+from .models import Course, Lesson, Quiz, Question, Unit, Choice
 
 class CourseAdmin(admin.ModelAdmin):
     readonly_fields = ('created_at', 'updated_at', 'slug')
@@ -8,6 +8,10 @@ class CourseAdmin(admin.ModelAdmin):
     ordering = ('title',)
 admin.site.register(Course, CourseAdmin)
 
+admin.site.register(Unit)
+admin.site.register(Quiz)
+admin.site.register(Question)
+admin.site.register(Choice)
 
 class LessonAdmin(admin.ModelAdmin):
     readonly_fields = ('created_at', 'updated_at', 'slug')

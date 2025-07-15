@@ -6,6 +6,7 @@ from django.urls import reverse
 from utils.slug import get_unique_slug
 from django_ckeditor_5.fields import CKEditor5Field
 User = get_user_model()
+from django.utils.text import slugify
 
 from college.models import College
 
@@ -74,6 +75,28 @@ class Course(models.Model):
         return self.students_enrolled.count()
     
 
+
+
+    # _________________________________________________________________________________________
+
+class Unit(models.Model):
+    title = models.CharField(max_length=40)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name="units")
+    slug = models.SlugField(unique=True, max_length=150, null=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = get_unique_slug(Unit, self.title)
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.title
+
+# _________________________________________________________________________________________
+
+
+
+
 class Lesson(models.Model):
     LESSON_TYPES = [
         ('video', 'Video'),
@@ -84,6 +107,7 @@ class Lesson(models.Model):
     ]
     
     course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='lessons', null=True, blank=True)
+    unit = models.ForeignKey(Unit, on_delete=models.CASCADE, related_name='lessons', null=True, blank=True)
 
     title = models.CharField(max_length=200)
     description = CKEditor5Field(blank=True, null=True)
@@ -132,3 +156,56 @@ class Lesson(models.Model):
     
     def __str__(self):
         return self.title
+
+
+
+
+class Quiz(models.Model):
+    unit = models.ForeignKey(Unit, on_delete=models.CASCADE, related_name='quizzes')
+    title = models.CharField(max_length=200)
+    duration = models.IntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    is_active = models.BooleanField(default=True)
+    slug = models.SlugField(unique=True, max_length=150, null=True, blank=True)
+
+    def __str__(self):
+        return f"Quiz for Unit {self.unit}"
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = get_unique_slug(Quiz, self.title)
+        super().save(*args, **kwargs)
+
+
+# _________________________________________________________________________________________
+
+
+class Question(models.Model):
+    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE, related_name='questions')
+    text = models.CharField(max_length=500)
+
+    def __str__(self) -> str:
+        return self.text
+
+# _________________________________________________________________________________________
+
+
+class Choice(models.Model):
+    question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='choices')
+    text = models.CharField(max_length=200)
+    is_correct = models.BooleanField(default=False)
+
+    def __str__(self) -> str:
+        return self.text
+# _________________________________________________________________________________________
+
+
+class Review(models.Model):
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='reviews')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="review_user")
+    created_at = models.DateTimeField(auto_now_add=True)
+    rate = models.FloatField()
+    comment = models.TextField()
+    
+    def __str__(self) -> str:
+        return f"{self.comment[:20]} for course {self.course}"
