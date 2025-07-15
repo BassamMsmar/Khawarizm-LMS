@@ -32,7 +32,9 @@ urlpatterns = [
     path('accounts/', include('accounts.urls')),
     path('dashboard/', include('dashboard.base_urls')),
     # path('courses/', include('courses.urls')),
-    # path('department/', include('department.urls')),
+    path('department/', include('department.urls')),
+    path('college/', include('college.urls')),
+    path('degreeLevel/', include('degreeLevel.urls')),
 
 
     path('', include('HiStudyApp.urls')),
