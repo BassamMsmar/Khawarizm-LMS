@@ -1075,132 +1075,69 @@
                                         <div class="rbt-accordion-style rbt-accordion-02 accordion">
                                             <div class="accordion" id="accordionExampleb2">
 
+                                               {% for unit in related_units %}
                                                 <div class="accordion-item card">
-                                                    <h2 class="accordion-header card-header" id="headingTwo1">
-                                                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo1" aria-expanded="true" aria-controls="collapseTwo1">
-                                                            Intro to Course and Histudy <span class="rbt-badge-5 ml--10">1hr 30min</span>
+                                                    <h2 class="accordion-header card-header" id="heading{{ forloop.counter }}">
+                                                        <button class="accordion-button {% if not forloop.first %}collapsed{% endif %}" type="button"
+                                                                data-bs-toggle="collapse"
+                                                                data-bs-target="#collapse{{ forloop.counter }}"
+                                                                aria-expanded="{% if forloop.first %}true{% else %}false{% endif %}"
+                                                                aria-controls="collapse{{ forloop.counter }}">
+                                                            {{ unit.title }}
+                                                            <span class="rbt-badge-5 ml--10">
+                                                                {{ unit.lessons.count }} lessons
+                                                            </span>
                                                         </button>
                                                     </h2>
-                                                    <div id="collapseTwo1" class="accordion-collapse collapse show" aria-labelledby="headingTwo1" data-bs-parent="#accordionExampleb2">
+                                                    <div id="collapse{{ forloop.counter }}" class="accordion-collapse collapse {% if forloop.first %}show{% endif %}"
+                                                        aria-labelledby="heading{{ forloop.counter }}" data-bs-parent="#accordionExampleb2">
                                                         <div class="accordion-body card-body pr--0">
                                                             <ul class="rbt-course-main-content liststyle">
-                                                                <li>
-                                                                    <a href="{% url 'lesson'%}">
-                                                                        <div class="course-content-left">
-                                                                            <i class="feather-play-circle"></i> <span
-                                                                                    class="text">Course Intro</span>
-                                                                        </div>
-                                                                        <div class="course-content-right">
-                                                                            <span class="min-lable">30 min</span>
-                                                                            <span class="rbt-badge variation-03 bg-primary-opacity"><i class="feather-eye"></i> Preview</span>
-                                                                        </div>
-                                                                    </a>
-                                                                </li>
 
+                                                                {% for lesson in unit.lessons.all %}
                                                                 <li>
-                                                                    <a href="{% url 'lesson'%}">
-                                                                        <div class="course-content-left">
-                                                                            <i class="feather-play-circle"></i> <span
-                                                                                    class="text">Watch Before Start</span>
-                                                                        </div>
-                                                                        <div class="course-content-right">
-                                                                            <span class="min-lable">0.5 min</span>
-                                                                            <span class="rbt-badge variation-03 bg-primary-opacity"><i class="feather-eye"></i> Preview</span>
-                                                                        </div>
-                                                                    </a>
-                                                                </li>
+                                                                    <a href="{% url 'courses:lesson_detail' course_slug=course.slug lesson_slug=lesson.slug %}">
 
-                                                                <li>
-                                                                    <a href="{% url 'lesson'%}">
                                                                         <div class="course-content-left">
-                                                                            <i class="feather-file-text"></i> <span
-                                                                                    class="text">Read Before You Start</span>
+                                                                            {% if lesson.lesson_type == 'video' %}
+                                                                                <i class="feather-play-circle"></i>
+                                                                            {% elif lesson.lesson_type == 'pdf' or lesson.lesson_type == 'article' %}
+                                                                                <i class="feather-file-text"></i>
+                                                                            {% elif lesson.lesson_type == 'image' %}
+                                                                                <i class="feather-image"></i>
+                                                                            {% elif lesson.lesson_type == 'url' %}
+                                                                                <i class="feather-link"></i>
+                                                                            {% else %}
+                                                                                <i class="feather-file"></i>
+                                                                            {% endif %}
+
+                                                                            <span class="text">
+                                                                                {{ lesson.title }}
+                                                                                {% if lesson.is_active %}
+                                                                                    - {{ lesson.duration }} min
+                                                                                {% endif %}
+                                                                            </span>
                                                                         </div>
+
                                                                         <div class="course-content-right">
-                                                                            <span class="course-lock"><i class="feather-lock"></i></span>
+                                                                            {% if lesson.is_active %}
+                                                                                <i class="feather-eye" title="Preview"></i>
+                                                                            {% else %}
+                                                                                <span class="course-lock">
+                                                                                    <i class="feather-lock" title="Locked"></i>
+                                                                                </span>
+                                                                            {% endif %}
                                                                         </div>
                                                                     </a>
                                                                 </li>
+                                                                {% endfor %}
 
                                                             </ul>
                                                         </div>
                                                     </div>
                                                 </div>
+                                                {% endfor %}
 
-                                                <div class="accordion-item card">
-                                                    <h2 class="accordion-header card-header" id="headingTwo2">
-                                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo2" aria-expanded="false" aria-controls="collapseTwo2">
-                                                            Course Fundamentals <span class="rbt-badge-5 ml--10">2hr 30min</span>
-                                                        </button>
-                                                    </h2>
-                                                    <div id="collapseTwo2" class="accordion-collapse collapse" aria-labelledby="headingTwo2" data-bs-parent="#accordionExampleb2">
-                                                        <div class="accordion-body card-body pr--0">
-                                                            <ul class="rbt-course-main-content liststyle">
-                                                                <li><a href="{% url 'lesson'%}">
-                                                                        <div class="course-content-left">
-                                                                            <i class="feather-play-circle"></i> <span
-                                                                                    class="text">Course Intro</span>
-                                                                        </div>
-                                                                        <div class="course-content-right">
-                                                                            <span class="course-lock"><i class="feather-lock"></i></span>
-                                                                        </div>
-                                                                    </a></li>
-                                                                <li><a href="{% url 'lesson'%}">
-                                                                        <div class="course-content-left">
-                                                                            <i class="feather-file-text"></i> <span
-                                                                                    class="text">Read Before You Start</span>
-                                                                        </div>
-                                                                        <div class="course-content-right">
-                                                                            <span class="course-lock"><i class="feather-lock"></i></span>
-                                                                        </div>
-                                                                    </a></li>
-
-                                                                <li><a href="{% url 'lesson'%}">
-                                                                        <div class="course-content-left">
-                                                                            <i class="feather-play-circle"></i> <span
-                                                                                    class="text">Why You Should Not Go To
-                                                                                    Education.</span>
-                                                                        </div>
-                                                                        <div class="course-content-right">
-                                                                            <span class="course-lock"><i class="feather-lock"></i></span>
-                                                                        </div>
-                                                                    </a></li>
-
-                                                                <li><a href="{% url 'lesson'%}">
-                                                                        <div class="course-content-left">
-                                                                            <i class="feather-file-text"></i> <span
-                                                                                    class="text">Read Before You Start</span>
-                                                                        </div>
-                                                                        <div class="course-content-right">
-                                                                            <span class="course-lock"><i class="feather-lock"></i></span>
-                                                                        </div>
-                                                                    </a></li>
-
-
-                                                                <li><a href="{% url 'lesson'%}">
-                                                                        <div class="course-content-left">
-                                                                            <i class="feather-play-circle"></i> <span
-                                                                                    class="text">Ten Factors That Affect Education's
-                                                                                    Longevity.</span>
-                                                                        </div>
-                                                                        <div class="course-content-right">
-                                                                            <span class="course-lock"><i class="feather-lock"></i></span>
-                                                                        </div>
-                                                                    </a></li>
-
-                                                                <li><a href="{% url 'lesson'%}">
-                                                                        <div class="course-content-left">
-                                                                            <i class="feather-file-text"></i> <span
-                                                                                    class="text">Read Before You Start</span>
-                                                                        </div>
-                                                                        <div class="course-content-right">
-                                                                            <span class="course-lock"><i class="feather-lock"></i></span>
-                                                                        </div>
-                                                                    </a></li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                </div>
 
                                                 <div class="accordion-item card">
                                                     <h2 class="accordion-header card-header" id="headingTwo3">
