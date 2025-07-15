@@ -1,4 +1,4 @@
-{% extends 'layout/base.html' %}
+{% extends '../layout/layout.html' %}
 
 {% block content %}
 
@@ -807,249 +807,420 @@
 
     <a class="close_side_menu" href="javascript:void(0);"></a>
 
-    <div class="rbt-page-banner-wrapper">
-        <!-- Start Banner BG Image  -->
-        <div class="rbt-banner-image"></div>
-        <!-- End Banner BG Image  -->
-        <div class="rbt-banner-content">
-
-            <!-- Start Banner Content Top  -->
-            <div class="rbt-banner-content-top">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <!-- Start Breadcrumb Area  -->
-                            <ul class="page-list">
-                                <li class="rbt-breadcrumb-item"><a href="#">Home</a></li>
-                                <li>
-                                    <div class="icon-right"><i class="feather-chevron-right"></i></div>
-                                </li>
-                                <li class="rbt-breadcrumb-item active">All Courses</li>
-                            </ul>
-                            <!-- End Breadcrumb Area  -->
-
-                            <div class=" title-wrapper">
-                                <h1 class="title mb--0">All Courses</h1>
-                                <a href="#" class="rbt-badge-2">
-                                    <div class="image">🎉</div> 50 Courses
-                                </a>
-                            </div>
-
-                            <p class="description">Courses that help beginner designers become true unicorns. </p>
-                        </div>
-                    </div>
+    <div class="rbt-overlay-page-wrapper">
+        <div class="breadcrumb-image-container breadcrumb-style-max-width">
+            <div class="breadcrumb-image-wrapper">
+                <div class="breadcrumb-dark">
+                    <img src="/static/images/bg/bg-image-10.jpg" alt="Education Images">
                 </div>
             </div>
-            <!-- End Banner Content Top  -->
-            <!-- Start Course Top  -->
-            <div class="rbt-course-top-wrapper mt--40 mt_sm--20">
-                <div class="container">
-                    <div class="row g-5 align-items-center">
+            <div class="breadcrumb-content-top text-center">
+                <ul class="meta-list justify-content-center mb--10">
+                    <li class="list-item">
+                        <div class="author-thumbnail">
+                            <img src="/static/images/testimonial/client-06.png" alt="blog-image">
+                        </div>
+                        <div class="author-info">
+                            <a href="#"><strong>Jone Song</strong></a> in <a href="#"><strong>Design</strong></a>
+                        </div>
+                    </li>
+                    <li class="list-item">
+                        <i class="feather-clock"></i>
+                        <span>20 Aug 2021</span>
+                    </li>
+                </ul>
+                <h1 class="title">Skills That You Can Learn From Education.</h1>
+                <p>Ten Advices That You Must Listen Before Studying Education.</p>
+            </div>
+        </div>
 
-                        <div class="col-lg-5 col-md-12">
-                            <div class="rbt-sorting-list d-flex flex-wrap align-items-center">
-                                <div class="rbt-short-item switch-layout-container">
-                                    <ul class="course-switch-layout">
-                                        <li class="course-switch-item"><button class="rbt-grid-view active" title="Grid Layout"><i class="feather-grid"></i> <span class="text">Grid</span></button></li>
-                                        <li class="course-switch-item"><button class="rbt-list-view" title="List Layout"><i class="feather-list"></i> <span class="text">List</span></button></li>
-                                    </ul>
+        <div class="rbt-blog-details-area rbt-section-gapBottom breadcrumb-style-max-width">
+            <div class="blog-content-wrapper rbt-article-content-wrapper">
+
+                <div class="content">
+                    <div class="post-thumbnail mb--30 position-relative wp-block-image blog-post-gallery-wrapper alignwide">
+                        <div class="swiper rbt-arrow-between blog-post-gallery-activation">
+
+                            <div class="swiper-wrapper">
+                                <div class="swiper-slide">
+                                    <figure>
+                                        <img src="/static/images/blog/blog-single-04.png" alt="Blog Images">
+                                    </figure>
                                 </div>
-                                <div class="rbt-short-item">
-                                    <span class="course-index">Showing 1-9 of 19 results</span>
+                                <div class="swiper-slide">
+                                    <figure>
+                                        <img src="/static/images/blog/blog-single-03.png" alt="Blog Images">
+                                    </figure>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="col-lg-7 col-md-12">
-                            <div class="rbt-sorting-list d-flex flex-wrap align-items-center justify-content-start justify-content-lg-end">
-                                <div class="rbt-short-item">
-                                    <form action="#" class="rbt-search-style me-0">
-                                        <input type="text" placeholder="Search Your Course..">
-                                        <button type="submit" class="rbt-search-btn rbt-round-btn">
-                                            <i class="feather-search"></i>
-                                        </button>
-                                    </form>
+                            <div class="rbt-swiper-arrow rbt-arrow-left">
+                                <div class="custom-overfolow">
+                                    <i class="rbt-icon feather-arrow-left"></i>
+                                    <i class="rbt-icon-top feather-arrow-left"></i>
                                 </div>
+                            </div>
 
-                                <div class="rbt-short-item">
-                                    <div class="view-more-btn text-start text-sm-end">
-                                        <button class="discover-filter-button discover-filter-activation rbt-btn btn-white btn-md radius-round">Filter<i class="feather-filter"></i></button>
-                                    </div>
+                            <div class="rbt-swiper-arrow rbt-arrow-right">
+                                <div class="custom-overfolow">
+                                    <i class="rbt-icon feather-arrow-right"></i>
+                                    <i class="rbt-icon-top feather-arrow-right"></i>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered
+                        strike out text alteration in some form, by injected humour, or randomised words which don't
+                        look even slightly believable. If you are going to use a passage of Lorem Ipsum.</p>
+                    <blockquote class="rbt-blockquote">
+                        <p>Lorem ipsum dolor sit amet,consectetuer adipiscing elit. Aenean commodo ligula eget dolor.
+                            Aenean massa.</p>
+                    </blockquote>
+                    <h4>Apple Design Award Winners: Apps</h4>
+                    <p><a href="#">Apple today named</a> eight app and game developers receiving an Apple Design Award,
+                        each one selected for being thoughtful and creative. Apple Design Award winners bring
+                        distinctive new ideas to life and demonstrate deep mastery of Apple technology.</p>
 
-                    <!-- Start Filter Toggle  -->
-                    <div class="default-exp-wrapper default-exp-expand">
-                        <div class="filter-inner">
-                            <div class="filter-select-option">
-                                <div class="filter-select rbt-modern-select">
-                                    <span class="select-label d-block">Short By</span>
-                                    <select>
-                                        <option>Default</option>
-                                        <option>Latest</option>
-                                        <option>Popularity</option>
-                                        <option>Trending</option>
-                                        <option>Price: low to high</option>
-                                        <option>Price: high to low</option>
-                                    </select>
-                                </div>
+                    <p>Apple today named eight app and game developers receiving an Apple Design Award, each one
+                        selected for being thoughtful and creative. Apple Design Award winners bring distinctive new
+                        ideas to life and demonstrate deep mastery of Apple technology. The apps spring up from
+                        developers large and small, in every part of the world, and provide users with new ways of
+                        working.</p>
+
+                    <h4>Every year, app and game education: Apps</h4>
+
+                    <p><a href="#">Every year, app and game</a> developers demonstrate exceptional craftsmanship and
+                        we’re honoring the best of the best,” said Ron Okamoto, Apple’s vice president of Worldwide
+                        Developer Relations. “Receiving an Apple Design Award is a special and laudable accomplishment.
+                    </p>
+
+
+
+                    <p>Every year, app and game developers demonstrate exceptional craftsmanship and we’re honoring the
+                        best of the best,” said Ron Okamoto, Apple’s vice president of Worldwide Developer Relations.
+                        “Receiving an Apple Design Award is a special and laudable accomplishment. Past honorees have
+                        made some of the most noteworthy apps and games of all time. Through their vision,
+                        determination, and exacting standards, the winning developers inspire not only their peers in
+                        the Apple developer community, but all of us at Apple, too.</p>
+
+                    <h4>Every year, app and game education: Apps</h4>
+
+                    <p>For more information on the apps and games, visit the <a href="#">App Store</a>.</p>
+
+                    <p><a href="#">Every year, app and game</a> developers demonstrate exceptional craftsmanship and
+                        we’re honoring the best of the best,” said Ron Okamoto, Apple’s vice president of Worldwide
+                        Developer Relations. “Receiving an Apple Design Award is a special and laudable accomplishment.
+                    </p>
+
+                    <!-- BLog Tag Clound  -->
+                    <div class="tagcloud">
+                        <a href="#">Education</a>
+                        <a href="#">Life Style</a>
+                        <a href="#">React</a>
+                        <a href="#">Javascript</a>
+                        <a href="#">Web App</a>
+                        <a href="#">Application</a>
+                    </div>
+
+                    <!-- Social Share Block  -->
+                    <div class="social-share-block">
+                        <div class="post-like">
+                            <a href="#"><i class="feather feather-thumbs-up"></i><span>2.2k Like</span></a>
+                        </div>
+                        <ul class="social-icon social-default transparent-with-border">
+                            <li><a href="https://www.facebook.com/">
+                                    <i class="feather-facebook"></i>
+                                </a>
+                            </li>
+                            <li><a href="https://www.twitter.com">
+                                    <i class="feather-twitter"></i>
+                                </a>
+                            </li>
+                            <li><a href="https://www.instagram.com/">
+                                    <i class="feather-instagram"></i>
+                                </a>
+                            </li>
+                            <li><a href="https://www.linkdin.com/">
+                                    <i class="feather-linkedin"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+
+                    <!-- Blog Author  -->
+                    <div class="about-author">
+                        <div class="media">
+                            <div class="thumbnail">
+                                <a href="#">
+                                    <img src="/static/images/testimonial/testimonial-4.jpg" alt="Author Images">
+                                </a>
                             </div>
-
-                            <div class="filter-select-option">
-                                <div class="filter-select rbt-modern-select">
-                                    <span class="select-label d-block">Short By Author</span>
-                                    <select data-live-search="true" title="Select Author" multiple data-size="7" data-actions-box="true" data-selected-text-format="count > 2">
-                                        <option data-subtext="Experts">Janin Afsana</option>
-                                        <option data-subtext="Experts">Joe Biden</option>
-                                        <option data-subtext="Experts">Fatima Asrafy</option>
-                                        <option data-subtext="Experts">Aysha Baby</option>
-                                        <option data-subtext="Experts">Mohamad Ali</option>
-                                        <option data-subtext="Experts">Jone Li</option>
-                                        <option data-subtext="Experts">Alberd Roce</option>
-                                        <option data-subtext="Experts">Zeliski Noor</option>
-                                    </select>
+                            <div class="media-body">
+                                <div class="author-info">
+                                    <h5 class="title">
+                                        <a class="hover-flip-item-wrapper" href="#">
+                                            Farjana Bawnia
+                                        </a>
+                                    </h5>
+                                    <span class="b3 subtitle">Sr. UX Designer</span>
                                 </div>
-                            </div>
-
-                            <div class="filter-select-option">
-                                <div class="filter-select rbt-modern-select">
-                                    <span class="select-label d-block">Short By Offer</span>
-                                    <select>
-                                        <option>Free</option>
-                                        <option>Paid</option>
-                                        <option>Premium</option>
-                                    </select>
+                                <div class="content">
+                                    <p class="description">At 29 years old, my favorite compliment is being
+                                        told that I look like my mom. Seeing myself in her image, like this
+                                        daughter up top.</p>
+                                    <ul class="social-icon social-default icon-naked justify-content-start">
+                                        <li><a href="https://www.facebook.com/">
+                                                <i class="feather-facebook"></i>
+                                            </a>
+                                        </li>
+                                        <li><a href="https://www.twitter.com">
+                                                <i class="feather-twitter"></i>
+                                            </a>
+                                        </li>
+                                        <li><a href="https://www.instagram.com/">
+                                                <i class="feather-instagram"></i>
+                                            </a>
+                                        </li>
+                                        <li><a href="https://www.linkdin.com/">
+                                                <i class="feather-linkedin"></i>
+                                            </a>
+                                        </li>
+                                    </ul>
                                 </div>
-                            </div>
 
-                            <div class="filter-select-option">
-                                <div class="filter-select rbt-modern-select">
-                                    <span class="select-label d-block">Short By Category</span>
-                                    <select data-live-search="true">
-                                        <option>Web Design</option>
-                                        <option>Graphic</option>
-                                        <option>App Development</option>
-                                        <option>Figma Design</option>
-                                    </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="rbt-comment-area">
+                        <div class="rbt-total-comment-post">
+                            <div class="title">
+                                <h4 class="mb--0">30+ Comments</h4>
+                            </div>
+                            <div class="add-comment-button">
+                                <a class="rbt-btn btn-gradient icon-hover radius-round btn-md" href="#">
+                                    <span class="btn-text">Add Your Comment</span>
+                                    <span class="btn-icon"><i class="feather-arrow-right"></i></span>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="comment-respond">
+                            <h4 class="title">Post a Comment</h4>
+                            <form action="#">
+                                <p class="comment-notes"><span id="email-notes">Your email address will not be
+                                        published.</span> Required fields are marked <span class="required">*</span></p>
+                                <div class="row row--10">
+                                    <div class="col-lg-4 col-md-4 col-12">
+                                        <div class="form-group">
+                                            <label for="name">Your Name</label>
+                                            <input id="name" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-4 col-12">
+                                        <div class="form-group">
+                                            <label for="bl-email">Your Email</label>
+                                            <input id="bl-email" type="email">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-4 col-12">
+                                        <div class="form-group">
+                                            <label for="website">Your Website</label>
+                                            <input id="website" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label for="message">Leave a Reply</label>
+                                            <textarea id="message" name="message"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <p class="comment-form-cookies-consent">
+                                            <input id="wp-comment-cookies-consent" name="wp-comment-cookies-consent" type="checkbox" value="yes">
+                                            <label for="wp-comment-cookies-consent">Save my name, email, and
+                                                website in this browser for the next time I comment.</label>
+                                        </p>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <a class="rbt-btn btn-gradient icon-hover radius-round btn-md" href="#">
+                                            <span class="btn-text">Post Comment</span>
+                                            <span class="btn-icon"><i class="feather-arrow-right"></i></span>
+                                        </a>
+                                    </div>
                                 </div>
-                            </div>
+                            </form>
+                        </div>
+                    </div>
 
-                            <div class="filter-select-option">
-                                <div class="filter-select">
-                                    <span class="select-label d-block">Price Range</span>
-
-                                    <div class="price_filter s-filter clear">
-                                        <form action="#" method="GET">
-                                            <div id="slider-range"></div>
-                                            <div class="slider__range--output">
-                                                <div class="price__output--wrap">
-                                                    <div class="price--output">
-                                                        <span>Price :</span><input type="text" id="amount">
-                                                    </div>
-                                                    <div class="price--filter">
-                                                        <a class="rbt-btn btn-gradient btn-sm" href="#">Filter</a>
+                    <div class="rbt-comment-area">
+                        <h4 class="title">2 comments</h4>
+                        <ul class="comment-list">
+                            <!-- Start Single Comment  -->
+                            <li class="comment">
+                                <div class="comment-body">
+                                    <div class="single-comment">
+                                        <div class="comment-img">
+                                            <img src="/static/images/testimonial/testimonial-1.jpg" alt="Author Images">
+                                        </div>
+                                        <div class="comment-inner">
+                                            <h6 class="commenter">
+                                                <a href="#">Cameron Williamson</a>
+                                            </h6>
+                                            <div class="comment-meta">
+                                                <div class="time-spent">Nov 23, 2018 at 12:23 pm</div>
+                                                <div class="reply-edit">
+                                                    <div class="reply">
+                                                        <a class="comment-reply-link" href="#">Reply</a>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </form>
-                                    </div>
-
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- End Filter Toggle  -->
-                </div>
-            </div>
-            <!-- End Course Top  -->
-        </div>
-    </div>
-
-    <div class="rbt-section-overlayping-top rbt-section-gapBottom">
-        <div class="inner">
-            <div class="container">
-                <div class="rbt-course-grid-column">
-
-                {% for course in courses %}
-                
-                  <!-- Start Single Card  -->
-                    <div class="course-grid-3">
-                        <div class="rbt-card variation-01 rbt-hover">
-                            <div class="rbt-card-img">
-                                {% comment %} <a href="{% url 'courses:course_detail' slug=course.slug %}"> {% endcomment %}
-                                    {% comment %} {{course}} {% endcomment %}
-                                </a>
-
-                                <img src="{{course.image.url}}" alt="Card image">
-                                </a>
-                            </div>
-                            <div class="rbt-card-body">
-                                <div class="rbt-card-top">
-                                    <div class="rbt-review">
-                                        <div class="rating">
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
+                                            <div class="comment-text">
+                                                <p class="b2">Duis hendrerit velit scelerisque felis tempus, id porta
+                                                    libero venenatis. Nulla facilisi. Phasellus viverra
+                                                    magna commodo dui lacinia tempus. Donec malesuada nunc
+                                                    non dui posuere, fringilla vestibulum urna mollis.
+                                                    Integer condimentum ac sapien quis maximus. </p>
+                                            </div>
                                         </div>
-                                        <span class="rating-count"> (15 Reviews)</span>
-                                    </div>
-                                    <div class="rbt-bookmark-btn">
-                                        <a class="rbt-round-btn" title="Bookmark" href="#"><i
-                                                class="feather-bookmark"></i></a>
                                     </div>
                                 </div>
-                                <h4 class="rbt-card-title"><a href="{% url 'courses:course_detail'  slug=course.slug %}">{{course.title}}</a>
-                                </h4>
-                                <ul class="rbt-meta">
-                                    <li><i class="feather-book"></i>{{ course.lessons.count }} Lessons</li>
-                                    <li><i class="feather-users"></i>{{course.get_enrolled_count}} Students</li>
+                                <ul class="children">
+                                    <!-- Start Single Comment  -->
+                                    <li class="comment">
+                                        <div class="comment-body">
+                                            <div class="single-comment">
+                                                <div class="comment-img">
+                                                    <img src="/static/images/testimonial/testimonial-2.jpg" alt="Author Images">
+                                                </div>
+                                                <div class="comment-inner">
+                                                    <h6 class="commenter">
+                                                        <a href="#">John Due</a>
+                                                    </h6>
+                                                    <div class="comment-meta">
+                                                        <div class="time-spent">Nov 23, 2018 at 12:23 pm
+                                                        </div>
+                                                        <div class="reply-edit">
+                                                            <div class="reply">
+                                                                <a class="comment-reply-link" href="#">Reply</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="comment-text">
+                                                        <p class="b2">Pellentesque habitant morbi tristique senectus et
+                                                            netus et malesuada fames ac turpis egestas. Suspendisse
+                                                            lobortis cursus lacinia. Vestibulum vitae leo id diam
+                                                            pellentesque ornare.</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <!-- End Single Comment  -->
                                 </ul>
+                            </li>
+                            <!-- End Single Comment  -->
 
-                                <div class="rbt-card-text" style="min-height: 80px; max-height: 80px; overflow: hidden;">
-                                    {{ course.description|safe }}
+                            <!-- Start Single Comment  -->
+                            <li class="comment">
+                                <div class="comment-body">
+                                    <div class="single-comment">
+                                        <div class="comment-img">
+                                            <img src="/static/images/testimonial/testimonial-3.jpg" alt="Author Images">
+                                        </div>
+                                        <div class="comment-inner">
+                                            <h6 class="commenter">
+                                                <a href="#">Rafin Shuvo</a>
+                                            </h6>
+                                            <div class="comment-meta">
+                                                <div class="time-spent">Nov 23, 2018 at 12:23 pm</div>
+                                                <div class="reply-edit">
+                                                    <div class="reply">
+                                                        <a class="comment-reply-link" href="#">Reply</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="comment-text">
+                                                <p class="b2">Duis hendrerit velit scelerisque felis tempus, id porta
+                                                    libero venenatis. Nulla facilisi. Phasellus viverra
+                                                    magna commodo dui lacinia tempus. Donec malesuada nunc
+                                                    non dui posuere, fringilla vestibulum urna mollis.
+                                                    Integer condimentum ac sapien quis maximus. </p>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
+                            </li>
+                            <!-- End Single Comment  -->
+                        </ul>
+                    </div>
 
-                                <div class="rbt-author-meta mb--10">
-                                    <div class="rbt-avater">
-                                        <a href="#">
-                                            <img src="/static/images/client/avatar-02.png" alt="Sophia Jaymes">
-                                        </a>
-                                    </div>
-                                    <div class="rbt-author-info">
-                                        بواسطه <a href="{% url 'profile'%}">{{course.lecturer}}</a> 
-                                    </div>
-                                </div>
-                        
+                </div>
+
+                <div class="related-post pt--60">
+                    <div class="section-title text-start mb--40">
+                        <span class="subtitle bg-primary-opacity">Related Post</span>
+                        <h2 class="title">Similar Post</h2>
+                    </div>
+
+                    <!-- Start Single Card  -->
+                    <div class="rbt-card card-list variation-02 rbt-hover mt--30">
+                        <div class="rbt-card-img">
+                            <a href="{% url 'blogDetails'%}">
+                                <img src="/static/images/blog/blog-card-02.jpg" alt="Card image"> </a>
+                        </div>
+                        <div class="rbt-card-body">
+                            <h5 class="rbt-card-title"><a href="{% url 'blogDetails'%}">Why Is Education So Famous?</a>
+                            </h5>
+                            <div class="rbt-card-bottom">
+                                <a class="transparent-button" href="{% url 'blogDetails'%}">Read
+                                    Article<i><svg width="17" height="12" xmlns="http://www.w3.org/2000/svg"><g stroke="#27374D" fill="none" fill-rule="evenodd"><path d="M10.614 0l5.629 5.629-5.63 5.629"/><path stroke-linecap="square" d="M.663 5.572h14.594"/></g></svg></i></a>
                             </div>
                         </div>
                     </div>
+                    <!-- End Single Card  -->
 
-                {% endfor %}
-                  
-                   
-                </div>
-                <div class="row">
-                    <div class="col-lg-12 mt--60">
-                        <nav>
-                            <ul class="rbt-pagination">
-                                <li><a href="#" aria-label="Previous"><i class="feather-chevron-left"></i></a></li>
-                                <li><a href="#">1</a></li>
-                                <li class="active"><a href="#">2</a></li>
-                                <li><a href="#">3</a></li>
-                                <li><a href="#" aria-label="Next"><i class="feather-chevron-right"></i></a></li>
-                            </ul>
-                        </nav>
+                    <!-- Start Single Card  -->
+                    <div class="rbt-card card-list variation-02 rbt-hover mt--30">
+                        <div class="rbt-card-img">
+                            <a href="{% url 'blogDetails'%}">
+                                <img src="/static/images/blog/blog-card-03.jpg" alt="Card image"> </a>
+                        </div>
+                        <div class="rbt-card-body">
+                            <h5 class="rbt-card-title"><a href="{% url 'blogDetails'%}">Difficult Things About
+                                    Education.</a></h5>
+                            <div class="rbt-card-bottom">
+                                <a class="transparent-button" href="{% url 'blogDetails'%}">Read
+                                    Article<i><svg width="17" height="12" xmlns="http://www.w3.org/2000/svg"><g stroke="#27374D" fill="none" fill-rule="evenodd"><path d="M10.614 0l5.629 5.629-5.63 5.629"/><path stroke-linecap="square" d="M.663 5.572h14.594"/></g></svg></i></a>
+                            </div>
+                        </div>
                     </div>
+                    <!-- End Single Card  -->
+
+                    <!-- Start Single Card  -->
+                    <div class="rbt-card card-list variation-02 rbt-hover mt--30">
+                        <div class="rbt-card-img">
+                            <a href="{% url 'blogDetails'%}">
+                                <img src="/static/images/blog/blog-card-04.jpg" alt="Card image"> </a>
+                        </div>
+                        <div class="rbt-card-body">
+                            <h5 class="rbt-card-title"><a href="{% url 'blogDetails'%}">Education Is So Famous, But
+                                    Why?</a></h5>
+                            <div class="rbt-card-bottom">
+                                <a class="transparent-button" href="{% url 'blogDetails'%}">Read
+                                    Article<i><svg width="17" height="12" xmlns="http://www.w3.org/2000/svg"><g stroke="#27374D" fill="none" fill-rule="evenodd"><path d="M10.614 0l5.629 5.629-5.63 5.629"/><path stroke-linecap="square" d="M.663 5.572h14.594"/></g></svg></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Single Card  -->
+
                 </div>
             </div>
         </div>
+
     </div>
 
-    {% include "partials/separator.html" %}
+    {% include "partials/imgSection.html" %}
 
 {% endblock content %}

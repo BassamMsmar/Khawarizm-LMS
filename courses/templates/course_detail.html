@@ -1,4 +1,4 @@
-{% extends '../layout/base.html' %}
+{% extends './layout/base.html' %}
 
 {% block content %}
 
@@ -841,8 +841,8 @@
                                         <span>616,029 students</span>
                                     </div>
                                 </div>
-                                <h2 class="title theme-gradient">ddd</h2>
-                                <h2 class="title theme-gradient">{{ course.title }}</h2>
+                                {% comment %} <h2 class="title theme-gradient">ddd</h2> {% endcomment %}
+                                <h2 class="title theme-gradient">{{ object }}</h2>
 
                                 <div class="rbt-author-meta mb--20 justify-content-center">
                                     <div class="rbt-avater">
@@ -851,7 +851,7 @@
                                         </a>
                                     </div>
                                     <div class="rbt-author-info">
-                                        By <a href="{% url 'profile'%}">Angela</a> In <a href="#">Development</a>
+                                        By <a href="{% url 'profile'%}">{{object.lecturer}}</a> 
                                     </div>
                                 </div>
 
@@ -876,7 +876,7 @@
                     <!-- Start Viedo Wrapper  -->
                     <a class="video-popup-with-text video-popup-wrapper text-center popup-video mb--15" href="https://www.youtube.com/watch?v=nA1Aqp0sPQo">
                         <div class="video-content">
-                            <img class="w-100 rbt-radius" src="/static/images/others/video-07.jpg" alt="Video Images">
+                            <img class="w-100 rbt-radius" src="{{object.thumbnail.url}}" alt="Video Images">
                             <div class="position-to-top">
                                 <span class="rbt-btn rounded-player-2 with-animation">
                                         <span class="play-icon"></span>
@@ -926,7 +926,12 @@
                                             <ul class="has-show-more-inner-content rbt-course-details-list-wrapper">
                                                 <li><span>Start Date</span><span class="rbt-feature-value rbt-badge-5">5 Hrs 20 Min</span>
                                                 </li>
-                                                <li><span>Enrolled</span><span class="rbt-feature-value rbt-badge-5">100</span></li>
+                                                <li>
+                                                <span>Enrolled</span>
+                                                <span class="rbt-feature-value rbt-badge-5">
+                                                    {{ object.students_enrolled.count|default:0 }}
+                                                </span>
+                                                </li>
                                                 <li><span>Lectures</span><span class="rbt-feature-value rbt-badge-5">50</span></li>
                                                 <li><span>Skill Level</span><span class="rbt-feature-value rbt-badge-5">Basic</span></li>
                                                 <li><span>Language</span><span class="rbt-feature-value rbt-badge-5">English</span></li>

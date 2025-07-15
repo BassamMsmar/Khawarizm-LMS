@@ -1,4 +1,4 @@
-{% extends 'layout/base.html' %}
+{% extends '../layout/layout.html' %}
 
 {% block content %}
 
@@ -812,7 +812,6 @@
         <div class="rbt-banner-image"></div>
         <!-- End Banner BG Image  -->
         <div class="rbt-banner-content">
-
             <!-- Start Banner Content Top  -->
             <div class="rbt-banner-content-top">
                 <div class="container">
@@ -842,18 +841,11 @@
             </div>
             <!-- End Banner Content Top  -->
             <!-- Start Course Top  -->
-            <div class="rbt-course-top-wrapper mt--40 mt_sm--20">
+            <div class="rbt-course-top-wrapper mt--40">
                 <div class="container">
                     <div class="row g-5 align-items-center">
-
                         <div class="col-lg-5 col-md-12">
                             <div class="rbt-sorting-list d-flex flex-wrap align-items-center">
-                                <div class="rbt-short-item switch-layout-container">
-                                    <ul class="course-switch-layout">
-                                        <li class="course-switch-item"><button class="rbt-grid-view active" title="Grid Layout"><i class="feather-grid"></i> <span class="text">Grid</span></button></li>
-                                        <li class="course-switch-item"><button class="rbt-list-view" title="List Layout"><i class="feather-list"></i> <span class="text">List</span></button></li>
-                                    </ul>
-                                </div>
                                 <div class="rbt-short-item">
                                     <span class="course-index">Showing 1-9 of 19 results</span>
                                 </div>
@@ -962,94 +954,390 @@
                         </div>
                     </div>
                     <!-- End Filter Toggle  -->
+
+                    <div class="row mt--60">
+                        <div class="col-lg-12">
+                            <div class="rbt-portfolio-filter filter-button-default messonry-button text-start justify-content-start">
+                                <button data-filter="*" class="is-checked"><span class="filter-text">All Course</span><span
+                                        class="course-number">06</span></button>
+                                <button data-filter=".cat--1" class=""><span class="filter-text">Featured</span><span
+                                        class="course-number">02</span></button>
+                                <button data-filter=".cat--2"><span class="filter-text">Popular</span><span
+                                        class="course-number">05</span></button>
+                                <button data-filter=".cat--3"><span class="filter-text">Trending</span><span
+                                        class="course-number">03</span></button>
+                                <button data-filter=".cat--4"><span class="filter-text">Latest</span><span
+                                        class="course-number">04</span></button>
+                            </div>
+                        </div>
+                    </div>
+
+
                 </div>
             </div>
             <!-- End Course Top  -->
         </div>
     </div>
 
-    <div class="rbt-section-overlayping-top rbt-section-gapBottom">
-        <div class="inner">
-            <div class="container">
-                <div class="rbt-course-grid-column">
-
-                {% for course in courses %}
-                
-                  <!-- Start Single Card  -->
-                    <div class="course-grid-3">
-                        <div class="rbt-card variation-01 rbt-hover">
-                            <div class="rbt-card-img">
-                                {% comment %} <a href="{% url 'courses:course_detail' slug=course.slug %}"> {% endcomment %}
-                                    {% comment %} {{course}} {% endcomment %}
-                                </a>
-
-                                <img src="{{course.image.url}}" alt="Card image">
-                                </a>
-                            </div>
-                            <div class="rbt-card-body">
-                                <div class="rbt-card-top">
-                                    <div class="rbt-review">
-                                        <div class="rating">
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
+    <div class="rbt-section-overlayping-top rbt-section-gapBottom masonary-wrapper-activation">
+        <div class="container">
+            <!-- Start Card Area -->
+            <div class="row row--15">
+                <div class="col-lg-12">
+                    <div class="mesonry-list grid-metro2">
+                        <div class="resizer"></div>
+                        <!-- Start Single Card  -->
+                        <div class="maso-item cat--1">
+                            <div class="rbt-card variation-01 rbt-hover card-list-2">
+                                <div class="rbt-card-img">
+                                    <a href="{% url 'courseDetails'%}">
+                                        <img src="/static/images/course/course-list-01.jpg" alt="Card image">
+                                    </a>
+                                </div>
+                                <div class="rbt-card-body">
+                                    <div class="rbt-card-top">
+                                        <div class="rbt-review">
+                                            <div class="rating">
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                            </div>
+                                            <span class="rating-count"> (15 Reviews)</span>
                                         </div>
-                                        <span class="rating-count"> (15 Reviews)</span>
+                                        <div class="rbt-bookmark-btn">
+                                            <a class="rbt-round-btn" title="Bookmark" href="#"><i
+                                                    class="feather-bookmark"></i></a>
+                                        </div>
                                     </div>
-                                    <div class="rbt-bookmark-btn">
-                                        <a class="rbt-round-btn" title="Bookmark" href="#"><i
-                                                class="feather-bookmark"></i></a>
-                                    </div>
-                                </div>
-                                <h4 class="rbt-card-title"><a href="{% url 'courses:course_detail'  slug=course.slug %}">{{course.title}}</a>
-                                </h4>
-                                <ul class="rbt-meta">
-                                    <li><i class="feather-book"></i>{{ course.lessons.count }} Lessons</li>
-                                    <li><i class="feather-users"></i>{{course.get_enrolled_count}} Students</li>
-                                </ul>
 
-                                <div class="rbt-card-text" style="min-height: 80px; max-height: 80px; overflow: hidden;">
-                                    {{ course.description|safe }}
-                                </div>
+                                    <h4 class="rbt-card-title"><a href="{% url 'courseDetails'%}">React Front To Back</a>
+                                    </h4>
 
-                                <div class="rbt-author-meta mb--10">
-                                    <div class="rbt-avater">
-                                        <a href="#">
-                                            <img src="/static/images/client/avatar-02.png" alt="Sophia Jaymes">
-                                        </a>
+                                    <ul class="rbt-meta">
+                                        <li><i class="feather-book"></i>12 Lessons</li>
+                                        <li><i class="feather-users"></i>50 Students</li>
+                                    </ul>
+
+                                    <p class="rbt-card-text">It is a long established fact that a reader will be
+                                        distracted.</p>
+                                    <div class="rbt-author-meta mb--10">
+                                        <div class="rbt-avater">
+                                            <a href="#">
+                                                <img src="/static/images/client/avatar-02.png" alt="Sophia Jaymes">
+                                            </a>
+                                        </div>
+                                        <div class="rbt-author-info">
+                                            By <a href="{% url 'profile'%}">Angela</a> In <a href="#">Development</a>
+                                        </div>
                                     </div>
-                                    <div class="rbt-author-info">
-                                        بواسطه <a href="{% url 'profile'%}">{{course.lecturer}}</a> 
+                                    <div class="rbt-card-bottom">
+                                        <div class="rbt-price">
+                                            <span class="current-price">$60</span>
+                                            <span class="off-price">$120</span>
+                                        </div>
+                                        <a class="rbt-btn-link" href="{% url 'courseDetails'%}">Learn
+                                            More<i class="feather-arrow-right"></i></a>
                                     </div>
                                 </div>
-                        
                             </div>
                         </div>
-                    </div>
+                        <!-- End Single Card  -->
 
-                {% endfor %}
-                  
-                   
-                </div>
-                <div class="row">
-                    <div class="col-lg-12 mt--60">
-                        <nav>
-                            <ul class="rbt-pagination">
-                                <li><a href="#" aria-label="Previous"><i class="feather-chevron-left"></i></a></li>
-                                <li><a href="#">1</a></li>
-                                <li class="active"><a href="#">2</a></li>
-                                <li><a href="#">3</a></li>
-                                <li><a href="#" aria-label="Next"><i class="feather-chevron-right"></i></a></li>
-                            </ul>
-                        </nav>
+                        <!-- Start Single Card  -->
+                        <div class="maso-item cat--2">
+                            <div class="rbt-card variation-01 rbt-hover card-list-2">
+                                <div class="rbt-card-img">
+                                    <a href="{% url 'courseDetails'%}">
+                                        <img src="/static/images/course/course-list-02.jpg" alt="Card image">
+                                    </a>
+                                </div>
+                                <div class="rbt-card-body">
+                                    <div class="rbt-card-top">
+                                        <div class="rbt-review">
+                                            <div class="rating">
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                            </div>
+                                            <span class="rating-count"> (15 Reviews)</span>
+                                        </div>
+                                        <div class="rbt-bookmark-btn">
+                                            <a class="rbt-round-btn" title="Bookmark" href="#"><i
+                                                    class="feather-bookmark"></i></a>
+                                        </div>
+                                    </div>
+                                    <h4 class="rbt-card-title"><a href="{% url 'courseDetails'%}">PHP Beginner Advanced</a>
+                                    </h4>
+                                    <ul class="rbt-meta">
+                                        <li><i class="feather-book"></i>12 Lessons</li>
+                                        <li><i class="feather-users"></i>50 Students</li>
+                                    </ul>
+
+                                    <p class="rbt-card-text">It is a long established fact that a reader will be
+                                        distracted.</p>
+                                    <div class="rbt-author-meta mb--10">
+                                        <div class="rbt-avater">
+                                            <a href="#">
+                                                <img src="/static/images/client/avatar-02.png" alt="Sophia Jaymes">
+                                            </a>
+                                        </div>
+                                        <div class="rbt-author-info">
+                                            By <a href="{% url 'profile'%}">Angela</a> In <a href="#">Development</a>
+                                        </div>
+                                    </div>
+                                    <div class="rbt-card-bottom">
+                                        <div class="rbt-price">
+                                            <span class="current-price">$60</span>
+                                            <span class="off-price">$120</span>
+                                        </div>
+                                        <a class="rbt-btn-link left-icon" href="{% url 'courseDetails'%}"><i
+                                                class="feather-shopping-cart"></i> Add To Cart</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End Single Card  -->
+
+                        <!-- Start Single Card  -->
+                        <div class="maso-item cat--3">
+                            <div class="rbt-card variation-01 rbt-hover card-list-2">
+                                <div class="rbt-card-img">
+                                    <a href="{% url 'courseDetails'%}">
+                                        <img src="/static/images/course/course-list-03.jpg" alt="Card image">
+                                    </a>
+                                </div>
+                                <div class="rbt-card-body">
+                                    <div class="rbt-card-top">
+                                        <div class="rbt-review">
+                                            <div class="rating">
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                            </div>
+                                            <span class="rating-count"> (5 Reviews)</span>
+                                        </div>
+                                        <div class="rbt-bookmark-btn">
+                                            <a class="rbt-round-btn" title="Bookmark" href="#"><i
+                                                    class="feather-bookmark"></i></a>
+                                        </div>
+                                    </div>
+                                    <h4 class="rbt-card-title"><a href="{% url 'courseDetails'%}">Angular Zero to Mastery</a>
+                                    </h4>
+                                    <ul class="rbt-meta">
+                                        <li><i class="feather-book"></i>8 Lessons</li>
+                                        <li><i class="feather-users"></i>30 Students</li>
+                                    </ul>
+                                    <p class="rbt-card-text">Angular Js long fact that a reader will be distracted by
+                                        the readable.</p>
+
+                                    <div class="rbt-author-meta mb--20">
+                                        <div class="rbt-avater">
+                                            <a href="#">
+                                                <img src="/static/images/client/avatar-03.png" alt="Sophia Jaymes">
+                                            </a>
+                                        </div>
+                                        <div class="rbt-author-info">
+                                            By <a href="{% url 'profile'%}">Slaughter</a> In <a href="#">Languages</a>
+                                        </div>
+                                    </div>
+                                    <div class="rbt-card-bottom">
+                                        <div class="rbt-price">
+                                            <span class="current-price">$80</span>
+                                            <span class="off-price">$100</span>
+                                        </div>
+                                        <a class="rbt-btn-link" href="{% url 'courseDetails'%}">Learn
+                                            More<i class="feather-arrow-right"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End Single Card  -->
+
+                        <!-- Start Single Card  -->
+                        <div class="maso-item cat--4">
+                            <div class="rbt-card variation-01 rbt-hover card-list-2">
+                                <div class="rbt-card-img">
+                                    <a href="{% url 'courseDetails'%}">
+                                        <img src="/static/images/course/course-list-04.jpg" alt="Card image">
+                                    </a>
+                                </div>
+                                <div class="rbt-card-body">
+                                    <div class="rbt-card-top">
+                                        <div class="rbt-review">
+                                            <div class="rating">
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                            </div>
+                                            <span class="rating-count"> (15 Reviews)</span>
+                                        </div>
+                                        <div class="rbt-bookmark-btn">
+                                            <a class="rbt-round-btn" title="Bookmark" href="#"><i
+                                                    class="feather-bookmark"></i></a>
+                                        </div>
+                                    </div>
+
+                                    <h4 class="rbt-card-title"><a href="{% url 'courseDetails'%}">Web Front To Back</a>
+                                    </h4>
+                                    <ul class="rbt-meta">
+                                        <li><i class="feather-book"></i>20 Lessons</li>
+                                        <li><i class="feather-users"></i>40 Students</li>
+                                    </ul>
+                                    <p class="rbt-card-text">Web Js long fact that a reader will be distracted by
+                                        the readable.</p>
+                                    <div class="rbt-author-meta mb--20">
+                                        <div class="rbt-avater">
+                                            <a href="#">
+                                                <img src="/static/images/client/avater-01.png" alt="Sophia Jaymes">
+                                            </a>
+                                        </div>
+                                        <div class="rbt-author-info">
+                                            By <a href="{% url 'profile'%}">Patrick</a> In <a href="#">Languages</a>
+                                        </div>
+                                    </div>
+
+                                    <div class="rbt-card-bottom">
+                                        <div class="rbt-price">
+                                            <span class="current-price">$60</span>
+                                            <span class="off-price">$120</span>
+                                        </div>
+                                        <a class="rbt-btn-link" href="{% url 'courseDetails'%}">Learn
+                                            More<i class="feather-arrow-right"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End Single Card  -->
+
+                        <!-- Start Single Card  -->
+                        <div class="maso-item cat--1 cat--3">
+                            <div class="rbt-card variation-01 rbt-hover card-list-2">
+                                <div class="rbt-card-img">
+                                    <a href="{% url 'courseDetails'%}">
+                                        <img src="/static/images/course/course-list-05.jpg" alt="Card image">
+                                    </a>
+                                </div>
+                                <div class="rbt-card-body">
+                                    <div class="rbt-card-top">
+                                        <div class="rbt-review">
+                                            <div class="rating">
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                            </div>
+                                            <span class="rating-count"> (15 Reviews)</span>
+                                        </div>
+                                        <div class="rbt-bookmark-btn">
+                                            <a class="rbt-round-btn" title="Bookmark" href="#"><i
+                                                    class="feather-bookmark"></i></a>
+                                        </div>
+                                    </div>
+                                    <h4 class="rbt-card-title"><a href="{% url 'courseDetails'%}">SQL Beginner Advanced</a>
+                                    </h4>
+                                    <ul class="rbt-meta">
+                                        <li><i class="feather-book"></i>12 Lessons</li>
+                                        <li><i class="feather-users"></i>50 Students</li>
+                                    </ul>
+                                    <p class="rbt-card-text">It is a long established fact that a reader will be
+                                        distracted
+                                        by the readable.</p>
+                                    <div class="rbt-author-meta mb--20">
+                                        <div class="rbt-avater">
+                                            <a href="#">
+                                                <img src="/static/images/client/avatar-02.png" alt="Sophia Jaymes">
+                                            </a>
+                                        </div>
+                                        <div class="rbt-author-info">
+                                            By <a href="{% url 'profile'%}">Angela</a> In <a href="#">Development</a>
+                                        </div>
+                                    </div>
+                                    <div class="rbt-card-bottom">
+                                        <div class="rbt-price">
+                                            <span class="current-price">$60</span>
+                                            <span class="off-price">$120</span>
+                                        </div>
+                                        <a class="rbt-btn-link left-icon" href="{% url 'courseDetails'%}"><i
+                                                class="feather-shopping-cart"></i> Add To Cart</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End Single Card  -->
+
+                        <!-- Start Single Card  -->
+                        <div class="maso-item cat--2 cat--4">
+                            <div class="rbt-card variation-01 rbt-hover card-list-2">
+                                <div class="rbt-card-img">
+                                    <a href="{% url 'courseDetails'%}">
+                                        <img src="/static/images/course/course-list-06.jpg" alt="Card image">
+                                    </a>
+                                </div>
+                                <div class="rbt-card-body">
+                                    <div class="rbt-card-top">
+                                        <div class="rbt-review">
+                                            <div class="rating">
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                            </div>
+                                            <span class="rating-count"> (5 Reviews)</span>
+                                        </div>
+                                        <div class="rbt-bookmark-btn">
+                                            <a class="rbt-round-btn" title="Bookmark" href="#"><i
+                                                    class="feather-bookmark"></i></a>
+                                        </div>
+                                    </div>
+                                    <h4 class="rbt-card-title"><a href="{% url 'courseDetails'%}">JS Zero to Mastery</a>
+                                    </h4>
+                                    <ul class="rbt-meta">
+                                        <li><i class="feather-book"></i>8 Lessons</li>
+                                        <li><i class="feather-users"></i>30 Students</li>
+                                    </ul>
+                                    <p class="rbt-card-text">Angular Js long fact that a reader will be distracted by
+                                        the readable.</p>
+
+                                    <div class="rbt-author-meta mb--20">
+                                        <div class="rbt-avater">
+                                            <a href="#">
+                                                <img src="/static/images/client/avatar-03.png" alt="Sophia Jaymes">
+                                            </a>
+                                        </div>
+                                        <div class="rbt-author-info">
+                                            By <a href="{% url 'profile'%}">Slaughter</a> In <a href="#">Languages</a>
+                                        </div>
+                                    </div>
+                                    <div class="rbt-card-bottom">
+                                        <div class="rbt-price">
+                                            <span class="current-price">$80</span>
+                                            <span class="off-price">$100</span>
+                                        </div>
+                                        <a class="rbt-btn-link" href="{% url 'courseDetails'%}">Learn
+                                            More<i class="feather-arrow-right"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End Single Card  -->
+
                     </div>
+                    <!-- End Card Area -->
                 </div>
             </div>
         </div>
     </div>
 
     {% include "partials/separator.html" %}
-
+    
 {% endblock content %}
