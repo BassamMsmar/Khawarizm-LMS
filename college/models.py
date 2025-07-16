@@ -16,17 +16,6 @@ class College(models.Model):
     slug = models.SlugField(unique=True, blank=True, null=True)      # College Slug
     about = models.TextField(max_length=1000, blank=True, null=True)                # About College
     max_students = models.PositiveIntegerField(default=0)  # 0 = unlimited
-    difficulty_level = models.CharField(
-        max_length=20,
-        choices=[
-            ('all', 'All Levels'),
-            ('beginner', 'Beginner'),
-            ('intermediate', 'Intermediate'),
-            ('advance', 'Advance'),
-            ('expert', 'Expert'),
-        ],
-        default='all'
-    )
     is_public = models.BooleanField(default=False)
     regular_price = models.DecimalField(
         max_digits=8, decimal_places=2, null=True, blank=True)
