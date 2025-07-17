@@ -3,23 +3,38 @@ from django.utils.text import slugify
 from django_ckeditor_5.fields import CKEditor5Field
 
 
-# Create your models here.
-class College(models.Model):
-    name = models.CharField(max_length=200)
-    college_admin = models.ForeignKey('accounts.User', on_delete=models.SET_NULL, null=True, blank=True, related_name='admin_colleges')
-    slug = models.SlugField(unique=True, max_length=200, blank=True, null=True)
-    description = models.TextField('Description', blank=True)
-    image = models.ImageField(upload_to='college/images/', blank=True, null=True)
-    thumbnail = models.ImageField(upload_to='college/images/thumbnails/', blank=True, null=True)
-    is_active = models.BooleanField(default=True)
+class Question(models.Model):
+    question = models.TextField(max_length=1000, blank=True, null=True)
+    answer = models.TextField(max_length=1000, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    is_active = models.BooleanField(default=True)
+
+# Create your models here.
+class College(models.Model):
+    title = models.CharField(max_length=100 , blank=True, null=True)  # College Title
+    slug = models.SlugField(unique=True, blank=True, null=True)      # College Slug
+    about = models.TextField(max_length=1000, blank=True, null=True)                # About College
+    max_students = models.PositiveIntegerField(default=0)  # 0 = unlimited
+    is_public = models.BooleanField(default=False)
+    regular_price = models.DecimalField(
+        max_digits=8, decimal_places=2, null=True, blank=True)
+    discounted_price = models.DecimalField(
+        max_digits=8, decimal_places=2, null=True, blank=True)
+    thumbnail = models.ImageField(
+        upload_to='college_thumbnails/', null=True, blank=True)
+    intro_video_url = models.URLField(null=True, blank=True)
+    description = models.TextField(blank=True)
+    tags = models.CharField(max_length=255, blank=True)  # مفصولة بفواصل
+    targeted_audience = models.TextField(blank=True)
+    questions = models.ForeignKey(Question, blank=True, null=True, on_delete=models.CASCADE)
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = slugify(self.name)
+            self.slug = slugify(self.title)
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return self.name
-    
+        return self.title
+
+

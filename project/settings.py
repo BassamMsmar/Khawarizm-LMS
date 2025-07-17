@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'dashboard',
     'college',
     'department',
+    'degreeLevel',
     'profiles',
     'courses',
 

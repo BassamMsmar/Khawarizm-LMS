@@ -13,9 +13,9 @@ class LanguageAdmin(admin.ModelAdmin):
 class StudentProfileAdmin(admin.ModelAdmin):
     list_display = ('user', 'college', 'department', 'created_at')
     list_filter = ('college', 'department', 'created_at')
-    search_fields = ('user__first_name', 'user__last_name', 'user__email')
+    # search_fields = ('user__first_name', 'user__last_name', 'user__email')
     filter_horizontal = ('course', 'languages',)
-    autocomplete_fields = ['college', 'department']
+    # autocomplete_fields = ['college', 'department']
     readonly_fields = ('created_at', 'updated_at')
 
 

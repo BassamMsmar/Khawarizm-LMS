@@ -32,13 +32,6 @@ class Course(models.Model):
         related_name='courses',
         verbose_name='Colleges offering this course'
     )
-    
-    departments = models.ManyToManyField(
-        Department,
-        blank=True,
-        related_name='courses',
-        verbose_name='Departments offering this course'
-    )
     image = models.ImageField(upload_to='courses/images/', blank=True, null=True)
     thumbnail = models.ImageField(upload_to='courses/images/thumbnails/', blank=True, null=True)
     what_youll_learn = CKEditor5Field(blank=True, null=True)
