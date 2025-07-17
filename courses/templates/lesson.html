@@ -1,4 +1,4 @@
-{% extends '../layout/layout.html' %}
+{% extends './layout/base.html' %}
 
 {% block content %}
 
@@ -74,7 +74,7 @@
                                         <ul class="rbt-course-main-content liststyle">
 
                                             <li>
-                                                <a href="{% url 'lesson '%}">
+                                                {% comment %} <a href="{% url 'lesson '%}"> {% endcomment %}
                                                     <div class="course-content-left">
                                                         <i class="feather-play-circle"></i> <span class="text">Hello World!
                                         </span>
@@ -237,7 +237,7 @@
                             <button class="lesson-toggle-active btn-round-white-opacity" title="Toggle Sidebar"><i
                     class="feather-arrow-left"></i></button>
                         </div>
-                        <h5>The Complete Histudy 2024: From Zero to Expert!</h5>
+                        <h5>{{lesson}}</h5>
                     </div>
                     <div class="lesson-top-right">
                         <div class="rbt-btn-close">
@@ -246,14 +246,17 @@
                     </div>
                 </div>
                 <div class="inner">
-                    <div class="plyr__video-embed rbtplayer">
-                        <iframe src="('https://www.youtube.com/embed/qKzhrXqT6oE')" allowfullscreen allow="autoplay"></iframe>
+                    <div class="rbtplayer">
+                        <video controls autoplay class="w-100" style="border-radius: 10px;">
+                            <source src="{{lesson.video_url}}" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
                     </div>
+
                     <div class="content">
                         <div class="section-title">
                             <h4>About Lesson</h4>
-                            <p>Let us analyze the greatest hits of the past and learn what makes these tracks so
-                                special. </p>
+                            <p>{{lesson.description|safe}}. </p>
                         </div>
                     </div>
                 </div>
