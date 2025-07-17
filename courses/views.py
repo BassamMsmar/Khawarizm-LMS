@@ -49,8 +49,29 @@ class CourseDetail(LoginRequiredMixin, DetailView):
 
     
 
-class Lesson_Detail(DetailView):
-    model = Lesson
-    template_name = 'lesson.html'
-    context_object_name = 'lesson'
-    slug_url_kwarg = 'lesson_slug'
+# class Lesson_Detail(DetailView):
+#     model = Lesson
+#     template_name = 'lesson.html'
+#     context_object_name = 'lesson'
+#     slug_url_kwarg = 'lesson_slug'
+
+
+from django.shortcuts import render, get_object_or_404
+from .models import Lesson, Unit
+from django.shortcuts import render, get_object_or_404
+from .models import Lesson, Unit
+def Lesson_Detail(request, course_slug, lesson_slug):
+    current_lesson = get_object_or_404(Lesson, slug=lesson_slug)
+    units = Unit.objects.filter(course=current_lesson.unit.course)
+
+    unit_lessons = {
+        unit: unit.lessons.filter(is_active=True) for unit in units
+    }
+
+    context = {
+        'lesson': current_lesson,
+        'units': units,
+        'unit_lessons': unit_lessons,
+    }
+
+    return render(request, 'lesson.html', context)
