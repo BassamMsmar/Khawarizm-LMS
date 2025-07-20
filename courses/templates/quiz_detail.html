@@ -1,0 +1,151 @@
+{% extends './layout/base.html' %}
+
+{% block content %}
+<div class="rbt-breadcrumb-default ptb--100 ptb_md--50 ptb_sm--30 bg-gradient-1">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb-inner text-center">
+                    <h2 class="title">{{ quiz.title }}</h2>
+                    <ul class="page-list">
+                        <li class="rbt-breadcrumb-item"><a href="{% url 'mainDemo' %}">Home</a></li>
+                        <li class="rbt-breadcrumb-item"><a href="{% url 'courses:course_detail' slug=course.slug %}">{{ course.title }}</a></li>
+                        <li class="rbt-breadcrumb-item active">{{ quiz.title }}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="rbt-lesson-area bg-color-white rbt-section-gap">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="rbt-lesson-content-wrapper">
+                    <div class="rbt-lesson-content">
+                        <div class="content">
+                            <div class="quiz-intro-wrapper rbt-shadow-box">
+                                <div class="inner">
+                                    <div class="section-title">
+                                        <h4 class="rbt-title-style-3">{{ quiz.title }}</h4>
+                                    </div>
+                                    
+                                    <div class="quiz-info">
+                                        <div class="row g-5 mb--30">
+                                            <div class="col-lg-6">
+                                                <div class="quiz-info-item">
+                                                    <i class="feather-help-circle"></i>
+                                                    <div class="content">
+                                                        <h6>Total Questions</h6>
+                                                        <span>{{ questions_count }}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="quiz-info-item">
+                                                    <i class="feather-clock"></i>
+                                                    <div class="content">
+                                                        <h6>Duration</h6>
+                                                        <span>{{ quiz.duration }} minutes</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="quiz-instructions">
+                                            <h6>Instructions:</h6>
+                                            <ul class="rbt-list-style-1">
+                                                <li><i class="feather-check"></i>Read each question carefully before selecting your answer.</li>
+                                                <li><i class="feather-check"></i>You have {{ quiz.duration }} minutes to complete this quiz.</li>
+                                                <li><i class="feather-check"></i>Once you submit, you cannot change your answers.</li>
+                                                <li><i class="feather-check"></i>Make sure you have a stable internet connection.</li>
+                                            </ul>
+                                        </div>
+                                        
+                                        <div class="quiz-start-button mt--30">
+                                            <a href="{% url 'courses:take_quiz' course_slug=course.slug quiz_slug=quiz.slug %}" 
+                                               class="rbt-btn btn-gradient hover-icon-reverse w-100 text-center">
+                                                <span class="icon-reverse-wrapper">
+                                                    <span class="btn-text">Start Quiz</span>
+                                                    <span class="btn-icon"><i class="feather-arrow-right"></i></span>
+                                                    <span class="btn-icon"><i class="feather-arrow-right"></i></span>
+                                                </span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="lesson-sidebar">
+                    <div class="lesson-widget">
+                        <div class="inner">
+                            <h4 class="widget-title">Quiz Information</h4>
+                            <ul class="rbt-course-main-content liststyle">
+                                <li>
+                                    <div class="course-content-left">
+                                        <i class="feather-file-text"></i>
+                                        <span class="text">Questions: {{ questions_count }}</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="course-content-left">
+                                        <i class="feather-clock"></i>
+                                        <span class="text">Duration: {{ quiz.duration }} min</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="course-content-left">
+                                        <i class="feather-award"></i>
+                                        <span class="text">Passing Score: 70%</span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.quiz-info-item {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 6px;
+}
+
+.quiz-info-item i {
+    font-size: 24px;
+    color: #2f57ef;
+    margin-right: 15px;
+}
+
+.quiz-info-item .content h6 {
+    margin: 0 0 5px 0;
+    font-weight: 600;
+}
+
+.quiz-info-item .content span {
+    color: #6b7385;
+    font-size: 14px;
+}
+
+.quiz-instructions {
+    margin-top: 30px;
+}
+
+.quiz-instructions h6 {
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+</style>
+{% endblock content %}

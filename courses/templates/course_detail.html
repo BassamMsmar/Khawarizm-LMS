@@ -1005,15 +1005,10 @@
                                         <div class="section-title">
                                             <h4 class="rbt-title-style-3">What you'll learn</h4>
                                         </div>
-                                        <p>Are you new to PHP or need a refresher? Then this course will help you get
-                                            all the fundamentals of Procedural PHP, Object Oriented PHP, MYSQLi and
-                                            ending the course by building a CMS system similar to WordPress, Joomla or
-                                            Drupal. Knowing PHP has allowed me to make enough money to stay home and
-                                            make courses like this one for students all over the world. </p>
-
+                                        <p>{{object.what_youll_learn|safe}}
                                         <div class="row g-5 mb--30">
                                             <!-- Start Feture Box  -->
-                                            <div class="col-lg-6">
+                                            {% comment %} <div class="col-lg-6">
                                                 <ul class="rbt-list-style-1">
                                                     <li><i class="feather-check"></i>Become an advanced, confident, and
                                                         modern
@@ -1028,11 +1023,11 @@
                                                         manipulate
                                                         arrays.</li>
                                                 </ul>
-                                            </div>
+                                            </div> {% endcomment %}
                                             <!-- End Feture Box  -->
 
                                             <!-- Start Feture Box  -->
-                                            <div class="col-lg-6">
+                                            {% comment %} <div class="col-lg-6">
                                                 <ul class="rbt-list-style-1">
                                                     <li><i class="feather-check"></i>Use the Jupyter Notebook
                                                         Environment.
@@ -1047,20 +1042,10 @@
                                                         matplotlib and
                                                         the seaborn.</li>
                                                 </ul>
-                                            </div>
+                                            </div> {% endcomment %}
                                             <!-- End Feture Box  -->
                                         </div>
-                                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Omnis, aliquam
-                                            voluptas laudantium incidunt architecto nam excepturi provident rem laborum
-                                            repellendus placeat neque aut doloremque ut ullam, veritatis nesciunt iusto
-                                            officia alias, non est vitae. Eius repudiandae optio quam alias aperiam nemo
-                                            nam tempora, dignissimos dicta excepturi ea quo ipsum omnis maiores
-                                            perferendis commodi voluptatum facere vel vero. Praesentium quisquam iure
-                                            veritatis, perferendis adipisci sequi blanditiis quidem porro eligendi
-                                            fugiat facilis inventore amet delectus expedita deserunt ut molestiae modi
-                                            laudantium, quia tenetur animi natus ea. Molestiae molestias ducimus
-                                            pariatur et consectetur. Error vero, eum soluta delectus necessitatibus
-                                            eligendi numquam hic at?</p>
+                                        <p>{{object.description|safe}}</p>
                                     </div>
                                     <div class="rbt-show-more-btn">Show More</div>
                                 </div>
@@ -1075,6 +1060,79 @@
                                         <div class="rbt-accordion-style rbt-accordion-02 accordion">
                                             <div class="accordion" id="accordionExampleb2">
 
+
+                                                <div class="accordion-item card">
+                                                    <h2 class="accordion-header card-header" id="headingTwo2">
+                                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" aria-expanded="false" data-bs-target="#collapseTwo2" aria-controls="collapseTwo2">
+                                                            Histudy Quiz <span class="rbt-badge-5 ml--10">1/8</span>
+                                                        </button>
+                                                    </h2>
+                                                    <div id="collapseTwo2" class="accordion-collapse collapse" aria-labelledby="headingTwo2">
+                                                        <div class="accordion-body card-body">
+                                                            <ul class="rbt-course-main-content liststyle">
+                                                                <li><a href="questions-types.html">
+                                                                        <div class="course-content-left"><i class="feather-help-circle"></i><span
+                                                                class="text">Questions
+                                                                Types</span></div>
+                                                                        <div class="course-content-right"><span class="rbt-check unread"><i
+                                                                    class="feather-circle"></i></span></div>
+                                                                    </a></li>
+                                                                <li><a href="all-questions.html">
+                                                                        <div class="course-content-left"><i class="feather-help-circle"></i><span
+                                                                class="text">Questions Below Each
+                                                                Other</span></div>
+                                                                        <div class="course-content-right"><span class="rbt-check unread"><i
+                                                                    class="feather-circle"></i></span></div>
+                                                                    </a></li>
+                                                                <li><a href="pagination-quiz.html">
+                                                                        <div class="course-content-left"><i class="feather-help-circle"></i><span
+                                                                class="text">Pagination Quiz
+                                                                Style</span></div>
+                                                                        <div class="course-content-right"><span class="rbt-check unread"><i
+                                                                    class="feather-circle"></i></span></div>
+                                                                    </a></li>
+                                                                <li><a href="single-question.html">
+                                                                        <div class="course-content-left"><i class="feather-help-circle"></i><span
+                                                                class="text">Single
+                                                                Question</span></div>
+                                                                        <div class="course-content-right"><span class="rbt-check unread"><i
+                                                                    class="feather-circle"></i></span></div>
+                                                                    </a></li>
+                                                                <li><a href="quiz-with-point.html">
+                                                                        <div class="course-content-left"><i class="feather-help-circle"></i><span
+                                                                class="text">Quiz with individual
+                                                                point</span></div>
+                                                                        <div class="course-content-right"><span class="rbt-check unread"><i
+                                                                    class="feather-circle"></i></span></div>
+                                                                    </a></li>
+                                                                <li><a href="quiz-with-custom-timer.html">
+                                                                        <div class="course-content-left"><i class="feather-help-circle"></i><span
+                                                                class="text">Quiz with custom
+                                                                timer</span></div>
+                                                                        <div class="course-content-right"><span class="rbt-check unread"><i
+                                                                    class="feather-circle"></i></span></div>
+                                                                    </a></li>
+                                                                <li><a href="lesson-quiz.html">
+                                                                        <div class="course-content-left"><i class="feather-help-circle"></i><span
+                                                                class="text">Histudy Quiz
+                                                                Start</span></div>
+                                                                        <div class="course-content-right"><span class="rbt-check unread"><i
+                                                                    class="feather-circle"></i></span></div>
+                                                                    </a></li>
+                                                                <li><a href="lesson-quiz-result.html">
+                                                                        <div class="course-content-left"><i class="feather-help-circle"></i><span
+                                                                class="text">Histudy Quiz
+                                                                Result</span></div>
+                                                                        <div class="course-content-right"><span class="rbt-check unread"><i
+                                                                    class="feather-circle"></i></span></div>
+                                                                    </a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+
+                                                
                                                {% for unit in related_units %}
                                                 <div class="accordion-item card">
                                                     <h2 class="accordion-header card-header" id="heading{{ forloop.counter }}">
@@ -1086,6 +1144,9 @@
                                                             {{ unit.title }}
                                                             <span class="rbt-badge-5 ml--10">
                                                                 {{ unit.lessons.count }} lessons
+                                                            </span>
+                                                            <span class="rbt-badge-5 ml--10">
+                                                                {{ unit.quizzes.count }} quizzes
                                                             </span>
                                                         </button>
                                                     </h2>
@@ -1132,6 +1193,32 @@
                                                                 </li>
                                                                 {% endfor %}
 
+                                                                <!-- Display Quizzes for this unit -->
+                                                                {% for quiz in unit.quizzes.all %}
+                                                                <li>
+                                                                    <a href="{% url 'courses:quiz_detail' course_slug=course.slug quiz_slug=quiz.slug %}">
+                                                                        <div class="course-content-left">
+                                                                            <i class="feather-help-circle"></i>
+                                                                            <span class="text">
+                                                                                {{ quiz.title }}
+                                                                                {% if quiz.is_active %}
+                                                                                    - {{ quiz.duration }} min
+                                                                                {% endif %}
+                                                                            </span>
+                                                                        </div>
+                                                                        <div class="course-content-right">
+                                                                            {% if quiz.is_active %}
+                                                                                <i class="feather-play" title="Take Quiz"></i>
+                                                                            {% else %}
+                                                                                <span class="course-lock">
+                                                                                    <i class="feather-lock" title="Locked"></i>
+                                                                                </span>
+                                                                            {% endif %}
+                                                                        </div>
+                                                                    </a>
+                                                                </li>
+                                                                {% endfor %}
+
                                                             </ul>
                                                         </div>
                                                     </div>
@@ -1154,14 +1241,7 @@
                                                 <h4 class="rbt-title-style-3 mb--20">Requirements</h4>
                                             </div>
                                             <ul class="rbt-list-style-1">
-                                                <li><i class="feather-check"></i>Become an advanced, confident, and modern
-                                                    JavaScript developer from scratch.</li>
-                                                <li><i class="feather-check"></i>Have an intermediate skill level of Python
-                                                    programming.</li>
-                                                <li><i class="feather-check"></i>Have a portfolio of various data analysis
-                                                    projects.</li>
-                                                <li><i class="feather-check"></i>Use the numpy library to create and manipulate
-                                                    arrays.</li>
+                                                {{object.who_this_course_is_for|safe}}
                                             </ul>
                                         </div>
                                         <!-- End Feture Box  -->
@@ -1172,14 +1252,8 @@
                                                 <h4 class="rbt-title-style-3 mb--20">Description</h4>
                                             </div>
                                             <ul class="rbt-list-style-1">
-                                                <li><i class="feather-check"></i>Use the Jupyter Notebook Environment.
-                                                    JavaScript developer from scratch.</li>
-                                                <li><i class="feather-check"></i>Use the pandas module with Python to create and
-                                                    structure data.</li>
-                                                <li><i class="feather-check"></i>Have a portfolio of various data analysis
-                                                    projects.</li>
-                                                <li><i class="feather-check"></i>Create data visualizations using matplotlib and
-                                                    the seaborn.</li>
+                                             {{object.description|safe}}
+                                                    
                                             </ul>
                                         </div>
                                         <!-- End Feture Box  -->
@@ -1189,56 +1263,43 @@
 
                                 <!-- Start Intructor Area  -->
                                 <div class="rbt-instructor rbt-shadow-box intructor-wrapper mt--30" id="intructor">
-                                    <div class="about-author border-0 pb--0 pt--0">
-                                        <div class="section-title mb--30">
-                                            <h4 class="rbt-title-style-3">Instructor</h4>
+                               {% if lecturer_profile %}
+                                <div class="about-author border-0 pb--0 pt--0">
+                                    <div class="section-title mb--30">
+                                        <h4 class="rbt-title-style-3">Instructor</h4>
+                                    </div>
+                                    <div class="media align-items-center">
+                                        <div class="thumbnail">
+                                            <a href="#">
+                                                <img src="{{ lecturer_profile.profile_picture.url }}" alt="{{ lecturer_profile.user.full_name }}">
+                                            </a>
                                         </div>
-                                        <div class="media align-items-center">
-                                            <div class="thumbnail">
-                                                <a href="#">
-                                                    <img src="/static/images/testimonial/testimonial-7.jpg" alt="Author Images">
-                                                </a>
+                                        <div class="media-body">
+                                            <div class="author-info">
+                                                <h5 class="title">
+                                                    <a class="hover-flip-item-wrapper" href="#">{{ lecturer_profile.user.full_name }}</a>
+                                                </h5>
+                                                <span class="b3 subtitle">{{ lecturer_profile.headline }}</span>
+                                                <ul class="rbt-meta mb--20 mt--10">
+                                                    <li><i class="fa fa-star color-warning"></i>75,237 Reviews 
+                                                        <span class="rbt-badge-5 ml--5">4.4 Rating</span>
+                                                    </li>
+                                                    <li><i class="feather-users"></i>912,970 Students</li>
+                                                    <li><a href="#"><i class="feather-video"></i>{{ lecturer_profile.courses.count }} Courses</a></li>
+                                                </ul>
                                             </div>
-                                            <div class="media-body">
-                                                <div class="author-info">
-                                                    <h5 class="title">
-                                                        <a class="hover-flip-item-wrapper" href="author.html">B.M. Rafekul Islam</a>
-                                                    </h5>
-                                                    <span class="b3 subtitle">Advanced Educator</span>
-                                                    <ul class="rbt-meta mb--20 mt--10">
-                                                        <li><i class="fa fa-star color-warning"></i>75,237 Reviews <span class="rbt-badge-5 ml--5">4.4 Rating</span></li>
-                                                        <li><i class="feather-users"></i>912,970 Students</li>
-                                                        <li><a href="#"><i class="feather-video"></i>16 Courses</a></li>
-                                                    </ul>
-                                                </div>
-                                                <div class="content">
-                                                    <p class="description">John is a brilliant educator, whose life was spent
-                                                        for computer science and love of nature.</p>
+                                            <div class="content">
+                                                <p class="description">{{ lecturer_profile.bio }}</p>
 
-                                                    <ul class="social-icon social-default icon-naked justify-content-start">
-                                                        <li><a href="https://www.facebook.com/">
-                                                                <i class="feather-facebook"></i>
-                                                            </a>
-                                                        </li>
-                                                        <li><a href="https://www.twitter.com">
-                                                                <i class="feather-twitter"></i>
-                                                            </a>
-                                                        </li>
-                                                        <li><a href="https://www.instagram.com/">
-                                                                <i class="feather-instagram"></i>
-                                                            </a>
-                                                        </li>
-                                                        <li><a href="https://www.linkdin.com/">
-                                                                <i class="feather-linkedin"></i>
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-
-                                                </div>
-
+                                                <ul class="social-icon social-default icon-naked justify-content-start">
+                                                    <!-- If you have social fields later -->
+                                                </ul>
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                               {% endif %}
+
                                 </div>
                                 <!-- End Intructor Area  -->
 
