@@ -19,11 +19,14 @@ class CourseList(ListView):
 
 
 from django.views.generic import DetailView
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import Http404
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse_lazy
 
-from .models import Course, Unit, Quiz
+from django.db.models import Avg
+from .models import Course, Unit, Quiz, Review
+from .forms import ReviewForm
 
 class CourseDetail(LoginRequiredMixin, DetailView):
     model = Course
@@ -56,8 +59,63 @@ class CourseDetail(LoginRequiredMixin, DetailView):
         context["unit_quizzes"] = unit_quizzes
         context["lecturer_profile"] = lecturer_profile
 
+        # Reviews and Rating
+        reviews = course.reviews.all().order_by('-created_at')
+        context['reviews'] = reviews
+        context['review_count'] = reviews.count()
+
+        average_rating = course.reviews.aggregate(Avg('rate'))['rate__avg']
+        context['average_rating'] = round(average_rating, 1) if average_rating else 0
+
+        # Rating distribution
+        rating_distribution = {
+            5: course.reviews.filter(rate=5).count(),
+            4: course.reviews.filter(rate=4).count(),
+            3: course.reviews.filter(rate=3).count(),
+            2: course.reviews.filter(rate=2).count(),
+            1: course.reviews.filter(rate=1).count(),
+        }
+        context['rating_distribution'] = rating_distribution
+
+        # Calculate percentage for progress bars
+        if context['review_count'] > 0:
+            rating_percentages = {k: (v / context['review_count']) * 100 for k, v in rating_distribution.items()}
+        else:
+            rating_percentages = {k: 0 for k in rating_distribution.keys()}
+        
+        # Create a list of tuples for easier iteration in the template
+        rating_progress = []
+        for i in range(5, 0, -1):
+            count = rating_distribution.get(i, 0)
+            percentage = rating_percentages.get(i, 0)
+            rating_progress.append((i, count, percentage))
+            
+        context['rating_progress'] = rating_progress
+
+        # Add review form to context
+        context['review_form'] = ReviewForm()
 
         return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        form = ReviewForm(request.POST)
+
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.course = self.object
+            review.user = request.user
+            review.save()
+            return redirect(self.get_success_url())
+        else:
+            # If form is not valid, re-render the page with the form and errors
+            print(form.errors) # Add this line to print form errors
+            context = self.get_context_data(object=self.object)
+            context['review_form'] = form
+            return self.render_to_response(context)
+
+    def get_success_url(self):
+        return reverse_lazy('courses:course_detail', kwargs={'slug': self.get_object().slug})
 
     
 

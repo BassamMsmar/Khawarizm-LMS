@@ -1,6 +1,32 @@
 {% extends './layout/base.html' %}
 
 {% block content %}
+<style>
+    /* Display stars for existing reviews */
+    .star-rating-display .fa-star { color: #f5b301; }
+    .star-rating-display .fa-star-o { color: #ddd; }
+
+    /* New Star Input Form Styling */
+    .star-input-wrapper {
+        position: relative;
+    }
+    .star-input {
+        display: flex;
+        align-items: center;
+    }
+    .star-input .star {
+        font-size: 2.5rem; /* Larger stars */
+        color: #d1d1d1;   /* Default empty star color */
+        cursor: pointer;
+        transition: color 0.2s ease-in-out;
+        margin-right: 5px; /* Spacing between stars */
+    }
+    /* Styling for stars when hovered or selected */
+    .star-input .star.hover,
+    .star-input .star.selected {
+        color: #ffc107; /* Gold color for selected/hover */
+    }
+</style>
 
     <!-- Mobile Menu Section -->
     <div class="popup-mobile-menu">
@@ -778,22 +804,10 @@
                 <div class="social-share-wrapper">
                     <span class="rbt-short-title d-block">Find With Us</span>
                     <ul class="social-icon social-default transparent-with-border justify-content-start mt--20">
-                        <li><a href="https://www.facebook.com/">
-                                <i class="feather-facebook"></i>
-                            </a>
-                        </li>
-                        <li><a href="https://www.twitter.com">
-                                <i class="feather-twitter"></i>
-                            </a>
-                        </li>
-                        <li><a href="https://www.instagram.com/">
-                                <i class="feather-instagram"></i>
-                            </a>
-                        </li>
-                        <li><a href="https://www.linkdin.com/">
-                                <i class="feather-linkedin"></i>
-                            </a>
-                        </li>
+                        <li><a href="https://www.facebook.com/"><i class="feather-facebook"></i></a></li>
+                        <li><a href="https://www.twitter.com"><i class="feather-twitter"></i></a></li>
+                        <li><a href="https://www.instagram.com/"><i class="feather-instagram"></i></a></li>
+                        <li><a href="https://www.linkdin.com/"><i class="feather-linkedin"></i></a></li>
                     </ul>
                 </div>
             </div>
@@ -945,22 +959,10 @@
                                         <div class="social-share-wrapper mt--30 text-center">
                                             <div class="rbt-post-share d-flex align-items-center justify-content-center">
                                                 <ul class="social-icon social-default transparent-with-border justify-content-center">
-                                                    <li><a href="https://www.facebook.com/">
-                                                            <i class="feather-facebook"></i>
-                                                        </a>
-                                                    </li>
-                                                    <li><a href="https://www.twitter.com">
-                                                            <i class="feather-twitter"></i>
-                                                        </a>
-                                                    </li>
-                                                    <li><a href="https://www.instagram.com/">
-                                                            <i class="feather-instagram"></i>
-                                                        </a>
-                                                    </li>
-                                                    <li><a href="https://www.linkdin.com/">
-                                                            <i class="feather-linkedin"></i>
-                                                        </a>
-                                                    </li>
+                                                    <li><a href="https://www.facebook.com/"><i class="feather-facebook"></i></a></li>
+                                                    <li><a href="https://www.twitter.com"><i class="feather-twitter"></i></a></li>
+                                                    <li><a href="https://www.instagram.com/"><i class="feather-instagram"></i></a></li>
+                                                    <li><a href="https://www.linkdin.com/"><i class="feather-linkedin"></i></a></li>
                                                 </ul>
                                             </div>
                                             <hr class="mt--20">
@@ -980,21 +982,11 @@
                                 <div class="rbt-inner-onepage-navigation sticky-top">
                                     <nav class="mainmenu-nav onepagenav">
                                         <ul class="mainmenu">
-                                            <li class="current">
-                                                <a href="#overview">Overview</a>
-                                            </li>
-                                            <li>
-                                                <a href="#coursecontent">Course Content</a>
-                                            </li>
-                                            <li>
-                                                <a href="#details">Details</a>
-                                            </li>
-                                            <li>
-                                                <a href="#intructor">Intructor</a>
-                                            </li>
-                                            <li>
-                                                <a href="#review">Review</a>
-                                            </li>
+                                            <li class="current"><a href="#overview">Overview</a></li>
+                                            <li><a href="#coursecontent">Course Content</a></li>
+                                            <li><a href="#details">Details</a></li>
+                                            <li><a href="#intructor">Intructor</a></li>
+                                            <li><a href="#review">Review</a></li>
                                         </ul>
                                     </nav>
                                 </div>
@@ -1070,68 +1062,18 @@
                                                     <div id="collapseTwo2" class="accordion-collapse collapse" aria-labelledby="headingTwo2">
                                                         <div class="accordion-body card-body">
                                                             <ul class="rbt-course-main-content liststyle">
-                                                                <li><a href="questions-types.html">
-                                                                        <div class="course-content-left"><i class="feather-help-circle"></i><span
-                                                                class="text">Questions
-                                                                Types</span></div>
-                                                                        <div class="course-content-right"><span class="rbt-check unread"><i
-                                                                    class="feather-circle"></i></span></div>
-                                                                    </a></li>
-                                                                <li><a href="all-questions.html">
-                                                                        <div class="course-content-left"><i class="feather-help-circle"></i><span
-                                                                class="text">Questions Below Each
-                                                                Other</span></div>
-                                                                        <div class="course-content-right"><span class="rbt-check unread"><i
-                                                                    class="feather-circle"></i></span></div>
-                                                                    </a></li>
-                                                                <li><a href="pagination-quiz.html">
-                                                                        <div class="course-content-left"><i class="feather-help-circle"></i><span
-                                                                class="text">Pagination Quiz
-                                                                Style</span></div>
-                                                                        <div class="course-content-right"><span class="rbt-check unread"><i
-                                                                    class="feather-circle"></i></span></div>
-                                                                    </a></li>
-                                                                <li><a href="single-question.html">
-                                                                        <div class="course-content-left"><i class="feather-help-circle"></i><span
-                                                                class="text">Single
-                                                                Question</span></div>
-                                                                        <div class="course-content-right"><span class="rbt-check unread"><i
-                                                                    class="feather-circle"></i></span></div>
-                                                                    </a></li>
-                                                                <li><a href="quiz-with-point.html">
-                                                                        <div class="course-content-left"><i class="feather-help-circle"></i><span
-                                                                class="text">Quiz with individual
-                                                                point</span></div>
-                                                                        <div class="course-content-right"><span class="rbt-check unread"><i
-                                                                    class="feather-circle"></i></span></div>
-                                                                    </a></li>
-                                                                <li><a href="quiz-with-custom-timer.html">
-                                                                        <div class="course-content-left"><i class="feather-help-circle"></i><span
-                                                                class="text">Quiz with custom
-                                                                timer</span></div>
-                                                                        <div class="course-content-right"><span class="rbt-check unread"><i
-                                                                    class="feather-circle"></i></span></div>
-                                                                    </a></li>
-                                                                <li><a href="lesson-quiz.html">
-                                                                        <div class="course-content-left"><i class="feather-help-circle"></i><span
-                                                                class="text">Histudy Quiz
-                                                                Start</span></div>
-                                                                        <div class="course-content-right"><span class="rbt-check unread"><i
-                                                                    class="feather-circle"></i></span></div>
-                                                                    </a></li>
-                                                                <li><a href="lesson-quiz-result.html">
-                                                                        <div class="course-content-left"><i class="feather-help-circle"></i><span
-                                                                class="text">Histudy Quiz
-                                                                Result</span></div>
-                                                                        <div class="course-content-right"><span class="rbt-check unread"><i
-                                                                    class="feather-circle"></i></span></div>
-                                                                    </a></li>
+                                                                <li><a href="questions-types.html"><div class="course-content-left"><i class="feather-help-circle"></i><span class="text">Questions Types</span></div><div class="course-content-right"><span class="rbt-check unread"><i class="feather-circle"></i></span></div></a></li>
+                                                                <li><a href="all-questions.html"><div class="course-content-left"><i class="feather-help-circle"></i><span class="text">Questions Below Each Other</span></div><div class="course-content-right"><span class="rbt-check unread"><i class="feather-circle"></i></span></div></a></li>
+                                                                <li><a href="pagination-quiz.html"><div class="course-content-left"><i class="feather-help-circle"></i><span class="text">Pagination Quiz Style</span></div><div class="course-content-right"><span class="rbt-check unread"><i class="feather-circle"></i></span></div></a></li>
+                                                                <li><a href="single-question.html"><div class="course-content-left"><i class="feather-help-circle"></i><span class="text">Single Question</span></div><div class="course-content-right"><span class="rbt-check unread"><i class="feather-circle"></i></span></div></a></li>
+                                                                <li><a href="quiz-with-point.html"><div class="course-content-left"><i class="feather-help-circle"></i><span class="text">Quiz with individual point</span></div><div class="course-content-right"><span class="rbt-check unread"><i class="feather-circle"></i></span></div></a></li>
+                                                                <li><a href="quiz-with-custom-timer.html"><div class="course-content-left"><i class="feather-help-circle"></i><span class="text">Quiz with custom timer</span></div><div class="course-content-right"><span class="rbt-check unread"><i class="feather-circle"></i></span></div></a></li>
+                                                                <li><a href="lesson-quiz.html"><div class="course-content-left"><i class="feather-help-circle"></i><span class="text">Histudy Quiz Start</span></div><div class="course-content-right"><span class="rbt-check unread"><i class="feather-circle"></i></span></div></a></li>
+                                                                <li><a href="lesson-quiz-result.html"><div class="course-content-left"><i class="feather-help-circle"></i><span class="text">Histudy Quiz Result</span></div><div class="course-content-right"><span class="rbt-check unread"><i class="feather-circle"></i></span></div></a></li>
                                                             </ul>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                
-
                                                 
                                                {% for unit in related_units %}
                                                 <div class="accordion-item card">
@@ -1142,12 +1084,8 @@
                                                                 aria-expanded="{% if forloop.first %}true{% else %}false{% endif %}"
                                                                 aria-controls="collapse{{ forloop.counter }}">
                                                             {{ unit.title }}
-                                                            <span class="rbt-badge-5 ml--10">
-                                                                {{ unit.lessons.count }} lessons
-                                                            </span>
-                                                            <span class="rbt-badge-5 ml--10">
-                                                                {{ unit.quizzes.count }} quizzes
-                                                            </span>
+                                                            <span class="rbt-badge-5 ml--10">{{ unit.lessons.count }} lessons</span>
+                                                            <span class="rbt-badge-5 ml--10">{{ unit.quizzes.count }} quizzes</span>
                                                         </button>
                                                     </h2>
                                                     <div id="collapse{{ forloop.counter }}" class="accordion-collapse collapse {% if forloop.first %}show{% endif %}"
@@ -1160,33 +1098,21 @@
                                                                     <a href="{% url 'courses:lesson_detail' course_slug=course.slug lesson_slug=lesson.slug %}">
 
                                                                         <div class="course-content-left">
-                                                                            {% if lesson.lesson_type == 'video' %}
-                                                                                <i class="feather-play-circle"></i>
-                                                                            {% elif lesson.lesson_type == 'pdf' or lesson.lesson_type == 'article' %}
-                                                                                <i class="feather-file-text"></i>
-                                                                            {% elif lesson.lesson_type == 'image' %}
-                                                                                <i class="feather-image"></i>
-                                                                            {% elif lesson.lesson_type == 'url' %}
-                                                                                <i class="feather-link"></i>
-                                                                            {% else %}
-                                                                                <i class="feather-file"></i>
+                                                                            {% if lesson.lesson_type == 'video' %}<i class="feather-play-circle"></i>
+                                                                            {% elif lesson.lesson_type == 'pdf' or lesson.lesson_type == 'article' %}<i class="feather-file-text"></i>
+                                                                            {% elif lesson.lesson_type == 'image' %}<i class="feather-image"></i>
+                                                                            {% elif lesson.lesson_type == 'url' %}<i class="feather-link"></i>
+                                                                            {% else %}<i class="feather-file"></i>
                                                                             {% endif %}
-
                                                                             <span class="text">
                                                                                 {{ lesson.title }}
-                                                                                {% if lesson.is_active %}
-                                                                                    - {{ lesson.duration }} min
-                                                                                {% endif %}
+                                                                                {% if lesson.is_active %}- {{ lesson.duration }} min{% endif %}
                                                                             </span>
                                                                         </div>
 
                                                                         <div class="course-content-right">
-                                                                            {% if lesson.is_active %}
-                                                                                <i class="feather-eye" title="Preview"></i>
-                                                                            {% else %}
-                                                                                <span class="course-lock">
-                                                                                    <i class="feather-lock" title="Locked"></i>
-                                                                                </span>
+                                                                            {% if lesson.is_active %}<i class="feather-eye" title="Preview"></i>
+                                                                            {% else %}<span class="course-lock"><i class="feather-lock" title="Locked"></i></span>
                                                                             {% endif %}
                                                                         </div>
                                                                     </a>
@@ -1201,18 +1127,12 @@
                                                                             <i class="feather-help-circle"></i>
                                                                             <span class="text">
                                                                                 {{ quiz.title }}
-                                                                                {% if quiz.is_active %}
-                                                                                    - {{ quiz.duration }} min
-                                                                                {% endif %}
+                                                                                {% if quiz.is_active %}- {{ quiz.duration }} min{% endif %}
                                                                             </span>
                                                                         </div>
                                                                         <div class="course-content-right">
-                                                                            {% if quiz.is_active %}
-                                                                                <i class="feather-play" title="Take Quiz"></i>
-                                                                            {% else %}
-                                                                                <span class="course-lock">
-                                                                                    <i class="feather-lock" title="Locked"></i>
-                                                                                </span>
+                                                                            {% if quiz.is_active %}<i class="feather-play" title="Take Quiz"></i>
+                                                                            {% else %}<span class="course-lock"><i class="feather-lock" title="Locked"></i></span>
                                                                             {% endif %}
                                                                         </div>
                                                                     </a>
@@ -1240,9 +1160,7 @@
                                             <div class="section-title">
                                                 <h4 class="rbt-title-style-3 mb--20">Requirements</h4>
                                             </div>
-                                            <ul class="rbt-list-style-1">
-                                                {{object.who_this_course_is_for|safe}}
-                                            </ul>
+                                            <ul class="rbt-list-style-1">{{object.who_this_course_is_for|safe}}</ul>
                                         </div>
                                         <!-- End Feture Box  -->
 
@@ -1251,10 +1169,7 @@
                                             <div class="section-title">
                                                 <h4 class="rbt-title-style-3 mb--20">Description</h4>
                                             </div>
-                                            <ul class="rbt-list-style-1">
-                                             {{object.description|safe}}
-                                                    
-                                            </ul>
+                                            <ul class="rbt-list-style-1">{{object.description|safe}}</ul>
                                         </div>
                                         <!-- End Feture Box  -->
                                     </div>
@@ -1270,190 +1185,53 @@
                                     </div>
                                     <div class="media align-items-center">
                                         <div class="thumbnail">
-                                            <a href="#">
-                                                <img src="{{ lecturer_profile.profile_picture.url }}" alt="{{ lecturer_profile.user.full_name }}">
-                                            </a>
+                                            <a href="#"><img src="{{ lecturer_profile.profile_picture.url }}" alt="{{ lecturer_profile.user.full_name }}"></a>
                                         </div>
                                         <div class="media-body">
                                             <div class="author-info">
-                                                <h5 class="title">
-                                                    <a class="hover-flip-item-wrapper" href="#">{{ lecturer_profile.user.full_name }}</a>
-                                                </h5>
+                                                <h5 class="title"><a class="hover-flip-item-wrapper" href="#">{{ lecturer_profile.user.full_name }}</a></h5>
                                                 <span class="b3 subtitle">{{ lecturer_profile.headline }}</span>
                                                 <ul class="rbt-meta mb--20 mt--10">
-                                                    <li><i class="fa fa-star color-warning"></i>75,237 Reviews 
-                                                        <span class="rbt-badge-5 ml--5">4.4 Rating</span>
-                                                    </li>
+                                                    <li><i class="fa fa-star color-warning"></i>75,237 Reviews <span class="rbt-badge-5 ml--5">4.4 Rating</span></li>
                                                     <li><i class="feather-users"></i>912,970 Students</li>
                                                     <li><a href="#"><i class="feather-video"></i>{{ lecturer_profile.courses.count }} Courses</a></li>
                                                 </ul>
                                             </div>
                                             <div class="content">
                                                 <p class="description">{{ lecturer_profile.bio }}</p>
-
-                                                <ul class="social-icon social-default icon-naked justify-content-start">
-                                                    <!-- If you have social fields later -->
-                                                </ul>
+                                                <ul class="social-icon social-default icon-naked justify-content-start"></ul>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                {% endif %}
-
                                 </div>
                                 <!-- End Intructor Area  -->
 
-                                <!-- Start Edu Review List  -->
                                 <div class="rbt-review-wrapper rbt-shadow-box review-wrapper mt--30" id="review">
                                     <div class="course-content">
-                                        <div class="section-title">
-                                            <h4 class="rbt-title-style-3">Review</h4>
-                                        </div>
+                                        <div class="section-title"><h4 class="rbt-title-style-3">Review</h4></div>
                                         <div class="row g-5 align-items-center">
                                             <div class="col-lg-3">
                                                 <div class="rating-box">
-                                                    <div class="rating-number">5.0</div>
-                                                    <div class="rating">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
-                                                            <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
-                                                        </svg>
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
-                                                            <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
-                                                        </svg>
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
-                                                            <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
-                                                        </svg>
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
-                                                            <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
-                                                        </svg>
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
-                                                            <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
-                                                        </svg>
+                                                    <div class="rating-number">{{ average_rating|floatformat:1 }}</div>
+                                                    <div class="rating star-rating-display">
+                                                        {% for i in "12345" %}<i class="fa fa-star{% if forloop.counter > average_rating %}-o{% endif %}"></i>{% endfor %}
                                                     </div>
-                                                    <span class="sub-title">Course Rating</span>
+                                                    <span class="sub-title">{{ review_count }} reviews</span>
                                                 </div>
                                             </div>
                                             <div class="col-lg-9">
                                                 <div class="review-wrapper">
+                                                    {% for rating, count, percentage in rating_progress %}
                                                     <div class="single-progress-bar">
-                                                        <div class="rating-text">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
-                                                                <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
-                                                            </svg>
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
-                                                                <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
-                                                            </svg>
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
-                                                                <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
-                                                            </svg>
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
-                                                                <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
-                                                            </svg>
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
-                                                                <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
-                                                            </svg>
+                                                        <div class="rating-text star-rating-display">
+                                                            {% for i in "12345" %}<i class="fa fa-star{% if forloop.counter > rating %}-o{% endif %}"></i>{% endfor %}
                                                         </div>
-                                                        <div class="progress">
-                                                            <div class="progress-bar" role="progressbar" style="width: 63%" aria-valuenow="63" aria-valuemin="0" aria-valuemax="100"></div>
-                                                        </div>
-                                                        <span class="value-text">63%</span>
+                                                        <div class="progress"><div class="progress-bar" role="progressbar" style="width: {{ percentage }}%" aria-valuenow="{{ percentage }}" aria-valuemin="0" aria-valuemax="100"></div></div>
+                                                        <span class="value-text">{{ count }} Reviews</span>
                                                     </div>
-
-                                                    <div class="single-progress-bar">
-                                                        <div class="rating-text">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
-                                                                <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
-                                                            </svg>
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
-                                                                <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
-                                                            </svg>
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
-                                                                <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
-                                                            </svg>
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
-                                                                <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
-                                                            </svg>
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star" viewBox="0 0 16 16">
-                                                                <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z" />
-                                                            </svg>
-                                                        </div>
-                                                        <div class="progress">
-                                                            <div class="progress-bar" role="progressbar" style="width: 29%" aria-valuenow="29" aria-valuemin="0" aria-valuemax="100"></div>
-                                                        </div>
-                                                        <span class="value-text">29%</span>
-                                                    </div>
-
-                                                    <div class="single-progress-bar">
-                                                        <div class="rating-text">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
-                                                                <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
-                                                            </svg>
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
-                                                                <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
-                                                            </svg>
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
-                                                                <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
-                                                            </svg>
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star" viewBox="0 0 16 16">
-                                                                <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z" />
-                                                            </svg>
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star" viewBox="0 0 16 16">
-                                                                <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z" />
-                                                            </svg>
-                                                        </div>
-                                                        <div class="progress">
-                                                            <div class="progress-bar" role="progressbar" style="width: 6%" aria-valuenow="6" aria-valuemin="0" aria-valuemax="100"></div>
-                                                        </div>
-                                                        <span class="value-text">6%</span>
-                                                    </div>
-
-                                                    <div class="single-progress-bar">
-                                                        <div class="rating-text">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
-                                                                <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
-                                                            </svg>
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
-                                                                <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
-                                                            </svg>
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star" viewBox="0 0 16 16">
-                                                                <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z" />
-                                                            </svg>
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star" viewBox="0 0 16 16">
-                                                                <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z" />
-                                                            </svg>
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star" viewBox="0 0 16 16">
-                                                                <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z" />
-                                                            </svg>
-                                                        </div>
-                                                        <div class="progress">
-                                                            <div class="progress-bar" role="progressbar" style="width: 1%" aria-valuenow="1" aria-valuemin="0" aria-valuemax="100"></div>
-                                                        </div>
-                                                        <span class="value-text">1%</span>
-                                                    </div>
-
-                                                    <div class="single-progress-bar">
-                                                        <div class="rating-text">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
-                                                                <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
-                                                            </svg>
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star" viewBox="0 0 16 16">
-                                                                <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z" />
-                                                            </svg>
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star" viewBox="0 0 16 16">
-                                                                <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z" />
-                                                            </svg>
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star" viewBox="0 0 16 16">
-                                                                <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z" />
-                                                            </svg>
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star" viewBox="0 0 16 16">
-                                                                <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z" />
-                                                            </svg>
-                                                        </div>
-                                                        <div class="progress">
-                                                            <div class="progress-bar" role="progressbar" style="width: 1%" aria-valuenow="1" aria-valuemin="0" aria-valuemax="100"></div>
-                                                        </div>
-                                                        <span class="value-text">1%</span>
-                                                    </div>
+                                                    {% endfor %}
                                                 </div>
                                             </div>
                                         </div>
@@ -1462,206 +1240,117 @@
                                 <!-- End Edu Review List  -->
 
                                 <div class="about-author-list rbt-shadow-box featured-wrapper mt--30 has-show-more">
-                                    <div class="section-title">
-                                        <h4 class="rbt-title-style-3">Featured review</h4>
-                                    </div>
+                                    <div class="section-title"><h4 class="rbt-title-style-3">Reviews</h4></div>
                                     <div class="has-show-more-inner-content rbt-featured-review-list-wrapper">
+                                        {% for review in reviews %}
                                         <div class="rbt-course-review about-author">
                                             <div class="media">
                                                 <div class="thumbnail">
                                                     <a href="#">
-                                                        <img src="/static/images/testimonial/testimonial-3.jpg" alt="Author Images">
+                                                        {% if review.user.profile_type == 'student' and review.user.student_profile.profile_picture %}<img src="{{ review.user.student_profile.profile_picture.url }}" alt="{{ review.user.full_name }}">
+                                                        {% elif review.user.profile_type == 'lecturer' and review.user.lecturer_profile.profile_picture %}<img src="{{ review.user.lecturer_profile.profile_picture.url }}" alt="{{ review.user.full_name }}">
+                                                        {% else %}<img src="/static/images/testimonial/testimonial-1.jpg" alt="Default Profile Picture">
+                                                        {% endif %}
                                                     </a>
                                                 </div>
                                                 <div class="media-body">
                                                     <div class="author-info">
-                                                        <h5 class="title">
-                                                            <a class="hover-flip-item-wrapper" href="#">
-                                                                Farjana Bawnia
-                                                            </a>
-                                                        </h5>
-                                                        <div class="rating">
-                                                            <a href="#"><i class="fa fa-star"></i></a>
-                                                            <a href="#"><i class="fa fa-star"></i></a>
-                                                            <a href="#"><i class="fa fa-star"></i></a>
-                                                            <a href="#"><i class="fa fa-star"></i></a>
-                                                            <a href="#"><i class="fa fa-star"></i></a>
+                                                        <h5 class="title"><a class="hover-flip-item-wrapper" href="#">{{ review.user.full_name }}</a></h5>
+                                                        <div class="rating star-rating-display">
+                                                            {% for i in "12345" %}<i class="fa fa-star{% if forloop.counter > review.rate %}-o{% endif %}"></i>{% endfor %}
                                                         </div>
                                                     </div>
                                                     <div class="content">
-                                                        <p class="description">At 29 years old, my favorite compliment is being
-                                                            told that I look like my mom. Seeing myself in her image, like this
-                                                            daughter up top.</p>
+                                                        <p class="description">{{ review.comment }}</p>
                                                         <ul class="social-icon social-default transparent-with-border justify-content-start">
-                                                            <li><a href="#">
-                                                                    <i class="feather-thumbs-up"></i>
-                                                                </a>
-                                                            </li>
-                                                            <li><a href="#">
-                                                                    <i class="feather-thumbs-down"></i>
-                                                                </a>
-                                                            </li>
+                                                            <li><a href="#"><i class="feather-thumbs-up"></i></a></li>
+                                                            <li><a href="#"><i class="feather-thumbs-down"></i></a></li>
                                                         </ul>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="rbt-course-review about-author">
-                                            <div class="media">
-                                                <div class="thumbnail">
-                                                    <a href="#">
-                                                        <img src="/static/images/testimonial/testimonial-4.jpg" alt="Author Images">
-                                                    </a>
-                                                </div>
-                                                <div class="media-body">
-                                                    <div class="author-info">
-                                                        <h5 class="title">
-                                                            <a class="hover-flip-item-wrapper" href="#">Razwan Islam</a>
-                                                        </h5>
-                                                        <div class="rating">
-                                                            <a href="#"><i class="fa fa-star"></i></a>
-                                                            <a href="#"><i class="fa fa-star"></i></a>
-                                                            <a href="#"><i class="fa fa-star"></i></a>
-                                                            <a href="#"><i class="fa fa-star"></i></a>
-                                                            <a href="#"><i class="fa fa-star"></i></a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="content">
-                                                        <p class="description">My favorite compliment is being
-                                                            told that I look like my mom. Seeing myself in her image, like this
-                                                            daughter up top.</p>
-                                                        <ul class="social-icon social-default transparent-with-border justify-content-start">
-                                                            <li><a href="#">
-                                                                    <i class="feather-thumbs-up"></i>
-                                                                </a>
-                                                            </li>
-                                                            <li><a href="#">
-                                                                    <i class="feather-thumbs-down"></i>
-                                                                </a>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="rbt-course-review about-author">
-                                            <div class="media">
-                                                <div class="thumbnail">
-                                                    <a href="#">
-                                                        <img src="/static/images/testimonial/testimonial-1.jpg" alt="Author Images">
-                                                    </a>
-                                                </div>
-                                                <div class="media-body">
-                                                    <div class="author-info">
-                                                        <h5 class="title">
-                                                            <a class="hover-flip-item-wrapper" href="#">Babor Azom</a>
-                                                        </h5>
-                                                        <div class="rating">
-                                                            <a href="#"><i class="fa fa-star"></i></a>
-                                                            <a href="#"><i class="fa fa-star"></i></a>
-                                                            <a href="#"><i class="fa fa-star"></i></a>
-                                                            <a href="#"><i class="fa fa-star"></i></a>
-                                                            <a href="#"><i class="fa fa-star"></i></a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="content">
-                                                        <p class="description">My favorite compliment is being
-                                                            told that I look like my mom. Seeing myself in her image, like this
-                                                            daughter up top.</p>
-                                                        <ul class="social-icon social-default transparent-with-border justify-content-start">
-                                                            <li><a href="#">
-                                                                    <i class="feather-thumbs-up"></i>
-                                                                </a>
-                                                            </li>
-                                                            <li><a href="#">
-                                                                    <i class="feather-thumbs-down"></i>
-                                                                </a>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="rbt-course-review about-author">
-                                            <div class="media">
-                                                <div class="thumbnail">
-                                                    <a href="#">
-                                                        <img src="/static/images/testimonial/testimonial-6.jpg" alt="Author Images">
-                                                    </a>
-                                                </div>
-                                                <div class="media-body">
-                                                    <div class="author-info">
-                                                        <h5 class="title">
-                                                            <a class="hover-flip-item-wrapper" href="#">Mohammad Ali</a>
-                                                        </h5>
-                                                        <div class="rating">
-                                                            <a href="#"><i class="fa fa-star"></i></a>
-                                                            <a href="#"><i class="fa fa-star"></i></a>
-                                                            <a href="#"><i class="fa fa-star"></i></a>
-                                                            <a href="#"><i class="fa fa-star"></i></a>
-                                                            <a href="#"><i class="fa fa-star"></i></a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="content">
-                                                        <p class="description">My favorite compliment is being
-                                                            told that I look like my mom. Seeing myself in her image, like this
-                                                            daughter up top.</p>
-                                                        <ul class="social-icon social-default transparent-with-border justify-content-start">
-                                                            <li><a href="#">
-                                                                    <i class="feather-thumbs-up"></i>
-                                                                </a>
-                                                            </li>
-                                                            <li><a href="#">
-                                                                    <i class="feather-thumbs-down"></i>
-                                                                </a>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="rbt-course-review about-author">
-                                            <div class="media">
-                                                <div class="thumbnail">
-                                                    <a href="#">
-                                                        <img src="/static/images/testimonial/testimonial-8.jpg" alt="Author Images">
-                                                    </a>
-                                                </div>
-                                                <div class="media-body">
-                                                    <div class="author-info">
-                                                        <h5 class="title">
-                                                            <a class="hover-flip-item-wrapper" href="#">Sakib Al Hasan</a>
-                                                        </h5>
-                                                        <div class="rating">
-                                                            <a href="#"><i class="fa fa-star"></i></a>
-                                                            <a href="#"><i class="fa fa-star"></i></a>
-                                                            <a href="#"><i class="fa fa-star"></i></a>
-                                                            <a href="#"><i class="fa fa-star"></i></a>
-                                                            <a href="#"><i class="fa fa-star"></i></a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="content">
-                                                        <p class="description">My favorite compliment is being
-                                                            told that I look like my mom. Seeing myself in her image, like this
-                                                            daughter up top.</p>
-                                                        <ul class="social-icon social-default transparent-with-border justify-content-start">
-                                                            <li><a href="#">
-                                                                    <i class="feather-thumbs-up"></i>
-                                                                </a>
-                                                            </li>
-                                                            <li><a href="#">
-                                                                    <i class="feather-thumbs-down"></i>
-                                                                </a>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        {% endfor %}
                                     </div>
                                     <div class="rbt-show-more-btn">Show More</div>
                                 </div>
-                            </div>
+
+                             <!-- Add Review Form -->
+                                <form method="POST" action="">
+                                    {% csrf_token %}
+
+                                    <!-- Rating Section -->
+                                    <div class="mb-3">
+                                        <label class="form-label">Your Rating</label>
+
+                                        <!-- Hidden Input to store selected star value -->
+                                        <input type="hidden" name="rate" id="rating-input" value="">
+
+                                        <!-- Star Icons -->
+                                        <div class="star-input">
+                                            {% for i in "12345" %}
+                                                <i class="fa fa-star star" data-value="{{ i }}"></i>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+
+                                    <!-- Comment Section -->
+                                    <div class="mb-3">
+                                        <label for="id_comment" class="form-label">Your Comment</label>
+                                        {{ review_form.comment }}
+                                    </div>
+
+                                    <!-- Submit Button -->
+                                    <div class="mb-3">
+                                        <button type="submit" class="btn btn-primary">Submit Review</button>
+                                    </div>
+                                </form>
+
+                                <!-- Star Rating Script -->
+                                <script>
+                                    const stars = document.querySelectorAll('.star-input .star');
+                                    const input = document.getElementById('rating-input');
+
+                                    stars.forEach(star => {
+                                        star.addEventListener('click', () => {
+                                            const rating = star.getAttribute('data-value');
+                                            input.value = rating;
+
+                                            // Highlight selected stars
+                                            stars.forEach(s => {
+                                                s.classList.toggle('selected', s.getAttribute('data-value') <= rating);
+                                            });
+                                        });
+                                    });
+                                </script>
+
+                                <!-- Star Rating Style -->
+                                <style>
+                                    .star {
+                                        font-size: 1.8rem;
+                                        cursor: pointer;
+                                        color: #ccc;
+                                        transition: color 0.2s;
+                                    }
+
+                                    .star:hover,
+                                    .star.selected {
+                                        color: gold;
+                                    }
+
+                                    .star-input {
+                                        display: flex;
+                                        gap: 5px;
+                                    }
+
+                                    textarea {
+                                        width: 100%;
+                                        min-height: 100px;
+                                        resize: vertical;
+                                    }
+                                </style>
+
+
                             <!-- End Course Details  -->
 
                             <!-- Start Related Course  -->
@@ -1675,9 +1364,7 @@
                                     </div>
                                     <div class="col-lg-4 col-md-4 col-12">
                                         <div class="read-more-btn text-start text-md-end">
-                                            <a class="rbt-btn rbt-switch-btn btn-border btn-sm" href="#">
-                                                <span data-text="View All Course">View All Course</span>
-                                            </a>
+                                            <a class="rbt-btn rbt-switch-btn btn-border btn-sm" href="#"><span data-text="View All Course">View All Course</span></a>
                                         </div>
                                     </div>
                                 </div>
@@ -1686,59 +1373,26 @@
                                     <div class="col-lg-6 col-md-6 col-sm-6 col-12" data-sal-delay="150" data-sal="slide-up" data-sal-duration="800">
                                         <div class="rbt-card variation-01 rbt-hover">
                                             <div class="rbt-card-img">
-                                                <a href="{% url 'courseDetails'%}">
-                                                    <img src="/static/images/course/course-online-01.jpg" alt="Card image">
-                                                    <div class="rbt-badge-3 bg-white">
-                                                        <span>-40%</span>
-                                                        <span>Off</span>
-                                                    </div>
-                                                </a>
+                                                <a href="{% url 'courseDetails'%}"><img src="/static/images/course/course-online-01.jpg" alt="Card image"><div class="rbt-badge-3 bg-white"><span>-40%</span><span>Off</span></div></a>
                                             </div>
                                             <div class="rbt-card-body">
                                                 <div class="rbt-card-top">
-                                                    <div class="rbt-review">
-                                                        <div class="rating">
-                                                            <i class="fas fa-star"></i>
-                                                            <i class="fas fa-star"></i>
-                                                            <i class="fas fa-star"></i>
-                                                            <i class="fas fa-star"></i>
-                                                            <i class="fas fa-star"></i>
-                                                        </div>
-                                                        <span class="rating-count"> (15 Reviews)</span>
-                                                    </div>
-                                                    <div class="rbt-bookmark-btn">
-                                                        <a class="rbt-round-btn" title="Bookmark" href="#"><i
-                                                                    class="feather-bookmark"></i></a>
-                                                    </div>
+                                                    <div class="rbt-review"><div class="rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div><span class="rating-count"> (15 Reviews)</span></div>
+                                                    <div class="rbt-bookmark-btn"><a class="rbt-round-btn" title="Bookmark" href="#"><i class="feather-bookmark"></i></a></div>
                                                 </div>
-
-                                                <h4 class="rbt-card-title"><a href="{% url 'courseDetails'%}">React Front To Back</a>
-                                                </h4>
-
+                                                <h4 class="rbt-card-title"><a href="{% url 'courseDetails'%}">React Front To Back</a></h4>
                                                 <ul class="rbt-meta">
                                                     <li><i class="feather-book"></i>12 Lessons</li>
                                                     <li><i class="feather-users"></i>50 Students</li>
                                                 </ul>
-
-                                                <p class="rbt-card-text">It is a long established fact that a reader will be
-                                                    distracted.</p>
+                                                <p class="rbt-card-text">It is a long established fact that a reader will be distracted.</p>
                                                 <div class="rbt-author-meta mb--10">
-                                                    <div class="rbt-avater">
-                                                        <a href="#">
-                                                            <img src="/static/images/client/avatar-02.png" alt="Sophia Jaymes">
-                                                        </a>
-                                                    </div>
-                                                    <div class="rbt-author-info">
-                                                        By <a href="{% url 'profile'%}">Angela</a> In <a href="#">Development</a>
-                                                    </div>
+                                                    <div class="rbt-avater"><a href="#"><img src="/static/images/client/avatar-02.png" alt="Sophia Jaymes"></a></div>
+                                                    <div class="rbt-author-info">By <a href="{% url 'profile'%}">Angela</a> In <a href="#">Development</a></div>
                                                 </div>
                                                 <div class="rbt-card-bottom">
-                                                    <div class="rbt-price">
-                                                        <span class="current-price">$60</span>
-                                                        <span class="off-price">$120</span>
-                                                    </div>
-                                                    <a class="rbt-btn-link" href="{% url 'courseDetails'%}">Learn
-                                                        More<i class="feather-arrow-right"></i></a>
+                                                    <div class="rbt-price"><span class="current-price">$60</span><span class="off-price">$120</span></div>
+                                                    <a class="rbt-btn-link" href="{% url 'courseDetails'%}">Learn More<i class="feather-arrow-right"></i></a>
                                                 </div>
                                             </div>
                                         </div>
@@ -1748,54 +1402,25 @@
                                     <!-- Start Single Card  -->
                                     <div class="col-lg-6 col-md-6 col-sm-6 col-12" data-sal-delay="150" data-sal="slide-up" data-sal-duration="800">
                                         <div class="rbt-card variation-01 rbt-hover">
-                                            <div class="rbt-card-img">
-                                                <a href="{% url 'courseDetails'%}">
-                                                    <img src="/static/images/course/course-online-02.jpg" alt="Card image">
-                                                </a>
-                                            </div>
+                                            <div class="rbt-card-img"><a href="{% url 'courseDetails'%}"><img src="/static/images/course/course-online-02.jpg" alt="Card image"></a></div>
                                             <div class="rbt-card-body">
                                                 <div class="rbt-card-top">
-                                                    <div class="rbt-review">
-                                                        <div class="rating">
-                                                            <i class="fas fa-star"></i>
-                                                            <i class="fas fa-star"></i>
-                                                            <i class="fas fa-star"></i>
-                                                            <i class="fas fa-star"></i>
-                                                            <i class="fas fa-star"></i>
-                                                        </div>
-                                                        <span class="rating-count"> (15 Reviews)</span>
-                                                    </div>
-                                                    <div class="rbt-bookmark-btn">
-                                                        <a class="rbt-round-btn" title="Bookmark" href="#"><i
-                                                                    class="feather-bookmark"></i></a>
-                                                    </div>
+                                                    <div class="rbt-review"><div class="rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div><span class="rating-count"> (15 Reviews)</span></div>
+                                                    <div class="rbt-bookmark-btn"><a class="rbt-round-btn" title="Bookmark" href="#"><i class="feather-bookmark"></i></a></div>
                                                 </div>
-                                                <h4 class="rbt-card-title"><a href="{% url 'courseDetails'%}">PHP Beginner Advanced</a>
-                                                </h4>
+                                                <h4 class="rbt-card-title"><a href="{% url 'courseDetails'%}">PHP Beginner Advanced</a></h4>
                                                 <ul class="rbt-meta">
                                                     <li><i class="feather-book"></i>12 Lessons</li>
                                                     <li><i class="feather-users"></i>50 Students</li>
                                                 </ul>
-
-                                                <p class="rbt-card-text">It is a long established fact that a reader will be
-                                                    distracted.</p>
+                                                <p class="rbt-card-text">It is a long established fact that a reader will be distracted.</p>
                                                 <div class="rbt-author-meta mb--10">
-                                                    <div class="rbt-avater">
-                                                        <a href="#">
-                                                            <img src="/static/images/client/avatar-02.png" alt="Sophia Jaymes">
-                                                        </a>
-                                                    </div>
-                                                    <div class="rbt-author-info">
-                                                        By <a href="{% url 'profile'%}">Angela</a> In <a href="#">Development</a>
-                                                    </div>
+                                                    <div class="rbt-avater"><a href="#"><img src="/static/images/client/avatar-02.png" alt="Sophia Jaymes"></a></div>
+                                                    <div class="rbt-author-info">By <a href="{% url 'profile'%}">Angela</a> In <a href="#">Development</a></div>
                                                 </div>
                                                 <div class="rbt-card-bottom">
-                                                    <div class="rbt-price">
-                                                        <span class="current-price">$60</span>
-                                                        <span class="off-price">$120</span>
-                                                    </div>
-                                                    <a class="rbt-btn-link left-icon" href="{% url 'courseDetails'%}"><i
-                                                                class="feather-shopping-cart"></i> Add To Cart</a>
+                                                    <div class="rbt-price"><span class="current-price">$60</span><span class="off-price">$120</span></div>
+                                                    <a class="rbt-btn-link left-icon" href="{% url 'courseDetails'%}"><i class="feather-shopping-cart"></i> Add To Cart</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -1825,57 +1450,26 @@
                 <div class="col-lg-4 col-md-6 col-sm-6 col-12">
                     <div class="rbt-card variation-01 rbt-hover">
                         <div class="rbt-card-img">
-                            <a href="{% url 'courseDetails'%}">
-                                <img src="/static/images/course/course-online-03.jpg" alt="Card image">
-                                <div class="rbt-badge-3 bg-white">
-                                    <span>-10%</span>
-                                    <span>Off</span>
-                                </div>
-                            </a>
+                            <a href="{% url 'courseDetails'%}"><img src="/static/images/course/course-online-03.jpg" alt="Card image"><div class="rbt-badge-3 bg-white"><span>-10%</span><span>Off</span></div></a>
                         </div>
                         <div class="rbt-card-body">
                             <div class="rbt-card-top">
-                                <div class="rbt-review">
-                                    <div class="rating">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                    </div>
-                                    <span class="rating-count"> (5 Reviews)</span>
-                                </div>
-                                <div class="rbt-bookmark-btn">
-                                    <a class="rbt-round-btn" title="Bookmark" href="#"><i
-                                                class="feather-bookmark"></i></a>
-                                </div>
+                                <div class="rbt-review"><div class="rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div><span class="rating-count"> (5 Reviews)</span></div>
+                                <div class="rbt-bookmark-btn"><a class="rbt-round-btn" title="Bookmark" href="#"><i class="feather-bookmark"></i></a></div>
                             </div>
-                            <h4 class="rbt-card-title"><a href="{% url 'courseDetails'%}">Angular Zero to Mastery</a>
-                            </h4>
+                            <h4 class="rbt-card-title"><a href="{% url 'courseDetails'%}">Angular Zero to Mastery</a></h4>
                             <ul class="rbt-meta">
                                 <li><i class="feather-book"></i>8 Lessons</li>
                                 <li><i class="feather-users"></i>30 Students</li>
                             </ul>
-                            <p class="rbt-card-text">Angular Js long fact that a reader will be distracted by
-                                the readable.</p>
-
+                            <p class="rbt-card-text">Angular Js long fact that a reader will be distracted by the readable.</p>
                             <div class="rbt-author-meta mb--20">
-                                <div class="rbt-avater">
-                                    <a href="#">
-                                        <img src="/static/images/client/avatar-03.png" alt="Sophia Jaymes">
-                                    </a>
-                                </div>
-                                <div class="rbt-author-info">
-                                    By <a href="{% url 'profile'%}">Slaughter</a> In <a href="#">Languages</a>
-                                </div>
+                                <div class="rbt-avater"><a href="#"><img src="/static/images/client/avatar-03.png" alt="Sophia Jaymes"></a></div>
+                                <div class="rbt-author-info">By <a href="{% url 'profile'%}">Slaughter</a> In <a href="#">Languages</a></div>
                             </div>
                             <div class="rbt-card-bottom">
-                                <div class="rbt-price">
-                                    <span class="current-price">$80</span>
-                                    <span class="off-price">$100</span>
-                                </div>
-                                <a class="rbt-btn-link" href="{% url 'courseDetails'%}">Learn
-                                    More<i class="feather-arrow-right"></i></a>
+                                <div class="rbt-price"><span class="current-price">$80</span><span class="off-price">$100</span></div>
+                                <a class="rbt-btn-link" href="{% url 'courseDetails'%}">Learn More<i class="feather-arrow-right"></i></a>
                             </div>
                         </div>
                     </div>
@@ -1886,58 +1480,26 @@
                 <div class="col-lg-4 col-md-6 col-sm-6 col-12">
                     <div class="rbt-card variation-01 rbt-hover">
                         <div class="rbt-card-img">
-                            <a href="{% url 'courseDetails'%}">
-                                <img src="/static/images/course/course-online-04.jpg" alt="Card image">
-                                <div class="rbt-badge-3 bg-white">
-                                    <span>-40%</span>
-                                    <span>Off</span>
-                                </div>
-                            </a>
+                            <a href="{% url 'courseDetails'%}"><img src="/static/images/course/course-online-04.jpg" alt="Card image"><div class="rbt-badge-3 bg-white"><span>-40%</span><span>Off</span></div></a>
                         </div>
                         <div class="rbt-card-body">
                             <div class="rbt-card-top">
-                                <div class="rbt-review">
-                                    <div class="rating">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                    </div>
-                                    <span class="rating-count"> (15 Reviews)</span>
-                                </div>
-                                <div class="rbt-bookmark-btn">
-                                    <a class="rbt-round-btn" title="Bookmark" href="#"><i
-                                                class="feather-bookmark"></i></a>
-                                </div>
+                                <div class="rbt-review"><div class="rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div><span class="rating-count"> (15 Reviews)</span></div>
+                                <div class="rbt-bookmark-btn"><a class="rbt-round-btn" title="Bookmark" href="#"><i class="feather-bookmark"></i></a></div>
                             </div>
-
-                            <h4 class="rbt-card-title"><a href="{% url 'courseDetails'%}">Web Front To Back</a>
-                            </h4>
+                            <h4 class="rbt-card-title"><a href="{% url 'courseDetails'%}">Web Front To Back</a></h4>
                             <ul class="rbt-meta">
                                 <li><i class="feather-book"></i>20 Lessons</li>
                                 <li><i class="feather-users"></i>40 Students</li>
                             </ul>
-                            <p class="rbt-card-text">Web Js long fact that a reader will be distracted by
-                                the readable.</p>
+                            <p class="rbt-card-text">Web Js long fact that a reader will be distracted by the readable.</p>
                             <div class="rbt-author-meta mb--20">
-                                <div class="rbt-avater">
-                                    <a href="#">
-                                        <img src="/static/images/client/avater-01.png" alt="Sophia Jaymes">
-                                    </a>
-                                </div>
-                                <div class="rbt-author-info">
-                                    By <a href="{% url 'profile'%}">Patrick</a> In <a href="#">Languages</a>
-                                </div>
+                                <div class="rbt-avater"><a href="#"><img src="/static/images/client/avater-01.png" alt="Sophia Jaymes"></a></div>
+                                <div class="rbt-author-info">By <a href="{% url 'profile'%}">Patrick</a> In <a href="#">Languages</a></div>
                             </div>
-
                             <div class="rbt-card-bottom">
-                                <div class="rbt-price">
-                                    <span class="current-price">$60</span>
-                                    <span class="off-price">$120</span>
-                                </div>
-                                <a class="rbt-btn-link" href="{% url 'courseDetails'%}">Learn
-                                    More<i class="feather-arrow-right"></i></a>
+                                <div class="rbt-price"><span class="current-price">$60</span><span class="off-price">$120</span></div>
+                                <a class="rbt-btn-link" href="{% url 'courseDetails'%}">Learn More<i class="feather-arrow-right"></i></a>
                             </div>
                         </div>
                     </div>
@@ -1948,57 +1510,26 @@
                 <div class="col-lg-4 col-md-6 col-sm-6 col-12">
                     <div class="rbt-card variation-01 rbt-hover">
                         <div class="rbt-card-img">
-                            <a href="{% url 'courseDetails'%}">
-                                <img src="/static/images/course/course-online-05.jpg" alt="Card image">
-                                <div class="rbt-badge-3 bg-white">
-                                    <span>-20%</span>
-                                    <span>Off</span>
-                                </div>
-                            </a>
+                            <a href="{% url 'courseDetails'%}"><img src="/static/images/course/course-online-05.jpg" alt="Card image"><div class="rbt-badge-3 bg-white"><span>-20%</span><span>Off</span></div></a>
                         </div>
                         <div class="rbt-card-body">
                             <div class="rbt-card-top">
-                                <div class="rbt-review">
-                                    <div class="rating">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                    </div>
-                                    <span class="rating-count"> (15 Reviews)</span>
-                                </div>
-                                <div class="rbt-bookmark-btn">
-                                    <a class="rbt-round-btn" title="Bookmark" href="#"><i
-                                                class="feather-bookmark"></i></a>
-                                </div>
+                                <div class="rbt-review"><div class="rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div><span class="rating-count"> (15 Reviews)</span></div>
+                                <div class="rbt-bookmark-btn"><a class="rbt-round-btn" title="Bookmark" href="#"><i class="feather-bookmark"></i></a></div>
                             </div>
-                            <h4 class="rbt-card-title"><a href="{% url 'courseDetails'%}">SQL Beginner Advanced</a>
-                            </h4>
+                            <h4 class="rbt-card-title"><a href="{% url 'courseDetails'%}">SQL Beginner Advanced</a></h4>
                             <ul class="rbt-meta">
                                 <li><i class="feather-book"></i>12 Lessons</li>
                                 <li><i class="feather-users"></i>50 Students</li>
                             </ul>
-                            <p class="rbt-card-text">It is a long established fact that a reader will be
-                                distracted
-                                by the readable.</p>
+                            <p class="rbt-card-text">It is a long established fact that a reader will be distracted by the readable.</p>
                             <div class="rbt-author-meta mb--20">
-                                <div class="rbt-avater">
-                                    <a href="#">
-                                        <img src="/static/images/client/avatar-02.png" alt="Sophia Jaymes">
-                                    </a>
-                                </div>
-                                <div class="rbt-author-info">
-                                    By <a href="{% url 'profile'%}">Angela</a> In <a href="#">Development</a>
-                                </div>
+                                <div class="rbt-avater"><a href="#"><img src="/static/images/client/avatar-02.png" alt="Sophia Jaymes"></a></div>
+                                <div class="rbt-author-info">By <a href="{% url 'profile'%}">Angela</a> In <a href="#">Development</a></div>
                             </div>
                             <div class="rbt-card-bottom">
-                                <div class="rbt-price">
-                                    <span class="current-price">$60</span>
-                                    <span class="off-price">$120</span>
-                                </div>
-                                <a class="rbt-btn-link left-icon" href="{% url 'courseDetails'%}"><i
-                                            class="feather-shopping-cart"></i> Add To Cart</a>
+                                <div class="rbt-price"><span class="current-price">$60</span><span class="off-price">$120</span></div>
+                                <a class="rbt-btn-link left-icon" href="{% url 'courseDetails'%}"><i class="feather-shopping-cart"></i> Add To Cart</a>
                             </div>
                         </div>
                     </div>
@@ -2043,3 +1574,66 @@
     {% include "partials/separator.html" %}
     
 {% endblock content %}
+
+{% block extra_scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const starContainer = document.querySelector('.star-input');
+    if (starContainer) {
+        const ratingInput = document.querySelector('input[name="rate"]');
+        const stars = starContainer.querySelectorAll('.star');
+
+        // Function to update stars visual state
+        const updateStars = (value, isHover = false) => {
+            stars.forEach(star => {
+                const starValue = parseInt(star.dataset.value, 10);
+                star.classList.remove('selected', 'hover'); // Reset classes
+                if (starValue <= value) {
+                    star.classList.add(isHover ? 'hover' : 'selected');
+                }
+            });
+        };
+
+        // Click event to set the rating
+        starContainer.addEventListener('click', e => {
+            if (e.target.classList.contains('star')) {
+                const value = parseInt(e.target.dataset.value, 10);
+                ratingInput.value = value;
+                updateStars(value);
+            }
+        });
+
+        // Mouseover event for hover effect
+        starContainer.addEventListener('mouseover', e => {
+            if (e.target.classList.contains('star')) {
+                const value = parseInt(e.target.dataset.value, 10);
+                const parent = e.target.parentElement;
+                const children = Array.from(parent.children);
+                const hoverIndex = children.indexOf(e.target);
+                
+                children.forEach((child, index) => {
+                    if(index <= hoverIndex) {
+                        child.classList.add('hover');
+                    } else {
+                        child.classList.remove('hover');
+                    }
+                });
+            }
+        });
+
+        // Mouseout event to reset hover effect
+        starContainer.addEventListener('mouseout', () => {
+            const currentRating = parseInt(ratingInput.value, 10) || 0;
+            updateStars(currentRating);
+        });
+
+        // Set initial state from form value if it exists
+        const initialRating = parseInt(ratingInput.value, 10) || 0;
+        if (initialRating > 0) {
+            updateStars(initialRating);
+        }
+    }
+});
+</script>
+{% endblock %}
+

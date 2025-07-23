@@ -197,7 +197,7 @@ class Review(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='reviews')
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="review_user")
     created_at = models.DateTimeField(auto_now_add=True)
-    rate = models.FloatField()
+    rate = models.IntegerField()
     comment = models.TextField()
     
     def __str__(self) -> str:
