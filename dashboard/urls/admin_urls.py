@@ -1,5 +1,5 @@
 from django.urls import path
-from ..views.admin_views import AdminDashboardView, AnnouncementsView, CollegesView, DepartmentsView, CoursesView, LecturersView, StudentsView, ExamsView, ProfileView, SettingsView, AboutView
+from ..views.admin_views import AdminDashboardView, AnnouncementsView, CreateCourseView,CollegesView, DepartmentsView, CoursesView, LecturersView, StudentsView, ExamsView, ProfileView, SettingsView, AboutView
 
 app_name = 'admin'
 
@@ -9,6 +9,8 @@ urlpatterns = [
     path('colleges/', CollegesView.as_view(), name='adminColleges'),
     path('departments/', DepartmentsView.as_view(), name='adminDepartments'),
     path('courses/', CoursesView.as_view(), name='adminCourses'),
+    path('courses/create/', CreateCourseView.as_view(), name='create_course'),
+
     path('lecturers/', LecturersView.as_view(), name='adminLecturers'),
     path('students/', StudentsView.as_view(), name='adminStudents'),
     path('exams/', ExamsView.as_view(), name='adminExams'),

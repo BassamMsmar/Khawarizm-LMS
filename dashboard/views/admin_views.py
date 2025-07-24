@@ -68,6 +68,31 @@ class CoursesView(RolesRequiredMixin, TemplateView):
         return context
 
 
+# views.py
+
+from django.views.generic.edit import CreateView
+from django.urls import reverse_lazy
+from courses.models import Course
+from ..forms import CourseForm
+
+class CreateCourseView(CreateView):
+    model = Course
+    form_class = CourseForm
+    template_name = 'dashboard/AdminDashboard/create_course.html'
+    success_url = "/dashboard/admin/courses"
+
+    def form_valid(self, form):
+        print("Course saved:", form.cleaned_data)
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        print("Form errors:", form.errors)
+        return super().form_invalid(form)
+
+
+
+
+
 class LecturersView(RolesRequiredMixin, TemplateView):
     template_name = 'dashboard/AdminDashboard/adminLecturers.html'
     allowed_roles = ['admin']

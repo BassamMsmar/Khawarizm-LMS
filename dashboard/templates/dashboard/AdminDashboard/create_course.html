@@ -1,0 +1,51 @@
+{% extends 'dashboard/AdminDashboard/base_dashboard.html' %}
+
+{% block create_button %}
+  <div class="rbt-tutor-information-right">
+    <div class="tutor-btn">
+      <a class="rbt-btn btn-md hover-icon-reverse" href="/dashboard/admin/courses/">
+        <span class="icon-reverse-wrapper">
+          <span class="btn-text">Back to Courses</span>
+          <span class="btn-icon"><i class="feather-arrow-left"></i></span>
+          <span class="btn-icon"><i class="feather-arrow-left"></i></span>
+        </span>
+      </a>
+    </div>
+  </div>
+{% endblock %}
+
+{% block dashboard_content %}
+  <div class="col-lg-9">
+    <div class="card shadow-sm">
+      <div class="card-header bg-primary text-white">
+        <h4 class="mb-0">Create a New Course</h4>
+      </div>
+      <div class="card-body">
+        <form method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="row">
+            {% for field in form %}
+              <div class="col-md-6 mb-3">
+                <label class="form-label">{{ field.label_tag }}</label>
+                {{ field }}
+                {% if field.errors %}
+                  <div class="text-danger small">{{ field.errors }}</div>
+                {% endif %}
+              </div>
+            {% endfor %}
+          </div>
+
+          <div class="d-flex justify-content-between mt-4">
+            <button type="submit" class="btn btn-success">
+              <i class="feather-plus-circle"></i> Create Course
+            </button>
+
+            <a href="/dashboard/admin/courses/" class="btn btn-danger">
+              <i class="feather-x-circle"></i> Cancel
+            </a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}

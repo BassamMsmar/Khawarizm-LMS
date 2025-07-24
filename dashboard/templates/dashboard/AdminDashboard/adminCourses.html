@@ -4,13 +4,14 @@
   <div class="rbt-tutor-information-right">
     <div class="tutor-btn">
       {% comment %} <a class="rbt-btn btn-md hover-icon-reverse" href="{% url 'college:create_college' %}"> {% endcomment %}
-      <a class="rbt-btn btn-md hover-icon-reverse" href="#">
+      <a class="rbt-btn btn-md hover-icon-reverse" href="/dashboard/admin/courses/create/">
         <span class="icon-reverse-wrapper">
           <span class="btn-text">Create a New Course</span>
           <span class="btn-icon"><i class="feather-arrow-right"></i></span>
           <span class="btn-icon"><i class="feather-arrow-right"></i></span>
         </span>
       </a>
+
     </div>
   </div>
 {% endblock %}
@@ -40,7 +41,7 @@
       <tbody>
         {% for course in courses %}
           <tr>
-            <td>{{ course.name }}</td>
+            <td>{{ course }}</td>
             <td>{{ course.colleges.count }}</td>
             <td>{{ course.departments.count }}</td>
             <td>{{ course.academic_hours }}</td>
