@@ -92,105 +92,112 @@
         function addCourse() {
             const form = document.getElementById('addCourseForm');
             const formData = new FormData(form);
-            
-            const course = {
-                id: Date.now(),
-                name: formData.get('courseName'),
-                instructor: formData.get('instructor'),
-                description: formData.get('description'),
-                price: formData.get('price'),
-                duration: formData.get('duration'),
-                level: formData.get('level'),
-                startDate: formData.get('startDate'),
-                endDate: formData.get('endDate'),
-                students: 0,
-                status: 'نشط',
-                createdAt: new Date().toLocaleDateString('ar-SA')
-            };
-            
-            courses.push(course);
-            updateCoursesTable();
-            updateCourseSelects();
-            
-            // Close modal and reset form
-            const modal = bootstrap.Modal.getInstance(document.getElementById('addCourseModal'));
-            modal.hide();
-            form.reset();
-            
-            showNotification('تم إضافة الدورة بنجاح', 'success');
+            const errorDiv = document.getElementById('addCourseError');
+            errorDiv.style.display = 'none'; // Hide previous errors
+
+            fetch("/main-dashboard/courses/create/ajax/", {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                },
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok. Status: ' + response.status);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    location.reload();
+                } else {
+                    let errorMessages = '<strong>Please correct the following errors:</strong><ul>';
+                    for (const field in data.errors) {
+                        errorMessages += `<li>${field}: ${data.errors[field].join(', ')}</li>`;
+                    }
+                    errorMessages += '</ul>';
+                    errorDiv.innerHTML = errorMessages;
+                    errorDiv.style.display = 'block';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                errorDiv.innerHTML = 'An unexpected error occurred. Please check the browser console for details.';
+                errorDiv.style.display = 'block';
+            });
         }
 
         function updateCoursesTable() {
-            const tbody = document.getElementById('coursesTableBody');
-            
-            if (courses.length === 0) {
-                tbody.innerHTML = `
-                    <tr>
-                        <td colspan="6" class="text-center py-4">
-                            <div class="empty-state">
-                                <i class="bi bi-book"></i>
-                                <p class="mb-0">لا توجد دورات متاحة حالياً</p>
-                            </div>
-                        </td>
-                    </tr>
-                `;
-                return;
-            }
-            
-            tbody.innerHTML = courses.map(course => `
-                <tr>
-                    <td>${course.name}</td>
-                    <td>${course.instructor}</td>
-                    <td>${course.students}</td>
-                    <td><span class="badge bg-success">${course.status}</span></td>
-                    <td>${course.createdAt}</td>
-                    <td>
-                        <div class="btn-group btn-group-sm">
-                            <button class="btn btn-outline-primary" onclick="editCourse(${course.id})">
-                                <i class="bi bi-pencil"></i>
-                            </button>
-                            <button class="btn btn-outline-danger" onclick="deleteCourse(${course.id})">
-                                <i class="bi bi-trash"></i>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-            `).join('');
+            // This function is no longer needed as the page reloads on success.
         }
 
         function updateCourseSelects() {
-            const selects = document.querySelectorAll('select[name="courseId"], select[name="enrolledCourses"]');
-            
-            selects.forEach(select => {
-                const currentValue = select.value;
-                const isMultiple = select.hasAttribute('multiple');
-                
-                if (!isMultiple) {
-                    select.innerHTML = '<option value="">اختر الدورة</option>';
-                } else {
-                    select.innerHTML = '';
-                }
-                
-                courses.forEach(course => {
-                    const option = document.createElement('option');
-                    option.value = course.id;
-                    option.textContent = course.name;
-                    select.appendChild(option);
-                });
-                
-                if (currentValue) {
-                    select.value = currentValue;
-                }
-            });
+            // This function can be expanded later if needed for dynamic updates.
         }
 
         function deleteCourse(id) {
             if (confirm('هل أنت متأكد من حذف هذه الدورة؟')) {
-                courses = courses.filter(course => course.id !== id);
-                updateCoursesTable();
-                updateCourseSelects();
-                showNotification('تم حذف الدورة بنجاح', 'success');
+                fetch(`/main-dashboard/courses/delete/${id}/`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        location.reload();
+                    } else {
+                        alert('حدث خطأ أثناء الحذف');
+                    }
+                });
             }
+        }
+
+        function openEditCourseModal(courseId) {
+            const modal = new bootstrap.Modal(document.getElementById('editCourseModal'));
+            const errorDiv = document.getElementById('editCourseError');
+            const formContent = document.getElementById('editCourseFormContent');
+            document.getElementById('editCourseId').value = courseId;
+            errorDiv.style.display = 'none';
+
+            fetch(`/main-dashboard/courses/update/${courseId}/`)
+                .then(response => response.json())
+                .then(data => {
+                    formContent.innerHTML = data.form;
+                    modal.show();
+                });
+        }
+
+        function updateCourse() {
+            const courseId = document.getElementById('editCourseId').value;
+            const form = document.getElementById('editCourseForm');
+            const formData = new FormData(form);
+            const errorDiv = document.getElementById('editCourseError');
+            errorDiv.style.display = 'none';
+
+            fetch(`/main-dashboard/courses/update/${courseId}/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                },
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    location.reload();
+                } else {
+                    let errorMessages = '<strong>Please correct the following errors:</strong><ul>';
+                    for (const field in data.errors) {
+                        errorMessages += `<li>${field}: ${data.errors[field].join(', ')}</li>`;
+                    }
+                    errorMessages += '</ul>';
+                    errorDiv.innerHTML = errorMessages;
+                    errorDiv.style.display = 'block';
+                }
+            });
         }
 
         // Lesson Management
@@ -632,11 +639,11 @@
             updateDateTime();
             setInterval(updateDateTime, 60000); // Update every minute
             
-            // Initialize empty tables
-            updateCoursesTable();
-            updateLessonsTable();
-            updateQuizzesTable();
-            updateStudentsTable();
+            // Initialize empty tables if they exist
+            if (document.getElementById('coursesTableBody')) updateCoursesTable();
+            if (document.getElementById('lessonsTableBody')) updateLessonsTable();
+            if (document.getElementById('quizzesTableBody')) updateQuizzesTable();
+            if (document.getElementById('studentsTableBody')) updateStudentsTable();
         });
 
         // Handle modal events to update course selects
