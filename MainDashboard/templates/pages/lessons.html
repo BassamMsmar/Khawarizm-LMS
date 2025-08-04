@@ -1,0 +1,113 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block content %}
+    <main class="main-content">
+        <!-- Lessons Section -->
+        <div id="lessons-section" class="content-section" >
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2>إدارة الدروس</h2>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addLessonModal">
+                    <i class="bi bi-plus-lg me-2"></i>إضافة درس جديد
+                </button>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">قائمة الدروس</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>عنوان الدرس</th>
+                                    <th>الدورة</th>
+                                    <th>النوع</th>
+                                    <th>المدة</th>
+                                    <th>الحالة</th>
+                                    <th>الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="lessonsTableBody">
+                                <tr>
+                                    <td colspan="6" class="text-center py-4">
+                                        <div class="empty-state">
+                                            <i class="bi bi-play-circle"></i>
+                                            <p class="mb-0">لا توجد دروس متاحة حالياً</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+
+
+    <!-- Add Lesson Modal -->
+<div class="modal fade" id="addLessonModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">إضافة درس جديد</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addLessonForm">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">عنوان الدرس *</label>
+                            <input type="text" class="form-control" name="lessonTitle" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">الدورة *</label>
+                            <select class="form-select" name="courseId" required>
+                                <option value="">اختر الدورة</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">نوع الدرس</label>
+                            <select class="form-select" name="lessonType" onchange="toggleLessonContent(this.value)">
+                                <option value="video">فيديو</option>
+                                <option value="text">نص</option>
+                                <option value="file">ملف</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">المدة (دقيقة)</label>
+                            <input type="number" class="form-control" name="duration" min="1">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">وصف الدرس</label>
+                        <textarea class="form-control" name="description" rows="3"></textarea>
+                    </div>
+                    <div id="videoContent" class="mb-3">
+                        <label class="form-label">رابط الفيديو (YouTube)</label>
+                        <input type="url" class="form-control" name="videoUrl" placeholder="https://www.youtube.com/watch?v=...">
+                    </div>
+                    <div id="textContent" class="mb-3" style="display: none;">
+                        <label class="form-label">محتوى الدرس</label>
+                        <textarea class="form-control" name="textContent" rows="6"></textarea>
+                    </div>
+                    <div id="fileContent" class="mb-3" style="display: none;">
+                        <label class="form-label">رفع ملف</label>
+                        <input type="file" class="form-control" name="lessonFile">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                <button type="button" class="btn btn-primary" onclick="addLesson()">إضافة الدرس</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

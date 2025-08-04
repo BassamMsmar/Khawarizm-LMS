@@ -1,0 +1,286 @@
+{% load static %}
+
+<!-- Add Course Modal -->
+<div class="modal fade" id="addCourseModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">إضافة دورة جديدة</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addCourseForm">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">اسم الدورة *</label>
+                            <input type="text" class="form-control" name="courseName" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">المدرب *</label>
+                            <input type="text" class="form-control" name="instructor" required>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">وصف الدورة</label>
+                        <textarea class="form-control" name="description" rows="3"></textarea>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">السعر</label>
+                            <input type="number" class="form-control" name="price" min="0">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">المدة (ساعة)</label>
+                            <input type="number" class="form-control" name="duration" min="1">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">المستوى</label>
+                            <select class="form-select" name="level">
+                                <option value="beginner">مبتدئ</option>
+                                <option value="intermediate">متوسط</option>
+                                <option value="advanced">متقدم</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">تاريخ البداية</label>
+                            <input type="date" class="form-control" name="startDate">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">تاريخ النهاية</label>
+                            <input type="date" class="form-control" name="endDate">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                <button type="button" class="btn btn-primary" onclick="addCourse()">إضافة الدورة</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Lesson Modal -->
+<div class="modal fade" id="addLessonModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">إضافة درس جديد</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addLessonForm">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">عنوان الدرس *</label>
+                            <input type="text" class="form-control" name="lessonTitle" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">الدورة *</label>
+                            <select class="form-select" name="courseId" required>
+                                <option value="">اختر الدورة</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">نوع الدرس</label>
+                            <select class="form-select" name="lessonType" onchange="toggleLessonContent(this.value)">
+                                <option value="video">فيديو</option>
+                                <option value="text">نص</option>
+                                <option value="file">ملف</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">المدة (دقيقة)</label>
+                            <input type="number" class="form-control" name="duration" min="1">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">وصف الدرس</label>
+                        <textarea class="form-control" name="description" rows="3"></textarea>
+                    </div>
+                    <div id="videoContent" class="mb-3">
+                        <label class="form-label">رابط الفيديو (YouTube)</label>
+                        <input type="url" class="form-control" name="videoUrl" placeholder="https://www.youtube.com/watch?v=...">
+                    </div>
+                    <div id="textContent" class="mb-3" style="display: none;">
+                        <label class="form-label">محتوى الدرس</label>
+                        <textarea class="form-control" name="textContent" rows="6"></textarea>
+                    </div>
+                    <div id="fileContent" class="mb-3" style="display: none;">
+                        <label class="form-label">رفع ملف</label>
+                        <input type="file" class="form-control" name="lessonFile">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                <button type="button" class="btn btn-primary" onclick="addLesson()">إضافة الدرس</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Quiz Modal -->
+<div class="modal fade" id="addQuizModal" tabindex="-1">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">إضافة اختبار جديد</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <ul class="nav nav-tabs mb-3" id="quizTabs">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-bs-toggle="tab" href="#quizInfo">معلومات الاختبار</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="tab" href="#quizQuestions">الأسئلة</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="tab" href="#quizSettings">الإعدادات</a>
+                    </li>
+                </ul>
+                
+                <div class="tab-content">
+                    <div class="tab-pane fade show active" id="quizInfo">
+                        <form id="addQuizForm">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">عنوان الاختبار *</label>
+                                    <input type="text" class="form-control" name="quizTitle" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">الدورة *</label>
+                                    <select class="form-select" name="courseId" required>
+                                        <option value="">اختر الدورة</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">وصف الاختبار</label>
+                                <textarea class="form-control" name="description" rows="3"></textarea>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4 mb-3">
+                                    <label class="form-label">المدة (دقيقة)</label>
+                                    <input type="number" class="form-control" name="timeLimit" min="1">
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label class="form-label">درجة النجاح (%)</label>
+                                    <input type="number" class="form-control" name="passingScore" min="0" max="100" value="60">
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label class="form-label">عدد المحاولات</label>
+                                    <input type="number" class="form-control" name="attempts" min="1" value="3">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    <div class="tab-pane fade" id="quizQuestions">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h6>أسئلة الاختبار</h6>
+                            <button type="button" class="btn btn-sm btn-primary" onclick="addQuestion()">
+                                <i class="bi bi-plus-lg me-1"></i>إضافة سؤال
+                            </button>
+                        </div>
+                        <div id="questionsContainer">
+                            <div class="text-center text-muted py-4">
+                                <i class="bi bi-question-circle fs-1"></i>
+                                <p>لم يتم إضافة أسئلة بعد</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-pane fade" id="quizSettings">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" name="randomizeQuestions" id="randomizeQuestions">
+                                        <label class="form-check-label" for="randomizeQuestions">
+                                            ترتيب الأسئلة عشوائياً
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" name="showResults" id="showResults" checked>
+                                        <label class="form-check-label" for="showResults">
+                                            إظهار النتائج فوراً
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" name="allowRetake" id="allowRetake" checked>
+                                        <label class="form-check-label" for="allowRetake">
+                                            السماح بإعادة المحاولة
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" name="requirePassword" id="requirePassword">
+                                        <label class="form-check-label" for="requirePassword">
+                                            يتطلب كلمة مرور
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                <button type="button" class="btn btn-primary" onclick="addQuiz()">إنشاء الاختبار</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Student Modal -->
+<div class="modal fade" id="addStudentModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">إضافة طالب جديد</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addStudentForm">
+                    <div class="mb-3">
+                        <label class="form-label">الاسم الكامل *</label>
+                        <input type="text" class="form-control" name="studentName" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">البريد الإلكتروني *</label>
+                        <input type="email" class="form-control" name="email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">رقم الهاتف</label>
+                        <input type="tel" class="form-control" name="phone">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">الدورات المسجلة</label>
+                        <select class="form-select" name="enrolledCourses" multiple>
+                            <option value="">لا توجد دورات متاحة</option>
+                        </select>
+                        <div class="form-text">يمكنك اختيار عدة دورات بالضغط على Ctrl</div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                <button type="button" class="btn btn-primary" onclick="addStudent()">إضافة الطالب</button>
+            </div>
+        </div>
+    </div>
+</div>

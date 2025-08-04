@@ -1,0 +1,108 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block content %}
+    <main class="main-content">
+        <!-- Dashboard Section -->
+        <div id="dashboard-section" class="content-section fade-in">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2>لوحة التحكم</h2>
+                <div class="d-flex gap-2">
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCourseModal">
+                        <i class="bi bi-plus-lg me-2"></i>إضافة دورة جديدة
+                    </button>
+                </div>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="row mb-4">
+                <div class="col-md-3 mb-3">
+                    <div class="card stats-card">
+                        <div class="card-body text-center">
+                            <i class="bi bi-book fs-1 mb-2"></i>
+                            <div class="stats-number">24</div>
+                            <div>إجمالي الدورات</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="card stats-card">
+                        <div class="card-body text-center">
+                            <i class="bi bi-people fs-1 mb-2"></i>
+                            <div class="stats-number">156</div>
+                            <div>الطلاب المسجلين</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="card stats-card">
+                        <div class="card-body text-center">
+                            <i class="bi bi-play-circle fs-1 mb-2"></i>
+                            <div class="stats-number">89</div>
+                            <div>الدروس المنشورة</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="card stats-card">
+                        <div class="card-body text-center">
+                            <i class="bi bi-trophy fs-1 mb-2"></i>
+                            <div class="stats-number">58</div>
+                            <div>الشهادات الممنوحة</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0">النشاط الأخير</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="empty-state">
+                                <i class="bi bi-journal-text"></i>
+                                <h4>يبدو أنك ليس لديك أي دورات بعد</h4>
+                                <p class="text-muted">يمكن العثور على الدورات وإضافيتهم من خلال الدورات</p>
+                                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCourseModal">
+                                    احصل على أولى دوراتك
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0">نظرة عامة</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <small class="text-muted">اليوم</small>
+                                <div id="currentDateTime" class="fw-bold"></div>
+                            </div>
+                            <hr>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>معدل الإكمال</span>
+                                <span class="fw-bold">78%</span>
+                            </div>
+                            <div class="progress mb-3">
+                                <div class="progress-bar" style="width: 78%"></div>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>الطلاب النشطين</span>
+                                <span class="fw-bold">42</span>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <span>الدورات الجديدة</span>
+                                <span class="fw-bold">3</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock content %}

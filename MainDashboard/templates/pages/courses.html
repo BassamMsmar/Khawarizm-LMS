@@ -1,0 +1,128 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+
+    {% block content %}
+    <main class="main-content">
+
+       <div id="courses-section" class="content-section" >
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2>إدارة الدورات التدريبية</h2>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCourseModal">
+                    <i class="bi bi-plus-lg me-2"></i>إضافة دورة جديدة
+                </button>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="row align-items-center">
+                        <div class="col-md-6">
+                            <h5 class="mb-0">قائمة الدورات</h5>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="البحث في الدورات...">
+                                <button class="btn btn-outline-secondary" type="button">
+                                    <i class="bi bi-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>اسم الدورة</th>
+                                    <th>المدرب</th>
+                                    <th>عدد الطلاب</th>
+                                    <th>الحالة</th>
+                                    <th>تاريخ الإنشاء</th>
+                                    <th>الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="coursesTableBody">
+                                <tr>
+                                    <td colspan="6" class="text-center py-4">
+                                        <div class="empty-state">
+                                            <i class="bi bi-book"></i>
+                                            <p class="mb-0">لا توجد دورات متاحة حالياً</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+
+
+
+        <!-- Add Course Modal -->
+    <div class="modal fade" id="addCourseModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">إضافة دورة جديدة</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addCourseForm">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">اسم الدورة *</label>
+                                <input type="text" class="form-control" name="courseName" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">المدرب *</label>
+                                <input type="text" class="form-control" name="instructor" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">وصف الدورة</label>
+                            <textarea class="form-control" name="description" rows="3"></textarea>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">السعر</label>
+                                <input type="number" class="form-control" name="price" min="0">
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">المدة (ساعة)</label>
+                                <input type="number" class="form-control" name="duration" min="1">
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">المستوى</label>
+                                <select class="form-select" name="level">
+                                    <option value="beginner">مبتدئ</option>
+                                    <option value="intermediate">متوسط</option>
+                                    <option value="advanced">متقدم</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">تاريخ البداية</label>
+                                <input type="date" class="form-control" name="startDate">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">تاريخ النهاية</label>
+                                <input type="date" class="form-control" name="endDate">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="button" class="btn btn-primary" onclick="addCourse()">إضافة الدورة</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+        {% endblock content %}

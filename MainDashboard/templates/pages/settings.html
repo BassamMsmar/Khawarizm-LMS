@@ -1,0 +1,66 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block content %}
+    <main class="main-content">
+        <!-- Settings Section -->
+        <div id="settings-section" class="content-section" >
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2>إعدادات النظام</h2>
+            </div>
+
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0">الإعدادات العامة</h5>
+                        </div>
+                        <div class="card-body">
+                            <form>
+                                <div class="mb-3">
+                                    <label class="form-label">اسم المنصة</label>
+                                    <input type="text" class="form-control" value="Student_Hub">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">وصف المنصة</label>
+                                    <textarea class="form-control" rows="3">منصة تعليمية متقدمة لإدارة الدورات والتدريب</textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">البريد الإلكتروني للإدارة</label>
+                                    <input type="email" class="form-control" value="mmohamedabdelm@gmail.com">
+                                </div>
+                                <div class="mb-3">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="emailNotifications" checked>
+                                        <label class="form-check-label" for="emailNotifications">
+                                            تفعيل الإشعارات عبر البريد الإلكتروني
+                                        </label>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary">حفظ التغييرات</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0">إعدادات المظهر</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label class="form-label">وضع العرض</label>
+                                <select class="form-select" id="themeSelect">
+                                    <option value="light">الوضع الفاتح</option>
+                                    <option value="dark">الوضع الداكن</option>
+                                    <option value="auto">تلقائي</option>
+                                </select>
+                            </div>
+                          
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock content %}
