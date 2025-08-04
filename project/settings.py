@@ -53,6 +53,8 @@ INSTALLED_APPS = [
     'profiles',
     'courses',
 
+    'MainDashboard',
+
 ]
 
 MIDDLEWARE = [
