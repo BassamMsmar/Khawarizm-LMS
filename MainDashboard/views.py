@@ -80,6 +80,35 @@ class CourseDeleteAjaxView(DeleteView):
         return JsonResponse({'success': True})
 
 
+from django.http import JsonResponse
+from django.db.models import Q
+from courses.models import Course     
+
+def course_search_ajax(request):
+    search_query = request.GET.get('q', '')
+    courses = Course.objects.all()
+
+    if search_query:
+        courses = courses.filter(
+            Q(title__icontains=search_query) |
+            Q(lecturer__first_name__icontains=search_query) |
+            Q(lecturer__last_name__icontains=search_query)
+        ).distinct()
+
+    course_data = []
+    for course in courses:
+        course_data.append({
+            'id': course.id,
+            'slug': course.slug,
+            'title': course.title,
+            'lecturer_full_name': course.lecturer.get_full_name(),
+            'enrolled_count': course.get_enrolled_count(),
+            'is_active': course.is_active,
+            'created_at': course.created_at.strftime('%Y-%m-%d'),
+        })
+
+    return JsonResponse({'courses': course_data})
+
 
 
 

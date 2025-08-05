@@ -20,12 +20,13 @@
                     <h5 class="mb-0">قائمة الدورات</h5>
                 </div>
                 <div class="col-md-6">
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="البحث في الدورات...">
+                   <div class="input-group">
+                        <input type="text" id="courseSearchInput" class="form-control" placeholder="البحث في الدورات...">
                         <button class="btn btn-outline-secondary" type="button">
                             <i class="bi bi-search"></i>
                         </button>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -42,7 +43,7 @@
                             <th>الإجراءات</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="coursesTableBody">
                         {% if courses %}
                             {% for course in courses %}
                                 <tr>
@@ -268,7 +269,71 @@
                 }
             });
         }
-    </script>
+    
+
+    // Real-time search
+  document.getElementById('courseSearchInput').addEventListener('input', function () {
+    const searchQuery = this.value.trim();
+    if (searchQuery === '') return;
+
+    fetch(`/main-dashboard/courses/search   /?q=${encodeURIComponent(searchQuery)}`)
+        .then(response => response.json())
+        .then(data => {
+            const coursesTableBody = document.getElementById('coursesTableBody');
+            coursesTableBody.innerHTML = '';
+
+            if (data.courses.length > 0) {
+                data.courses.forEach(course => {
+                    const row = `
+                        <tr>
+                            <td>
+                                <a href="/courses/${course.slug}/" class="text-decoration-none text-primary fw-bold">
+                                    ${course.title}
+                                </a>
+                            </td>
+                            <td>${course.lecturer_full_name}</td>
+                            <td>${course.enrolled_count}</td>
+                            <td>
+                                <span class="badge bg-${course.is_active ? 'success' : 'secondary'}">${course.is_active ? 'نشط' : 'غير نشط'}</span>
+                            </td>
+                            <td>${course.created_at}</td>
+                            <td>
+                                <button type="button"
+                                    class="btn btn-sm btn-primary"
+                                    onclick="openEditCourseModal(${course.id})">
+                                    تعديل
+                                </button>
+                                <button type="button"
+                                    class="btn btn-sm btn-danger"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#deleteCourseModal"
+                                    data-id="${course.id}"
+                                    data-title="${course.title}">
+                                    حذف
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                    coursesTableBody.innerHTML += row;
+                });
+            } else {
+                coursesTableBody.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="text-center py-4">
+                            <div class="empty-state">
+                                <i class="bi bi-book"></i>
+                                <p class="mb-0">لا توجد دورات متاحة حالياً</p>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }
+        })
+        .catch(error => console.error('Error fetching search results:', error));
+});
+
+
+</script>
 
 {% endblock %}
 
