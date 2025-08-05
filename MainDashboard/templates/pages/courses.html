@@ -46,7 +46,11 @@
                         {% if courses %}
                             {% for course in courses %}
                                 <tr>
-                                    <td><a href="{% url 'courses:course_detail' course.slug %}">{{ course.title }}</a></td>
+                                    <td>
+                                        <a href="{% url 'courses:course_detail' course.slug %}" class="text-decoration-none text-primary">
+                                            {{ course.title }}
+                                        </a>
+                                        </td>
                                     <td>{{ course.lecturer.get_full_name }}</td>
                                     <td>{{ course.get_enrolled_count }}</td>
                                     <td>
@@ -102,12 +106,24 @@
                 </div>
                 <div class="modal-body">
                     <div id="addCourseError" class="alert alert-danger" style="display: none;"></div>
-                    {% csrf_token %}
-                    <div class="row">
-                       {{ form.as_p }}
+                    <form method="post" enctype="multipart/form-data" id="addCourseForm">
+                        {% csrf_token %}
+                        {% for field in form %}
+                            <div class="mb-3">
+                                <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                                {{ field }}
+                                {% if field.help_text %}
+                                    <div class="form-text">{{ field.help_text }}</div>
+                                {% endif %}
+                                {% if field.errors %}
+                                    <div class="text-danger">{{ field.errors }}</div>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </form>
 
-                    </div>
                 </div>
+
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
                     <button type="button" class="btn btn-primary" onclick="addCourse()">إضافة</button>

@@ -1,0 +1,40 @@
+/* Custom Styles */
+
+/* Modal Styling */
+.modal-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.modal-title {
+    font-weight: 600;
+}
+
+.modal-body {
+    padding: 2rem;
+}
+
+.modal-footer {
+    background-color: #f8f9fa;
+    border-top: 1px solid #dee2e6;
+}
+
+/* Course Card Styling */
+.course-card {
+    transition: transform .2s;
+}
+
+.course-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 15px rgba(0,0,0,.1) !important;
+}
+
+.course-card .card-title a {
+    color: #343a40;
+    text-decoration: none;
+    transition: color .2s;
+}
+
+.course-card .card-title a:hover {
+    color: #007bff;
+}
