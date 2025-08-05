@@ -68,14 +68,11 @@
                                             onclick="openEditCourseModal({{ course.id }})">
                                             تعديل
                                         </button>
-                                        <button type="button"
-                                            class="btn btn-sm btn-danger"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#deleteCourseModal"
-                                            data-id="{{ course.id }}"
-                                            data-title="{{ course.title }}">
+                                        <a href="/main-dashboard/courses/delete/{{ course.id }}/" class="btn btn-sm btn-danger" onclick="return confirm('هل أنت متأكد أنك تريد حذف هذه الدورة؟');">
                                             حذف
-                                        </button>
+                                        </a>
+
+
                                     </td>
                                 </tr>
                             {% endfor %}
@@ -158,25 +155,6 @@
     </div>
 </div>
 
-<!-- Delete Course Modal -->
-<div class="modal fade" id="deleteCourseModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">تأكيد الحذف</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <p>هل أنت متأكد أنك تريد حذف الدورة <strong id="deleteCourseTitle"></strong>؟</p>
-                <input type="hidden" id="deleteCourseId">
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
-                <button type="button" class="btn btn-danger" onclick="deleteCourse()">حذف</button>
-            </div>
-        </div>
-    </div>
-</div>
 
 
 
@@ -270,6 +248,12 @@
             });
         }
     
+
+
+
+       
+
+
 
     // Real-time search
   document.getElementById('courseSearchInput').addEventListener('input', function () {

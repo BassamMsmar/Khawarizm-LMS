@@ -6,7 +6,7 @@ urlpatterns = [
     path('courses/', views.CourseListView.as_view(), name='courses'),
     path('courses/create/ajax/', views.CourseCreateAjaxView.as_view(), name='create_course_ajax'),
     path('courses/update/<int:pk>/', views.CourseUpdateAjaxView.as_view(), name='update_course_ajax'),
-    path('courses/delete/<int:pk>/', views.CourseDeleteAjaxView.as_view(), name='delete_course_ajax'),
+    path('courses/delete/<int:pk>/', views.delete_course, name='delete_course'),
     path('courses/search/', views.course_search_ajax, name='course_search_ajax'),
 
     path('dashboard', views.dashboard),

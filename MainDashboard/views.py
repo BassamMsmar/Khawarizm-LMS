@@ -70,14 +70,15 @@ class CourseUpdateAjaxView(View):
 
 
 
-class CourseDeleteAjaxView(DeleteView):
-    model = Course
-    success_url = reverse_lazy('courses')
+from django.shortcuts import get_object_or_404, redirect
+from courses.models import Course
 
-    def delete(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        self.object.delete()
-        return JsonResponse({'success': True})
+def delete_course(request, pk):
+    course = Course.objects.get(pk=pk)
+    course.delete()
+    return redirect('/main-dashboard/courses/')
+
+
 
 
 from django.http import JsonResponse
