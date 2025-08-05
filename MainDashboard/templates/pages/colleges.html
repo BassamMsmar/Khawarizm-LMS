@@ -7,12 +7,12 @@
     <!-- Header -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2>إدارة الكليات</h2>
-        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCourseModal">
-            <i class="bi bi-plus-lg me-2"></i>إضافة كليه جديدة
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCollegeModal">
+            <i class="bi bi-plus-lg me-2"></i>إضافة كلية جديدة
         </button>
     </div>
 
-    <!-- collage Table -->
+    <!-- College Table -->
     <div class="card">
         <div class="card-header">
             <div class="row align-items-center">
@@ -21,7 +21,7 @@
                 </div>
                 <div class="col-md-6">
                    <div class="input-group">
-                        <input type="text" id="courseSearchInput" class="form-control" placeholder="البحث في الدورات...">
+                        <input type="text" id="collegeSearchInput" class="form-control" placeholder="البحث في الكليات...">
                         <button class="btn btn-outline-secondary" type="button">
                             <i class="bi bi-search"></i>
                         </button>
@@ -35,35 +35,38 @@
                 <table class="table table-hover">
                     <thead>
                         <tr>
-                            <th>اسم الكليه</th>
-                            <th> اقصي عدد للطلاب</th>
-                            <th>السعر الاساسي</th>
-                            <th>السعر بعد الخصم </th>
+                            <th>اسم الكلية</th>
+                            <th>أقصى عدد للطلاب</th>
+                            <th>السعر الأساسي</th>
+                            <th>السعر بعد الخصم</th>
+                            <th>الحالة</th>
                             <th>الإجراءات</th>
                         </tr>
                     </thead>
-                    <tbody id="coursesTableBody">
+                    <tbody id="collegesTableBody">
                         {% if colleges %}
                             {% for college in colleges %}
                                 <tr>
-                                    
                                     <td>{{ college.title }}</td>
                                     <td>{{ college.max_students }}</td>
                                     <td>{{ college.regular_price }}</td>
                                     <td>{{ college.discounted_price }}</td>
-                                    
-                                    
+                                    <td>
+                                        {% if college.is_public %}
+                                            <span class="badge bg-success">عامة</span>
+                                        {% else %}
+                                            <span class="badge bg-secondary">خاصة</span>
+                                        {% endif %}
+                                    </td>
                                     <td>
                                         <button type="button"
                                             class="btn btn-sm btn-primary"
-                                            onclick="openEditCourseModal({{ college.id }})">
+                                            onclick="openEditCollegeModal({{ college.id }})">
                                             تعديل
                                         </button>
-                                        <a href="/main-dashboard/courses/delete/{{ college.id }}/" class="btn btn-sm btn-danger" onclick="return confirm('هل أنت متأكد أنك تريد حذف هذه الدورة؟');">
+                                        <a href="/main-dashboard/college/delete/{{ college.id }}/" class="btn btn-sm btn-danger" onclick="return confirm('هل أنت متأكد أنك تريد حذف هذه الكلية؟');">
                                             حذف
                                         </a>
-
-
                                     </td>
                                 </tr>
                             {% endfor %}
@@ -71,8 +74,8 @@
                             <tr>
                                 <td colspan="6" class="text-center py-4">
                                     <div class="empty-state">
-                                        <i class="bi bi-book"></i>
-                                        <p class="mb-0">لا توجد دورات متاحة حالياً</p>
+                                        <i class="bi bi-building"></i>
+                                        <p class="mb-0">لا توجد كليات متاحة حالياً</p>
                                     </div>
                                 </td>
                             </tr>
@@ -84,232 +87,205 @@
     </div>
 </main>
 
-<!-- Add Course Modal -->
-<div class="modal fade" id="addCourseModal" tabindex="-1">
+<!-- Add College Modal -->
+<div class="modal fade" id="addCollegeModal" tabindex="-1">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <form id="addCourseForm">
+            <form id="addCollegeForm">
                 <div class="modal-header">
-                    <h5 class="modal-title">إضافة كليه جديدة</h5>
+                    <h5 class="modal-title">إضافة كلية جديدة</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <div id="addCourseError" class="alert alert-danger" style="display: none;"></div>
-                    <form method="post" enctype="multipart/form-data" id="addCourseForm">
-                        {% csrf_token %}
-                        {% for field in form %}
-                            <div class="mb-3">
-                                <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
-                                {{ field }}
-                                {% if field.help_text %}
-                                    <div class="form-text">{{ field.help_text }}</div>
-                                {% endif %}
-                                {% if field.errors %}
-                                    <div class="text-danger">{{ field.errors }}</div>
-                                {% endif %}
-                            </div>
-                        {% endfor %}
-                    </form>
-
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
-                    <button type="button" class="btn btn-primary" onclick="addCourse()">إضافة</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<!-- Edit Course Modal -->
-<div class="modal fade" id="editCourseModal" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <form id="editCourseForm">
-                <div class="modal-header">
-                    <h5 class="modal-title">تعديل الدورة</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <div id="editCourseError" class="alert alert-danger" style="display: none;"></div>
+                    <div id="addCollegeError" class="alert alert-danger" style="display: none;"></div>
                     {% csrf_token %}
-                    <input type="hidden" id="editCourseId" name="course_id">
-                    <div id="editCourseFormContent"></div>
+                    {% for field in form %}
+                        <div class="mb-3">
+                            <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                            {{ field }}
+                            {% if field.help_text %}
+                                <div class="form-text">{{ field.help_text }}</div>
+                            {% endif %}
+                            {% if field.errors %}
+                                <div class="text-danger">{{ field.errors }}</div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
-                    <button type="button" class="btn btn-primary" onclick="updateCourse()">حفظ التغييرات</button>
+                    <button type="button" class="btn btn-primary" onclick="addCollege()">إضافة</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
 
-
-
+<!-- Edit College Modal -->
+<div class="modal fade" id="editCollegeModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form id="editCollegeForm">
+                <div class="modal-header">
+                    <h5 class="modal-title">تعديل الكلية</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="editCollegeError" class="alert alert-danger" style="display: none;"></div>
+                    {% csrf_token %}
+                    <input type="hidden" id="editCollegeId" name="college_id">
+                    <div id="editCollegeFormContent"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="button" class="btn btn-primary" onclick="updateCollege()">حفظ التغييرات</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 <script>
+    // College Management
+    function addCollege() {
+        const form = document.getElementById('addCollegeForm');
+        const formData = new FormData(form);
+        const errorDiv = document.getElementById('addCollegeError');
+        errorDiv.style.display = 'none'; // Hide previous errors
 
-     // Course Management
-        function addCourse() {
-            const form = document.getElementById('addCourseForm');
-            const formData = new FormData(form);
-            const errorDiv = document.getElementById('addCourseError');
-            errorDiv.style.display = 'none'; // Hide previous errors
-
-            fetch("{% url 'create_course_ajax' %}", {
-                method: 'POST',
-                headers: {
-                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
-                },
-                body: formData
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok. Status: ' + response.status);
+        fetch("{% url 'create_college_ajax' %}", {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+            },
+            body: formData
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok. Status: ' + response.status);
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            } else {
+                let errorMessages = '<strong>Please correct the following errors:</strong><ul>';
+                for (const field in data.errors) {
+                    errorMessages += `<li>${field}: ${data.errors[field].join(', ')}</li>`;
                 }
-                return response.json();
-            })
-            .then(data => {
-                if (data.success) {
-                    location.reload();
-                } else {
-                    let errorMessages = '<strong>Please correct the following errors:</strong><ul>';
-                    for (const field in data.errors) {
-                        errorMessages += `<li>${field}: ${data.errors[field].join(', ')}</li>`;
-                    }
-                    errorMessages += '</ul>';
-                    errorDiv.innerHTML = errorMessages;
-                    errorDiv.style.display = 'block';
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                errorDiv.innerHTML = 'An unexpected error occurred. Please check the browser console for details.';
+                errorMessages += '</ul>';
+                errorDiv.innerHTML = errorMessages;
                 errorDiv.style.display = 'block';
-            });
-        }
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            errorDiv.innerHTML = 'An unexpected error occurred. Please check the browser console for details.';
+            errorDiv.style.display = 'block';
+        });
+    }
 
+    function openEditCollegeModal(collegeId) {
+        const modal = new bootstrap.Modal(document.getElementById('editCollegeModal'));
+        const errorDiv = document.getElementById('editCollegeError');
+        const formContent = document.getElementById('editCollegeFormContent');
+        document.getElementById('editCollegeId').value = collegeId;
+        errorDiv.style.display = 'none';
 
-
-    
-        function openEditCourseModal(courseId) {
-            const modal = new bootstrap.Modal(document.getElementById('editCourseModal'));
-            const errorDiv = document.getElementById('editCourseError');
-            const formContent = document.getElementById('editCourseFormContent');
-            document.getElementById('editCourseId').value = courseId;
-            errorDiv.style.display = 'none';
-
-            fetch(`{% url 'update_course_ajax' 0 %}`.replace('0', courseId))
-                .then(response => response.json())
-                .then(data => {
-                    formContent.innerHTML = data.form;
-                    modal.show();
-                });
-        }
-
-        function updateCourse() {
-            const courseId = document.getElementById('editCourseId').value;
-            const form = document.getElementById('editCourseForm');
-            const formData = new FormData(form);
-            const errorDiv = document.getElementById('editCourseError');
-            errorDiv.style.display = 'none';
-
-            fetch(`{% url 'update_course_ajax' 0 %}`.replace('0', courseId), {
-                method: 'POST',
-                headers: {
-                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
-                },
-                body: formData
-            })
+        fetch(`{% url 'update_college_ajax' 0 %}`.replace('0', collegeId))
             .then(response => response.json())
             .then(data => {
-                if (data.success) {
-                    location.reload();
-                } else {
-                    let errorMessages = '<strong>Please correct the following errors:</strong><ul>';
-                    for (const field in data.errors) {
-                        errorMessages += `<li>${field}: ${data.errors[field].join(', ')}</li>`;
-                    }
-                    errorMessages += '</ul>';
-                    errorDiv.innerHTML = errorMessages;
-                    errorDiv.style.display = 'block';
-                }
+                formContent.innerHTML = data.form;
+                modal.show();
             });
-        }
-    
+    }
 
+    function updateCollege() {
+        const collegeId = document.getElementById('editCollegeId').value;
+        const form = document.getElementById('editCollegeForm');
+        const formData = new FormData(form);
+        const errorDiv = document.getElementById('editCollegeError');
+        errorDiv.style.display = 'none';
 
-
-       
-
-
-
-    // Real-time search
-  document.getElementById('courseSearchInput').addEventListener('input', function () {
-    const searchQuery = this.value.trim();
-    if (searchQuery === '') return;
-
-    fetch(`/main-dashboard/courses/search   /?q=${encodeURIComponent(searchQuery)}`)
+        fetch(`{% url 'update_college_ajax' 0 %}`.replace('0', collegeId), {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+            },
+            body: formData
+        })
         .then(response => response.json())
         .then(data => {
-            const coursesTableBody = document.getElementById('coursesTableBody');
-            coursesTableBody.innerHTML = '';
+            if (data.success) {
+                location.reload();
+            } else {
+                let errorMessages = '<strong>Please correct the following errors:</strong><ul>';
+                for (const field in data.errors) {
+                    errorMessages += `<li>${field}: ${data.errors[field].join(', ')}</li>`;
+                }
+                errorMessages += '</ul>';
+                errorDiv.innerHTML = errorMessages;
+                errorDiv.style.display = 'block';
+            }
+        });
+    }
 
-            if (data.courses.length > 0) {
-                data.courses.forEach(course => {
-                    const row = `
+    // Real-time search
+    document.getElementById('collegeSearchInput').addEventListener('input', function () {
+        const searchQuery = this.value.trim();
+        if (searchQuery === '') {
+            // If search query is empty, reload the page to show all colleges
+            location.reload();
+            return;
+        }
+
+        fetch(`/main-dashboard/college/search/?q=${encodeURIComponent(searchQuery)}`)
+            .then(response => response.json())
+            .then(data => {
+                const collegesTableBody = document.getElementById('collegesTableBody');
+                collegesTableBody.innerHTML = '';
+
+                if (data.colleges.length > 0) {
+                    data.colleges.forEach(college => {
+                        const row = `
+                            <tr>
+                                <td>${college.title}</td>
+                                <td>${college.max_students}</td>
+                                <td>${college.regular_price}</td>
+                                <td>${college.discounted_price}</td>
+                                <td>
+                                    <span class="badge bg-${college.is_public ? 'success' : 'secondary'}">${college.is_public ? 'عامة' : 'خاصة'}</span>
+                                </td>
+                                <td>
+                                    <button type="button"
+                                        class="btn btn-sm btn-primary"
+                                        onclick="openEditCollegeModal(${college.id})">
+                                        تعديل
+                                    </button>
+                                    <a href="/main-dashboard/college/delete/${college.id}/" class="btn btn-sm btn-danger" onclick="return confirm('هل أنت متأكد أنك تريد حذف هذه الكلية؟');">
+                                        حذف
+                                    </a>
+                                </td>
+                            </tr>
+                        `;
+                        collegesTableBody.innerHTML += row;
+                    });
+                } else {
+                    collegesTableBody.innerHTML = `
                         <tr>
-                            <td>
-                                <a href="/courses/${course.slug}/" class="text-decoration-none text-primary fw-bold">
-                                    ${course.title}
-                                </a>
-                            </td>
-                            <td>${course.lecturer_full_name}</td>
-                            <td>${course.enrolled_count}</td>
-                            <td>
-                                <span class="badge bg-${course.is_active ? 'success' : 'secondary'}">${course.is_active ? 'نشط' : 'غير نشط'}</span>
-                            </td>
-                            <td>${course.created_at}</td>
-                            <td>
-                                <button type="button"
-                                    class="btn btn-sm btn-primary"
-                                    onclick="openEditCourseModal(${course.id})">
-                                    تعديل
-                                </button>
-                                <button type="button"
-                                    class="btn btn-sm btn-danger"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#deleteCourseModal"
-                                    data-id="${course.id}"
-                                    data-title="${course.title}">
-                                    حذف
-                                </button>
+                            <td colspan="6" class="text-center py-4">
+                                <div class="empty-state">
+                                    <i class="bi bi-building"></i>
+                                    <p class="mb-0">لا توجد كليات متاحة حالياً</p>
+                                </div>
                             </td>
                         </tr>
                     `;
-                    coursesTableBody.innerHTML += row;
-                });
-            } else {
-                coursesTableBody.innerHTML = `
-                    <tr>
-                        <td colspan="6" class="text-center py-4">
-                            <div class="empty-state">
-                                <i class="bi bi-book"></i>
-                                <p class="mb-0">لا توجد دورات متاحة حالياً</p>
-                            </div>
-                        </td>
-                    </tr>
-                `;
-            }
-        })
-        .catch(error => console.error('Error fetching search results:', error));
-});
-
-
+                }
+            })
+            .catch(error => console.error('Error fetching search results:', error));
+    });
 </script>
 
 {% endblock %}
-
-
