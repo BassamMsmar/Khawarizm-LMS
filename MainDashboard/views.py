@@ -12,10 +12,26 @@ from django.http import JsonResponse
 from django.urls import reverse_lazy
 # from django.contrib.auth.mixins import LoginRequiredMixin
 from courses.models import Course
+from college.models import College
+
 from .forms import CourseForm
 from django.shortcuts import get_object_or_404
 
 from django.contrib.auth import get_user_model
+
+
+
+
+class CollegeListView(ListView):
+    model = College
+    template_name = 'pages/colleges.html'
+    
+    context_object_name = 'colleges'
+
+  
+
+
+
 
 class CourseListView(ListView):
     model = Course

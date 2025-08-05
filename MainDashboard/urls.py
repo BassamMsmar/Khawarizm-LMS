@@ -3,6 +3,10 @@ from . import views
 
 urlpatterns = [
     
+    path('college/', views.CollegeListView.as_view(), name='colleges'),
+
+
+
     path('courses/', views.CourseListView.as_view(), name='courses'),
     path('courses/create/ajax/', views.CourseCreateAjaxView.as_view(), name='create_course_ajax'),
     path('courses/update/<int:pk>/', views.CourseUpdateAjaxView.as_view(), name='update_course_ajax'),

@@ -1,0 +1,315 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block content %}
+<main class="main-content">
+
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>إدارة الكليات</h2>
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCourseModal">
+            <i class="bi bi-plus-lg me-2"></i>إضافة كليه جديدة
+        </button>
+    </div>
+
+    <!-- collage Table -->
+    <div class="card">
+        <div class="card-header">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <h5 class="mb-0">قائمة الكليات</h5>
+                </div>
+                <div class="col-md-6">
+                   <div class="input-group">
+                        <input type="text" id="courseSearchInput" class="form-control" placeholder="البحث في الدورات...">
+                        <button class="btn btn-outline-secondary" type="button">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>اسم الكليه</th>
+                            <th> اقصي عدد للطلاب</th>
+                            <th>السعر الاساسي</th>
+                            <th>السعر بعد الخصم </th>
+                            <th>الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody id="coursesTableBody">
+                        {% if colleges %}
+                            {% for college in colleges %}
+                                <tr>
+                                    
+                                    <td>{{ college.title }}</td>
+                                    <td>{{ college.max_students }}</td>
+                                    <td>{{ college.regular_price }}</td>
+                                    <td>{{ college.discounted_price }}</td>
+                                    
+                                    
+                                    <td>
+                                        <button type="button"
+                                            class="btn btn-sm btn-primary"
+                                            onclick="openEditCourseModal({{ college.id }})">
+                                            تعديل
+                                        </button>
+                                        <a href="/main-dashboard/courses/delete/{{ college.id }}/" class="btn btn-sm btn-danger" onclick="return confirm('هل أنت متأكد أنك تريد حذف هذه الدورة؟');">
+                                            حذف
+                                        </a>
+
+
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="6" class="text-center py-4">
+                                    <div class="empty-state">
+                                        <i class="bi bi-book"></i>
+                                        <p class="mb-0">لا توجد دورات متاحة حالياً</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Add Course Modal -->
+<div class="modal fade" id="addCourseModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form id="addCourseForm">
+                <div class="modal-header">
+                    <h5 class="modal-title">إضافة كليه جديدة</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="addCourseError" class="alert alert-danger" style="display: none;"></div>
+                    <form method="post" enctype="multipart/form-data" id="addCourseForm">
+                        {% csrf_token %}
+                        {% for field in form %}
+                            <div class="mb-3">
+                                <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                                {{ field }}
+                                {% if field.help_text %}
+                                    <div class="form-text">{{ field.help_text }}</div>
+                                {% endif %}
+                                {% if field.errors %}
+                                    <div class="text-danger">{{ field.errors }}</div>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </form>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="button" class="btn btn-primary" onclick="addCourse()">إضافة</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Course Modal -->
+<div class="modal fade" id="editCourseModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form id="editCourseForm">
+                <div class="modal-header">
+                    <h5 class="modal-title">تعديل الدورة</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="editCourseError" class="alert alert-danger" style="display: none;"></div>
+                    {% csrf_token %}
+                    <input type="hidden" id="editCourseId" name="course_id">
+                    <div id="editCourseFormContent"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="button" class="btn btn-primary" onclick="updateCourse()">حفظ التغييرات</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script>
+
+     // Course Management
+        function addCourse() {
+            const form = document.getElementById('addCourseForm');
+            const formData = new FormData(form);
+            const errorDiv = document.getElementById('addCourseError');
+            errorDiv.style.display = 'none'; // Hide previous errors
+
+            fetch("{% url 'create_course_ajax' %}", {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                },
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok. Status: ' + response.status);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    location.reload();
+                } else {
+                    let errorMessages = '<strong>Please correct the following errors:</strong><ul>';
+                    for (const field in data.errors) {
+                        errorMessages += `<li>${field}: ${data.errors[field].join(', ')}</li>`;
+                    }
+                    errorMessages += '</ul>';
+                    errorDiv.innerHTML = errorMessages;
+                    errorDiv.style.display = 'block';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                errorDiv.innerHTML = 'An unexpected error occurred. Please check the browser console for details.';
+                errorDiv.style.display = 'block';
+            });
+        }
+
+
+
+    
+        function openEditCourseModal(courseId) {
+            const modal = new bootstrap.Modal(document.getElementById('editCourseModal'));
+            const errorDiv = document.getElementById('editCourseError');
+            const formContent = document.getElementById('editCourseFormContent');
+            document.getElementById('editCourseId').value = courseId;
+            errorDiv.style.display = 'none';
+
+            fetch(`{% url 'update_course_ajax' 0 %}`.replace('0', courseId))
+                .then(response => response.json())
+                .then(data => {
+                    formContent.innerHTML = data.form;
+                    modal.show();
+                });
+        }
+
+        function updateCourse() {
+            const courseId = document.getElementById('editCourseId').value;
+            const form = document.getElementById('editCourseForm');
+            const formData = new FormData(form);
+            const errorDiv = document.getElementById('editCourseError');
+            errorDiv.style.display = 'none';
+
+            fetch(`{% url 'update_course_ajax' 0 %}`.replace('0', courseId), {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                },
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    location.reload();
+                } else {
+                    let errorMessages = '<strong>Please correct the following errors:</strong><ul>';
+                    for (const field in data.errors) {
+                        errorMessages += `<li>${field}: ${data.errors[field].join(', ')}</li>`;
+                    }
+                    errorMessages += '</ul>';
+                    errorDiv.innerHTML = errorMessages;
+                    errorDiv.style.display = 'block';
+                }
+            });
+        }
+    
+
+
+
+       
+
+
+
+    // Real-time search
+  document.getElementById('courseSearchInput').addEventListener('input', function () {
+    const searchQuery = this.value.trim();
+    if (searchQuery === '') return;
+
+    fetch(`/main-dashboard/courses/search   /?q=${encodeURIComponent(searchQuery)}`)
+        .then(response => response.json())
+        .then(data => {
+            const coursesTableBody = document.getElementById('coursesTableBody');
+            coursesTableBody.innerHTML = '';
+
+            if (data.courses.length > 0) {
+                data.courses.forEach(course => {
+                    const row = `
+                        <tr>
+                            <td>
+                                <a href="/courses/${course.slug}/" class="text-decoration-none text-primary fw-bold">
+                                    ${course.title}
+                                </a>
+                            </td>
+                            <td>${course.lecturer_full_name}</td>
+                            <td>${course.enrolled_count}</td>
+                            <td>
+                                <span class="badge bg-${course.is_active ? 'success' : 'secondary'}">${course.is_active ? 'نشط' : 'غير نشط'}</span>
+                            </td>
+                            <td>${course.created_at}</td>
+                            <td>
+                                <button type="button"
+                                    class="btn btn-sm btn-primary"
+                                    onclick="openEditCourseModal(${course.id})">
+                                    تعديل
+                                </button>
+                                <button type="button"
+                                    class="btn btn-sm btn-danger"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#deleteCourseModal"
+                                    data-id="${course.id}"
+                                    data-title="${course.title}">
+                                    حذف
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                    coursesTableBody.innerHTML += row;
+                });
+            } else {
+                coursesTableBody.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="text-center py-4">
+                            <div class="empty-state">
+                                <i class="bi bi-book"></i>
+                                <p class="mb-0">لا توجد دورات متاحة حالياً</p>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }
+        })
+        .catch(error => console.error('Error fetching search results:', error));
+});
+
+
+</script>
+
+{% endblock %}
+
+
