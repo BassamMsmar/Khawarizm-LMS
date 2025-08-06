@@ -13,12 +13,14 @@ from django.urls import reverse_lazy
 # from django.contrib.auth.mixins import LoginRequiredMixin
 from courses.models import Course
 from college.models import College
+from department.models import Department
 
 from .forms import CourseForm, CollegeForm
 from django.shortcuts import get_object_or_404
 
 from django.contrib.auth import get_user_model
 
+# ____________________________________________________________________
 
 
 
@@ -102,6 +104,26 @@ def college_search_ajax(request):
         })
 
     return JsonResponse({'colleges': college_data})
+
+
+
+
+# ____________________________________________________________________
+
+class DepartmentListView(ListView):
+    model = Department
+    template_name = 'pages/departments.html'
+    
+    context_object_name = 'departments'
+
+
+
+
+
+
+
+
+# ____________________________________________________________________
 
 
 class CourseListView(ListView):
@@ -197,22 +219,39 @@ def course_search_ajax(request):
 
     return JsonResponse({'courses': course_data})
 
+# ____________________________________________________________________
+
+
+
 
 
 
 def lessons(request):
     return render(request, 'pages/lessons.html')
 
+# ____________________________________________________________________
 
 def quizzes(request):
     return render(request, 'pages/quizzes.html')
+
+
+
+# ____________________________________________________________________
 
 def students(request):
     return render(request, 'pages/students.html')
 
 
+# ____________________________________________________________________
+
+
+
 def reports(request):
     return render(request, 'pages/reports.html')
+
+
+
+# ____________________________________________________________________
 
 
 def settings(request):
