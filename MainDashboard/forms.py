@@ -1,6 +1,10 @@
 from django import forms
 from courses.models import Course
 from college.models import College
+from department.models import Department
+
+from django.contrib.auth import get_user_model
+
 
 class CourseForm(forms.ModelForm):
     class Meta:
@@ -43,6 +47,36 @@ class CollegeForm(forms.ModelForm):
                 field.widget.attrs['class'] = 'form-check-input'
             elif field.widget.__class__.__name__ == 'ClearableFileInput':
                 field.widget.attrs['class'] = 'form-control-file'
+            elif field.widget.__class__.__name__ == 'Textarea':
+                field.widget.attrs['class'] = 'form-control'
+                field.widget.attrs['rows'] = 3
+            else:
+                field.widget.attrs['class'] = 'form-control'
+
+
+class DepartmentForm(forms.ModelForm):
+    class Meta:
+        model = Department
+        exclude = ['slug']
+        widgets = {
+            'is_active': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(DepartmentForm, self).__init__(*args, **kwargs)
+        # Populate choices for 'college' and 'admin' fields
+        self.fields['college'].queryset = College.objects.all()
+        self.fields['admin'].queryset = get_user_model().objects.all()
+
+        for field_name, field in self.fields.items():
+            if field.widget.__class__.__name__ == 'CheckboxInput':
+                field.widget.attrs['class'] = 'form-check-input'
+            elif field.widget.__class__.__name__ == 'ClearableFileInput':
+                field.widget.attrs['class'] = 'form-control-file'
+            elif field.widget.__class__.__name__ == 'SelectMultiple':
+                field.widget.attrs['class'] = 'form-select'
+            elif field.widget.__class__.__name__ == 'Select':
+                field.widget.attrs['class'] = 'form-select'
             elif field.widget.__class__.__name__ == 'Textarea':
                 field.widget.attrs['class'] = 'form-control'
                 field.widget.attrs['rows'] = 3

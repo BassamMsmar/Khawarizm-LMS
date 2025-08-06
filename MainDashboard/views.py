@@ -1,33 +1,23 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
+from django.views.generic import ListView, View, UpdateView, DeleteView
+from django.http import JsonResponse
+from django.urls import reverse_lazy
+from django.db.models import Q
+from courses.models import Course
+from college.models import College
+from department.models import Department
+from .forms import CourseForm, CollegeForm, DepartmentForm # Import DepartmentForm
+from django.contrib.auth import get_user_model
 
-# Create your views here.
+# ____________________________________________________________________
 
 def dashboard(request):
     return render(request, 'pages/dashboard.html')
 
 
-
-from django.views.generic import ListView, View, UpdateView, DeleteView
-from django.http import JsonResponse
-from django.urls import reverse_lazy
-# from django.contrib.auth.mixins import LoginRequiredMixin
-from courses.models import Course
-from college.models import College
-from department.models import Department
-
-from .forms import CourseForm, CollegeForm
-from django.shortcuts import get_object_or_404
-
-from django.contrib.auth import get_user_model
-
-# ____________________________________________________________________
-
-
-
 class CollegeListView(ListView):
     model = College
     template_name = 'pages/colleges.html'
-    
     context_object_name = 'colleges'
 
     def get_context_data(self, **kwargs):
@@ -57,8 +47,8 @@ class CollegeUpdateAjaxView(View):
                 'about': college.about,
                 'max_students': college.max_students,
                 'is_public': college.is_public,
-                'regular_price': college.regular_price,
-                'discounted_price': college.discounted_price,
+                'regular_price': str(college.regular_price) if college.regular_price else None,
+                'discounted_price': str(college.discounted_price) if college.discounted_price else None,
                 'intro_video_url': college.intro_video_url,
                 'description': college.description,
                 'tags': college.tags,
@@ -106,21 +96,85 @@ def college_search_ajax(request):
     return JsonResponse({'colleges': college_data})
 
 
-
-
 # ____________________________________________________________________
+
 
 class DepartmentListView(ListView):
     model = Department
     template_name = 'pages/departments.html'
-    
     context_object_name = 'departments'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = DepartmentForm() # Add DepartmentForm to context
+        return context
 
 
+class DepartmentCreateAjaxView(View):
+    def post(self, request, *args, **kwargs):
+        form = DepartmentForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return JsonResponse({'success': True})
+        else:
+            return JsonResponse({'success': False, 'errors': form.errors})
 
 
+class DepartmentUpdateAjaxView(View):
+    def get(self, request, pk, *args, **kwargs):
+        department = get_object_or_404(Department, pk=pk)
+        form = DepartmentForm(instance=department)
+        return JsonResponse({
+            'form': form.as_p(),
+            'instance': {
+                'title': department.title,
+                'college': department.college.id if department.college else '',
+                'admin': department.admin.id if department.admin else '',
+                'is_active': department.is_active,
+            }
+        })
 
+    def post(self, request, pk, *args, **kwargs):
+        department = get_object_or_404(Department, pk=pk)
+        form = DepartmentForm(request.POST, request.FILES, instance=department)
+        if form.is_valid():
+            form.save()
+            return JsonResponse({'success': True})
+        else:
+            return JsonResponse({'success': False, 'errors': form.errors})
+
+
+def delete_department(request, pk):
+    department = get_object_or_404(Department, pk=pk)
+    department.delete()
+    return redirect('/main-dashboard/departments/')
+
+
+def department_search_ajax(request):
+    search_query = request.GET.get('q', '')
+    departments = Department.objects.all()
+
+    if search_query:
+        departments = departments.filter(
+            Q(title__icontains=search_query) |
+            Q(college__title__icontains=search_query) |
+            Q(admin__first_name__icontains=search_query) |
+            Q(admin__last_name__icontains=search_query)
+        ).distinct()
+
+    department_data = []
+    for department in departments:
+        department_data.append({
+            'id': department.id,
+            'slug': department.slug,
+            'title': department.title,
+            'college': department.college.title if department.college else '',
+            'admin': department.admin.get_full_name() if department.admin else '',
+            'is_active': department.is_active,
+            'created_at': department.created_at.strftime('%Y-%m-%d'),
+        })
+
+    return JsonResponse({'departments': department_data})
 
 
 # ____________________________________________________________________
@@ -178,21 +232,11 @@ class CourseUpdateAjaxView(View):
             return JsonResponse({'success': False, 'errors': form.errors})
 
 
-
-from django.shortcuts import get_object_or_404, redirect
-from courses.models import Course
-
 def delete_course(request, pk):
     course = Course.objects.get(pk=pk)
     course.delete()
     return redirect('/main-dashboard/courses/')
 
-
-
-
-from django.http import JsonResponse
-from django.db.models import Q
-from courses.models import Course     
 
 def course_search_ajax(request):
     search_query = request.GET.get('q', '')
@@ -219,15 +263,13 @@ def course_search_ajax(request):
 
     return JsonResponse({'courses': course_data})
 
+
 # ____________________________________________________________________
-
-
-
-
 
 
 def lessons(request):
     return render(request, 'pages/lessons.html')
+
 
 # ____________________________________________________________________
 
@@ -245,7 +287,6 @@ def students(request):
 # ____________________________________________________________________
 
 
-
 def reports(request):
     return render(request, 'pages/reports.html')
 
@@ -256,3 +297,5 @@ def reports(request):
 
 def settings(request):
     return render(request, 'pages/settings.html')
+
+# ____________________________________________________________________

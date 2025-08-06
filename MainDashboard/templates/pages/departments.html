@@ -7,7 +7,7 @@
     <!-- Header -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2>إدارة الاقسام</h2>
-        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCourseModal">
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addDepartmentModal">
             <i class="bi bi-plus-lg me-2"></i>إضافة قسم جديد
         </button>
     </div>
@@ -21,7 +21,7 @@
                 </div>
                 <div class="col-md-6">
                    <div class="input-group">
-                        <input type="text" id="courseSearchInput" class="form-control" placeholder="البحث في الاقسام...">
+                        <input type="text" id="departmentSearchInput" class="form-control" placeholder="البحث في الاقسام...">
                         <button class="btn btn-outline-secondary" type="button">
                             <i class="bi bi-search"></i>
                         </button>
@@ -43,7 +43,7 @@
                             <th>الإجراءات</th>
                         </tr>
                     </thead>
-                    <tbody id="coursesTableBody">
+                    <tbody id="departmentsTableBody">
                         {% if departments %}
                             {% for department in departments %}
                                 <tr>
@@ -64,7 +64,7 @@
                                                 onclick="openEditDepartmentModal({{ department.id }})">
                                             تعديل
                                         </button>
-                                        <a href="/main-dashboard/departments/delete/{{ department.id }}/" 
+                                        <a href="{% url 'delete_department' department.id %}" 
                                         class="btn btn-sm btn-danger" 
                                         onclick="return confirm('هل أنت متأكد أنك تريد حذف هذا القسم؟');">
                                             حذف
@@ -90,37 +90,34 @@
 </main>
 
 <!-- Add department Modal -->
-<div class="modal fade" id="addCourseModal" tabindex="-1">
+<div class="modal fade" id="addDepartmentModal" tabindex="-1">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <form id="addCourseForm">
+            <form id="addDepartmentForm">
                 <div class="modal-header">
-                    <h5 class="modal-title">إضافة قسم جديدة</h5>
+                    <h5 class="modal-title">إضافة قسم جديد</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <div id="addCourseError" class="alert alert-danger" style="display: none;"></div>
-                    <form method="post" enctype="multipart/form-data" id="addCourseForm">
-                        {% csrf_token %}
-                        {% for field in form %}
-                            <div class="mb-3">
-                                <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
-                                {{ field }}
-                                {% if field.help_text %}
-                                    <div class="form-text">{{ field.help_text }}</div>
-                                {% endif %}
-                                {% if field.errors %}
-                                    <div class="text-danger">{{ field.errors }}</div>
-                                {% endif %}
-                            </div>
-                        {% endfor %}
-                    </form>
-
+                    <div id="addDepartmentError" class="alert alert-danger" style="display: none;"></div>
+                    {% csrf_token %}
+                    {% for field in form %}
+                        <div class="mb-3">
+                            <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                            {{ field }}
+                            {% if field.help_text %}
+                                <div class="form-text">{{ field.help_text }}</div>
+                            {% endif %}
+                            {% if field.errors %}
+                                <div class="text-danger">{{ field.errors }}</div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
                 </div>
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
-                    <button type="button" class="btn btn-primary" onclick="addCourse()">إضافة</button>
+                    <button type="button" class="btn btn-primary" onclick="addDepartment()">إضافة</button>
                 </div>
             </form>
         </div>
@@ -128,23 +125,23 @@
 </div>
 
 <!-- Edit department Modal -->
-<div class="modal fade" id="editCourseModal" tabindex="-1">
+<div class="modal fade" id="editDepartmentModal" tabindex="-1">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <form id="editCourseForm">
+            <form id="editDepartmentForm">
                 <div class="modal-header">
                     <h5 class="modal-title">تعديل القسم</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <div id="editCourseError" class="alert alert-danger" style="display: none;"></div>
+                    <div id="editDepartmentError" class="alert alert-danger" style="display: none;"></div>
                     {% csrf_token %}
-                    <input type="hidden" id="editCourseId" name="course_id">
-                    <div id="editCourseFormContent"></div>
+                    <input type="hidden" id="editDepartmentId" name="department_id">
+                    <div id="editDepartmentFormContent"></div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
-                    <button type="button" class="btn btn-primary" onclick="updateCourse()">حفظ التغييرات</button>
+                    <button type="button" class="btn btn-primary" onclick="updateDepartment()">حفظ التغييرات</button>
                 </div>
             </form>
         </div>
@@ -156,14 +153,14 @@
 
 <script>
 
-     // Course Management
-        function addCourse() {
-            const form = document.getElementById('addCourseForm');
+     // Department Management
+        function addDepartment() {
+            const form = document.getElementById('addDepartmentForm');
             const formData = new FormData(form);
-            const errorDiv = document.getElementById('addCourseError');
+            const errorDiv = document.getElementById('addDepartmentError');
             errorDiv.style.display = 'none'; // Hide previous errors
 
-            fetch("{% url 'create_course_ajax' %}", {
+            fetch("{% url 'create_department_ajax' %}", {
                 method: 'POST',
                 headers: {
                     'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
@@ -199,29 +196,42 @@
 
 
     
-        function openEditCourseModal(courseId) {
-            const modal = new bootstrap.Modal(document.getElementById('editCourseModal'));
-            const errorDiv = document.getElementById('editCourseError');
-            const formContent = document.getElementById('editCourseFormContent');
-            document.getElementById('editCourseId').value = courseId;
+        function openEditDepartmentModal(departmentId) {
+            const modal = new bootstrap.Modal(document.getElementById('editDepartmentModal'));
+            const errorDiv = document.getElementById('editDepartmentError');
+            const formContent = document.getElementById('editDepartmentFormContent');
+            document.getElementById('editDepartmentId').value = departmentId;
             errorDiv.style.display = 'none';
 
-            fetch(`{% url 'update_course_ajax' 0 %}`.replace('0', courseId))
+            fetch(`{% url 'update_department_ajax' 0 %}`.replace('0', departmentId))
                 .then(response => response.json())
                 .then(data => {
                     formContent.innerHTML = data.form;
+                    // Set selected values for dropdowns
+                    if (data.instance.college) {
+                        const collegeSelect = formContent.querySelector('#id_college');
+                        if (collegeSelect) collegeSelect.value = data.instance.college;
+                    }
+                    if (data.instance.admin) {
+                        const adminSelect = formContent.querySelector('#id_admin');
+                        if (adminSelect) adminSelect.value = data.instance.admin;
+                    }
+                    // Set checkbox state
+                    const isActiveCheckbox = formContent.querySelector('#id_is_active');
+                    if (isActiveCheckbox) isActiveCheckbox.checked = data.instance.is_active;
+
                     modal.show();
                 });
         }
 
-        function updateCourse() {
-            const courseId = document.getElementById('editCourseId').value;
-            const form = document.getElementById('editCourseForm');
+        function updateDepartment() {
+            const departmentId = document.getElementById('editDepartmentId').value;
+            const form = document.getElementById('editDepartmentForm');
             const formData = new FormData(form);
-            const errorDiv = document.getElementById('editCourseError');
+            const errorDiv = document.getElementById('editDepartmentError');
             errorDiv.style.display = 'none';
 
-            fetch(`{% url 'update_course_ajax' 0 %}`.replace('0', courseId), {
+            fetch(`{% url 'update_department_ajax' 0 %}`.replace('0', departmentId), {
                 method: 'POST',
                 headers: {
                     'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
@@ -250,59 +260,53 @@
        
 
 
-
     // Real-time search
-  document.getElementById('courseSearchInput').addEventListener('input', function () {
+  document.getElementById('departmentSearchInput').addEventListener('input', function () {
     const searchQuery = this.value.trim();
-    if (searchQuery === '') return;
+    // If search query is empty, reload the page to show all departments
+    if (searchQuery === '') {
+        location.reload();
+        return;
+    }
 
-    fetch(`/main-dashboard/courses/search   /?q=${encodeURIComponent(searchQuery)}`)
+    fetch(`/main-dashboard/departments/search/?q=${encodeURIComponent(searchQuery)}`)
         .then(response => response.json())
         .then(data => {
-            const coursesTableBody = document.getElementById('coursesTableBody');
-            coursesTableBody.innerHTML = '';
+            const departmentsTableBody = document.getElementById('departmentsTableBody');
+            departmentsTableBody.innerHTML = '';
 
-            if (data.courses.length > 0) {
-                data.courses.forEach(course => {
+            if (data.departments.length > 0) {
+                data.departments.forEach(department => {
                     const row = `
                         <tr>
+                            <td>${department.title}</td>
+                            <td>${department.college}</td>
+                            <td>${department.admin}</td>
                             <td>
-                                <a href="/courses/${course.slug}/" class="text-decoration-none text-primary fw-bold">
-                                    ${course.title}
-                                </a>
+                                <span class="badge bg-${department.is_active ? 'success' : 'secondary'}">${department.is_active ? 'نشط' : 'غير نشط'}</span>
                             </td>
-                            <td>${course.lecturer_full_name}</td>
-                            <td>${course.enrolled_count}</td>
-                            <td>
-                                <span class="badge bg-${course.is_active ? 'success' : 'secondary'}">${course.is_active ? 'نشط' : 'غير نشط'}</span>
-                            </td>
-                            <td>${course.created_at}</td>
+                            <td>${department.created_at}</td>
                             <td>
                                 <button type="button"
                                     class="btn btn-sm btn-primary"
-                                    onclick="openEditCourseModal(${course.id})">
+                                    onclick="openEditDepartmentModal(${department.id})">
                                     تعديل
                                 </button>
-                                <button type="button"
-                                    class="btn btn-sm btn-danger"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#deleteCourseModal"
-                                    data-id="${course.id}"
-                                    data-title="${course.title}">
+                                <a href="/main-dashboard/departments/delete/${department.id}/" class="btn btn-sm btn-danger" onclick="return confirm('هل أنت متأكد أنك تريد حذف هذا القسم؟');">
                                     حذف
-                                </button>
+                                </a>
                             </td>
                         </tr>
                     `;
-                    coursesTableBody.innerHTML += row;
+                    departmentsTableBody.innerHTML += row;
                 });
             } else {
-                coursesTableBody.innerHTML = `
+                departmentsTableBody.innerHTML = `
                     <tr>
                         <td colspan="6" class="text-center py-4">
                             <div class="empty-state">
-                                <i class="bi bi-book"></i>
-                                <p class="mb-0">لا توجد دورات متاحة حالياً</p>
+                                <i class="bi bi-diagram-3"></i>
+                                <p class="mb-0">لا توجد أقسام متاحة حالياً</p>
                             </div>
                         </td>
                     </tr>
@@ -316,5 +320,3 @@
 </script>
 
 {% endblock %}
-
-
