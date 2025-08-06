@@ -1,7 +1,7 @@
 from django import forms
 from courses.models import Course
 from college.models import College
-from department.models import Department
+from department.models import Department # Import the Department model
 
 from django.contrib.auth import get_user_model
 

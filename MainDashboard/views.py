@@ -127,7 +127,7 @@ class DepartmentUpdateAjaxView(View):
         return JsonResponse({
             'form': form.as_p(),
             'instance': {
-                'title': department.title,
+                'name': department.name,
                 'college': department.college.id if department.college else '',
                 'admin': department.admin.id if department.admin else '',
                 'is_active': department.is_active,

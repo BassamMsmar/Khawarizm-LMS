@@ -47,7 +47,7 @@
                         {% if departments %}
                             {% for department in departments %}
                                 <tr>
-                                    <td>{{ department }}</td>
+                                    <td>{{ department.name }}</td>
                                     <td>{{ department.college }}</td>
                                     <td>{{ department.admin.get_full_name }}</td>
                                     <td>
@@ -204,23 +204,39 @@
             errorDiv.style.display = 'none';
 
             fetch(`{% url 'update_department_ajax' 0 %}`.replace('0', departmentId))
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok. Status: ' + response.status);
+                    }
+                    return response.json();
+                })
                 .then(data => {
-                    formContent.innerHTML = data.form;
-                    // Set selected values for dropdowns
-                    if (data.instance.college) {
-                        const collegeSelect = formContent.querySelector('#id_college');
-                        if (collegeSelect) collegeSelect.value = data.instance.college;
-                    }
-                    if (data.instance.admin) {
-                        const adminSelect = formContent.querySelector('#id_admin');
-                        if (adminSelect) adminSelect.value = data.instance.admin;
-                    }
-                    // Set checkbox state
-                    const isActiveCheckbox = formContent.querySelector('#id_is_active');
-                    if (isActiveCheckbox) isActiveCheckbox.checked = data.instance.is_active;
+                    if (data.form) {
+                        formContent.innerHTML = data.form;
+                        // Set selected values for dropdowns
+                        if (data.instance.college) {
+                            const collegeSelect = formContent.querySelector('#id_college');
+                            if (collegeSelect) collegeSelect.value = data.instance.college;
+                        }
+                        if (data.instance.admin) {
+                            const adminSelect = formContent.querySelector('#id_admin');
+                            if (adminSelect) adminSelect.value = data.instance.admin;
+                        }
+                        // Set checkbox state
+                        const isActiveCheckbox = formContent.querySelector('#id_is_active');
+                        if (isActiveCheckbox) isActiveCheckbox.checked = data.instance.is_active;
 
-                    modal.show();
+                        modal.show();
+                    } else {
+                        console.error('Error: Form content not received or empty.', data);
+                        errorDiv.innerHTML = 'Failed to load department form. Please check console for details.';
+                        errorDiv.style.display = 'block';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching department data:', error);
+                    errorDiv.innerHTML = 'An error occurred while fetching department data. Please check console for details.';
+                    errorDiv.style.display = 'block';
                 });
         }
 
