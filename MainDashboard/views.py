@@ -156,7 +156,7 @@ def department_search_ajax(request):
 
     if search_query:
         departments = departments.filter(
-            Q(title__icontains=search_query) |
+            Q(name__icontains=search_query) |
             Q(college__title__icontains=search_query) |
             Q(admin__first_name__icontains=search_query) |
             Q(admin__last_name__icontains=search_query)
@@ -167,7 +167,7 @@ def department_search_ajax(request):
         department_data.append({
             'id': department.id,
             'slug': department.slug,
-            'title': department.title,
+            'name': department.name,
             'college': department.college.title if department.college else '',
             'admin': department.admin.get_full_name() if department.admin else '',
             'is_active': department.is_active,

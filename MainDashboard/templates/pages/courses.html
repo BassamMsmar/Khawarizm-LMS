@@ -254,9 +254,13 @@
     // Real-time search
   document.getElementById('courseSearchInput').addEventListener('input', function () {
     const searchQuery = this.value.trim();
-    if (searchQuery === '') return;
+    if (searchQuery === '') {
+            // If search query is empty, reload the page to show all courses
+            location.reload();
+            return;
+        }
 
-    fetch(`/main-dashboard/courses/search   /?q=${encodeURIComponent(searchQuery)}`)
+    fetch(`/main-dashboard/courses/search/?q=${encodeURIComponent(searchQuery)}`)
         .then(response => response.json())
         .then(data => {
             const coursesTableBody = document.getElementById('coursesTableBody');
