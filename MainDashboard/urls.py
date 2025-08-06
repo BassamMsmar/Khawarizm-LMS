@@ -12,10 +12,6 @@ urlpatterns = [
 # ____________________________________________________________________________
 
     path('departments/', views.DepartmentListView.as_view(), name='departments'),
-    path('departments/create/ajax/', views.DepartmentCreateAjaxView.as_view(), name='create_department_ajax'),
-    path('departments/update/<int:pk>/', views.DepartmentUpdateAjaxView.as_view(), name='update_department_ajax'),
-    path('departments/delete/<int:pk>/', views.delete_department, name='delete_department'),
-    path('departments/search/', views.department_search_ajax, name='department_search_ajax'),
 
 
 # ____________________________________________________________________________

@@ -28,8 +28,6 @@ class CourseForm(forms.ModelForm):
                 field.widget.attrs['class'] = 'form-control'
 
 
-from department.models import Department
-
 class CollegeForm(forms.ModelForm):
     class Meta:
         model = College
@@ -50,27 +48,3 @@ class CollegeForm(forms.ModelForm):
                 field.widget.attrs['rows'] = 3
             else:
                 field.widget.attrs['class'] = 'form-control'
-
-
-from django.contrib.auth import get_user_model
-
-class DepartmentForm(forms.ModelForm):
-    class Meta:
-        model = Department
-        exclude = ['slug']
-        widgets = {
-            'title': forms.TextInput(attrs={'class': 'form-control'}),
-            'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
-            'college': forms.Select(attrs={'class': 'form-select'}),
-            'admin': forms.Select(attrs={'class': 'form-select'}),
-            'is_active': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
-        }
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        # Set queryset for college and admin fields
-        self.fields['college'].queryset = College.objects.all()
-        self.fields['admin'].queryset = get_user_model().objects.all()
-        self.fields['college'].empty_label = "Select College"
-        self.fields['admin'].empty_label = "Select Admin"
-        self.fields['admin'].required = False

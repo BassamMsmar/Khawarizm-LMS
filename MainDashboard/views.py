@@ -10,13 +10,13 @@ def dashboard(request):
 from django.views.generic import ListView, View, UpdateView, DeleteView
 from django.http import JsonResponse
 from django.urls import reverse_lazy
-from django.db.models import Q
+# from django.contrib.auth.mixins import LoginRequiredMixin
 from courses.models import Course
 from college.models import College
 from department.models import Department
 
-from .forms import CourseForm, CollegeForm, DepartmentForm
-from django.shortcuts import get_object_or_404, redirect
+from .forms import CourseForm, CollegeForm
+from django.shortcuts import get_object_or_404
 
 from django.contrib.auth import get_user_model
 
@@ -116,76 +116,9 @@ class DepartmentListView(ListView):
     
     context_object_name = 'departments'
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['form'] = DepartmentForm()
-        return context
 
 
-class DepartmentCreateAjaxView(View):
-    def post(self, request, *args, **kwargs):
-        form = DepartmentForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            return JsonResponse({'success': True})
-        else:
-            return JsonResponse({'success': False, 'errors': form.errors})
 
-
-class DepartmentUpdateAjaxView(View):
-    def get(self, request, pk, *args, **kwargs):
-        department = get_object_or_404(Department, pk=pk)
-        form = DepartmentForm(instance=department)
-        return JsonResponse({
-            'form': form.as_p(),
-            'instance': {
-                'title': department.title,
-                'description': department.description,
-                'is_active': department.is_active,
-                'college': department.college.id if department.college else '',
-                'admin': department.admin.id if department.admin else '',
-                'created_at': department.created_at.strftime('%Y-%m-%d'),
-            }
-        })
-
-    def post(self, request, pk, *args, **kwargs):
-        department = get_object_or_404(Department, pk=pk)
-        form = DepartmentForm(request.POST, request.FILES, instance=department)
-        if form.is_valid():
-            form.save()
-            return JsonResponse({'success': True})
-        else:
-            return JsonResponse({'success': False, 'errors': form.errors})
-
-
-def delete_department(request, pk):
-    department = Department.objects.get(pk=pk)
-    department.delete()
-    return redirect('/main-dashboard/departments/')
-
-
-def department_search_ajax(request):
-    search_query = request.GET.get('q', '')
-    departments = Department.objects.all()
-
-    if search_query:
-        departments = departments.filter(
-            Q(title__icontains=search_query)
-        ).distinct()
-
-    department_data = []
-    for department in departments:
-        department_data.append({
-            'id': department.id,
-            'slug': department.slug,
-            'title': department.title,
-            'is_active': department.is_active,
-            'college': department.college.title if department.college else '',
-            'admin': department.admin.get_full_name() if department.admin else '',
-            'created_at': department.created_at.strftime('%Y-%m-%d'),
-        })
-
-    return JsonResponse({'departments': department_data})
 
 
 
@@ -246,6 +179,9 @@ class CourseUpdateAjaxView(View):
 
 
 
+from django.shortcuts import get_object_or_404, redirect
+from courses.models import Course
+
 def delete_course(request, pk):
     course = Course.objects.get(pk=pk)
     course.delete()
@@ -254,6 +190,9 @@ def delete_course(request, pk):
 
 
 
+from django.http import JsonResponse
+from django.db.models import Q
+from courses.models import Course     
 
 def course_search_ajax(request):
     search_query = request.GET.get('q', '')
