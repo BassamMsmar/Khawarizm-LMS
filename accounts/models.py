@@ -32,6 +32,7 @@ class Role(models.Model):
 class User(AbstractBaseUser, PermissionsMixin):
     # Many-to-many relationship to allow multiple roles per user for dashboard
     roles = models.ManyToManyField('accounts.Role', blank=True)
+    department = models.ForeignKey('department.Department', null=True, blank=True, on_delete=models.SET_NULL)
 
     # USER_TYPE_CHOICES for profile 
     PROFILE_TYPE_CHOICES = (

@@ -290,7 +290,18 @@ User = get_user_model()
 
 def students(request):
     students = User.objects.filter(roles__name__iexact='student')
-    return render(request, 'pages/students.html', {'students': students})
+    student_data = []
+    for student in students:
+        department = student.department
+        college = department.college if department else None
+
+        student_data.append({
+            'student': student,
+            'department': department,
+            'college': college,
+        })
+
+    return render(request, 'pages/students.html', {'student_data': student_data})
 
 
 # ____________________________________________________________________

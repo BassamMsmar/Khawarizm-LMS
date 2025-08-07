@@ -26,12 +26,7 @@ class Course(models.Model):
     academic_hours = models.IntegerField(blank=True, null=True)
     short_description = models.TextField(max_length=1000, blank=True, null=True)
     description = CKEditor5Field('Description', blank=True, null=True)
-    colleges = models.ManyToManyField(
-        College,
-        blank=True,
-        related_name='courses',
-        verbose_name='Colleges offering this course'
-    )
+    department = models.ForeignKey(Department, on_delete=models.CASCADE, related_name='department')
     image = models.ImageField(upload_to='courses/images/', blank=True, null=True)
     thumbnail = models.ImageField(upload_to='courses/images/thumbnails/', blank=True, null=True)
     what_youll_learn = CKEditor5Field(blank=True, null=True)
