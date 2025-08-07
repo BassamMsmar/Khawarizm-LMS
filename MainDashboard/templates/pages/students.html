@@ -24,12 +24,23 @@
                                     <th>اسم الطالب</th>
                                     <th>البريد الإلكتروني</th>
                                     <th>الدورات المسجلة</th>
-                                    <th>التقدم</th>
                                     <th>تاريخ التسجيل</th>
                                     <th>الإجراءات</th>
                                 </tr>
                             </thead>
-                            <tbody id="studentsTableBody">
+                            <tbody>
+                                {% for student in students %}
+                                <tr>
+                                    <td>{{ student.get_full_name }}</td>
+                                    <td>{{ student.email }}</td>
+                                    <td>{{student.courses}}</td>
+                                    <td>{{ student.date_joined|date:"Y-m-d" }}</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-primary me-2"><i class="bi bi-pencil-square"></i></button>
+                                        <button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+                                    </td>
+                                </tr>
+                                {% empty %}
                                 <tr>
                                     <td colspan="6" class="text-center py-4">
                                         <div class="empty-state">
@@ -38,6 +49,7 @@
                                         </div>
                                     </td>
                                 </tr>
+                                {% endfor %}
                             </tbody>
                         </table>
                     </div>

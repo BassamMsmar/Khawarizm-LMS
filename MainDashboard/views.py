@@ -267,6 +267,8 @@ def course_search_ajax(request):
 # ____________________________________________________________________
 
 
+
+
 def lessons(request):
     return render(request, 'pages/lessons.html')
 
@@ -280,8 +282,15 @@ def quizzes(request):
 
 # ____________________________________________________________________
 
+
+# students
+
+
+User = get_user_model()
+
 def students(request):
-    return render(request, 'pages/students.html')
+    students = User.objects.filter(roles__name__iexact='student')
+    return render(request, 'pages/students.html', {'students': students})
 
 
 # ____________________________________________________________________
