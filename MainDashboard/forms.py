@@ -82,3 +82,24 @@ class DepartmentForm(forms.ModelForm):
                 field.widget.attrs['rows'] = 3
             else:
                 field.widget.attrs['class'] = 'form-control'
+
+
+class StudentForm(forms.ModelForm):
+    class Meta:
+        model = get_user_model()
+        fields = ['first_name', 'last_name', 'email','department', 'password']
+        widgets = {
+            'password': forms.PasswordInput(),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(StudentForm, self).__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs['class'] = 'form-control'
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.set_password(self.cleaned_data["password"])
+        if commit:
+            user.save()
+        return user

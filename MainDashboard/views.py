@@ -6,8 +6,11 @@ from django.db.models import Q
 from courses.models import Course
 from college.models import College
 from department.models import Department
-from .forms import CourseForm, CollegeForm, DepartmentForm # Import DepartmentForm
+from .forms import CourseForm, CollegeForm, DepartmentForm, StudentForm
 from django.contrib.auth import get_user_model
+from accounts.models import User, Role # Assuming Role model is in accounts.models
+
+User = get_user_model()
 
 # ____________________________________________________________________
 
@@ -267,25 +270,6 @@ def course_search_ajax(request):
 # ____________________________________________________________________
 
 
-
-
-def lessons(request):
-    return render(request, 'pages/lessons.html')
-
-
-# ____________________________________________________________________
-
-def quizzes(request):
-    return render(request, 'pages/quizzes.html')
-
-
-
-# ____________________________________________________________________
-
-
-# students
-
-
 User = get_user_model()
 
 def students(request):
@@ -304,12 +288,76 @@ def students(request):
     return render(request, 'pages/students.html', {'student_data': student_data})
 
 
+class StudentCreateAjaxView(View):
+    def post(self, request, *args, **kwargs):
+        form = StudentForm(request.POST)
+        if form.is_valid():
+            student = form.save(commit=False)
+            student.save()
+            # Assign 'student' role
+            try:
+                student_role = Role.objects.get(name='student')
+                student.roles.add(student_role)
+            except Role.DoesNotExist:
+                # Handle case where 'student' role does not exist
+                pass
+            return JsonResponse({'success': True})
+        else:
+            return JsonResponse({'success': False, 'errors': form.errors})
+
+
+class StudentUpdateAjaxView(View):
+    def get(self, request, pk, *args, **kwargs):
+        student = get_object_or_404(User, pk=pk)
+        form = StudentForm(instance=student)
+        return JsonResponse({
+            'form': form.as_p(),
+            'instance': {
+                'first_name': student.first_name,
+                'last_name': student.last_name,
+                'email': student.email,
+                'phone_number': student.phone_number,
+            }
+        })
+
+    def post(self, request, pk, *args, **kwargs):
+        student = get_object_or_404(User, pk=pk)
+        form = StudentForm(request.POST, instance=student)
+        if form.is_valid():
+            # Only update password if it's provided and changed
+            if 'password' in form.changed_data and form.cleaned_data['password']:
+                student.set_password(form.cleaned_data["password"])
+                student.save() # Save password change
+            form.save() # Save other form data
+            return JsonResponse({'success': True})
+        else:
+            return JsonResponse({'success': False, 'errors': form.errors})
+
+
+def delete_student(request, pk):
+    student = get_object_or_404(User, pk=pk)
+    student.delete()
+    return redirect('students')
+
+
+# ____________________________________________________________________
+
+
+def lessons(request):
+    return render(request, 'pages/lessons.html')
+
+
+# ____________________________________________________________________
+
+def quizzes(request):
+    return render(request, 'pages/quizzes.html')
+
+
 # ____________________________________________________________________
 
 
 def reports(request):
     return render(request, 'pages/reports.html')
-
 
 
 # ____________________________________________________________________

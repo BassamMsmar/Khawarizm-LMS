@@ -29,7 +29,20 @@ urlpatterns = [
 
     path('dashboard', views.dashboard),
     path('lessons', views.lessons),
-    path('students', views.students),
+
+    # ____________________________________________________________________________
+
+
+    path('students/', views.students, name='students'),
+    path('students/create/ajax/', views.StudentCreateAjaxView.as_view(), name='create_student_ajax'),
+    path('students/update/<int:pk>/', views.StudentUpdateAjaxView.as_view(), name='update_student_ajax'),
+    path('students/delete/<int:pk>/', views.delete_student, name='delete_student'),
+   
+   
+   # ____________________________________________________________________________
+
+
+
     path('quizzes', views.quizzes),
     path('reports', views.reports),
     path('settings', views.settings),

@@ -7,7 +7,7 @@
         <div id="students-section" class="content-section" >
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h2>إدارة الطلاب</h2>
-                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addStudentModal">
+                <button class="btn btn-primary" onclick="openAddStudentModal()">
                     <i class="bi bi-plus-lg me-2"></i>إضافة طالب جديد
                 </button>
             </div>
@@ -36,10 +36,10 @@
                                     <td>{{ data.student.email }}</td>
                                     <td>{{ data.department.name|default_if_none:"N/A" }}</td>
                                     <td>{{ data.college.title|default_if_none:"N/A" }}</td>
-                                    <td>{{ data.student.created_at|date:"Y-m-d" }}</td>
+                                    <td>{{ data.student.date_joined|date:"Y-m-d" }}</td>
                                     <td>
-                                        <button class="btn btn-sm btn-outline-primary me-2"><i class="bi bi-pencil-square"></i></button>
-                                        <button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+                                        <button class="btn btn-sm btn-outline-primary me-2" onclick="openEditStudentModal({{ data.student.id }})"><i class="bi bi-pencil-square"></i></button>
+                                        <button class="btn btn-sm btn-outline-danger" onclick="deleteStudent({{ data.student.id }})"><i class="bi bi-trash"></i></button>
                                     </td>
                                 </tr>
                                 {% empty %}
@@ -67,38 +67,129 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">إضافة طالب جديد</h5>
+                <h5 class="modal-title" id="studentModalLabel">إضافة طالب جديد</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <form id="addStudentForm">
+                <form id="studentForm">
+                    {% csrf_token %}
+                    <input type="hidden" id="studentId" name="student_id">
                     <div class="mb-3">
-                        <label class="form-label">الاسم الكامل *</label>
-                        <input type="text" class="form-control" name="studentName" required>
+                        <label class="form-label">الاسم الأول *</label>
+                        <input type="text" class="form-control" id="firstName" name="first_name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">الاسم الأخير *</label>
+                        <input type="text" class="form-control" id="lastName" name="last_name" required>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">البريد الإلكتروني *</label>
-                        <input type="email" class="form-control" name="email" required>
+                        <input type="email" class="form-control" id="email" name="email" required>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">رقم الهاتف</label>
-                        <input type="tel" class="form-control" name="phone">
+                        <input type="tel" class="form-control" id="phoneNumber" name="phone_number">
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">الدورات المسجلة</label>
-                        <select class="form-select" name="enrolledCourses" multiple>
-                            <option value="">لا توجد دورات متاحة</option>
-                        </select>
-                        <div class="form-text">يمكنك اختيار عدة دورات بالضغط على Ctrl</div>
+                        <label class="form-label">كلمة المرور *</label>
+                        <input type="password" class="form-control" id="password" name="password" required>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
-                <button type="button" class="btn btn-primary" onclick="addStudent()">إضافة الطالب</button>
+                <button type="button" class="btn btn-primary" onclick="saveStudent()">حفظ</button>
             </div>
         </div>
     </div>
 </div>
+
+{% block scripts %}
+<script>
+    // CSRF token setup for AJAX requests
+    $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+            function getCookie(name) {
+                var cookieValue = null;
+                if (document.cookie && document.cookie != '') {
+                    var cookies = document.cookie.split(';');
+                    for (var i = 0; i < cookies.length; i++) {
+                        var cookie = jQuery.trim(cookies[i]);
+                        // Does this cookie string begin with the name we want?
+                        if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+            if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+                // Only send the token to relative URLs i.e. locally.
+                xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+            }
+        }
+    });
+
+    function openAddStudentModal() {
+        $('#studentForm')[0].reset();
+        $('#studentId').val('');
+        $('#studentModalLabel').text('إضافة طالب جديد');
+        $('#addStudentModal').modal('show');
+    }
+
+    function openEditStudentModal(studentId) {
+        $.ajax({
+            url: `/main-dashboard/students/update/${studentId}/`,
+            type: 'GET',
+            success: function(response) {
+                $('#studentId').val(studentId);
+                $('#firstName').val(response.instance.first_name);
+                $('#lastName').val(response.instance.last_name);
+                $('#email').val(response.instance.email);
+                $('#phoneNumber').val(response.instance.phone_number);
+                $('#password').val(''); // Clear password field
+                $('#studentModalLabel').text('تعديل بيانات الطالب');
+                $('#addStudentModal').modal('show');
+            }
+        });
+    }
+
+    function saveStudent() {
+        var studentId = $('#studentId').val();
+        var url = studentId ? `/main-dashboard/students/update/${studentId}/` : '/main-dashboard/students/create/ajax/';
+        var data = $('#studentForm').serialize();
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: data,
+            success: function(response) {
+                if (response.success) {
+                    location.reload();
+                } else {
+                    alert('Error: ' + JSON.stringify(response.errors));
+                }
+            }
+        });
+    }
+
+    function deleteStudent(studentId) {
+        if (confirm('Are you sure you want to delete this student?')) {
+            $.ajax({
+                url: `/main-dashboard/students/delete/${studentId}/`,
+                type: 'POST',
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+                success: function(response) {
+                    location.reload();
+                }
+            });
+        }
+    }
+</script>
+{% endblock %}
+
 
 {% endblock content %}
