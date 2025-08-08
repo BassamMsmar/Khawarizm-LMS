@@ -103,3 +103,17 @@ class StudentForm(forms.ModelForm):
         if commit:
             user.save()
         return user
+
+
+
+
+class UpdateStudentForm(forms.ModelForm):
+    class Meta:
+        model = get_user_model()
+        fields = ['first_name', 'last_name', 'email', 'department']
+
+    def __init__(self, *args, **kwargs):
+        super(UpdateStudentForm, self).__init__(*args, **kwargs)
+        self.fields['department'].queryset = Department.objects.all()
+        for field_name, field in self.fields.items():
+            field.widget.attrs['class'] = 'form-control'        

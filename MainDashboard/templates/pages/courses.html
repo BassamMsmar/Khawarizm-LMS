@@ -50,6 +50,7 @@
                                     <td>{{ course.title }} </td>
                                     <td>{{ course.lecturer.get_full_name }}</td>
                                     <td>{{ course.get_enrolled_count }}</td>
+                                    <td>{{ course.department }}</td>
                                     <td>
                                         {% if course.is_active %}
                                             <span class="badge bg-success">نشط</span>

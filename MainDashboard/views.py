@@ -215,10 +215,12 @@ class CourseUpdateAjaxView(View):
             'instance': {
                 'title': course.title,
                 'lecturer': course.lecturer.id if course.lecturer else '',
+                'department': course.department.id if course.department else '',
+                # أو لو عايز تبعت الاسم كمان
+                'department_name': str(course.department) if course.department else '',
                 'academic_hours': course.academic_hours,
                 'short_description': course.short_description,
                 'description': course.description,
-                'colleges': [college.id for college in course.colleges.all()],
                 'what_youll_learn': course.what_youll_learn,
                 'who_this_course_is_for': course.who_this_course_is_for,
                 'is_active': course.is_active,
@@ -272,6 +274,8 @@ def course_search_ajax(request):
 
 User = get_user_model()
 
+import json
+
 def students(request):
     students = User.objects.filter(roles__name__iexact='student')
     student_data = []
@@ -280,12 +284,22 @@ def students(request):
         college = department.college if department else None
 
         student_data.append({
-            'student': student,
-            'department': department,
-            'college': college,
+            'student': {
+                'id': student.id,
+                'first_name': student.first_name,
+                'last_name': student.last_name,
+                'email': student.email,
+                'created_at': student.created_at.isoformat() if student.created_at else None
+            },
+            'department': {
+                'name': department.name if department else None
+            },
+            'college': {
+                'title': college.title if college else None
+            }
         })
 
-    return render(request, 'pages/students.html', {'student_data': student_data})
+    return render(request, 'pages/students.html', {'student_data': json.dumps(student_data)})
 
 
 class StudentCreateAjaxView(View):
@@ -305,11 +319,11 @@ class StudentCreateAjaxView(View):
         else:
             return JsonResponse({'success': False, 'errors': form.errors})
 
-
+from .forms import UpdateStudentForm
 class StudentUpdateAjaxView(View):
     def get(self, request, pk, *args, **kwargs):
         student = get_object_or_404(User, pk=pk)
-        form = StudentForm(instance=student)
+        form = UpdateStudentForm(instance=student)
         return JsonResponse({
             'form': form.as_p(),
             'instance': {
@@ -317,12 +331,13 @@ class StudentUpdateAjaxView(View):
                 'last_name': student.last_name,
                 'email': student.email,
                 'phone_number': student.phone_number,
+                'department': student.department.id if student.department else ''
             }
         })
 
     def post(self, request, pk, *args, **kwargs):
         student = get_object_or_404(User, pk=pk)
-        form = StudentForm(request.POST, instance=student)
+        form = UpdateStudentForm(request.POST, instance=student)
         if form.is_valid():
             student = form.save(commit=False)
             password = form.cleaned_data.get('password')
@@ -338,7 +353,6 @@ def delete_student(request, pk):
     student = get_object_or_404(User, pk=pk)
     student.delete()
     return redirect('students')
-
 
 # ____________________________________________________________________
 

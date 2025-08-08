@@ -29,29 +29,10 @@
                                     <th>الإجراءات</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                {% for data in student_data %}
-                                <tr>
-                                    <td>{{ data.student.get_full_name }}</td>
-                                    <td>{{ data.student.email }}</td>
-                                    <td>{{ data.department.name|default_if_none:"N/A" }}</td>
-                                    <td>{{ data.college.title|default_if_none:"N/A" }}</td>
-                                    <td>{{ data.student.date_joined|date:"Y-m-d" }}</td>
-                                    <td>
-                                        <button class="btn btn-sm btn-outline-primary me-2" onclick="openEditStudentModal('{{ data.student.id }}')"><i class="bi bi-pencil-square"></i></button>
-                                        <button class="btn btn-sm btn-outline-danger" onclick="deleteStudent('{{ data.student.id }}')"><i class="bi bi-trash"></i></button>
-                                    </td>
-                                </tr>
-                                {% empty %}
-                                <tr>
-                                    <td colspan="6" class="text-center py-4">
-                                        <div class="empty-state">
-                                            <i class="bi bi-people"></i>
-                                            <p class="mb-0">لا يوجد طلاب مسجلين حالياً</p>
-                                        </div>
-                                    </td>
-                                </tr>
-                                {% endfor %}
+                            <tbody id="students-table-body">
+                                
+                                <!-- Rows will be inserted here by JavaScript -->
+                            </tbody>
                         </table>
                     </div>
                 </div>
@@ -107,6 +88,43 @@
 
 {% block scripts %}
 <script>
+$(document).ready(function() {
+    const student_data = JSON.parse('{{ student_data|safe }}');
+    const tbody = $('#students-table-body');
+
+    if (student_data.length === 0) {
+        tbody.html(`
+            <tr>
+                <td colspan="6" class="text-center py-4">
+                    <div class="empty-state">
+                        <i class="bi bi-people"></i>
+                        <p class="mb-0">لا يوجد طلاب مسجلين حالياً</p>
+                    </div>
+                </td>
+            </tr>
+        `);
+    } else {
+        student_data.forEach(data => {
+            const row = `
+                <tr>
+                    <td>${data.student.first_name} ${data.student.last_name}</td>
+                    <td>${data.student.email}</td>
+                    <td>${data.department.name ? data.department.name : 'N/A'}</td>
+                    <td>${data.college.title ? data.college.title : 'N/A'}</td>
+                    <td>${new Date(data.student.created_at).toLocaleDateString()}</td>
+                    <td>
+                        <button class="btn btn-sm btn-outline-primary me-2" onclick="openEditStudentModal('${data.student.id}')"><i class="bi bi-pencil-square"></i></button>
+                        <form action="/main-dashboard/students/delete/${data.student.id}/" method="post" style="display: inline;">
+                            <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+                            <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Are you sure you want to delete this student?');"><i class="bi bi-trash"></i></button>
+                        </form>
+                    </td>
+                </tr>
+            `;
+            tbody.append(row);
+        });
+    }
+
     // CSRF token setup for AJAX requests
     $.ajaxSetup({
         beforeSend: function(xhr, settings) {
@@ -132,7 +150,7 @@
         }
     });
 
-    function openAddStudentModal() {
+    window.openAddStudentModal = function() {
         $('#studentForm')[0].reset();
         $('#studentId').val('');
         $('#studentModalLabel').text('إضافة طالب جديد');
@@ -140,7 +158,7 @@
         $('#addStudentModal').modal('show');
     }
 
-    function openEditStudentModal(studentId) {
+    window.openEditStudentModal = function(studentId) {
         $.ajax({
             url: `/main-dashboard/students/update/${studentId}/`,
             type: 'GET',
@@ -150,6 +168,7 @@
                 $('#lastName').val(response.instance.last_name);
                 $('#email').val(response.instance.email);
                 $('#phoneNumber').val(response.instance.phone_number);
+                $('#department').val(response.instance.department);
                 $('#password').val('');
                 $('#password').prop('required', false);
                 $('#studentModalLabel').text('تعديل بيانات الطالب');
@@ -158,7 +177,7 @@
         });
     }
 
-    function saveStudent() {
+    window.saveStudent = function() {
         var studentId = $('#studentId').val();
         var url = studentId ? `/main-dashboard/students/update/${studentId}/` : '/main-dashboard/students/create/ajax/';
         var data = $('#studentForm').serialize();
@@ -176,21 +195,7 @@
             }
         });
     }
-
-    function deleteStudent(studentId) {
-        if (confirm('Are you sure you want to delete this student?')) {
-            $.ajax({
-                url: `/main-dashboard/students/delete/${studentId}/`,
-                type: 'POST',
-                data: {
-                    csrfmiddlewaretoken: '{{ csrf_token }}'
-                },
-                success: function(response) {
-                    location.reload();
-                }
-            });
-        }
-    }
+});
 </script>
 {% endblock %}
 
