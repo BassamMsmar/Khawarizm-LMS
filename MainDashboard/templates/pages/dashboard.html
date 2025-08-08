@@ -7,20 +7,16 @@
         <div id="dashboard-section" class="content-section fade-in">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h2>لوحة التحكم</h2>
-                <div class="d-flex gap-2">
-                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCourseModal">
-                        <i class="bi bi-plus-lg me-2"></i>إضافة دورة جديدة
-                    </button>
-                </div>
+                
             </div>
 
-            <!-- Stats Cards -->
+             <!-- Stats Cards -->
             <div class="row mb-4">
                 <div class="col-md-3 mb-3">
                     <div class="card stats-card">
                         <div class="card-body text-center">
                             <i class="bi bi-book fs-1 mb-2"></i>
-                            <div class="stats-number">24</div>
+                            <div class="stats-number">{{ courses_count }}</div>
                             <div>إجمالي الدورات</div>
                         </div>
                     </div>
@@ -29,7 +25,7 @@
                     <div class="card stats-card">
                         <div class="card-body text-center">
                             <i class="bi bi-people fs-1 mb-2"></i>
-                            <div class="stats-number">156</div>
+                            <div class="stats-number">{{ students_count }}</div>
                             <div>الطلاب المسجلين</div>
                         </div>
                     </div>
@@ -38,7 +34,7 @@
                     <div class="card stats-card">
                         <div class="card-body text-center">
                             <i class="bi bi-play-circle fs-1 mb-2"></i>
-                            <div class="stats-number">89</div>
+                            <div class="stats-number">{{ lessons_count }}</div>
                             <div>الدروس المنشورة</div>
                         </div>
                     </div>
@@ -47,7 +43,7 @@
                     <div class="card stats-card">
                         <div class="card-body text-center">
                             <i class="bi bi-trophy fs-1 mb-2"></i>
-                            <div class="stats-number">58</div>
+                            <div class="stats-number">{{ certificates_count }}</div>
                             <div>الشهادات الممنوحة</div>
                         </div>
                     </div>

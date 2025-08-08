@@ -13,9 +13,24 @@ from accounts.models import User, Role # Assuming Role model is in accounts.mode
 User = get_user_model()
 
 # ____________________________________________________________________
+from django.shortcuts import render
+from courses.models import Course, Lesson  # أو حسب اسم الموديلات عندك
+from accounts.models import User  # حسب مكان تعريف User
 
 def dashboard(request):
-    return render(request, 'pages/dashboard.html')
+    courses_count = Course.objects.count()
+
+    students_count = User.objects.filter(roles__name__iexact='student').count()
+    lessons_count = Lesson.objects.count()
+
+    context = {
+        'courses_count': courses_count,
+        'students_count': students_count,
+        'lessons_count': lessons_count,
+        'certificates_count': 58  # يمكنك تغييره لاحقًا إذا كان ديناميكي
+    }
+
+    return render(request, 'pages/dashboard.html', context)
 
 
 class CollegeListView(ListView):
