@@ -324,11 +324,11 @@ class StudentUpdateAjaxView(View):
         student = get_object_or_404(User, pk=pk)
         form = StudentForm(request.POST, instance=student)
         if form.is_valid():
-            # Only update password if it's provided and changed
-            if 'password' in form.changed_data and form.cleaned_data['password']:
-                student.set_password(form.cleaned_data["password"])
-                student.save() # Save password change
-            form.save() # Save other form data
+            student = form.save(commit=False)
+            password = form.cleaned_data.get('password')
+            if password:
+                student.set_password(password)
+            student.save()
             return JsonResponse({'success': True})
         else:
             return JsonResponse({'success': False, 'errors': form.errors})

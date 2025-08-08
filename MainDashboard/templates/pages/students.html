@@ -38,8 +38,8 @@
                                     <td>{{ data.college.title|default_if_none:"N/A" }}</td>
                                     <td>{{ data.student.date_joined|date:"Y-m-d" }}</td>
                                     <td>
-                                        <button class="btn btn-sm btn-outline-primary me-2" onclick="openEditStudentModal({{ data.student.id }})"><i class="bi bi-pencil-square"></i></button>
-                                        <button class="btn btn-sm btn-outline-danger" onclick="deleteStudent({{ data.student.id }})"><i class="bi bi-trash"></i></button>
+                                        <button class="btn btn-sm btn-outline-primary me-2" onclick="openEditStudentModal('{{ data.student.id }}')"><i class="bi bi-pencil-square"></i></button>
+                                        <button class="btn btn-sm btn-outline-danger" onclick="deleteStudent('{{ data.student.id }}')"><i class="bi bi-trash"></i></button>
                                     </td>
                                 </tr>
                                 {% empty %}
@@ -62,7 +62,7 @@
 
 
 
-    <!-- Add Student Modal -->
+    <!-- Add/Edit Student Modal -->
 <div class="modal fade" id="addStudentModal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -91,8 +91,9 @@
                         <input type="tel" class="form-control" id="phoneNumber" name="phone_number">
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">كلمة المرور *</label>
-                        <input type="password" class="form-control" id="password" name="password" required>
+                        <label class="form-label">كلمة المرور</label>
+                        <input type="password" class="form-control" id="password" name="password">
+                        <small class="form-text text-muted">اتركه فارغًا إذا كنت لا تريد تغيير كلمة المرور.</small>
                     </div>
                 </form>
             </div>
@@ -135,6 +136,7 @@
         $('#studentForm')[0].reset();
         $('#studentId').val('');
         $('#studentModalLabel').text('إضافة طالب جديد');
+        $('#password').prop('required', true);
         $('#addStudentModal').modal('show');
     }
 
@@ -148,7 +150,8 @@
                 $('#lastName').val(response.instance.last_name);
                 $('#email').val(response.instance.email);
                 $('#phoneNumber').val(response.instance.phone_number);
-                $('#password').val(''); // Clear password field
+                $('#password').val('');
+                $('#password').prop('required', false);
                 $('#studentModalLabel').text('تعديل بيانات الطالب');
                 $('#addStudentModal').modal('show');
             }
