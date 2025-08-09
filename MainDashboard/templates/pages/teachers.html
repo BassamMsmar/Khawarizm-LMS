@@ -113,10 +113,10 @@ $(document).ready(function() {
                     <td>${data.college.title ? data.college.title : 'N/A'}</td>
                     <td>${new Date(data.teacher.created_at).toLocaleDateString()}</td>
                     <td>
-                        <button class="btn btn-sm btn-outline-primary me-2" onclick="openEditTeacherModal('${data.teacher.id}')"><i class="bi bi-pencil-square"></i></button>
+                        <button class="btn btn-sm btn-primary me-2" onclick="openEditTeacherModal('${data.teacher.id}')">تعديل</button>
                         <form action="/main-dashboard/teachers/delete/${data.teacher.id}/" method="post" style="display: inline;">
                             <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
-                            <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Are you sure you want to delete this teacher?');"><i class="bi bi-trash"></i></button>
+                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this teacher?');">حذف</button>
                         </form>
                     </td>
                 </tr>
