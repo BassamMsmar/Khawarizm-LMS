@@ -395,6 +395,7 @@ def students(request):
                 'first_name': student.first_name,
                 'last_name': student.last_name,
                 'email': student.email,
+                'is_active': student.is_active,
                 'created_at': student.created_at.isoformat() if student.created_at else None
             },
             'department': {
@@ -406,6 +407,13 @@ def students(request):
         })
 
     return render(request, 'pages/students.html', {'student_data': json.dumps(student_data)})
+
+
+def toggle_student_status(request, pk):
+    student = get_object_or_404(User, pk=pk)
+    student.is_active = not student.is_active
+    student.save()
+    return JsonResponse({'success': True, 'is_active': student.is_active})
 
 
 class StudentCreateAjaxView(View):

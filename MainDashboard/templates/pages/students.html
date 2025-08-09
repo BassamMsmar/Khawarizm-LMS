@@ -26,6 +26,7 @@
                                     <th>القسم</th>
                                     <th>الكلية</th>
                                     <th>تاريخ التسجيل</th>
+                                    <th>الحالة</th>
                                     <th>الإجراءات</th>
                                 </tr>
                             </thead>
@@ -87,7 +88,7 @@
 </div>
 
 {% block scripts %}
-<script>
+    <script>
 $(document).ready(function() {
     const student_data = JSON.parse('{{ student_data|safe }}');
     const tbody = $('#students-table-body');
@@ -95,7 +96,7 @@ $(document).ready(function() {
     if (student_data.length === 0) {
         tbody.html(`
             <tr>
-                <td colspan="6" class="text-center py-4">
+                <td colspan="7" class="text-center py-4">
                     <div class="empty-state">
                         <i class="bi bi-people"></i>
                         <p class="mb-0">لا يوجد طلاب مسجلين حالياً</p>
@@ -113,6 +114,12 @@ $(document).ready(function() {
                     <td>${data.college.title ? data.college.title : 'N/A'}</td>
                     <td>${new Date(data.student.created_at).toLocaleDateString()}</td>
                     <td>
+                        <span class="badge bg-${data.student.is_active ? 'success' : 'danger'}">${data.student.is_active ? 'نشط' : 'غير نشط'}</span>
+                    </td>
+                    <td>
+                        <div class="form-check form-switch d-inline-block me-2">
+                            <input class="form-check-input" type="checkbox" role="switch" ${data.student.is_active ? 'checked' : ''} onchange="toggleStudentStatus(${data.student.id})">
+                        </div>
                         <button class="btn btn-sm btn-outline-primary me-2" onclick="openEditStudentModal('${data.student.id}')"><i class="bi bi-pencil-square"></i></button>
                         <form action="/main-dashboard/students/delete/${data.student.id}/" method="post" style="display: inline;">
                             <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
@@ -191,6 +198,18 @@ $(document).ready(function() {
                     location.reload();
                 } else {
                     alert('Error: ' + JSON.stringify(response.errors));
+                }
+            }
+        });
+    }
+
+    window.toggleStudentStatus = function(studentId) {
+        $.ajax({
+            url: `/main-dashboard/students/toggle/${studentId}/`,
+            type: 'POST',
+            success: function(response) {
+                if (response.success) {
+                    location.reload();
                 }
             }
         });
