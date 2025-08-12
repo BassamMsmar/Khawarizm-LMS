@@ -6,7 +6,7 @@ from django.db.models import Q
 from courses.models import Course
 from college.models import College
 from department.models import Department
-from .forms import CourseForm, CollegeForm, DepartmentForm, StudentForm
+from .forms import CourseForm, CollegeForm, DepartmentForm, StudentForm, LessonForm
 from django.contrib.auth import get_user_model
 from accounts.models import User, Role # Assuming Role model is in accounts.models
 
@@ -37,6 +37,175 @@ class CollegeListView(ListView):
     model = College
     template_name = 'pages/colleges.html'
     context_object_name = 'colleges'
+
+
+class LessonListView(ListView):
+    model = Lesson
+    template_name = 'pages/lessons.html'
+    context_object_name = 'lessons'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = LessonForm()
+        return context
+
+
+class LessonCreateAjaxView(View):
+    def post(self, request, *args, **kwargs):
+        form = LessonForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return JsonResponse({'success': True})
+        else:
+            return JsonResponse({'success': False, 'errors': form.errors})
+
+
+class LessonUpdateAjaxView(View):
+    def get(self, request, pk, *args, **kwargs):
+        lesson = get_object_or_404(Lesson, pk=pk)
+        form = LessonForm(instance=lesson)
+        return JsonResponse({
+            'form': form.as_p(),
+            'instance': {
+                'title': lesson.title,
+                'course': lesson.course.id if lesson.course else '',
+                'unit': lesson.unit.id if lesson.unit else '',
+                'description': lesson.description,
+                'content': lesson.content,
+                'video_url': lesson.video_url,
+                'video_file': str(lesson.video_file) if lesson.video_file else '',
+                'duration': lesson.duration,
+                'lesson_type': lesson.lesson_type,
+                'pdf_file': str(lesson.pdf_file) if lesson.pdf_file else '',
+                'image': str(lesson.image) if lesson.image else '',
+                'url': lesson.url,
+                'order': lesson.order,
+                'is_active': lesson.is_active,
+            }
+        })
+
+    def post(self, request, pk, *args, **kwargs):
+        lesson = get_object_or_404(Lesson, pk=pk)
+        form = LessonForm(request.POST, request.FILES, instance=lesson)
+        if form.is_valid():
+            form.save()
+            return JsonResponse({'success': True})
+        else:
+            return JsonResponse({'success': False, 'errors': form.errors})
+
+
+def delete_lesson(request, pk):
+    lesson = get_object_or_404(Lesson, pk=pk)
+    lesson.delete()
+    return redirect('/main-dashboard/lessons/')
+
+
+def lesson_search_ajax(request):
+    search_query = request.GET.get('q', '')
+    lessons = Lesson.objects.all()
+
+    if search_query:
+        lessons = lessons.filter(
+            Q(title__icontains=search_query) |
+            Q(course__title__icontains=search_query) |
+            Q(unit__title__icontains=search_query)
+        ).distinct()
+
+    lesson_data = []
+    for lesson in lessons:
+        lesson_data.append({
+            'id': lesson.id,
+            'slug': lesson.slug,
+            'title': lesson.title,
+            'course': lesson.course.title if lesson.course else '',
+            'unit': lesson.unit.title if lesson.unit else '',
+            'lesson_type': lesson.lesson_type,
+            'duration': lesson.duration,
+            'order': lesson.order,
+            'is_active': lesson.is_active,
+            'created_at': lesson.created_at.strftime('%Y-%m-%d'),
+        })
+
+    return JsonResponse({'lessons': lesson_data})
+
+
+class CollegeCreateAjaxView(View):
+    def post(self, request, *args, **kwargs):
+        form = CollegeForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return JsonResponse({'success': True})
+        else:
+            return JsonResponse({'success': False, 'errors': form.errors})
+
+
+class CollegeUpdateAjaxView(View):
+    def get(self, request, pk, *args, **kwargs):
+        college = get_object_or_404(College, pk=pk)
+        form = CollegeForm(instance=college)
+        return JsonResponse({
+            'form': form.as_p(),
+            'instance': {
+                'title': college.title,
+                'about': college.about,
+                'max_students': college.max_students,
+                'is_public': college.is_public,
+                'regular_price': str(college.regular_price) if college.regular_price else None,
+                'discounted_price': str(college.discounted_price) if college.discounted_price else None,
+                'intro_video_url': college.intro_video_url,
+                'description': college.description,
+                'tags': college.tags,
+                'targeted_audience': college.targeted_audience,
+            }
+        })
+
+    def post(self, request, pk, *args, **kwargs):
+        college = get_object_or_404(College, pk=pk)
+        form = CollegeForm(request.POST, request.FILES, instance=college)
+        if form.is_valid():
+            form.save()
+            return JsonResponse({'success': True})
+        else:
+            return JsonResponse({'success': False, 'errors': form.errors})
+
+
+def delete_college(request, pk):
+    college = College.objects.get(pk=pk)
+    college.delete()
+    return redirect('/main-dashboard/college/')
+
+
+def college_search_ajax(request):
+    search_query = request.GET.get('q', '')
+    colleges = College.objects.all()
+
+    if search_query:
+        colleges = colleges.filter(
+            Q(title__icontains=search_query)
+        ).distinct()
+
+    college_data = []
+    for college in colleges:
+        college_data.append({
+            'id': college.id,
+            'slug': college.slug,
+            'title': college.title,
+            'is_public': college.is_public,
+            'max_students': college.max_students,
+            'regular_price': str(college.regular_price) if college.regular_price else None,
+            'discounted_price': str(college.discounted_price) if college.discounted_price else None,
+        })
+
+    return JsonResponse({'colleges': college_data})
+
+
+# ____________________________________________________________________
+
+
+class DepartmentListView(ListView):
+    model = Department
+    template_name = 'pages/departments.html'
+    context_object_name = 'departments'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

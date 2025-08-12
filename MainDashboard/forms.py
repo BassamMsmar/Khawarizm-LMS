@@ -117,3 +117,33 @@ class UpdateStudentForm(forms.ModelForm):
         self.fields['department'].queryset = Department.objects.all()
         for field_name, field in self.fields.items():
             field.widget.attrs['class'] = 'form-control'        
+
+
+from courses.models import Lesson, Unit, Course
+
+class LessonForm(forms.ModelForm):
+    class Meta:
+        model = Lesson
+        exclude = ['slug', 'created_at', 'updated_at']
+        widgets = {
+            'is_active': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(LessonForm, self).__init__(*args, **kwargs)
+        self.fields['course'].queryset = Course.objects.all()
+        self.fields['unit'].queryset = Unit.objects.all()
+        for field_name, field in self.fields.items():
+            if field.widget.__class__.__name__ == 'CheckboxInput':
+                field.widget.attrs['class'] = 'form-check-input'
+            elif field.widget.__class__.__name__ == 'ClearableFileInput':
+                field.widget.attrs['class'] = 'form-control-file'
+            elif field.widget.__class__.__name__ == 'SelectMultiple':
+                field.widget.attrs['class'] = 'form-select'
+            elif field.widget.__class__.__name__ == 'Select':
+                field.widget.attrs['class'] = 'form-select'
+            elif field.widget.__class__.__name__ == 'Textarea':
+                field.widget.attrs['class'] = 'form-control'
+                field.widget.attrs['rows'] = 3
+            else:
+                field.widget.attrs['class'] = 'form-control'        

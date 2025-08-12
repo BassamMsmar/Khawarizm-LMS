@@ -231,6 +231,7 @@
 
         function updateLessonsTable() {
             const tbody = document.getElementById('lessonsTableBody');
+            if (!tbody) return; // Add this check
             
             if (lessons.length === 0) {
                 tbody.innerHTML = `

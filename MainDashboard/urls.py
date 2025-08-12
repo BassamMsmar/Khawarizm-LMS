@@ -28,7 +28,11 @@ urlpatterns = [
 # ____________________________________________________________________________
 
     path('dashboard', views.dashboard),
-    path('lessons', views.lessons),
+    path('lessons/', views.LessonListView.as_view(), name='lessons'),
+    path('lessons/create/ajax/', views.LessonCreateAjaxView.as_view(), name='create_lesson_ajax'),
+    path('lessons/update/<int:pk>/', views.LessonUpdateAjaxView.as_view(), name='update_lesson_ajax'),
+    path('lessons/delete/<int:pk>/', views.delete_lesson, name='delete_lesson'),
+    path('lessons/search/', views.lesson_search_ajax, name='lesson_search_ajax'),
 
     # ____________________________________________________________________________
 

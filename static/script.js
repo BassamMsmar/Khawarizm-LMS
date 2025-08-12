@@ -200,89 +200,92 @@
             });
         }
 
-        // Lesson Management
-        function toggleLessonContent(type) {
-            document.getElementById('videoContent').style.display = type === 'video' ? 'block' : 'none';
-            document.getElementById('textContent').style.display = type === 'text' ? 'block' : 'none';
-            document.getElementById('fileContent').style.display = type === 'file' ? 'block' : 'none';
-        }
+        // Lesson Management (Client-side, only if not on Django lessons page)
+        if (window.location.pathname !== '/main-dashboard/lessons/') {
+            function toggleLessonContent(type) {
+                document.getElementById('videoContent').style.display = type === 'video' ? 'block' : 'none';
+                document.getElementById('textContent').style.display = type === 'text' ? 'block' : 'none';
+                document.getElementById('fileContent').style.display = type === 'file' ? 'block' : 'none';
+            }
 
-        function addLesson() {
-            const form = document.getElementById('addLessonForm');
-            const formData = new FormData(form);
-            
-            const lesson = {
-                id: Date.now(),
-                title: formData.get('lessonTitle'),
-                courseId: formData.get('courseId'),
-                courseName: courses.find(c => c.id == formData.get('courseId'))?.name || 'غير محدد',
-                type: formData.get('lessonType'),
-                duration: formData.get('duration'),
-                description: formData.get('description'),
-                content: formData.get('videoUrl') || formData.get('textContent') || formData.get('lessonFile')?.name,
-                status: 'نشط',
-                createdAt: new Date().toLocaleDateString('ar-SA')
-            };
-            
-            lessons.push(lesson);
-            updateLessonsTable();
-            
-            // Close modal and reset form
-            const modal = bootstrap.Modal.getInstance(document.getElementById('addLessonModal'));
-            modal.hide();
-            form.reset();
-            toggleLessonContent('video');
-            
-            showNotification('تم إضافة الدرس بنجاح', 'success');
-        }
+            function addLesson() {
+                const form = document.getElementById('addLessonForm');
+                const formData = new FormData(form);
+                
+                const lesson = {
+                    id: Date.now(),
+                    title: formData.get('lessonTitle'),
+                    courseId: formData.get('courseId'),
+                    courseName: courses.find(c => c.id == formData.get('courseId'))?.name || 'غير محدد',
+                    type: formData.get('lessonType'),
+                    duration: formData.get('duration'),
+                    description: formData.get('description'),
+                    content: formData.get('videoUrl') || formData.get('textContent') || formData.get('lessonFile')?.name,
+                    status: 'نشط',
+                    createdAt: new Date().toLocaleDateString('ar-SA')
+                };
+                
+                lessons.push(lesson);
+                updateLessonsTable();
+                
+                // Close modal and reset form
+                const modal = bootstrap.Modal.getInstance(document.getElementById('addLessonModal'));
+                modal.hide();
+                form.reset();
+                toggleLessonContent('video');
+                
+                showNotification('تم إضافة الدرس بنجاح', 'success');
+            }
 
-        function updateLessonsTable() {
-            const tbody = document.getElementById('lessonsTableBody');
-            
-            if (lessons.length === 0) {
-                tbody.innerHTML = `
+            function updateLessonsTable() {
+                const tbody = document.getElementById('lessonsTableBody');
+                if (!tbody) return; // Added check
+                
+                if (lessons.length === 0) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="6" class="text-center py-4">
+                                <div class="empty-state">
+                                    <i class="bi bi-play-circle"></i>
+                                    <p class="mb-0">لا توجد دروس متاحة حالياً</p>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                    return;
+                }
+                
+                tbody.innerHTML = lessons.map(lesson => `
                     <tr>
-                        <td colspan="6" class="text-center py-4">
-                            <div class="empty-state">
-                                <i class="bi bi-play-circle"></i>
-                                <p class="mb-0">لا توجد دروس متاحة حالياً</p>
+                        <td>${lesson.title}</td>
+                        <td>${lesson.courseName}</td>
+                        <td>
+                            <span class="badge bg-info">
+                                ${lesson.type === 'video' ? 'فيديو' : lesson.type === 'text' ? 'نص' : 'ملف'}
+                            </span>
+                        </td>
+                        <td>${lesson.duration} دقيقة</td>
+                        <td><span class="badge bg-success">${lesson.status}</span></td>
+                        <td>
+                            <div class="btn-group btn-group-sm">
+                                <button class="btn btn-outline-primary" onclick="editLesson(${lesson.id})">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                                <button class="btn btn-outline-danger" onclick="deleteLesson(${lesson.id})">
+                                    <i class="bi bi-trash"></i>
+                                </button>
                             </div>
                         </td>
                     </tr>
-                `;
-                return;
+                `).join('');
             }
-            
-            tbody.innerHTML = lessons.map(lesson => `
-                <tr>
-                    <td>${lesson.title}</td>
-                    <td>${lesson.courseName}</td>
-                    <td>
-                        <span class="badge bg-info">
-                            ${lesson.type === 'video' ? 'فيديو' : lesson.type === 'text' ? 'نص' : 'ملف'}
-                        </span>
-                    </td>
-                    <td>${lesson.duration} دقيقة</td>
-                    <td><span class="badge bg-success">${lesson.status}</span></td>
-                    <td>
-                        <div class="btn-group btn-group-sm">
-                            <button class="btn btn-outline-primary" onclick="editLesson(${lesson.id})">
-                                <i class="bi bi-pencil"></i>
-                            </button>
-                            <button class="btn btn-outline-danger" onclick="deleteLesson(${lesson.id})">
-                                <i class="bi bi-trash"></i>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-            `).join('');
-        }
 
-        function deleteLesson(id) {
-            if (confirm('هل أنت متأكد من حذف هذا الدرس؟')) {
-                lessons = lessons.filter(lesson => lesson.id !== id);
-                updateLessonsTable();
-                showNotification('تم حذف الدرس بنجاح', 'success');
+            function deleteLesson(id) {
+                if (confirm('هل أنت متأكد من حذف هذا الدرس؟')) {
+                    lessons = lessons.filter(lesson => lesson.id !== id);
+                    updateLessonsTable();
+                    showNotification('تم حذف الدرس بنجاح', 'success');
+                }
             }
         }
 

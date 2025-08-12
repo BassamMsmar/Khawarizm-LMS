@@ -2,112 +2,325 @@
 {% load static %}
 
 {% block content %}
-    <main class="main-content">
-        <!-- Lessons Section -->
-        <div id="lessons-section" class="content-section" >
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <h2>إدارة الدروس</h2>
-                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addLessonModal">
-                    <i class="bi bi-plus-lg me-2"></i>إضافة درس جديد
-                </button>
-            </div>
+<main class="main-content">
 
-            <div class="card">
-                <div class="card-header">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>إدارة الدروس</h2>
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addLessonModal">
+            <i class="bi bi-plus-lg me-2"></i>إضافة درس جديد
+        </button>
+    </div>
+
+    <!-- Lessons Table -->
+    <div class="card">
+        <div class="card-header">
+            <div class="row align-items-center">
+                <div class="col-md-6">
                     <h5 class="mb-0">قائمة الدروس</h5>
                 </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th>عنوان الدرس</th>
-                                    <th>الدورة</th>
-                                    <th>النوع</th>
-                                    <th>المدة</th>
-                                    <th>الحالة</th>
-                                    <th>الإجراءات</th>
-                                </tr>
-                            </thead>
-                            <tbody id="lessonsTableBody">
-                                <tr>
-                                    <td colspan="6" class="text-center py-4">
-                                        <div class="empty-state">
-                                            <i class="bi bi-play-circle"></i>
-                                            <p class="mb-0">لا توجد دروس متاحة حالياً</p>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                <div class="col-md-6">
+                   <div class="input-group">
+                        <input type="text" id="lessonSearchInput" class="form-control" placeholder="البحث في الدروس...">
+                        <button class="btn btn-outline-secondary" type="button">
+                            <i class="bi bi-search"></i>
+                        </button>
                     </div>
+
                 </div>
             </div>
         </div>
-    </main>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>اسم الدرس</th>
+                            <th>الدورة</th>
+                            <th>الوحدة</th>
+                            <th>نوع الدرس</th>
+                            <th>المدة (دقائق)</th>
+                            <th>الترتيب</th>
+                            <th>الحالة</th>
+                            <th>تاريخ الإنشاء</th>
+                            <th>الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody >
+                        {% if lessons %}
+                            {% for lesson in lessons %}
+                                <tr>
+                                    <td>{{ lesson.title }} </td>
+                                    <td>{{ lesson.course.title }}</td>
+                                    <td>{{ lesson.unit.title }}</td>
+                                    <td>{{ lesson.get_lesson_type_display }}</td>
+                                    <td>{{ lesson.duration }}</td>
+                                    <td>{{ lesson.order }}</td>
+                                    <td>
+                                        {% if lesson.is_active %}
+                                            <span class="badge bg-success">نشط</span>
+                                        {% else %}
+                                            <span class="badge bg-secondary">غير نشط</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ lesson.created_at|date:"Y-m-d" }}</td>
+                                    <td>
+                                        <button type="button"
+                                            class="btn btn-sm btn-primary"
+                                            onclick="openEditLessonModal({{ lesson.id }})">
+                                            تعديل
+                                        </button>
+                                        <a href="/main-dashboard/lessons/delete/{{ lesson.id }}/" class="btn btn-sm btn-danger" onclick="return confirm('هل أنت متأكد أنك تريد حذف هذا الدرس؟');">
+                                            حذف
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="9" class="text-center py-4">
+                                    <div class="empty-state">
+                                        <i class="bi bi-book"></i>
+                                        <p class="mb-0">لا توجد دروس متاحة حالياً</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</main>
 
-
-
-    <!-- Add Lesson Modal -->
+<!-- Add Lesson Modal -->
 <div class="modal fade" id="addLessonModal" tabindex="-1">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">إضافة درس جديد</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <form id="addLessonForm">
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">عنوان الدرس *</label>
-                            <input type="text" class="form-control" name="lessonTitle" required>
+            <form id="addLessonForm">
+                <div class="modal-header">
+                    <h5 class="modal-title">إضافة درس جديد</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="addLessonError" class="alert alert-danger" style="display: none;"></div>
+                    {% csrf_token %}
+                    {% for field in form %}
+                        <div class="mb-3">
+                            <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                            {{ field }}
+                            {% if field.help_text %}
+                                <div class="form-text">{{ field.help_text }}</div>
+                            {% endif %}
+                            {% if field.errors %}
+                                <div class="text-danger">{{ field.errors }}</div>
+                            {% endif %}
                         </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">الدورة *</label>
-                            <select class="form-select" name="courseId" required>
-                                <option value="">اختر الدورة</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">نوع الدرس</label>
-                            <select class="form-select" name="lessonType" onchange="toggleLessonContent(this.value)">
-                                <option value="video">فيديو</option>
-                                <option value="text">نص</option>
-                                <option value="file">ملف</option>
-                            </select>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">المدة (دقيقة)</label>
-                            <input type="number" class="form-control" name="duration" min="1">
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">وصف الدرس</label>
-                        <textarea class="form-control" name="description" rows="3"></textarea>
-                    </div>
-                    <div id="videoContent" class="mb-3">
-                        <label class="form-label">رابط الفيديو (YouTube)</label>
-                        <input type="url" class="form-control" name="videoUrl" placeholder="https://www.youtube.com/watch?v=...">
-                    </div>
-                    <div id="textContent" class="mb-3" style="display: none;">
-                        <label class="form-label">محتوى الدرس</label>
-                        <textarea class="form-control" name="textContent" rows="6"></textarea>
-                    </div>
-                    <div id="fileContent" class="mb-3" style="display: none;">
-                        <label class="form-label">رفع ملف</label>
-                        <input type="file" class="form-control" name="lessonFile">
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
-                <button type="button" class="btn btn-primary" onclick="addLesson()">إضافة الدرس</button>
-            </div>
+                    {% endfor %}
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="button" class="btn btn-primary" onclick="addLesson()">إضافة</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
 
-{% endblock content %}
+<!-- Edit Lesson Modal -->
+<div class="modal fade" id="editLessonModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form id="editLessonForm">
+                <div class="modal-header">
+                    <h5 class="modal-title">تعديل الدرس</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="editLessonError" class="alert alert-danger" style="display: none;"></div>
+                    {% csrf_token %}
+                    <input type="hidden" id="editLessonId" name="lesson_id">
+                    <div id="editLessonFormContent"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="button" class="btn btn-primary" onclick="updateLesson()">حفظ التغييرات</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+     // Lesson Management
+        function addLesson() {
+            const form = document.getElementById('addLessonForm');
+            const formData = new FormData(form);
+            const errorDiv = document.getElementById('addLessonError');
+            errorDiv.style.display = 'none'; // Hide previous errors
+
+            fetch("{% url 'create_lesson_ajax' %}", {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                },
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok. Status: ' + response.status);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    location.reload();
+                } else {
+                    let errorMessages = '<strong>Please correct the following errors:</strong><ul>';
+                    for (const field in data.errors) {
+                        errorMessages += `<li>${field}: ${data.errors[field].join(', ')}</li>`;
+                    }
+                    errorMessages += '</ul>';
+                    errorDiv.innerHTML = errorMessages;
+                    errorDiv.style.display = 'block';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                errorDiv.innerHTML = 'An unexpected error occurred. Please check the browser console for details.';
+                errorDiv.style.display = 'block';
+            });
+        }
+
+
+
+    
+        function openEditLessonModal(lessonId) {
+            const modal = new bootstrap.Modal(document.getElementById('editLessonModal'));
+            const errorDiv = document.getElementById('editLessonError');
+            const formContent = document.getElementById('editLessonFormContent');
+            document.getElementById('editLessonId').value = lessonId;
+            errorDiv.style.display = 'none';
+
+            fetch(`{% url 'update_lesson_ajax' 0 %}`.replace('0', lessonId))
+                .then(response => response.json())
+                .then(data => {
+                    formContent.innerHTML = data.form;
+                    modal.show();
+                });
+        }
+
+        function updateLesson() {
+            const lessonId = document.getElementById('editLessonId').value;
+            const form = document.getElementById('editLessonForm');
+            const formData = new FormData(form);
+            const errorDiv = document.getElementById('editLessonError');
+            errorDiv.style.display = 'none';
+
+            fetch(`{% url 'update_lesson_ajax' 0 %}`.replace('0', lessonId), {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                },
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    location.reload();
+                } else {
+                    let errorMessages = '<strong>Please correct the following errors:</strong><ul>';
+                    for (const field in data.errors) {
+                        errorMessages += `<li>${field}: ${data.errors[field].join(', ')}</li>`;
+                    }
+                    errorMessages += '</ul>';
+                    errorDiv.innerHTML = errorMessages;
+                    errorDiv.style.display = 'block';
+                }
+            });
+        }
+    
+
+
+
+       
+
+
+
+    // Real-time search
+  document.getElementById('lessonSearchInput').addEventListener('input', function () {
+    const searchQuery = this.value.trim();
+    if (searchQuery === '') {
+            // If search query is empty, reload the page to show all lessons
+            location.reload();
+            return;
+        }
+
+    fetch(`/main-dashboard/lessons/search/?q=${encodeURIComponent(searchQuery)}`)
+        .then(response => response.json())
+        .then(data => {
+            const lessonsTableBody = document.getElementById('lessonsTableBody');
+            lessonsTableBody.innerHTML = '';
+
+            if (data.lessons.length > 0) {
+                data.lessons.forEach(lesson => {
+                    const row = `
+                        <tr>
+                            <td>
+                                <a href="/lessons/${lesson.slug}/" class="text-decoration-none text-primary fw-bold">
+                                    ${lesson.title}
+                                </a>
+                            </td>
+                            <td>${lesson.course}</td>
+                            <td>${lesson.unit}</td>
+                            <td>${lesson.lesson_type}</td>
+                            <td>${lesson.duration}</td>
+                            <td>${lesson.order}</td>
+                            <td>
+                                <span class="badge bg-${lesson.is_active ? 'success' : 'secondary'}">${lesson.is_active ? 'نشط' : 'غير نشط'}</span>
+                            </td>
+                            <td>${lesson.created_at}</td>
+                            <td>
+                                <button type="button"
+                                    class="btn btn-sm btn-primary"
+                                    onclick="openEditLessonModal(${lesson.id})">
+                                    تعديل
+                                </button>
+                                <button type="button"
+                                    class="btn btn-sm btn-danger"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#deleteLessonModal"
+                                    data-id="${lesson.id}"
+                                    data-title="${lesson.title}">
+                                    حذف
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                    lessonsTableBody.innerHTML += row;
+                });
+            } else {
+                lessonsTableBody.innerHTML = `
+                    <tr>
+                        <td colspan="9" class="text-center py-4">
+                            <div class="empty-state">
+                                <i class="bi bi-book"></i>
+                                <p class="mb-0">لا توجد دروس متاحة حالياً</p>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }
+        })
+        .catch(error => console.error('Error fetching search results:', error));
+});
+
+
+</script>
+
+{% endblock %}
+
+
