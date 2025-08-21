@@ -1,0 +1,26 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+<main class="main-content py-4">
+  <div class="container">
+    <div class="card shadow-lg p-4">
+        <h1 class="h4 mb-3 text-dark">Choice: <span class="text-primary">{{ choice.text }}</span></h1>
+        <p class="text-muted mb-2">Question: 
+            <a href="{% url 'courses:question_detail' choice.question.quiz.pk choice.question.pk %}" class="text-primary fw-bold">{{ choice.question.text }}</a>
+        </p>
+        <p class="text-muted mb-4">Is Correct: 
+            {% if choice.is_correct %}
+                <span class="badge bg-success">Yes</span>
+            {% else %}
+                <span class="badge bg-danger">No</span>
+            {% endif %}
+        </p>
+        <div class="d-flex gap-2">
+            <a href="{% url 'courses:choice_update' choice.question.pk choice.pk %}" class="btn btn-warning">Edit Choice</a>
+    <a href="{% url 'courses:choice_delete' choice.question.pk choice.pk %}" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this choice?')">Delete Choice</a>
+            <a href="{% url 'courses:choice_list' choice.question.pk %}" class="btn btn-secondary">Back to Choices</a>
+        </div>
+    </div> {# Close card #}
+  </div> {# Close container #}
+</main>
+{% endblock %}

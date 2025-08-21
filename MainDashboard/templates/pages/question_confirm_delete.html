@@ -1,0 +1,22 @@
+{% extends 'base/base.html' %}
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card mt-5">
+                <div class="card-header bg-danger text-white">
+                    <h3 class="mb-0">تأكيد الحذف</h3>
+                </div>
+                <div class="card-body">
+                    <p>هل أنت متأكد أنك تريد حذف السؤال "{{ object.text }}"؟</p>
+                    <form method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger">تأكيد الحذف</button>
+                        <a href="{% url 'MainDashboard:question_list' object.quiz.id %}" class="btn btn-secondary">إلغاء</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

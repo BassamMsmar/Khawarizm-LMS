@@ -1,0 +1,294 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block content %}
+<main class="main-content">
+
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>خيارات السؤال: {{ question.text }}</h2>
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addChoiceModal">
+            <i class="bi bi-plus-lg me-2"></i>إضافة خيار جديد
+        </button>
+    </div>
+
+    <!-- Choices Table -->
+    <div class="card">
+        <div class="card-header">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <h5 class="mb-0">قائمة الخيارات</h5>
+                </div>
+                <div class="col-md-6">
+                   <div class="input-group">
+                        <input type="text" id="choiceSearchInput" class="form-control" placeholder="البحث في الخيارات...">
+                        <button class="btn btn-outline-secondary" type="button">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>الخيار</th>
+                            <th>صحيح؟</th>
+                            <th>الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody id="choicesTableBody">
+                        {% if choices %}
+                            {% for choice in choices %}
+                                <tr>
+                                    <td>{{ choice.text }} </td>
+                                    <td>
+                                        {% if choice.is_correct %}
+                                            <span class="badge bg-success">نعم</span>
+                                        {% else %}
+                                            <span class="badge bg-danger">لا</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <button type="button"
+                                            class="btn btn-sm btn-primary"
+                                            onclick="openEditChoiceModal({{ choice.id }})">
+                                            تعديل
+                                        </button>
+                                        <a href="{% url 'MainDashboard:choice_delete' choice.id %}" class="btn btn-sm btn-danger" onclick="return confirm('هل أنت متأكد أنك تريد حذف هذا الخيار؟');">
+                                            حذف
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="3" class="text-center py-4">
+                                    <div class="empty-state">
+                                        <i class="bi bi-check-circle"></i>
+                                        <p class="mb-0">لا توجد خيارات متاحة حالياً لهذا السؤال</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Add Choice Modal -->
+<div class="modal fade" id="addChoiceModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form id="addChoiceForm">
+                <div class="modal-header">
+                    <h5 class="modal-title">إضافة خيار جديد</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="addChoiceError" class="alert alert-danger" style="display: none;"></div>
+                    {% csrf_token %}
+                    <input type="hidden" name="question" value="{{ question.id }}">
+                    {% for field in form %}
+                        {% if field.name != 'question' %}
+                            <div class="mb-3">
+                                <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                                {{ field }}
+                                {% if field.help_text %}
+                                    <div class="form-text">{{ field.help_text }}</div>
+                                {% endif %}
+                                {% if field.errors %}
+                                    <div class="text-danger">{{ field.errors }}</div>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="button" class="btn btn-primary" onclick="addChoice()">إضافة</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Choice Modal -->
+<div class="modal fade" id="editChoiceModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form id="editChoiceForm">
+                <div class="modal-header">
+                    <h5 class="modal-title">تعديل الخيار</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="editChoiceError" class="alert alert-danger" style="display: none;"></div>
+                    {% csrf_token %}
+                    <input type="hidden" id="editChoiceId" name="choice_id">
+                    <div id="editChoiceFormContent"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="button" class="btn btn-primary" onclick="updateChoice()">حفظ التغييرات</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+     // Choice Management
+        function addChoice() {
+            const form = document.getElementById('addChoiceForm');
+            const formData = new FormData(form);
+            const errorDiv = document.getElementById('addChoiceError');
+            errorDiv.style.display = 'none'; // Hide previous errors
+
+            fetch("{% url 'MainDashboard:choice_create' question.id %}", {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                },
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok. Status: ' + response.status);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    location.reload();
+                } else {
+                    let errorMessages = '<strong>Please correct the following errors:</strong><ul>';
+                    for (const field in data.errors) {
+                        errorMessages += `<li>${field}: ${data.errors[field].join(', ')}</li>`;
+                    }
+                    errorMessages += '</ul>';
+                    errorDiv.innerHTML = errorMessages;
+                    errorDiv.style.display = 'block';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                errorDiv.innerHTML = 'An unexpected error occurred. Please check the browser console for details.';
+                errorDiv.style.display = 'block';
+            });
+        }
+
+
+        function openEditChoiceModal(choiceId) {
+            const modal = new bootstrap.Modal(document.getElementById('editChoiceModal'));
+            const errorDiv = document.getElementById('editChoiceError');
+            const formContent = document.getElementById('editChoiceFormContent');
+            document.getElementById('editChoiceId').value = choiceId;
+            errorDiv.style.display = 'none';
+
+            fetch(`{% url 'MainDashboard:choice_update' 0 %}`.replace('0', choiceId))
+                .then(response => response.json())
+                .then(data => {
+                    formContent.innerHTML = data.form;
+                    modal.show();
+                });
+        }
+
+        function updateChoice() {
+            const choiceId = document.getElementById('editChoiceId').value;
+            const form = document.getElementById('editChoiceForm');
+            const formData = new FormData(form);
+            const errorDiv = document.getElementById('editChoiceError');
+            errorDiv.style.display = 'none';
+
+            fetch(`{% url 'MainDashboard:choice_update' 0 %}`.replace('0', choiceId), {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                },
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    location.reload();
+                } else {
+                    let errorMessages = '<strong>Please correct the following errors:</strong><ul>';
+                    for (const field in data.errors) {
+                        errorMessages += `<li>${field}: ${data.errors[field].join(', ')}</li>`;
+                    }
+                    errorMessages += '</ul>';
+                    errorDiv.innerHTML = errorMessages;
+                    errorDiv.style.display = 'block';
+                }
+            });
+        }
+
+
+    // Real-time search (optional, if needed for choices)
+  document.getElementById('choiceSearchInput').addEventListener('input', function () {
+    const searchQuery = this.value.trim();
+    if (searchQuery === '') {
+            // If search query is empty, reload the page to show all choices
+            location.reload();
+            return;
+        }
+
+    fetch(`/main-dashboard/questions/{{ question.id }}/choices/search/?q=${encodeURIComponent(searchQuery)}`)
+        .then(response => response.json())
+        .then(data => {
+            const choicesTableBody = document.getElementById('choicesTableBody');
+            choicesTableBody.innerHTML = '';
+
+            if (data.choices.length > 0) {
+                data.choices.forEach(choice => {
+                    const row = `
+                        <tr>
+                            <td>
+                                ${choice.text}
+                            </td>
+                            <td>
+                                <span class="badge bg-${choice.is_correct ? 'success' : 'danger'}">${choice.is_correct ? 'نعم' : 'لا'}</span>
+                            </td>
+                            <td>
+                                <button type="button"
+                                    class="btn btn-sm btn-primary"
+                                    onclick="openEditChoiceModal(${choice.id})">
+                                    تعديل
+                                </button>
+                                <a href="/main-dashboard/choices/delete/${choice.id}/" class="btn btn-sm btn-danger" onclick="return confirm('هل أنت متأكد أنك تريد حذف هذا الخيار؟');">
+                                    حذف
+                                </a>
+                            </td>
+                        </tr>
+                    `;
+                    choicesTableBody.innerHTML += row;
+                });
+            } else {
+                choicesTableBody.innerHTML = `
+                    <tr>
+                        <td colspan="3" class="text-center py-4">
+                            <div class="empty-state">
+                                <i class="bi bi-check-circle"></i>
+                                <p class="mb-0">لا توجد خيارات متاحة حالياً لهذا السؤال</p>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }
+        })
+        .catch(error => console.error('Error fetching search results:', error));
+});
+
+
+</script>
+
+{% endblock %}

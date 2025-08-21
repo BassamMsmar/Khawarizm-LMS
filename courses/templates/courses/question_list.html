@@ -1,0 +1,65 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+<main class="main-content py-4">
+  <div class="container">
+    <div class="card shadow-lg p-4">
+        
+        <!-- Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="h4 text-dark">
+                الأسئلة الخاصة بالاختبار: 
+                <span class="text-primary">{{ quiz.title }}</span>
+            </h1>
+            <a href="{% url 'courses:question_create' quiz.pk %}" 
+               class="btn btn-success">
+                <i class="bi bi-plus-lg me-2"></i>إضافة سؤال جديد
+            </a>
+        </div>
+
+    <!-- Questions List -->
+    {% if questions %}
+        <div class="list-group">
+            {% for question in questions %}
+                <div class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                    <div>
+                        <a href="{% url 'courses:question_detail' quiz.pk question.pk %}" 
+                           class="text-dark h6">
+                            {{ question.text }}
+                        </a>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <a href="{% url 'courses:question_update' quiz.pk question.pk %}" 
+                           class="btn btn-sm btn-warning">
+                            تعديل
+                        </a>
+                        <a href="{% url 'courses:question_delete' quiz.pk question.pk %}" 
+                           class="btn btn-sm btn-danger"
+                           onclick="return confirm('هل تريد حذف هذا السؤال؟')">
+                            حذف
+                        </a>
+                        <a href="{% url 'courses:choice_list' question.pk %}" 
+                           class="btn btn-sm btn-info">
+                            الاختيارات
+                        </a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-info text-center mt-4" role="alert">
+            لا توجد أسئلة متاحة لهذا الاختبار.
+        </div>
+    {% endif %}
+
+    <!-- Back to Quizzes -->
+    <div class="mt-4">
+        <a href="{% url 'courses:quiz_list' %}" 
+           class="btn btn-secondary">
+            ← الرجوع لقائمة الاختبارات
+        </a>
+    </div>
+    </div> {# Close card #}
+  </div> {# Close container #}
+</main>
+{% endblock %}

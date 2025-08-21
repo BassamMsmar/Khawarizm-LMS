@@ -1,0 +1,86 @@
+{% extends 'layout/base.html' %}
+
+{% block title %}{% if form.instance.pk %}Edit Question{% else %}Create Question{% endif %}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>{% if form.instance.pk %}Edit Question{% else %}Create a New Question{% endif %}</h1>
+    <p>This question will be added to your personal question bank and can be reused in multiple quizzes.</p>
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Question Details</h5>
+                {{ form.as_p }}
+            </div>
+        </div>
+
+        <div class="card mt-4">
+            <div class="card-body">
+                <h5 class="card-title">Answers</h5>
+                <p>If this is a Multiple Choice question, provide the answer options below. Mark at least one as correct.</p>
+                
+                {{ answer_formset.management_form }}
+                
+                <div id="answer-forms-container">
+                    {% for form in answer_formset.forms %}
+                    <div class="row align-items-center answer-form mb-2">
+                        <div class="col-md-8">
+                            {{ form.text }}
+                        </div>
+                        <div class="col-md-2 form-check">
+                            {{ form.is_correct }} 
+                            <label class="form-check-label" for="{{ form.is_correct.id_for_label }}">Correct</label>
+                        </div>
+                        <div class="col-md-2">
+                            {% if form.instance.pk %}
+                                {{ form.DELETE }}
+                                <label for="{{ form.DELETE.id_for_label }}">Delete</label>
+                            {% endif %}
+                        </div>
+                        {{ form.id }}
+                    </div>
+                    {% endfor %}
+                </div>
+                
+                <button type="button" id="add-answer-btn" class="btn btn-sm btn-outline-secondary mt-2">+ Add Another Answer</button>
+            </div>
+        </div>
+
+        <div class="mt-4">
+            <button type="submit" class="btn btn-primary">Save Question</button>
+            <a href="{% url 'courses:question_list' %}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const addAnswerBtn = document.getElementById('add-answer-btn');
+    const container = document.getElementById('answer-forms-container');
+    const totalForms = document.getElementById('id_answers-TOTAL_FORMS');
+    const formsetPrefix = 'answers'; // Should match the prefix used in the view if any, default is the related_name
+    let formNum = {{ answer_formset.total_form_count }};
+
+    addAnswerBtn.addEventListener('click', function() {
+        const newForm = container.children[0].cloneNode(true);
+        const formRegex = new RegExp(`${formsetPrefix}-(\d+)-`, 'g');
+        
+        newForm.innerHTML = newForm.innerHTML.replace(formRegex, `${formsetPrefix}-${formNum}-`);
+        // Clear input values in the new form
+        newForm.querySelectorAll('input[type="text"]').forEach(input => input.value = '');
+        newForm.querySelectorAll('input[type="checkbox"]').forEach(input => input.checked = false);
+        newForm.querySelectorAll('input[type="hidden"]').forEach(input => {
+            if (input.name.includes('-id')) {
+                input.removeAttribute('value');
+            }
+        });
+
+        container.appendChild(newForm);
+        totalForms.value = parseInt(totalForms.value) + 1;
+        formNum++;
+    });
+});
+</script>
+{% endblock %}

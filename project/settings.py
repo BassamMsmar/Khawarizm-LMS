@@ -42,6 +42,7 @@ INSTALLED_APPS = [
 
     'django_ckeditor_5',
     "debug_toolbar",
+    'widget_tweaks', # Added this line
 
 
     'accounts',

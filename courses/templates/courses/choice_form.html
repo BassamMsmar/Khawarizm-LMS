@@ -1,0 +1,42 @@
+{% extends 'base/base.html' %}
+{% load widget_tweaks %}
+
+{% block content %}
+<main class="main-content py-4">
+  <div class="container">
+    <div class="card shadow-lg p-4">
+        <h1 class="h4 mb-4 text-dark">{% if form.instance.pk %}Edit{% else %}Create{% endif %} Choice</h1>
+        <form method="post">
+            {% csrf_token %}
+            {% for field in form %}
+                {% if field.name == 'question' %}
+                    {{ field }} {# Render as hidden input, value set by view #}
+                {% else %}
+                    <div class="mb-3">
+                        <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                        {% if field.field.widget.input_type == 'checkbox' %}
+                            <div class="form-check">
+                                {{ field }}
+                                <label class="form-check-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                            </div>
+                        {% elif field.field.widget.input_type == 'textarea' %}
+                            {{ field|add_class:"form-control" }}
+                        {% else %}
+                            {{ field|add_class:"form-control" }}
+                        {% endif %}
+                        {% if field.help_text %}
+                            <div class="form-text">{{ field.help_text }}</div>
+                        {% endif %}
+                        {% for error in field.errors %}
+                            <div class="invalid-feedback d-block">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endfor %}
+            <button type="submit" class="btn btn-primary mt-3">Save</button>
+            <a href="{% url 'courses:choice_list' question.pk %}" class="btn btn-secondary mt-3 ms-2">Show My Choices</a>
+        </form>
+    </div> {# Close card #}
+  </div> {# Close container #}
+</main>
+{% endblock %}

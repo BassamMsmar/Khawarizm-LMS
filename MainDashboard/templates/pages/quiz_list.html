@@ -1,0 +1,308 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block content %}
+<main class="main-content">
+
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>إدارة الاختبارات</h2>
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addQuizModal">
+            <i class="bi bi-plus-lg me-2"></i>إضافة اختبار جديد
+        </button>
+    </div>
+
+    <!-- Quizzes Table -->
+    <div class="card">
+        <div class="card-header">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <h5 class="mb-0">قائمة الاختبارات</h5>
+                </div>
+                <div class="col-md-6">
+                   <div class="input-group">
+                        <input type="text" id="quizSearchInput" class="form-control" placeholder="البحث في الاختبارات...">
+                        <button class="btn btn-outline-secondary" type="button">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>اسم الاختبار</th>
+                            <th>الوحدة</th>
+                            <th>المدة</th>
+                            <th>الحالة</th>
+                            <th>تاريخ الإنشاء</th>
+                            <th>الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody id="quizzesTableBody">
+                        {% if quizzes %}
+                            {% for quiz in quizzes %}
+                                <tr>
+                                    <td>{{ quiz.title }} </td>
+                                    <td>{{ quiz.unit.title }}</td>
+                                    <td>{{ quiz.duration }}</td>
+                                    <td>
+                                        {% if quiz.is_active %}
+                                            <span class="badge bg-success">نشط</span>
+                                        {% else %}
+                                            <span class="badge bg-secondary">غير نشط</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ quiz.created_at|date:"Y-m-d" }}</td>
+                                    <td>
+                                        <a href="{% url 'MainDashboard:question_list' quiz.id %}" class="btn btn-sm btn-info">
+                                            الأسئلة
+                                        </a>
+                                        <button type="button"
+                                            class="btn btn-sm btn-primary"
+                                            onclick="openEditQuizModal({{ quiz.id }})">
+                                            تعديل
+                                        </button>
+                                        <a href="{% url 'MainDashboard:quiz_delete' quiz.id %}" class="btn btn-sm btn-danger" onclick="return confirm('هل أنت متأكد أنك تريد حذف هذا الاختبار؟');">
+                                            حذف
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="6" class="text-center py-4">
+                                    <div class="empty-state">
+                                        <i class="bi bi-journal-check"></i>
+                                        <p class="mb-0">لا توجد اختبارات متاحة حالياً</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Add Quiz Modal -->
+<div class="modal fade" id="addQuizModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form id="addQuizForm">
+                <div class="modal-header">
+                    <h5 class="modal-title">إضافة اختبار جديد</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="addQuizError" class="alert alert-danger" style="display: none;"></div>
+                    {% csrf_token %}
+                    {% for field in form %}
+                        <div class="mb-3">
+                            <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                            {{ field }}
+                            {% if field.help_text %}
+                                <div class="form-text">{{ field.help_text }}</div>
+                            {% endif %}
+                            {% if field.errors %}
+                                <div class="text-danger">{{ field.errors }}</div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="button" class="btn btn-primary" onclick="addQuiz()">إضافة</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Quiz Modal -->
+<div class="modal fade" id="editQuizModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form id="editQuizForm">
+                <div class="modal-header">
+                    <h5 class="modal-title">تعديل الاختبار</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="editQuizError" class="alert alert-danger" style="display: none;"></div>
+                    {% csrf_token %}
+                    <input type="hidden" id="editQuizId" name="quiz_id">
+                    <div id="editQuizFormContent"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="button" class="btn btn-primary" onclick="updateQuiz()">حفظ التغييرات</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+     // Quiz Management
+        function addQuiz() {
+            const form = document.getElementById('addQuizForm');
+            const formData = new FormData(form);
+            const errorDiv = document.getElementById('addQuizError');
+            errorDiv.style.display = 'none'; // Hide previous errors
+
+            fetch("{% url 'MainDashboard:quiz_create' %}", {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                },
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok. Status: ' + response.status);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    location.reload();
+                } else {
+                    let errorMessages = '<strong>Please correct the following errors:</strong><ul>';
+                    for (const field in data.errors) {
+                        errorMessages += `<li>${field}: ${data.errors[field].join(', ')}</li>`;
+                    }
+                    errorMessages += '</ul>';
+                    errorDiv.innerHTML = errorMessages;
+                    errorDiv.style.display = 'block';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                errorDiv.innerHTML = 'An unexpected error occurred. Please check the browser console for details.';
+                errorDiv.style.display = 'block';
+            });
+        }
+
+
+        function openEditQuizModal(quizId) {
+            const modal = new bootstrap.Modal(document.getElementById('editQuizModal'));
+            const errorDiv = document.getElementById('editQuizError');
+            const formContent = document.getElementById('editQuizFormContent');
+            document.getElementById('editQuizId').value = quizId;
+            errorDiv.style.display = 'none';
+
+            fetch(`{% url 'MainDashboard:quiz_update' 0 %}`.replace('0', quizId))
+                .then(response => response.json())
+                .then(data => {
+                    formContent.innerHTML = data.form;
+                    modal.show();
+                });
+        }
+
+        function updateQuiz() {
+            const quizId = document.getElementById('editQuizId').value;
+            const form = document.getElementById('editQuizForm');
+            const formData = new FormData(form);
+            const errorDiv = document.getElementById('editQuizError');
+            errorDiv.style.display = 'none';
+
+            fetch(`{% url 'MainDashboard:quiz_update' 0 %}`.replace('0', quizId), {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                },
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    location.reload();
+                } else {
+                    let errorMessages = '<strong>Please correct the following errors:</strong><ul>';
+                    for (const field in data.errors) {
+                        errorMessages += `<li>${field}: ${data.errors[field].join(', ')}</li>`;
+                    }
+                    errorMessages += '</ul>';
+                    errorDiv.innerHTML = errorMessages;
+                    errorDiv.style.display = 'block';
+                }
+            });
+        }
+
+
+    // Real-time search
+  document.getElementById('quizSearchInput').addEventListener('input', function () {
+    const searchQuery = this.value.trim();
+    if (searchQuery === '') {
+            // If search query is empty, reload the page to show all quizzes
+            location.reload();
+            return;
+        }
+
+    fetch(`/main-dashboard/quizzes/search/?q=${encodeURIComponent(searchQuery)}`)
+        .then(response => response.json())
+        .then(data => {
+            const quizzesTableBody = document.getElementById('quizzesTableBody');
+            quizzesTableBody.innerHTML = '';
+
+            if (data.quizzes.length > 0) {
+                data.quizzes.forEach(quiz => {
+                    const row = `
+                        <tr>
+                            <td>
+                                <a href="/main-dashboard/quizzes/${quiz.id}/questions/" class="text-decoration-none text-primary fw-bold">
+                                    ${quiz.title}
+                                </a>
+                            </td>
+                            <td>${quiz.unit_title}</td>
+                            <td>${quiz.duration}</td>
+                            <td>
+                                <span class="badge bg-${quiz.is_active ? 'success' : 'secondary'}">${quiz.is_active ? 'نشط' : 'غير نشط'}</span>
+                            </td>
+                            <td>${quiz.created_at}</td>
+                            <td>
+                                <a href="/main-dashboard/quizzes/${quiz.id}/questions/" class="btn btn-sm btn-info">
+                                    الأسئلة
+                                </a>
+                                <button type="button"
+                                    class="btn btn-sm btn-primary"
+                                    onclick="openEditQuizModal(${quiz.id})">
+                                    تعديل
+                                </button>
+                                <a href="/main-dashboard/quizzes/delete/${quiz.id}/" class="btn btn-sm btn-danger" onclick="return confirm('هل أنت متأكد أنك تريد حذف هذا الاختبار؟');">
+                                    حذف
+                                </a>
+                            </td>
+                        </tr>
+                    `;
+                    quizzesTableBody.innerHTML += row;
+                });
+            } else {
+                quizzesTableBody.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="text-center py-4">
+                            <div class="empty-state">
+                                <i class="bi bi-journal-check"></i>
+                                <p class="mb-0">لا توجد اختبارات متاحة حالياً</p>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }
+        })
+        .catch(error => console.error('Error fetching search results:', error));
+});
+
+
+</script>
+
+{% endblock %}

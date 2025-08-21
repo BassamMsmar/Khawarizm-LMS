@@ -1,0 +1,294 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container-fluid">
+    <h1 class="h3 mb-2 text-gray-800">Questions for Exam: {{ exam.title }}</h1>
+    <p class="mb-4">Manage questions for this exam here.</p>
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3 d-flex justify-content-between align-items-center">
+            <h6 class="m-0 font-weight-bold text-primary">Questions List</h6>
+            <button class="btn btn-primary" data-toggle="modal" data-target="#addQuestionModal">Add New Question</button>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6">
+                            <div class="dataTables_length" id="dataTable_length">
+                                <label>Show <select name="dataTable_length" aria-controls="dataTable" class="custom-select custom-select-sm form-control form-control-sm">
+                                    <option value="10">10</option>
+                                    <option value="25">25</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                </select> entries</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <div id="dataTable_filter" class="dataTables_filter">
+                                <label>Search:<input type="search" class="form-control form-control-sm" placeholder="" aria-controls="dataTable" id="questionSearchInput"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table class="table table-bordered dataTable" id="questionsTable" width="100%" cellspacing="0" role="grid" aria-describedby="dataTable_info" style="width: 100%;">
+                                <thead>
+                                    <tr role="row">
+                                        <th>Order</th>
+                                        <th>Question Text</th>
+                                        <th>Type</th>
+                                        <th>Marks</th>
+                                        <th>Created At</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for question in questions %}
+                                    <tr id="question-{{ question.id }}">
+                                        <td>{{ question.order }}</td>
+                                        <td><a href="{% url 'choices' exam.id question.id %}">{{ question.question_text|truncatechars:50 }}</a></td>
+                                        <td>{{ question.get_question_type_display }}</td>
+                                        <td>{{ question.marks }}</td>
+                                        <td>{{ question.created_at|date:"Y-m-d" }}</td>
+                                        <td>
+                                            <button class="btn btn-info btn-sm edit-question" data-id="{{ question.id }}">Edit</button>
+                                            <button class="btn btn-danger btn-sm delete-question" data-id="{{ question.id }}">Delete</button>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Question Modal -->
+<div class="modal fade" id="addQuestionModal" tabindex="-1" role="dialog" aria-labelledby="addQuestionModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addQuestionModalLabel">Add New Question</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="addQuestionForm" method="post" action="{% url 'create_question_ajax' exam.id %}">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                        <button class="btn btn-primary" type="submit">Add Question</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Question Modal -->
+<div class="modal fade" id="editQuestionModal" tabindex="-1" role="dialog" aria-labelledby="editQuestionModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editQuestionModalLabel">Edit Question</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="editQuestionForm" method="post">
+                    {% csrf_token %}
+                    <div id="editQuestionFormContent"></div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                        <button class="btn btn-primary" type="submit">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+$(document).ready(function() {
+    var examId = {{ exam.id }};
+
+    // Add Question
+    $('#addQuestionForm').on('submit', function(e) {
+        e.preventDefault();
+        $.ajax({
+            url: $(this).attr('action'),
+            type: 'POST',
+            data: new FormData(this),
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                if (response.success) {
+                    alert('Question added successfully!');
+                    $('#addQuestionModal').modal('hide');
+                    location.reload();
+                } else {
+                    alert('Error adding question: ' + JSON.stringify(response.errors));
+                }
+            }
+        });
+    });
+
+    // Edit Question - Load data
+    $('.edit-question').on('click', function() {
+        var questionId = $(this).data('id');
+        $.ajax({
+            url: '/main-dashboard/exams/' + examId + '/questions/update/' + questionId + '/',
+            type: 'GET',
+            success: function(response) {
+                if (response.form) {
+                    $('#editQuestionFormContent').html(response.form);
+                    $('#editQuestionForm').attr('action', '/main-dashboard/exams/' + examId + '/questions/update/' + questionId + '/');
+                    for (var key in response.instance) {
+                        var value = response.instance[key];
+                        var field = $('#editQuestionFormContent [name="' + key + '"]');
+                        if (field.is('input[type="checkbox"]')) {
+                            field.prop('checked', value);
+                        } else if (field.is('select')) {
+                            field.val(value).trigger('change');
+                        } else {
+                            field.val(value);
+                        }
+                    }
+                    $('#editQuestionModal').modal('show');
+                } else {
+                    alert('Error loading question data.');
+                }
+            }
+        });
+    });
+
+    // Edit Question - Submit data
+    $('#editQuestionForm').on('submit', function(e) {
+        e.preventDefault();
+        $.ajax({
+            url: $(this).attr('action'),
+            type: 'POST',
+            data: new FormData(this),
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                if (response.success) {
+                    alert('Question updated successfully!');
+                    $('#editQuestionModal').modal('hide');
+                    location.reload();
+                } else {
+                    alert('Error updating question: ' + JSON.stringify(response.errors));
+                }
+            }
+        });
+    });
+
+    // Delete Question
+    $('.delete-question').on('click', function() {
+        var questionId = $(this).data('id');
+        if (confirm('Are you sure you want to delete this question?')) {
+            $.ajax({
+                url: '/main-dashboard/exams/' + examId + '/questions/delete/' + questionId + '/',
+                type: 'POST',
+                data: {
+                    csrfmiddlewaretoken: $('[name="csrfmiddlewaretoken"]').val()
+                },
+                success: function(response) {
+                    alert('Question deleted successfully!');
+                    location.reload();
+                },
+                error: function(xhr, status, error) {
+                    alert('Error deleting question.');
+                }
+            });
+        }
+    });
+
+    // Search Question
+    $('#questionSearchInput').on('keyup', function() {
+        var query = $(this).val();
+        $.ajax({
+            url: '/main-dashboard/exams/' + examId + '/questions/search/',
+            type: 'GET',
+            data: { q: query },
+            success: function(response) {
+                var tableBody = $('#questionsTable tbody');
+                tableBody.empty();
+                $.each(response.questions, function(index, question) {
+                    var row = '<tr id="question-' + question.id + '">' +
+                        '<td>' + question.order + '</td>' +
+                        '<td><a href="/main-dashboard/exams/' + examId + '/questions/' + question.id + '/choices/">' + question.question_text + '</a></td>' +
+                        '<td>' + question.question_type + '</td>' +
+                        '<td>' + question.marks + '</td>' +
+                        '<td>' + question.created_at + '</td>' +
+                        '<td>' +
+                        '<button class="btn btn-info btn-sm edit-question" data-id="' + question.id + '">Edit</button>' +
+                        ' <button class="btn btn-danger btn-sm delete-question" data-id="' + question.id + '">Delete</button>' +
+                        '</td>' +
+                        '</tr>';
+                    tableBody.append(row);
+                });
+                // Re-attach event listeners for dynamically added buttons
+                $('.edit-question').off('click').on('click', function() {
+                    var questionId = $(this).data('id');
+                    $.ajax({
+                        url: '/main-dashboard/exams/' + examId + '/questions/update/' + questionId + '/',
+                        type: 'GET',
+                        success: function(response) {
+                            if (response.form) {
+                                $('#editQuestionFormContent').html(response.form);
+                                $('#editQuestionForm').attr('action', '/main-dashboard/exams/' + examId + '/questions/update/' + questionId + '/');
+                                for (var key in response.instance) {
+                                    var value = response.instance[key];
+                                    var field = $('#editQuestionFormContent [name="' + key + '"]');
+                                    if (field.is('input[type="checkbox"]')) {
+                                        field.prop('checked', value);
+                                    } else if (field.is('select')) {
+                                        field.val(value).trigger('change');
+                                    } else {
+                                        field.val(value);
+                                    }
+                                }
+                                $('#editQuestionModal').modal('show');
+                            } else {
+                                alert('Error loading question data.');
+                            }
+                        }
+                    });
+                });
+                $('.delete-question').off('click').on('click', function() {
+                    var questionId = $(this).data('id');
+                    if (confirm('Are you sure you want to delete this question?')) {
+                        $.ajax({
+                            url: '/main-dashboard/exams/' + examId + '/questions/delete/' + questionId + '/',
+                            type: 'POST',
+                            data: {
+                                csrfmiddlewaretoken: $('[name="csrfmiddlewaretoken"]').val()
+                            },
+                            success: function(response) {
+                                alert('Question deleted successfully!');
+                                location.reload();
+                            },
+                            error: function(xhr, status, error) {
+                                alert('Error deleting question.');
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    });
+});
+</script>
+{% endblock %}

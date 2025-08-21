@@ -1,0 +1,48 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+<main class="main-content py-4">
+  <div class="container">
+    <div class="card shadow-lg p-4">
+        
+        <!-- Question Header -->
+        <h1 class="h4 mb-3 text-dark">
+            السؤال: <span class="text-primary">{{ question.text }}</span>
+        </h1>
+
+        <!-- Quiz Reference -->
+        <p class="text-muted mb-4">
+            ضمن الاختبار: 
+            <a href="{% url 'courses:quiz_detail_crud' question.quiz.pk %}" 
+               class="text-primary fw-bold">
+                {{ question.quiz.title }}
+            </a>
+        </p>
+
+    <!-- Actions -->
+    <div class="d-flex flex-wrap gap-2">
+        <a href="{% url 'courses:question_update' question.quiz.pk question.pk %}" 
+           class="btn btn-warning">
+            تعديل السؤال
+        </a>
+
+        <a href="{% url 'courses:question_delete' question.quiz.pk question.pk %}" 
+           class="btn btn-danger"
+           onclick="return confirm('هل تريد حذف هذا السؤال؟')">
+            حذف السؤال
+        </a>
+
+        <a href="{% url 'courses:choice_list' question.pk %}" 
+           class="btn btn-info">
+            عرض الاختيارات
+        </a>
+
+        <a href="{% url 'courses:question_list' question.quiz.pk %}" 
+           class="btn btn-secondary">
+            الرجوع للأسئلة
+        </a>
+    </div>
+    </div> {# Close card #}
+  </div> {# Close container #}
+</main>
+{% endblock %}

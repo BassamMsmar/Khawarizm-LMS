@@ -1,0 +1,80 @@
+{% extends 'layout/base.html' %}
+
+{% block title %}Manage Quiz: {{ quiz.title }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Manage Quiz</h1>
+    <h2 class="lead">{{ quiz.title }}</h2>
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="row">
+            <!-- Left side: Questions in this quiz -->
+            <div class="col-md-7">
+                <div class="card">
+                    <div class="card-header">Questions in this Quiz</div>
+                    <div class="card-body">
+                        {% if quiz_questions %}
+                            <p>Set the order, points, or mark questions for deletion.</p>
+                            {% for qq in quiz_questions %}
+                                <div class="card mb-2">
+                                    <div class="card-body">
+                                        <p><strong>{{ qq.question.text|truncatewords:25 }}</strong></p>
+                                        <div class="row">
+                                            <div class="col-sm-4">
+                                                <label for="id_order_{{ qq.id }}" class="form-label">Order</label>
+                                                <input type="number" name="order_{{ qq.id }}" value="{{ qq.order }}" class="form-control form-control-sm" id="id_order_{{ qq.id }}">
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <label for="id_points_{{ qq.id }}" class="form-label">Points</label>
+                                                <input type="number" name="points_{{ qq.id }}" value="{{ qq.points }}" class="form-control form-control-sm" id="id_points_{{ qq.id }}">
+                                            </div>
+                                            <div class="col-sm-4 align-self-end">
+                                                <div class="form-check">
+                                                    <input type="checkbox" name="delete_{{ qq.id }}" class="form-check-input" id="id_delete_{{ qq.id }}">
+                                                    <label for="id_delete_{{ qq.id }}" class="form-check-label">Delete</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <p class="text-center">This quiz has no questions yet. Add some from your question bank.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right side: Question bank -->
+            <div class="col-md-5">
+                <div class="card">
+                    <div class="card-header">Add from Question Bank</div>
+                    <div class="card-body" style="max-height: 500px; overflow-y: auto;">
+                        {% if bank_questions %}
+                            <p>Select questions to add to the quiz.</p>
+                            {% for question in bank_questions %}
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="questions_to_add" value="{{ question.id }}" id="q_{{ question.id }}">
+                                    <label class="form-check-label" for="q_{{ question.id }}">
+                                        {{ question.text|truncatewords:15 }}
+                                        <span class="badge bg-secondary">{{ question.get_question_type_display }}</span>
+                                    </label>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <p class="text-center">Your question bank is empty or all your questions are already in this quiz.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-4">
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+            <a href="{% url 'courses:quiz_detail' quiz.slug %}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

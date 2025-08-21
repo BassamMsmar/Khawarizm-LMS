@@ -1,0 +1,41 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+<main class="main-content py-4">
+  <div class="container">
+    <div class="card shadow-lg p-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="h4 text-dark">Choices for Question: <span class="text-primary">{{ question.text }}</span></h1>
+            <a href="{% url 'courses:choice_create' question.pk %}" class="btn btn-success">
+                <i class="bi bi-plus-lg me-2"></i>Add New Choice
+            </a>
+        </div>
+
+        {% if choices %}
+            <div class="list-group mb-4">
+                {% for choice in choices %}
+                    <div class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <a href="{% url 'courses:choice_detail' question.pk choice.pk %}" class="text-dark h6">{{ choice.text }}</a>
+                            {% if choice.is_correct %}<span class="badge bg-success ms-2">Correct</span>{% endif %}
+                        </div>
+                        <div>
+                <a href="{% url 'courses:choice_update' question.pk choice.pk %}" class="btn btn-sm btn-warning me-2">Edit</a>
+                            <a href="{% url 'courses:choice_delete' question.pk choice.pk %}" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this choice?')">Delete</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="alert alert-info text-center" role="alert">
+                No choices found for this question.
+            </div>
+        {% endif %}
+
+        <div class="mt-4">
+            <a href="{% url 'courses:question_detail' question.quiz.pk question.pk %}" class="btn btn-secondary">← Back to Question</a>
+        </div>
+    </div> {# Close card #}
+  </div> {# Close container #}
+</main>
+{% endblock %}

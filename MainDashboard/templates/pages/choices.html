@@ -1,0 +1,289 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container-fluid">
+    <h1 class="h3 mb-2 text-gray-800">Choices for Question: {{ question.question_text|truncatechars:100 }}</h1>
+    <p class="mb-4">Manage choices for this question here.</p>
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3 d-flex justify-content-between align-items-center">
+            <h6 class="m-0 font-weight-bold text-primary">Choices List</h6>
+            <button class="btn btn-primary" data-toggle="modal" data-target="#addChoiceModal">Add New Choice</button>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6">
+                            <div class="dataTables_length" id="dataTable_length">
+                                <label>Show <select name="dataTable_length" aria-controls="dataTable" class="custom-select custom-select-sm form-control form-control-sm">
+                                    <option value="10">10</option>
+                                    <option value="25">25</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                </select> entries</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <div id="dataTable_filter" class="dataTables_filter">
+                                <label>Search:<input type="search" class="form-control form-control-sm" placeholder="" aria-controls="dataTable" id="choiceSearchInput"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table class="table table-bordered dataTable" id="choicesTable" width="100%" cellspacing="0" role="grid" aria-describedby="dataTable_info" style="width: 100%;">
+                                <thead>
+                                    <tr role="row">
+                                        <th>Choice Text</th>
+                                        <th>Is Correct</th>
+                                        <th>Created At</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for choice in choices %}
+                                    <tr id="choice-{{ choice.id }}">
+                                        <td>{{ choice.choice_text }}</td>
+                                        <td>{{ choice.is_correct|yesno:"Yes,No" }}</td>
+                                        <td>{{ choice.created_at|date:"Y-m-d" }}</td>
+                                        <td>
+                                            <button class="btn btn-info btn-sm edit-choice" data-id="{{ choice.id }}">Edit</button>
+                                            <button class="btn btn-danger btn-sm delete-choice" data-id="{{ choice.id }}">Delete</button>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Choice Modal -->
+<div class="modal fade" id="addChoiceModal" tabindex="-1" role="dialog" aria-labelledby="addChoiceModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addChoiceModalLabel">Add New Choice</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="addChoiceForm" method="post" action="{% url 'create_choice_ajax' exam.id question.id %}">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                        <button class="btn btn-primary" type="submit">Add Choice</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Choice Modal -->
+<div class="modal fade" id="editChoiceModal" tabindex="-1" role="dialog" aria-labelledby="editChoiceModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editChoiceModalLabel">Edit Choice</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="editChoiceForm" method="post">
+                    {% csrf_token %}
+                    <div id="editChoiceFormContent"></div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                        <button class="btn btn-primary" type="submit">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+$(document).ready(function() {
+    var examId = {{ exam.id }};
+    var questionId = {{ question.id }};
+
+    // Add Choice
+    $('#addChoiceForm').on('submit', function(e) {
+        e.preventDefault();
+        $.ajax({
+            url: $(this).attr('action'),
+            type: 'POST',
+            data: new FormData(this),
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                if (response.success) {
+                    alert('Choice added successfully!');
+                    $('#addChoiceModal').modal('hide');
+                    location.reload();
+                } else {
+                    alert('Error adding choice: ' + JSON.stringify(response.errors));
+                }
+            }
+        });
+    });
+
+    // Edit Choice - Load data
+    $('.edit-choice').on('click', function() {
+        var choiceId = $(this).data('id');
+        $.ajax({
+            url: '/main-dashboard/exams/' + examId + '/questions/' + questionId + '/choices/update/' + choiceId + '/',
+            type: 'GET',
+            success: function(response) {
+                if (response.form) {
+                    $('#editChoiceFormContent').html(response.form);
+                    $('#editChoiceForm').attr('action', '/main-dashboard/exams/' + examId + '/questions/' + questionId + '/choices/update/' + choiceId + '/');
+                    for (var key in response.instance) {
+                        var value = response.instance[key];
+                        var field = $('#editChoiceFormContent [name="' + key + '"]');
+                        if (field.is('input[type="checkbox"]')) {
+                            field.prop('checked', value);
+                        } else if (field.is('select')) {
+                            field.val(value).trigger('change');
+                        } else {
+                            field.val(value);
+                        }
+                    }
+                    $('#editChoiceModal').modal('show');
+                } else {
+                    alert('Error loading choice data.');
+                }
+            }
+        });
+    });
+
+    // Edit Choice - Submit data
+    $('#editChoiceForm').on('submit', function(e) {
+        e.preventDefault();
+        $.ajax({
+            url: $(this).attr('action'),
+            type: 'POST',
+            data: new FormData(this),
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                if (response.success) {
+                    alert('Choice updated successfully!');
+                    $('#editChoiceModal').modal('hide');
+                    location.reload();
+                } else {
+                    alert('Error updating choice: ' + JSON.stringify(response.errors));
+                }
+            }
+        });
+    });
+
+    // Delete Choice
+    $('.delete-choice').on('click', function() {
+        var choiceId = $(this).data('id');
+        if (confirm('Are you sure you want to delete this choice?')) {
+            $.ajax({
+                url: '/main-dashboard/exams/' + examId + '/questions/' + questionId + '/choices/delete/' + choiceId + '/',
+                type: 'POST',
+                data: {
+                    csrfmiddlewaretoken: $('[name="csrfmiddlewaretoken"]').val()
+                },
+                success: function(response) {
+                    alert('Choice deleted successfully!');
+                    location.reload();
+                },
+                error: function(xhr, status, error) {
+                    alert('Error deleting choice.');
+                }
+            });
+        }
+    });
+
+    // Search Choice
+    $('#choiceSearchInput').on('keyup', function() {
+        var query = $(this).val();
+        $.ajax({
+            url: '/main-dashboard/exams/' + examId + '/questions/' + questionId + '/choices/search/',
+            type: 'GET',
+            data: { q: query },
+            success: function(response) {
+                var tableBody = $('#choicesTable tbody');
+                tableBody.empty();
+                $.each(response.choices, function(index, choice) {
+                    var row = '<tr id="choice-' + choice.id + '">' +
+                        '<td>' + choice.choice_text + '</td>' +
+                        '<td>' + (choice.is_correct ? 'Yes' : 'No') + '</td>' +
+                        '<td>' + choice.created_at + '</td>' +
+                        '<td>' +
+                        '<button class="btn btn-info btn-sm edit-choice" data-id="' + choice.id + '">Edit</button>' +
+                        ' <button class="btn btn-danger btn-sm delete-choice" data-id="' + choice.id + '">Delete</button>' +
+                        '</td>' +
+                        '</tr>';
+                    tableBody.append(row);
+                });
+                // Re-attach event listeners for dynamically added buttons
+                $('.edit-choice').off('click').on('click', function() {
+                    var choiceId = $(this).data('id');
+                    $.ajax({
+                        url: '/main-dashboard/exams/' + examId + '/questions/' + questionId + '/choices/update/' + choiceId + '/',
+                        type: 'GET',
+                        success: function(response) {
+                            if (response.form) {
+                                $('#editChoiceFormContent').html(response.form);
+                                $('#editChoiceForm').attr('action', '/main-dashboard/exams/' + examId + '/questions/' + questionId + '/choices/update/' + choiceId + '/');
+                                for (var key in response.instance) {
+                                    var value = response.instance[key];
+                                    var field = $('#editChoiceFormContent [name="' + key + '"]');
+                                    if (field.is('input[type="checkbox"]')) {
+                                        field.prop('checked', value);
+                                    } else if (field.is('select')) {
+                                        field.val(value).trigger('change');
+                                    } else {
+                                        field.val(value);
+                                    }
+                                }
+                                $('#editChoiceModal').modal('show');
+                            } else {
+                                alert('Error loading choice data.');
+                            }
+                        }
+                    });
+                });
+                $('.delete-choice').off('click').on('click', function() {
+                    var choiceId = $(this).data('id');
+                    if (confirm('Are you sure you want to delete this choice?')) {
+                        $.ajax({
+                            url: '/main-dashboard/exams/' + examId + '/questions/' + questionId + '/choices/delete/' + choiceId + '/',
+                            type: 'POST',
+                            data: {
+                                csrfmiddlewaretoken: $('[name="csrfmiddlewaretoken"]').val()
+                            },
+                            success: function(response) {
+                                alert('Choice deleted successfully!');
+                                location.reload();
+                            },
+                            error: function(xhr, status, error) {
+                                alert('Error deleting choice.');
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    });
+});
+</script>
+{% endblock %}

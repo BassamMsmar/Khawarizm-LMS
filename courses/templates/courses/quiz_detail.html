@@ -1,0 +1,37 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+<main class="main-content py-4">
+  <div class="container">
+    <div class="card shadow-lg p-4">
+        <h2 class="mb-3 text-primary">{{ quiz.title }}</h2>
+        <ul class="list-group mb-3">
+            <li class="list-group-item">
+                <strong>Unit:</strong> {{ quiz.unit.title }}
+            </li>
+            <li class="list-group-item">
+                <strong>Duration:</strong> {{ quiz.duration }} minutes
+            </li>
+            <li class="list-group-item">
+                <strong>Active:</strong>
+                {% if quiz.is_active %}
+                    <span class="badge bg-success">Yes</span>
+                {% else %}
+                    <span class="badge bg-secondary">No</span>
+                {% endif %}
+            </li>
+            <li class="list-group-item">
+                <strong>Created At:</strong> {{ quiz.created_at|date:"Y-m-d H:i" }}
+            </li>
+        </ul>
+
+        <div class="d-flex gap-2">
+            <a href="{% url 'courses:quiz_update' quiz.pk %}" class="btn btn-warning">Edit Quiz</a>
+            <a href="{% url 'courses:quiz_delete' quiz.pk %}" class="btn btn-danger">Delete Quiz</a>
+            <a href="{% url 'courses:question_list' quiz.pk %}" class="btn btn-info">View Questions</a>
+            <a href="{% url 'courses:quiz_list' %}" class="btn btn-secondary">Back to Quizzes</a>
+        </div>
+    </div>
+  </div> {# Close container #}
+</main>
+{% endblock %}

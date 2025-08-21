@@ -1,0 +1,52 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+<main class="main-content py-4">
+  <div class="container">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>قائمة الاختبارات</h2>
+        <a href="{% url 'courses:quiz_create' %}" class="btn btn-primary">
+            <i class="bi bi-plus-lg me-2"></i>إضافة اختبار جديد
+        </a>
+    </div>
+
+  <!-- Quizzes List -->
+  <div class="card">
+      <div class="card-header">
+          <h5 class="mb-0">الاختبارات المتاحة</h5>
+      </div>
+      <div class="card-body">
+          {% if quizzes %}
+              <div class="list-group">
+                  {% for quiz in quizzes %}
+                      <div class="list-group-item d-flex justify-content-between align-items-center">
+                          <div>
+                              <h6 class="mb-1">{{ quiz.title }}</h6>
+                              <small class="text-muted">الوحدة: {{ quiz.unit.title }}</small>
+                          </div>
+                          <div>
+                              <a href="{% url 'courses:quiz_detail_crud' quiz.pk %}" 
+                                 class="btn btn-sm btn-info me-2">عرض</a>
+                              <a href="{% url 'courses:quiz_update' quiz.pk %}" 
+                                 class="btn btn-sm btn-warning me-2">تعديل</a>
+                              <a href="{% url 'courses:quiz_delete' quiz.pk %}" 
+                                 class="btn btn-sm btn-danger me-2"
+                                 onclick="return confirm('هل تريد حذف هذا الاختبار؟')">حذف</a>
+                              <a href="{% url 'courses:question_list' quiz.pk %}" 
+                                 class="btn btn-sm btn-secondary">الأسئلة</a>
+                          </div>
+                      </div>
+                  {% endfor %}
+              </div>
+          {% else %}
+              <div class="text-center py-4">
+                  <i class="bi bi-book fs-1 text-muted"></i>
+                  <p class="mt-2 mb-0">لا توجد اختبارات متاحة حالياً</p>
+              </div>
+          {% endif %}
+      </div>
+  </div>
+  </div> {# Close container #}
+</main>
+{% endblock %}

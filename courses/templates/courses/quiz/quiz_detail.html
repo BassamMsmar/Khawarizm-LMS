@@ -1,0 +1,49 @@
+{% extends 'layout/base.html' %}
+
+{% block title %}{{ quiz.title }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1>{{ quiz.title }}</h1>
+            <p class="lead">{{ quiz.description }}</p>
+            <span class="badge bg-info">Unit: {{ quiz.unit.title }}</span>
+        </div>
+        <div>
+            <a href="{% url 'courses:quiz_update' quiz.slug %}" class="btn btn-secondary">Edit Details</a>
+            <a href="#" class="btn btn-primary">Manage Questions</a> {# Placeholder for link to quiz_manage view #}
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h4>Questions in this Quiz</h4>
+        </div>
+        <div class="card-body">
+            {% if quiz.quizquestion_set.all %}
+                <ol class="list-group list-group-numbered">
+                    {% for quiz_question in quiz.quizquestion_set.all %}
+                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                            <div class="ms-2 me-auto">
+                                <div class="fw-bold">{{ quiz_question.question.text }}</div>
+                                <span class="badge bg-secondary">{{ quiz_question.question.get_question_type_display }}</span>
+                            </div>
+                            <span class="badge bg-primary rounded-pill">{{ quiz_question.points }} point(s)</span>
+                        </li>
+                    {% endfor %}
+                </ol>
+            {% else %}
+                <p class="text-center p-3">This quiz has no questions yet.</p>
+                <div class="text-center">
+                    <a href="#" class="btn btn-success">Add Questions Now</a> {# Placeholder for link to quiz_manage view #}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <a href="{% url 'courses:quiz_list' %}" class="btn btn-outline-secondary">&larr; Back to Quiz List</a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends 'layout/base.html' %}
+
+{% block title %}Confirm Delete{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">Confirm Deletion</div>
+                <div class="card-body">
+                    <h5 class="card-title">Are you sure?</h5>
+                    <p class="card-text">
+                        You are about to permanently delete the question:
+                        <strong>"{{ object.text|truncatewords:30 }}"</strong>.
+                    </p>
+                    <p class="text-danger">This action cannot be undone.</p>
+                    <form method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger">Yes, Delete</button>
+                        <a href="{% url 'courses:question_list' %}" class="btn btn-secondary">Cancel</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

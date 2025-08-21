@@ -1,23 +1,22 @@
 from django import forms
-from .models import Review
+from .models import Quiz, Question, Choice, Review
 
-from django import forms
-from .models import Review
+class QuizForm(forms.ModelForm):
+    class Meta:
+        model = Quiz
+        fields = ['unit', 'title', 'duration', 'is_active']
+
+class QuestionForm(forms.ModelForm):
+    class Meta:
+        model = Question
+        fields = ['quiz', 'text']
+
+class ChoiceForm(forms.ModelForm):
+    class Meta:
+        model = Choice
+        fields = ['question', 'text', 'is_correct']
+
 class ReviewForm(forms.ModelForm):
-    rate = forms.ChoiceField(
-        choices=[(i, str(i)) for i in range(1, 6)],
-        widget=forms.RadioSelect(attrs={'class': 'star-rating-input'}),
-        label="Your Rating"
-    )
-
     class Meta:
         model = Review
         fields = ['rate', 'comment']
-        widgets = {
-            'comment': forms.Textarea(attrs={
-                'rows': 4,
-                'class': 'form-control',
-                'placeholder': 'Write your review here...'
-            }),
-        }
-
