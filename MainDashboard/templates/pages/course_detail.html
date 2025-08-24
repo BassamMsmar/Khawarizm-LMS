@@ -28,7 +28,7 @@
                     </div>
                     <div class="col-md-8">
                         <h5 class="card-title">About this course</h5>
-                        <p class="card-text">{{ course.description }}</p>
+                        <p class="card-text">{{ course.description|safe }}</p>
                         <div class="row">
                             <div class="col-sm-6">
                                 <p><strong>Lecturer:</strong> {{ course.lecturer.get_full_name }}</p>
