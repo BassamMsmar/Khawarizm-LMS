@@ -39,7 +39,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         ('student', 'Student'),
         ('lecturer', 'Lecturer'),
     )
-    profile_type = models.CharField(max_length=20, choices=PROFILE_TYPE_CHOICES)
+    profile_type = models.CharField(max_length=20, choices=PROFILE_TYPE_CHOICES, default='student')
 
     # Basic user info
     first_name = models.CharField(max_length=30, blank=True)

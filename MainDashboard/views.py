@@ -3,10 +3,219 @@ from django.views.generic import ListView, View, UpdateView, DeleteView
 from django.http import JsonResponse
 from django.urls import reverse_lazy
 from django.db.models import Q
-from courses.models import Course
+from courses.models import Course, Lesson, Unit, Quiz, Question, Choice
 from college.models import College
 from department.models import Department
-from .forms import CourseForm, CollegeForm, DepartmentForm, StudentForm, LessonForm
+from .forms import CourseForm, CollegeForm, DepartmentForm, StudentForm, LessonForm, UnitForm, QuizForm, QuestionForm, ChoiceForm
+
+def quiz_list(request, unit_id):
+    unit = get_object_or_404(Unit, pk=unit_id)
+    quizzes = Quiz.objects.filter(unit=unit)
+    context = {
+        'unit': unit,
+        'quizzes': quizzes
+    }
+    return render(request, 'pages/quiz_list.html', context)
+
+class QuizCreateView(View):
+    def get(self, request, unit_id):
+        unit = get_object_or_404(Unit, pk=unit_id)
+        form = QuizForm()
+        context = {
+            'form': form,
+            'unit': unit
+        }
+        return render(request, 'pages/quiz_form.html', context)
+
+    def post(self, request, unit_id):
+        unit = get_object_or_404(Unit, pk=unit_id)
+        form = QuizForm(request.POST, request.FILES)
+        if form.is_valid():
+            quiz = form.save(commit=False)
+            quiz.unit = unit
+            quiz.course = unit.course
+            quiz.save()
+            return redirect('quiz_list', unit_id=unit.id)
+        context = {
+            'form': form,
+            'unit': unit
+        }
+        return render(request, 'pages/quiz_form.html', context)
+
+class QuizUpdateView(View):
+    def get(self, request, pk):
+        quiz = get_object_or_404(Quiz, pk=pk)
+        form = QuizForm(instance=quiz)
+        context = {
+            'form': form,
+            'quiz': quiz
+        }
+        return render(request, 'pages/quiz_form.html', context)
+
+    def post(self, request, pk):
+        quiz = get_object_or_404(Quiz, pk=pk)
+        form = QuizForm(request.POST, request.FILES, instance=quiz)
+        if form.is_valid():
+            form.save()
+            return redirect('quiz_list', unit_id=quiz.unit.id)
+        context = {
+            'form': form,
+            'quiz': quiz
+        }
+        return render(request, 'pages/quiz_form.html', context)
+
+def delete_quiz(request, pk):
+    quiz = get_object_or_404(Quiz, pk=pk)
+    unit_id = quiz.unit.id
+    quiz.delete()
+    return redirect('quiz_list', unit_id=unit_id)
+
+def lesson_list(request, unit_id):
+    unit = get_object_or_404(Unit, pk=unit_id)
+    lessons = Lesson.objects.filter(unit=unit)
+    context = {
+        'unit': unit,
+        'lessons': lessons
+    }
+    return render(request, 'pages/lesson_list.html', context)
+
+class LessonCreateView(View):
+    def get(self, request, unit_id):
+        unit = get_object_or_404(Unit, pk=unit_id)
+        form = LessonForm()
+        context = {
+            'form': form,
+            'unit': unit
+        }
+        return render(request, 'pages/lesson_form.html', context)
+
+    def post(self, request, unit_id):
+        unit = get_object_or_404(Unit, pk=unit_id)
+        form = LessonForm(request.POST, request.FILES)
+        if form.is_valid():
+            lesson = form.save(commit=False)
+            lesson.unit = unit
+            lesson.course = unit.course
+            lesson.save()
+            return redirect('lesson_list', unit_id=unit.id)
+        context = {
+            'form': form,
+            'unit': unit
+        }
+        return render(request, 'pages/lesson_form.html', context)
+
+class LessonUpdateView(View):
+    def get(self, request, pk):
+        lesson = get_object_or_404(Lesson, pk=pk)
+        form = LessonForm(instance=lesson)
+        context = {
+            'form': form,
+            'lesson': lesson
+        }
+        return render(request, 'pages/lesson_form.html', context)
+
+    def post(self, request, pk):
+        lesson = get_object_or_404(Lesson, pk=pk)
+        form = LessonForm(request.POST, request.FILES, instance=lesson)
+        if form.is_valid():
+            form.save()
+            return redirect('lesson_list', unit_id=lesson.unit.id)
+        context = {
+            'form': form,
+            'lesson': lesson
+        }
+        return render(request, 'pages/lesson_form.html', context)
+
+def delete_lesson(request, pk):
+    lesson = get_object_or_404(Lesson, pk=pk)
+    unit_id = lesson.unit.id
+    lesson.delete()
+    return redirect('lesson_list', unit_id=unit_id)
+
+def course_detail(request, course_id):
+    course = get_object_or_404(Course, pk=course_id)
+    unit_form = UnitForm()
+    lesson_form = LessonForm()
+    quiz_form = QuizForm()
+    context = {
+        'course': course,
+        'unit_form': unit_form,
+        'lesson_form': lesson_form,
+        'quiz_form': quiz_form
+    }
+    return render(request, 'pages/course_detail.html', context)
+
+class UnitCreateAjaxView(View):
+    def post(self, request, course_id, *args, **kwargs):
+        course = get_object_or_404(Course, pk=course_id)
+        form = UnitForm(request.POST, request.FILES)
+        if form.is_valid():
+            unit = form.save(commit=False)
+            unit.course = course
+            unit.save()
+            return JsonResponse({'success': True})
+        else:
+            return JsonResponse({'success': False, 'errors': form.errors})
+
+class UnitUpdateAjaxView(View):
+    def get(self, request, pk, *args, **kwargs):
+        unit = get_object_or_404(Unit, pk=pk)
+        form = UnitForm(instance=unit)
+        return JsonResponse({
+            'form': form.as_p()
+        })
+
+    def post(self, request, pk, *args, **kwargs):
+        unit = get_object_or_404(Unit, pk=pk)
+        form = UnitForm(request.POST, request.FILES, instance=unit)
+        if form.is_valid():
+            form.save()
+            return JsonResponse({'success': True})
+        else:
+            return JsonResponse({'success': False, 'errors': form.errors})
+
+def delete_unit(request, pk):
+    unit = get_object_or_404(Unit, pk=pk)
+    course_id = unit.course.id
+    unit.delete()
+    return redirect('course_detail', course_id=course_id)
+
+class LessonCreateAjaxView(View):
+    def post(self, request, course_id, *args, **kwargs):
+        course = get_object_or_404(Course, pk=course_id)
+        form = LessonForm(request.POST, request.FILES)
+        if form.is_valid():
+            lesson = form.save(commit=False)
+            lesson.course = course
+            lesson.save()
+            return JsonResponse({'success': True})
+        else:
+            return JsonResponse({'success': False, 'errors': form.errors})
+
+class LessonUpdateAjaxView(View):
+    def get(self, request, pk, *args, **kwargs):
+        lesson = get_object_or_404(Lesson, pk=pk)
+        form = LessonForm(instance=lesson)
+        return JsonResponse({
+            'form': form.as_p()
+        })
+
+    def post(self, request, pk, *args, **kwargs):
+        lesson = get_object_or_404(Lesson, pk=pk)
+        form = LessonForm(request.POST, request.FILES, instance=lesson)
+        if form.is_valid():
+            form.save()
+            return JsonResponse({'success': True})
+        else:
+            return JsonResponse({'success': False, 'errors': form.errors})
+
+def delete_lesson(request, pk):
+    lesson = get_object_or_404(Lesson, pk=pk)
+    course_id = lesson.course.id
+    lesson.delete()
+    return redirect('course_detail', course_id=course_id)
+
+
 from django.contrib.auth import get_user_model
 from accounts.models import User, Role # Assuming Role model is in accounts.models
 
@@ -26,7 +235,6 @@ def dashboard(request):
     context = {
         'courses_count': courses_count,
         'students_count': students_count,
-        'lessons_count': lessons_count,
         'certificates_count': 58  # يمكنك تغييره لاحقًا إذا كان ديناميكي
     }
 
@@ -427,6 +635,13 @@ def delete_course(request, pk):
     return redirect('/main-dashboard/courses/')
 
 
+def course_detail(request, course_id):
+    course = get_object_or_404(Course, pk=course_id)
+    context = {
+        'course': course
+    }
+    return render(request, 'pages/course_detail.html', context)
+
 def course_search_ajax(request):
     search_query = request.GET.get('q', '')
     courses = Course.objects.all()
@@ -664,3 +879,125 @@ def settings(request):
     return render(request, 'pages/settings.html')
 
 # ____________________________________________________________________
+
+def question_list(request, quiz_id):
+    quiz = get_object_or_404(Quiz, pk=quiz_id)
+    questions = Question.objects.filter(quiz=quiz)
+    context = {
+        'quiz': quiz,
+        'questions': questions
+    }
+    return render(request, 'pages/question_list.html', context)
+
+class QuestionCreateView(View):
+    def get(self, request, quiz_id):
+        quiz = get_object_or_404(Quiz, pk=quiz_id)
+        form = QuestionForm()
+        context = {
+            'form': form,
+            'quiz': quiz
+        }
+        return render(request, 'pages/question_form.html', context)
+
+    def post(self, request, quiz_id):
+        quiz = get_object_or_404(Quiz, pk=quiz_id)
+        form = QuestionForm(request.POST)
+        if form.is_valid():
+            question = form.save(commit=False)
+            question.quiz = quiz
+            question.save()
+            return redirect('question_list', quiz_id=quiz.id)
+        context = {
+            'form': form,
+            'quiz': quiz
+        }
+        return render(request, 'pages/question_form.html', context)
+
+class QuestionUpdateView(View):
+    def get(self, request, pk):
+        question = get_object_or_404(Question, pk=pk)
+        form = QuestionForm(instance=question)
+        context = {
+            'form': form,
+            'question': question
+        }
+        return render(request, 'pages/question_form.html', context)
+
+    def post(self, request, pk):
+        question = get_object_or_404(Question, pk=pk)
+        form = QuestionForm(request.POST, instance=question)
+        if form.is_valid():
+            form.save()
+            return redirect('question_list', quiz_id=question.quiz.id)
+        context = {
+            'form': form,
+            'question': question
+        }
+        return render(request, 'pages/question_form.html', context)
+
+def delete_question(request, pk):
+    question = get_object_or_404(Question, pk=pk)
+    quiz_id = question.quiz.id
+    question.delete()
+    return redirect('question_list', quiz_id=quiz_id)
+
+def choice_list(request, question_id):
+    question = get_object_or_404(Question, pk=question_id)
+    choices = Choice.objects.filter(question=question)
+    context = {
+        'question': question,
+        'choices': choices
+    }
+    return render(request, 'pages/choice_list.html', context)
+
+class ChoiceCreateView(View):
+    def get(self, request, question_id):
+        question = get_object_or_404(Question, pk=question_id)
+        form = ChoiceForm()
+        context = {
+            'form': form,
+            'question': question
+        }
+        return render(request, 'pages/choice_form.html', context)
+
+    def post(self, request, question_id):
+        question = get_object_or_404(Question, pk=question_id)
+        form = ChoiceForm(request.POST)
+        if form.is_valid():
+            choice = form.save(commit=False)
+            choice.question = question
+            choice.save()
+            return redirect('choice_list', question_id=question.id)
+        context = {
+            'form': form,
+            'question': question
+        }
+        return render(request, 'pages/choice_form.html', context)
+
+class ChoiceUpdateView(View):
+    def get(self, request, pk):
+        choice = get_object_or_404(Choice, pk=pk)
+        form = ChoiceForm(instance=choice)
+        context = {
+            'form': form,
+            'choice': choice
+        }
+        return render(request, 'pages/choice_form.html', context)
+
+    def post(self, request, pk):
+        choice = get_object_or_404(Choice, pk=pk)
+        form = ChoiceForm(request.POST, instance=choice)
+        if form.is_valid():
+            form.save()
+            return redirect('choice_list', question_id=choice.question.id)
+        context = {
+            'form': form,
+            'choice': choice
+        }
+        return render(request, 'pages/choice_form.html', context)
+
+def delete_choice(request, pk):
+    choice = get_object_or_404(Choice, pk=pk)
+    question_id = choice.question.id
+    choice.delete()
+    return redirect('choice_list', question_id=question_id)

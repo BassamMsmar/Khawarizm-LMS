@@ -1,294 +1,65 @@
 {% extends 'base/base.html' %}
-{% load static %}
 
 {% block content %}
-<main class="main-content">
+<main class="main-content py-4">
+  <div class="container">
+    <div class="card shadow-lg p-4">
+        
+        <!-- Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="h4 text-dark">
+                Questions for Quiz:
+                <span class="text-primary">{{ quiz.title }}</span>
+            </h1>
+            <a href="{% url 'create_question' quiz.pk %}" 
+               class="btn btn-success">
+                <i class="bi bi-plus-lg me-2"></i>Add New Question
+            </a>
+        </div>
 
-    <!-- Header -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2>أسئلة الاختبار: {{ quiz.title }}</h2>
-        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addQuestionModal">
-            <i class="bi bi-plus-lg me-2"></i>إضافة سؤال جديد
-        </button>
-    </div>
-
-    <!-- Questions Table -->
-    <div class="card">
-        <div class="card-header">
-            <div class="row align-items-center">
-                <div class="col-md-6">
-                    <h5 class="mb-0">قائمة الأسئلة</h5>
-                </div>
-                <div class="col-md-6">
-                   <div class="input-group">
-                        <input type="text" id="questionSearchInput" class="form-control" placeholder="البحث في الأسئلة...">
-                        <button class="btn btn-outline-secondary" type="button">
-                            <i class="bi bi-search"></i>
-                        </button>
+    <!-- Questions List -->
+    {% if questions %}
+        <div class="list-group">
+            {% for question in questions %}
+                <div class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                    <div>
+                        <a href="#" 
+                           class="text-dark h6">
+                            {{ question.text }}
+                        </a>
                     </div>
-
+                    <div class="d-flex gap-2">
+                        <a href="{% url 'update_question' question.pk %}" 
+                           class="btn btn-sm btn-warning">
+                            Edit
+                        </a>
+                        <a href="{% url 'delete_question' question.pk %}" 
+                           class="btn btn-sm btn-danger"
+                           onclick="return confirm('Are you sure you want to delete this question?')">
+                            Delete
+                        </a>
+                        <a href="{% url 'choice_list' question.pk %}" 
+                           class="btn btn-sm btn-info">
+                            Choices
+                        </a>
+                    </div>
                 </div>
-            </div>
+            {% endfor %}
         </div>
-        <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th>السؤال</th>
-                            <th>النوع</th>
-                            <th>الإجراءات</th>
-                        </tr>
-                    </thead>
-                    <tbody id="questionsTableBody">
-                        {% if questions %}
-                            {% for question in questions %}
-                                <tr>
-                                    <td>{{ question.text }} </td>
-                                    <td>{{ question.get_type_display }}</td>
-                                    <td>
-                                        <a href="{% url 'MainDashboard:choice_list' question.id %}" class="btn btn-sm btn-info">
-                                            الخيارات
-                                        </a>
-                                        <button type="button"
-                                            class="btn btn-sm btn-primary"
-                                            onclick="openEditQuestionModal({{ question.id }})">
-                                            تعديل
-                                        </button>
-                                        <a href="{% url 'MainDashboard:question_delete' question.id %}" class="btn btn-sm btn-danger" onclick="return confirm('هل أنت متأكد أنك تريد حذف هذا السؤال؟');">
-                                            حذف
-                                        </a>
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                        {% else %}
-                            <tr>
-                                <td colspan="3" class="text-center py-4">
-                                    <div class="empty-state">
-                                        <i class="bi bi-question-circle"></i>
-                                        <p class="mb-0">لا توجد أسئلة متاحة حالياً لهذا الاختبار</p>
-                                    </div>
-                                </td>
-                            </tr>
-                        {% endif %}
-                    </tbody>
-                </table>
-            </div>
+    {% else %}
+        <div class="alert alert-info text-center mt-4" role="alert">
+            No questions available for this quiz.
         </div>
+    {% endif %}
+
+    <!-- Back to Quizzes -->
+    <div class="mt-4">
+        <a href="{% url 'quiz_list' quiz.unit.id %}" 
+           class="btn btn-secondary">
+            ← Back to Quizzes
+        </a>
     </div>
+    </div> {# Close card #}
+  </div> {# Close container #}
 </main>
-
-<!-- Add Question Modal -->
-<div class="modal fade" id="addQuestionModal" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <form id="addQuestionForm">
-                <div class="modal-header">
-                    <h5 class="modal-title">إضافة سؤال جديد</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <div id="addQuestionError" class="alert alert-danger" style="display: none;"></div>
-                    {% csrf_token %}
-                    <input type="hidden" name="quiz" value="{{ quiz.id }}">
-                    {% for field in form %}
-                        {% if field.name != 'quiz' %}
-                            <div class="mb-3">
-                                <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
-                                {{ field }}
-                                {% if field.help_text %}
-                                    <div class="form-text">{{ field.help_text }}</div>
-                                {% endif %}
-                                {% if field.errors %}
-                                    <div class="text-danger">{{ field.errors }}</div>
-                                {% endif %}
-                            </div>
-                        {% endif %}
-                    {% endfor %}
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
-                    <button type="button" class="btn btn-primary" onclick="addQuestion()">إضافة</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<!-- Edit Question Modal -->
-<div class="modal fade" id="editQuestionModal" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <form id="editQuestionForm">
-                <div class="modal-header">
-                    <h5 class="modal-title">تعديل السؤال</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <div id="editQuestionError" class="alert alert-danger" style="display: none;"></div>
-                    {% csrf_token %}
-                    <input type="hidden" id="editQuestionId" name="question_id">
-                    <div id="editQuestionFormContent"></div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
-                    <button type="button" class="btn btn-primary" onclick="updateQuestion()">حفظ التغييرات</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-
-<script>
-
-     // Question Management
-        function addQuestion() {
-            const form = document.getElementById('addQuestionForm');
-            const formData = new FormData(form);
-            const errorDiv = document.getElementById('addQuestionError');
-            errorDiv.style.display = 'none'; // Hide previous errors
-
-            fetch("{% url 'MainDashboard:question_create' quiz.id %}", {
-                method: 'POST',
-                headers: {
-                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
-                },
-                body: formData
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok. Status: ' + response.status);
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data.success) {
-                    location.reload();
-                } else {
-                    let errorMessages = '<strong>Please correct the following errors:</strong><ul>';
-                    for (const field in data.errors) {
-                        errorMessages += `<li>${field}: ${data.errors[field].join(', ')}</li>`;
-                    }
-                    errorMessages += '</ul>';
-                    errorDiv.innerHTML = errorMessages;
-                    errorDiv.style.display = 'block';
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                errorDiv.innerHTML = 'An unexpected error occurred. Please check the browser console for details.';
-                errorDiv.style.display = 'block';
-            });
-        }
-
-
-        function openEditQuestionModal(questionId) {
-            const modal = new bootstrap.Modal(document.getElementById('editQuestionModal'));
-            const errorDiv = document.getElementById('editQuestionError');
-            const formContent = document.getElementById('editQuestionFormContent');
-            document.getElementById('editQuestionId').value = questionId;
-            errorDiv.style.display = 'none';
-
-            fetch(`{% url 'MainDashboard:question_update' 0 %}`.replace('0', questionId))
-                .then(response => response.json())
-                .then(data => {
-                    formContent.innerHTML = data.form;
-                    modal.show();
-                });
-        }
-
-        function updateQuestion() {
-            const questionId = document.getElementById('editQuestionId').value;
-            const form = document.getElementById('editQuestionForm');
-            const formData = new FormData(form);
-            const errorDiv = document.getElementById('editQuestionError');
-            errorDiv.style.display = 'none';
-
-            fetch(`{% url 'MainDashboard:question_update' 0 %}`.replace('0', questionId), {
-                method: 'POST',
-                headers: {
-                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
-                },
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    location.reload();
-                } else {
-                    let errorMessages = '<strong>Please correct the following errors:</strong><ul>';
-                    for (const field in data.errors) {
-                        errorMessages += `<li>${field}: ${data.errors[field].join(', ')}</li>`;
-                    }
-                    errorMessages += '</ul>';
-                    errorDiv.innerHTML = errorMessages;
-                    errorDiv.style.display = 'block';
-                }
-            });
-        }
-
-
-    // Real-time search (optional, if needed for questions)
-  document.getElementById('questionSearchInput').addEventListener('input', function () {
-    const searchQuery = this.value.trim();
-    if (searchQuery === '') {
-            // If search query is empty, reload the page to show all questions
-            location.reload();
-            return;
-        }
-
-    fetch(`/main-dashboard/quizzes/{{ quiz.id }}/questions/search/?q=${encodeURIComponent(searchQuery)}`)
-        .then(response => response.json())
-        .then(data => {
-            const questionsTableBody = document.getElementById('questionsTableBody');
-            questionsTableBody.innerHTML = '';
-
-            if (data.questions.length > 0) {
-                data.questions.forEach(question => {
-                    const row = `
-                        <tr>
-                            <td>
-                                <a href="/main-dashboard/questions/${question.id}/choices/" class="text-decoration-none text-primary fw-bold">
-                                    ${question.text}
-                                </a>
-                            </td>
-                            <td>${question.type_display}</td>
-                            <td>
-                                <a href="/main-dashboard/questions/${question.id}/choices/" class="btn btn-sm btn-info">
-                                    الخيارات
-                                </a>
-                                <button type="button"
-                                    class="btn btn-sm btn-primary"
-                                    onclick="openEditQuestionModal(${question.id})">
-                                    تعديل
-                                </button>
-                                <a href="/main-dashboard/questions/delete/${question.id}/" class="btn btn-sm btn-danger" onclick="return confirm('هل أنت متأكد أنك تريد حذف هذا السؤال؟');">
-                                    حذف
-                                </a>
-                            </td>
-                        </tr>
-                    `;
-                    questionsTableBody.innerHTML += row;
-                });
-            } else {
-                questionsTableBody.innerHTML = `
-                    <tr>
-                        <td colspan="3" class="text-center py-4">
-                            <div class="empty-state">
-                                <i class="bi bi-question-circle"></i>
-                                <p class="mb-0">لا توجد أسئلة متاحة حالياً لهذا الاختبار</p>
-                            </div>
-                        </td>
-                    </tr>
-                `;
-            }
-        })
-        .catch(error => console.error('Error fetching search results:', error));
-});
-
-
-</script>
-
 {% endblock %}

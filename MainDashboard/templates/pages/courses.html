@@ -47,7 +47,9 @@
                         {% if courses %}
                             {% for course in courses %}
                                 <tr>
-                                    <td>{{ course.title }} </td>
+                                    <td>
+                                        <a href="{% url 'course_detail' course.id %}">{{ course.title }}</a>
+                                    </td>
                                     <td>{{ course.lecturer.get_full_name }}</td>
                                     <td>{{ course.get_enrolled_count }}</td>
                                     <td>{{ course.department }}</td>

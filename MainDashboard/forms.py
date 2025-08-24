@@ -1,5 +1,5 @@
 from django import forms
-from courses.models import Course
+from courses.models import Course, Lesson, Unit, Quiz, Question, Choice
 from college.models import College
 from department.models import Department # Import the Department model
 
@@ -119,19 +119,21 @@ class UpdateStudentForm(forms.ModelForm):
             field.widget.attrs['class'] = 'form-control'        
 
 
-from courses.models import Lesson, Unit, Course
+class UnitForm(forms.ModelForm):
+    class Meta:
+        model = Unit
+        fields = ['title', ]
 
 class LessonForm(forms.ModelForm):
     class Meta:
         model = Lesson
-        exclude = ['slug', 'created_at', 'updated_at']
+        exclude = ['slug', 'created_at', 'updated_at', 'course']
         widgets = {
             'is_active': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
         }
 
     def __init__(self, *args, **kwargs):
         super(LessonForm, self).__init__(*args, **kwargs)
-        self.fields['course'].queryset = Course.objects.all()
         self.fields['unit'].queryset = Unit.objects.all()
         for field_name, field in self.fields.items():
             if field.widget.__class__.__name__ == 'CheckboxInput':
@@ -146,4 +148,19 @@ class LessonForm(forms.ModelForm):
                 field.widget.attrs['class'] = 'form-control'
                 field.widget.attrs['rows'] = 3
             else:
-                field.widget.attrs['class'] = 'form-control'        
+                field.widget.attrs['class'] = 'form-control'
+
+class QuizForm(forms.ModelForm):
+    class Meta:
+        model = Quiz
+        exclude = ['slug', 'created_at', 'updated_at', 'course']
+
+class QuestionForm(forms.ModelForm):
+    class Meta:
+        model = Question
+        fields = ['text']
+
+class ChoiceForm(forms.ModelForm):
+    class Meta:
+        model = Choice
+        fields = ['text', 'is_correct']        

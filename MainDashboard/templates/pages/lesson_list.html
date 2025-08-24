@@ -6,13 +6,13 @@
     <div class="container-fluid">
         <!-- Header -->
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2>{{ unit.title }} - Quizzes</h2>
-            <a href="{% url 'create_quiz' unit.id %}" class="btn btn-primary">
-                <i class="bi bi-plus-lg me-2"></i>Add Quiz
+            <h2>{{ unit.title }} - Lessons</h2>
+            <a href="{% url 'create_lesson' unit.id %}" class="btn btn-primary">
+                <i class="bi bi-plus-lg me-2"></i>Add Lesson
             </a>
         </div>
 
-        <!-- Quizzes Table -->
+        <!-- Lessons Table -->
         <div class="card">
             <div class="card-body">
                 <div class="table-responsive">
@@ -20,22 +20,23 @@
                         <thead>
                             <tr>
                                 <th>Title</th>
+                                <th>Order</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {% for quiz in quizzes %}
+                            {% for lesson in lessons %}
                                 <tr>
-                                    <td>{{ quiz.title }}</td>
+                                    <td>{{ lesson.title }}</td>
+                                    <td>{{ lesson.order }}</td>
                                     <td>
-                                        <a href="{% url 'question_list' quiz.id %}" class="btn btn-sm btn-info">Manage Questions</a>
-                                        <a href="{% url 'update_quiz' quiz.id %}" class="btn btn-sm btn-primary">Edit</a>
-                                        <a href="{% url 'delete_quiz' quiz.id %}" class="btn btn-sm btn-danger">Delete</a>
+                                        <a href="{% url 'update_lesson' lesson.id %}" class="btn btn-sm btn-primary">Edit</a>
+                                        <a href="{% url 'delete_lesson' lesson.id %}" class="btn btn-sm btn-danger">Delete</a>
                                     </td>
                                 </tr>
                             {% empty %}
                                 <tr>
-                                    <td colspan="2" class="text-center">No quizzes found.</td>
+                                    <td colspan="3" class="text-center">No lessons found.</td>
                                 </tr>
                             {% endfor %}
                         </tbody>

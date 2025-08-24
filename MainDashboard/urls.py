@@ -25,6 +25,29 @@ urlpatterns = [
     path('courses/update/<int:pk>/', views.CourseUpdateAjaxView.as_view(), name='update_course_ajax'),
     path('courses/delete/<int:pk>/', views.delete_course, name='delete_course'),
     path('courses/search/', views.course_search_ajax, name='course_search_ajax'),
+    path('course/<int:course_id>/', views.course_detail, name='course_detail'),
+    path('course/<int:course_id>/unit/create/', views.UnitCreateAjaxView.as_view(), name='create_unit_ajax'),
+    path('unit/update/<int:pk>/', views.UnitUpdateAjaxView.as_view(), name='update_unit_ajax'),
+    path('unit/<int:unit_id>/lessons/', views.lesson_list, name='lesson_list'),
+    path('unit/<int:unit_id>/lessons/create/', views.LessonCreateView.as_view(), name='create_lesson'),
+    path('lessons/<int:pk>/update/', views.LessonUpdateView.as_view(), name='update_lesson'),
+    path('lessons/<int:pk>/delete/', views.delete_lesson, name='delete_lesson'),
+    path('unit/<int:unit_id>/quizzes/', views.quiz_list, name='quiz_list'),
+    path('unit/<int:unit_id>/quizzes/create/', views.QuizCreateView.as_view(), name='create_quiz'),
+    path('quizzes/<int:pk>/update/', views.QuizUpdateView.as_view(), name='update_quiz'),
+    path('quizzes/<int:pk>/delete/', views.delete_quiz, name='delete_quiz'),
+    path('quizzes/<int:quiz_id>/questions/', views.question_list, name='question_list'),
+    path('quizzes/<int:quiz_id>/questions/create/', views.QuestionCreateView.as_view(), name='create_question'),
+    path('questions/<int:pk>/update/', views.QuestionUpdateView.as_view(), name='update_question'),
+    path('questions/<int:pk>/delete/', views.delete_question, name='delete_question'),
+    path('questions/<int:question_id>/choices/', views.choice_list, name='choice_list'),
+    path('questions/<int:question_id>/choices/create/', views.ChoiceCreateView.as_view(), name='create_choice'),
+    path('choices/<int:pk>/update/', views.ChoiceUpdateView.as_view(), name='update_choice'),
+    path('choices/<int:pk>/delete/', views.delete_choice, name='delete_choice'),
+    path('course/<int:course_id>/lesson/create/', views.LessonCreateAjaxView.as_view(), name='create_lesson_ajax'),
+    path('lesson/update/<int:pk>/', views.LessonUpdateAjaxView.as_view(), name='update_lesson_ajax'),
+    path('lesson/delete/<int:pk>/', views.delete_lesson, name='delete_lesson'),
+    
 # ____________________________________________________________________________
 
     path('dashboard', views.dashboard),
@@ -55,7 +78,7 @@ urlpatterns = [
    # ____________________________________________________________________________
 
 
-    path('quizzes', views.quizzes),
+    
     path('reports', views.reports),
     path('settings', views.settings),
   
