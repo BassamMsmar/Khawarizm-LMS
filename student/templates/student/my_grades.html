@@ -1,0 +1,73 @@
+{% extends 'student/base/base.html' %}
+
+{% block content %}
+<div class="main-content">
+    <div class="container-fluid">
+        <h1 class="mb-4">درجاتي</h1>
+
+        <div class="card">
+            <div class="card-header">
+                درجات الدورات والواجبات
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">الدورة / الواجب</th>
+                                <th scope="col">الدرجة</th>
+                                <th scope="col">الدرجة الكلية</th>
+                                <th scope="col">النسبة المئوية</th>
+                                <th scope="col">الحالة</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>مقدمة في البرمجة (اختبار 1)</td>
+                                <td>85</td>
+                                <td>100</td>
+                                <td>85%</td>
+                                <td>ناجح</td>
+                            </tr>
+                            <tr>
+                                <td>الرياضيات المتقدمة (واجب 2)</td>
+                                <td>70</td>
+                                <td>100</td>
+                                <td>70%</td>
+                                <td>ناجح</td>
+                            </tr>
+                            <tr>
+                                <td>الفيزياء (اختبار نهائي)</td>
+                                <td>55</td>
+                                <td>100</td>
+                                <td>55%</td>
+                                <td>راسب</td>
+                            </tr>
+                            <tr>
+                                <td>تاريخ الفن (مشروع)</td>
+                                <td>92</td>
+                                <td>100</td>
+                                <td>92%</td>
+                                <td>ناجح</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mt-4">
+            <div class="card-header">
+                ملخص الدرجات
+            </div>
+            <div class="card-body">
+                <p>المعدل التراكمي: <strong>3.2 / 4.0</strong></p>
+                <p>إجمالي الدورات المكتملة: <strong>4</strong></p>
+                <p>إجمالي الواجبات المكتملة: <strong>2</strong></p>
+                <p>إجمالي الاختبارات المكتملة: <strong>2</strong></p>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock content %}

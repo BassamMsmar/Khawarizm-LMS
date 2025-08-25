@@ -1,0 +1,44 @@
+{% extends 'student/base/base.html' %}
+
+{% block content %}
+<div class="main-content">
+    <div class="container-fluid">
+        <h1 class="mb-4">الاشعارات</h1>
+
+        <div class="card">
+            <div class="card-header">
+                إشعاراتك الأخيرة
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">واجب جديد: مقدمة في البرمجة - الواجب الأول</h5>
+                            <small class="text-muted">منذ 3 أيام</small>
+                        </div>
+                        <p class="mb-1">تم نشر واجب جديد لدورة مقدمة في البرمجة. الموعد النهائي: 2025-09-01.</p>
+                        <small>المحاضر: أ. أحمد</small>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">درجات الاختبار: الفيزياء - الاختبار النهائي</h5>
+                            <small class="text-muted">منذ يوم واحد</small>
+                        </div>
+                        <p class="mb-1">تم نشر درجات الاختبار النهائي لمادة الفيزياء. يمكنك الاطلاع عليها في صفحة درجاتي.</p>
+                        <small>المحاضر: د. سارة</small>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">تذكير: موعد نهائي للواجب - تاريخ الفن</h5>
+                            <small class="text-muted">اليوم</small>
+                        </div>
+                        <p class="mb-1">تذكير بأن الموعد النهائي لتقديم مشروع تاريخ الفن هو اليوم.</p>
+                        <small>النظام</small>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock content %}

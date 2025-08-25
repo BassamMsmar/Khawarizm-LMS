@@ -1,0 +1,75 @@
+{% extends 'student/base/base.html' %}
+
+{% block content %}
+<div class="main-content">
+    <div class="container-fluid">
+        <h1 class="mb-4">لوحة تحكم الطالب</h1>
+
+        <div class="row">
+            <div class="col-md-6 col-lg-3 mb-4">
+                <div class="card stats-card">
+                    <div class="card-body">
+                        <h5 class="card-title text-white">الدورات المسجل بها</h5>
+                        <p class="stats-number">{{ enrolled_courses.count }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3 mb-4">
+                <div class="card stats-card">
+                    <div class="card-body">
+                        <h5 class="card-title text-white">الواجبات المكتملة</h5>
+                        <p class="stats-number">0</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3 mb-4">
+                <div class="card stats-card">
+                    <div class="card-body">
+                        <h5 class="card-title text-white">الاختبارات المكتملة</h5>
+                        <p class="stats-number">0</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3 mb-4">
+                <div class="card stats-card">
+                    <div class="card-body">
+                        <h5 class="card-title text-white">الدرجة الكلية</h5>
+                        <p class="stats-number">N/A</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="mb-3">دوراتي</h2>
+        <div class="row">
+            {% if enrolled_courses %}
+                {% for course in enrolled_courses %}
+                    <div class="col-md-6 col-lg-4 mb-4">
+                        <div class="card h-100">
+                            {% if course.image %}
+                                <img src="{{ course.image.url }}" class="card-img-top" alt="{{ course.title }}">
+                            {% endif %}
+                            <div class="card-body">
+                                <h5 class="card-title">{{ course.title }}</h5>
+                                <p class="card-text">{{ course.short_description|default:"لا يوجد وصف متاح." }}</p>
+                                <a href="{% url 'courses:course_detail' course.slug %}" class="btn btn-primary">عرض الدورة</a>
+                            </div>
+                            <div class="card-footer text-muted">
+                                <small>المحاضر: {{ course.lecturer.get_full_name|default:"غير محدد" }}</small>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="col-12">
+                    <div class="empty-state">
+                        <i class="bi bi-mortarboard"></i>
+                        <p>لم تسجل في أي دورات بعد.</p>
+                        <a href="{% url 'courses:course_list' %}" class="btn btn-primary">تصفح الدورات</a>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock content %}

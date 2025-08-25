@@ -1,0 +1,66 @@
+{% extends 'student/base/base.html' %}
+
+{% block content %}
+<div class="main-content">
+    <div class="container-fluid">
+        <h1 class="mb-4">مدفوعاتي</h1>
+
+        <div class="card">
+            <div class="card-header">
+                سجل المدفوعات
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">البيان</th>
+                                <th scope="col">المبلغ</th>
+                                <th scope="col">التاريخ</th>
+                                <th scope="col">الحالة</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>رسوم الدورة: مقدمة في البرمجة</td>
+                                <td>$150.00</td>
+                                <td>2024-08-10</td>
+                                <td><span class="badge bg-success">مدفوع</span></td>
+                            </tr>
+                            <tr>
+                                <td>رسوم الدورة: الرياضيات المتقدمة</td>
+                                <td>$180.00</td>
+                                <td>2024-08-15</td>
+                                <td><span class="badge bg-success">مدفوع</span></td>
+                            </tr>
+                            <tr>
+                                <td>رسوم الدورة: الفيزياء</td>
+                                <td>$160.00</td>
+                                <td>2024-08-20</td>
+                                <td><span class="badge bg-warning">معلق</span></td>
+                            </tr>
+                            <tr>
+                                <td>رسوم الدورة: تاريخ الفن</td>
+                                <td>$140.00</td>
+                                <td>2024-08-22</td>
+                                <td><span class="badge bg-success">مدفوع</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mt-4">
+            <div class="card-header">
+                الرصيد المستحق
+            </div>
+            <div class="card-body">
+                <p>إجمالي الرصيد المستحق: <strong>$160.00</strong></p>
+                <button class="btn btn-primary">ادفع الآن</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock content %}

@@ -1,0 +1,60 @@
+{% extends 'student/base/base.html' %}
+
+{% block content %}
+<div class="main-content">
+    <div class="container-fluid">
+        <h1 class="mb-4">التقويم</h1>
+
+        <div class="card">
+            <div class="card-header">
+                أحداث وتقويم الطالب
+            </div>
+            <div class="card-body">
+                <h5 class="card-title mb-3">أحداث هذا الأسبوع</h5>
+                <ul class="list-group mb-4">
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="mb-1">الاثنين، 26 أغسطس 2025: موعد نهائي للواجب - مقدمة في البرمجة</h6>
+                            <small class="text-muted">الساعة 11:59 مساءً</small>
+                        </div>
+                        <span class="badge bg-primary rounded-pill">واجب</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="mb-1">الأربعاء، 28 أغسطس 2025: محاضرة مباشرة - الرياضيات المتقدمة</h6>
+                            <small class="text-muted">الساعة 10:00 صباحًا - قاعة 301</small>
+                        </div>
+                        <span class="badge bg-info rounded-pill">محاضرة</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="mb-1">الجمعة، 30 أغسطس 2025: اختبار قصير - الفيزياء</h6>
+                            <small class="text-muted">الساعة 09:00 صباحًا - عبر الإنترنت</small>
+                        </div>
+                        <span class="badge bg-danger rounded-pill">اختبار</span>
+                    </li>
+                </ul>
+
+                <h5 class="card-title mb-3">أحداث قادمة</h5>
+                <ul class="list-group">
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="mb-1">الاثنين، 02 سبتمبر 2025: عطلة رسمية - عيد الاستقلال</h6>
+                            <small class="text-muted">لا توجد فصول دراسية</small>
+                        </div>
+                        <span class="badge bg-secondary rounded-pill">عطلة</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="mb-1">الخميس، 12 سبتمبر 2025: موعد نهائي للمشروع - تاريخ الفن</h6>
+                            <small class="text-muted">الساعة 11:59 مساءً</small>
+                        </div>
+                        <span class="badge bg-primary rounded-pill">مشروع</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock content %}

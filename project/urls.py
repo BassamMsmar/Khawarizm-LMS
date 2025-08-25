@@ -37,6 +37,7 @@ urlpatterns = [
     path('degreeLevel/', include('degreeLevel.urls')),
 
     path("main-dashboard/", include('MainDashboard.urls')),
+    path("student-dashboard/", include('student.urls')),
 
 
     path('', include('HiStudyApp.urls')),

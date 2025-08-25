@@ -1,0 +1,60 @@
+{% extends 'student/base/base.html' %}
+
+{% block content %}
+<div class="main-content">
+    <div class="container-fluid">
+        <h1 class="mb-4">الإعدادات</h1>
+
+        <div class="card mb-4">
+            <div class="card-header">
+                معلومات الملف الشخصي
+            </div>
+            <div class="card-body">
+                <form>
+                    <div class="mb-3">
+                        <label for="firstName" class="form-label">الاسم الأول</label>
+                        <input type="text" class="form-control" id="firstName" value="اسم الطالب">
+                    </div>
+                    <div class="mb-3">
+                        <label for="lastName" class="form-label">الاسم الأخير</label>
+                        <input type="text" class="form-control" id="lastName" value="الأخير">
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">البريد الإلكتروني</label>
+                        <input type="email" class="form-control" id="email" value="student@example.com">
+                    </div>
+                    <div class="mb-3">
+                        <label for="phone" class="form-label">رقم الهاتف</label>
+                        <input type="tel" class="form-control" id="phone" value="+966501234567">
+                    </div>
+                    <button type="submit" class="btn btn-primary">حفظ التغييرات</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                تغيير كلمة المرور
+            </div>
+            <div class="card-body">
+                <form>
+                    <div class="mb-3">
+                        <label for="currentPassword" class="form-label">كلمة المرور الحالية</label>
+                        <input type="password" class="form-control" id="currentPassword">
+                    </div>
+                    <div class="mb-3">
+                        <label for="newPassword" class="form-label">كلمة المرور الجديدة</label>
+                        <input type="password" class="form-control" id="newPassword">
+                    </div>
+                    <div class="mb-3">
+                        <label for="confirmPassword" class="form-label">تأكيد كلمة المرور الجديدة</label>
+                        <input type="password" class="form-control" id="confirmPassword">
+                    </div>
+                    <button type="submit" class="btn btn-primary">تغيير كلمة المرور</button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock content %}

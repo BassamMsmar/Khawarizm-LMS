@@ -1,0 +1,48 @@
+{% extends 'student/base/base.html' %}
+
+{% block content %}
+<div class="main-content">
+    <div class="container-fluid">
+        <h1 class="mb-4">البرنامج الاكاديمي</h1>
+
+        {% if student_department %}
+            <div class="card mb-4">
+                <div class="card-header">
+                    قسمك: {{ student_department.name }}
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">الدورات المتاحة في قسمك:</h5>
+                    {% if department_courses %}
+                        <div class="row">
+                            {% for course in department_courses %}
+                                <div class="col-md-6 col-lg-4 mb-4">
+                                    <div class="card h-100">
+                                        {% if course.image %}
+                                            <img src="{{ course.image.url }}" class="card-img-top" alt="{{ course.title }}">
+                                        {% endif %}
+                                        <div class="card-body">
+                                            <h5 class="card-title">{{ course.title }}</h5>
+                                            <p class="card-text">{{ course.short_description|default:"لا يوجد وصف متاح." }}</p>
+                                            <a href="{% url 'courses:course_detail' course.slug %}" class="btn btn-primary">عرض الدورة</a>
+                                        </div>
+                                        <div class="card-footer text-muted">
+                                            <small>المحاضر: {{ course.lecturer.get_full_name|default:"غير محدد" }}</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <p>لا توجد دورات متاحة حالياً في قسمك.</p>
+                    {% endif %}
+                </div>
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <i class="bi bi-building"></i>
+                <p>لم يتم تحديد قسم لك بعد. يرجى التواصل مع الإدارة.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock content %}
