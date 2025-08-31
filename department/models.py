@@ -16,6 +16,12 @@ class Department(models.Model):
     admin = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='departments_admin')
     slug = models.SlugField(unique=True, max_length=200, null=True, blank=True)
     description = models.TextField(blank=True)
+    subscription_fee = models.DecimalField(
+        max_digits=10,  # إجمالي عدد الأرقام (مثلاً 99999999.99)
+        decimal_places=2,  # خانات عشرية
+        default=0.00,
+        help_text="سعر الاشتراك في القسم"
+    )
     image = models.ImageField(upload_to='department/images/', null=True, blank=True)
     thumbnail = models.ImageField(upload_to='department/images/thumbnails/', null=True, blank=True)
     created_at = models.DateTimeField(null=True, blank=True)

@@ -1,6 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from courses.models import Course
+from .models import Student, Payment
+from .forms import PaymentForm
+from django.db.models import Sum
 
 @login_required
 def index(request):
@@ -32,7 +35,31 @@ def academic_program(request):
 
 @login_required
 def my_payments(request):
-    return render(request, 'student/my_payments.html')
+    student = Student.objects.get(user=request.user)
+    department = student.department
+    payments = Payment.objects.filter(student=student)
+    total_paid = payments.aggregate(Sum('amount_paid'))['amount_paid__sum'] or 0
+    remaining_amount = student.total_fees - total_paid
+
+    if request.method == 'POST':
+        form = PaymentForm(request.POST)
+        if form.is_valid():
+            payment = form.save(commit=False)
+            payment.student = student
+            payment.save()
+            return redirect('student:my_payments')
+    else:
+        form = PaymentForm()
+
+    context = {
+        'student': student,
+        'department': department,
+        'payments': payments,
+        'total_paid': total_paid,
+        'remaining_amount': remaining_amount,
+        'form': form
+    }
+    return render(request, 'student/my_payments.html', context)
 
 @login_required
 def notifications(request):
