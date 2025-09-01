@@ -53,7 +53,7 @@ INSTALLED_APPS = [
     'degreeLevel',
     'profiles',
     'courses',
-
+    'notifications',
     'MainDashboard',
     'student',
 

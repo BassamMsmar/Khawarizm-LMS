@@ -1,0 +1,24 @@
+{% extends 'student/base/base.html' %}
+
+{% block title %}Notifications{% endblock %}
+
+{% block content %}
+<div class="main-content">
+  
+    <div class="container-fluid">
+            <h1>Your Notifications</h1>
+    {% if notifications %}
+        <ul class="list-group">
+            {% for notification in notifications %}
+                <li class="list-group-item {% if not notification.read %}list-group-item-info{% endif %}">
+                    <a href="{{ notification.link }}" target="_blank" class="text-decoration-none">
+                        {{ notification.message }} - <small>{{ notification.created_at|date:"F d, Y H:i" }}</small>
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No new notifications.</p>
+    {% endif %}
+</div>
+{% endblock %}
