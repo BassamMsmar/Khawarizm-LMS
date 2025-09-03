@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from courses.models import Course
+from courses.models import Course, Unit
 from .models import Student, Payment
 from .forms import PaymentForm
 from django.db.models import Sum
@@ -16,8 +16,34 @@ def index(request):
 @login_required
 def my_courses(request):
     enrolled_courses = request.user.enrolled_courses.all()
+    courses_with_progress = []
+    for course in enrolled_courses:
+        total_lessons = course.lessons.count()
+        completed_lessons_count = course.lessons.filter(completed_by=request.user).count()
+        progress = (completed_lessons_count / total_lessons) * 100 if total_lessons > 0 else 0
+        
+        units = []
+        for unit in course.units.all():
+            lessons = []
+            for lesson in unit.lessons.all():
+                is_completed = lesson.completed_by.filter(id=request.user.id).exists()
+                lessons.append({
+                    'lesson': lesson,
+                    'is_completed': is_completed,
+                })
+            units.append({
+                'unit': unit,
+                'lessons': lessons,
+            })
+
+        courses_with_progress.append({
+            'course': course,
+            'progress': progress,
+            'units': units,
+        })
+
     context = {
-        'enrolled_courses': enrolled_courses
+        'courses_with_progress': courses_with_progress
     }
     return render(request, 'student/my_courses.html', context)
 

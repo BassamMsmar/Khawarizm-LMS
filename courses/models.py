@@ -134,6 +134,11 @@ class Lesson(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     slug = models.SlugField(unique=True, max_length=200, null=True, blank=True)
     is_active = models.BooleanField(default=True)
+    completed_by = models.ManyToManyField(
+        User,
+        related_name='completed_lessons',
+        blank=True
+    )
     
     def save(self, *args, **kwargs):
         self.slug = get_unique_slug(Lesson, self.title)

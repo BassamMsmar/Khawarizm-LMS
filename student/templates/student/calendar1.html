@@ -1,0 +1,74 @@
+
+
+{% extends 'student/base/base.html' %}
+
+{% block content %}
+<div class="main-content">
+    <div class="container-fluid">
+        <h1 class="mb-4">التقويم</h1>
+
+        <div class="card shadow-sm">
+            <div class="card-header">
+                <i class="bi bi-calendar3"></i> تقويم الطالب
+            </div>
+            <div class="card-body">
+                <!-- مكان عرض الكاليندر -->
+                <div id="calendar"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- استدعاء مكتبة FullCalendar من CDN -->
+<link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var calendarEl = document.getElementById('calendar');
+
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',  // العرض الشهري
+        locale: 'ar',                 // اللغة عربي
+        direction: 'rtl',             // من اليمين لليسار
+        themeSystem: 'bootstrap5',    // شكل متناسق مع bootstrap
+        headerToolbar: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+        },
+        events: [
+            {
+                title: 'موعد نهائي للواجب - مقدمة في البرمجة',
+                start: '2025-08-26T23:59:00',
+                color: '#0d6efd'
+            },
+            {
+                title: 'محاضرة مباشرة - الرياضيات المتقدمة',
+                start: '2025-08-28T10:00:00',
+                end: '2025-08-28T12:00:00',
+                color: '#0dcaf0'
+            },
+            {
+                title: 'اختبار قصير - الفيزياء',
+                start: '2025-08-30T09:00:00',
+                color: '#dc3545'
+            },
+            {
+                title: 'عطلة رسمية - عيد الاستقلال',
+                start: '2025-09-02',
+                allDay: true,
+                color: '#6c757d'
+            },
+            {
+                title: 'موعد نهائي للمشروع - تاريخ الفن',
+                start: '2025-09-12T23:59:00',
+                color: '#0d6efd'
+            }
+        ]
+    });
+
+    calendar.render();
+});
+</script>
+{% endblock content %}

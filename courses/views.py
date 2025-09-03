@@ -104,11 +104,16 @@ def Lesson_Detail(request, course_slug, lesson_slug):
         unit: unit.lessons.filter(is_active=True) for unit in units
     }
 
+    is_completed = False
+    if request.user.is_authenticated:
+        is_completed = current_lesson.completed_by.filter(id=request.user.id).exists()
+
     context = {
         'lesson': current_lesson,
         'units': units,
         'unit_lessons': unit_lessons,
         'course': current_lesson.unit.course,
+        'is_completed': is_completed,
     }
 
     return render(request, 'lesson.html', context)
@@ -338,3 +343,9 @@ class ChoiceDeleteView( DeleteView):
 
     def get_success_url(self):
         return reverse_lazy('courses:choice_list', kwargs={'question_pk': self.object.question.pk})
+
+@login_required
+def mark_lesson_as_complete(request, lesson_id):
+    lesson = get_object_or_404(Lesson, id=lesson_id)
+    lesson.completed_by.add(request.user)
+    return redirect('courses:lesson_detail', course_slug=lesson.course.slug, lesson_slug=lesson.slug)

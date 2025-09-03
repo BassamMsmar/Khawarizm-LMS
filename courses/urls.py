@@ -7,6 +7,7 @@ urlpatterns = [
     path('list/', views.CourseList.as_view(), name='course_list'),
     re_path(r'^(?P<slug>[-\w]+)/$', views.CourseDetail.as_view(), name='course_detail'),
     re_path(r'^(?P<course_slug>[-\w]+)/lessons/(?P<lesson_slug>[-\w]+)/$', views.Lesson_Detail, name='lesson_detail'),
+    path('lesson/<int:lesson_id>/mark-as-complete/', views.mark_lesson_as_complete, name='mark_lesson_as_complete'),
     # Quiz URLs
     re_path(r'^(?P<course_slug>[-\w]+)/quiz/(?P<quiz_slug>[-\w]+)/$', views.quiz_detail, name='quiz_detail'),
     path('<slug:course_slug>/quiz/<slug:quiz_slug>/take/', views.take_quiz, name='take_quiz'),
