@@ -114,7 +114,7 @@ venv.bak/
 db.sqlite3
 
 # Ignore about app
-about/
+# about/
 
 # Sublime Text # 
 *.tmlanguage.cache 

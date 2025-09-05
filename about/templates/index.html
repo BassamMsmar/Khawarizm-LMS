@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>جامعة خوارزم - نحو غد أفضل</title>
+    
+    <!-- Bootstrap RTL CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    
+    <!-- Google Fonts Arabic -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #14b8a6;
+            --primary-dark: #0f766e;
+            --primary-light: #5eead4;
+            --secondary-color: #f8fafc;
+            --text-color: #1f2937;
+            --text-muted: #6b7280;
+            --border-color: #e5e7eb;
+        }
+
+        [data-bs-theme="dark"] {
+            --secondary-color: #1f2937;
+            --text-color: #f9fafb;
+            --text-muted: #d1d5db;
+            --border-color: #374151;
+        }
+
+        [data-bs-theme="dark"] body {
+            background-color: #111827 !important;
+            color: #f9fafb !important;
+        }
+
+        [data-bs-theme="dark"] .navbar {
+            background-color: #1f2937 !important;
+        }
+
+        [data-bs-theme="dark"] .bg-light {
+            background-color: #1f2937 !important;
+        }
+
+        [data-bs-theme="dark"] .card {
+            background-color: #374151 !important;
+            border-color: #4b5563 !important;
+        }
+
+        [data-bs-theme="dark"] .text-muted {
+            color: #d1d5db !important;
+        }
+
+        [data-bs-theme="dark"] .form-control {
+            background-color: #374151 !important;
+            border-color: #4b5563 !important;
+            color: #f9fafb !important;
+        }
+
+        [data-bs-theme="dark"] .form-control:focus {
+            background-color: #374151 !important;
+            border-color: var(--primary-color) !important;
+            color: #f9fafb !important;
+            box-shadow: 0 0 0 0.25rem rgba(20, 184, 166, 0.25) !important;
+        }
+
+        * {
+            font-family: 'Cairo', sans-serif;
+        }
+
+        body {
+            color: var(--text-color);
+            transition: all 0.3s ease;
+        }
+
+        .bg-primary-custom {
+            background-color: var(--primary-color) !important;
+        }
+
+        .text-primary-custom {
+            color: var(--primary-color) !important;
+        }
+
+        .btn-primary-custom {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary-custom:hover {
+            background-color: var(--primary-dark);
+            border-color: var(--primary-dark);
+        }
+
+        .btn-outline-primary-custom {
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .btn-outline-primary-custom:hover {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            color: white;
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #0f766e 50%, #0891b2 100%);
+            min-height: 100vh;
+            position: relative;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .feature-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid var(--border-color);
+            background: var(--secondary-color);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(20, 184, 166, 0.1);
+        }
+
+        .section-title {
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            right: 0;
+            width: 60px;
+            height: 3px;
+            background: var(--primary-color);
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+
+        .navbar-nav .nav-link {
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: var(--primary-color) !important;
+        }
+
+        .stats-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            margin-bottom: -40px;
+
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .program-card {
+            transition: all 0.3s ease;
+            border: 1px solid var(--border-color);
+            background: var(--secondary-color);
+        }
+
+        .program-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px rgba(20, 184, 166, 0.15);
+        }
+
+        .news-card {
+            border: 1px solid var(--border-color);
+            background: var(--secondary-color);
+            transition: all 0.3s ease;
+        }
+
+        .news-card:hover {
+            box-shadow: 0 8px 20px rgba(20, 184, 166, 0.1);
+        }
+
+        .footer {
+            background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+        }
+
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .social-icon:hover {
+            background: var(--primary-dark);
+            transform: scale(1.1);
+            color: white;
+        }
+
+        .dark-mode-toggle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            border: none;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .dark-mode-toggle:hover {
+            background: var(--primary-dark);
+            transform: scale(1.1);
+        }
+
+        .navbar-toggler {
+            border: none;
+            padding: 0.25rem 0.5rem;
+        }
+
+        .navbar-toggler:focus {
+            box-shadow: 0 0 0 0.25rem rgba(20, 184, 166, 0.25);
+        }
+
+        [data-bs-theme="dark"] .navbar-toggler-icon {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.75%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+        }
+
+        @media (max-width: 768px) {
+            .hero-section {
+                min-height: 80vh;
+            }
+            
+            .section-title::after {
+                right: 50%;
+                transform: translateX(50%);
+            }
+            
+            .navbar-collapse {
+                margin-top: 1rem;
+                padding-top: 1rem;
+                border-top: 1px solid var(--border-color);
+            }
+            
+            [data-bs-theme="dark"] .navbar-collapse {
+                border-top-color: #4b5563;
+            }
+            
+            .navbar-nav .nav-link {
+                padding: 0.75rem 0;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body data-bs-theme="light">
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top shadow-sm">
+        <div class="container">
+            <a class="navbar-brand text-primary-custom" href="#home">
+                <i class="bi bi-mortarboard-fill me-2"></i>
+                جامعة خوارزم
+            </a>
+            
+            <div class="d-flex align-items-center">
+                <button class="dark-mode-toggle me-3" onclick="toggleDarkMode()" title="تبديل الوضع المظلم">
+                    <i class="bi bi-moon-fill" id="theme-icon"></i>
+                </button>
+                
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#home">الرئيسية</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">عن الجامعة</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#programs">البرامج</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#features">المميزات</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#news">الأخبار</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">اتصل بنا</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/main-dashboard/dashboard"> لوحه التحكم معلم</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="/student-dashboard/">  لوحه التحكم طالب</a>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-section d-flex align-items-center">
+        <div class="container hero-content">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <h1 class="display-4 fw-bold text-white mb-4">مرحباً بكم في جامعة خوارزم</h1>
+                    <p class="lead text-white mb-4">نحن نقدم تعليماً عالي الجودة ونعد الطلاب لمستقبل مشرق مليء بالفرص والإنجازات</p>
+                    <div class="d-flex gap-3 flex-wrap">
+                        <a href="#programs" class="btn btn-light btn-lg">استكشف البرامج</a>
+                        <a href="#about" class="btn btn-outline-light btn-lg">تعرف علينا</a>
+                    </div>
+                </div>
+                <div class="col-lg-6 text-center">
+                    <div class="row g-3 mt-4">
+                        <div class="col-6 mb-5">
+                            <div class="stats-card rounded-3 p-4 text-white">
+                                <h3 class="fw-bold">15,000+</h3>
+                                <p class="mb-0">طالب وطالبة</p>
+                            </div>
+                        </div>
+                        <div class="col-6 mb-4">
+                            <div class="stats-card rounded-3 p-4 text-white">
+                                <h3 class="fw-bold">50+</h3>
+                                <p class="mb-0">برنامج أكاديمي</p>
+                            </div>
+                        </div>
+                        <div class="col-6 mb-4">
+                            <div class="stats-card rounded-3 p-4 text-white">
+                                <h3 class="fw-bold">500+</h3>
+                                <p class="mb-0">عضو هيئة تدريس</p>
+                            </div>
+                        </div>
+                        <div class="col-6 mb-4">
+                            <div class="stats-card rounded-3 p-4 text-white">
+                                <h3 class="fw-bold">25</h3>
+                                <p class="mb-0">عاماً من التميز</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center mb-5">
+                    <h2 class="section-title fw-bold">عن جامعة خوارزم</h2>
+                    <p class="lead text-muted mt-4">جامعة رائدة في التعليم العالي والبحث العلمي</p>
+                </div>
+            </div>
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <img src="https://images.pexels.com/photos/207692/pexels-photo-207692.jpeg?auto=compress&cs=tinysrgb&w=800" 
+                         alt="جامعة خوارزم" class="img-fluid rounded-3 shadow">
+                </div>
+                <div class="col-lg-6 mt-4 mt-lg-0">
+                    <h3 class="fw-bold mb-4">رؤيتنا ورسالتنا</h3>
+                    <p class="text-muted mb-4">
+                        تأسست جامعة خوارزم عام 1999 برؤية واضحة لتكون منارة للعلم والمعرفة في المنطقة. 
+                        نحن نلتزم بتقديم تعليم عالي الجودة يواكب التطورات العالمية ويلبي احتياجات سوق العمل.
+                    </p>
+                    <div class="row g-4">
+                        <div class="col-sm-6">
+                            <div class="d-flex">
+                                <div class="flex-shrink-0">
+                                    <i class="bi bi-trophy-fill text-primary-custom fs-4"></i>
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                    <h5 class="fw-bold">التميز الأكاديمي</h5>
+                                    <p class="text-muted mb-0">برامج معتمدة دولياً</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="d-flex">
+                                <div class="flex-shrink-0">
+                                    <i class="bi bi-people-fill text-primary-custom fs-4"></i>
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                    <h5 class="fw-bold">مجتمع متنوع</h5>
+                                    <p class="text-muted mb-0">طلاب من 30 دولة</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="d-flex">
+                                <div class="flex-shrink-0">
+                                    <i class="bi bi-lightbulb-fill text-primary-custom fs-4"></i>
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                    <h5 class="fw-bold">الابتكار والبحث</h5>
+                                    <p class="text-muted mb-0">مراكز بحثية متقدمة</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="d-flex">
+                                <div class="flex-shrink-0">
+                                    <i class="bi bi-globe text-primary-custom fs-4"></i>
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                    <h5 class="fw-bold">شراكات دولية</h5>
+                                    <p class="text-muted mb-0">تعاون مع جامعات عالمية</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Programs Section -->
+    <section id="programs" class="py-5 bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center mb-5">
+                    <h2 class="section-title fw-bold">برامجنا الأكاديمية</h2>
+                    <p class="lead text-muted mt-4">مجموعة شاملة من البرامج في مختلف المجالات</p>
+                </div>
+            </div>
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6">
+                    <div class="program-card card h-100 border-0 rounded-3 shadow-sm">
+                        <div class="card-body text-center p-4">
+                            <div class="bg-primary-custom rounded-circle d-inline-flex align-items-center justify-content-center mb-3" 
+                                 style="width: 60px; height: 60px;">
+                                <i class="bi bi-code-slash text-white fs-4"></i>
+                            </div>
+                            <h5 class="card-title fw-bold">علوم الحاسوب</h5>
+                            <p class="card-text text-muted">برامج متقدمة في البرمجة، الذكاء الاصطناعي، وأمن المعلومات</p>
+                            <a href="#" class="btn btn-outline-primary-custom">تفاصيل أكثر</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="program-card card h-100 border-0 rounded-3 shadow-sm">
+                        <div class="card-body text-center p-4">
+                            <div class="bg-primary-custom rounded-circle d-inline-flex align-items-center justify-content-center mb-3" 
+                                 style="width: 60px; height: 60px;">
+                                <i class="bi bi-heart-pulse text-white fs-4"></i>
+                            </div>
+                            <h5 class="card-title fw-bold">الطب والعلوم الصحية</h5>
+                            <p class="card-text text-muted">كلية طب معتمدة مع مستشفى جامعي متطور</p>
+                            <a href="#" class="btn btn-outline-primary-custom">تفاصيل أكثر</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="program-card card h-100 border-0 rounded-3 shadow-sm">
+                        <div class="card-body text-center p-4">
+                            <div class="bg-primary-custom rounded-circle d-inline-flex align-items-center justify-content-center mb-3" 
+                                 style="width: 60px; height: 60px;">
+                                <i class="bi bi-graph-up text-white fs-4"></i>
+                            </div>
+                            <h5 class="card-title fw-bold">إدارة الأعمال</h5>
+                            <p class="card-text text-muted">برامج MBA وبكالوريوس في إدارة الأعمال والتسويق</p>
+                            <a href="#" class="btn btn-outline-primary-custom">تفاصيل أكثر</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="program-card card h-100 border-0 rounded-3 shadow-sm">
+                        <div class="card-body text-center p-4">
+                            <div class="bg-primary-custom rounded-circle d-inline-flex align-items-center justify-content-center mb-3" 
+                                 style="width: 60px; height: 60px;">
+                                <i class="bi bi-gear text-white fs-4"></i>
+                            </div>
+                            <h5 class="card-title fw-bold">الهندسة</h5>
+                            <p class="card-text text-muted">تخصصات هندسية متنوعة مع مختبرات حديثة</p>
+                            <a href="#" class="btn btn-outline-primary-custom">تفاصيل أكثر</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="program-card card h-100 border-0 rounded-3 shadow-sm">
+                        <div class="card-body text-center p-4">
+                            <div class="bg-primary-custom rounded-circle d-inline-flex align-items-center justify-content-center mb-3" 
+                                 style="width: 60px; height: 60px;">
+                                <i class="bi bi-palette text-white fs-4"></i>
+                            </div>
+                            <h5 class="card-title fw-bold">الفنون والتصميم</h5>
+                            <p class="card-text text-muted">برامج إبداعية في التصميم الجرافيكي والفنون الرقمية</p>
+                            <a href="#" class="btn btn-outline-primary-custom">تفاصيل أكثر</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="program-card card h-100 border-0 rounded-3 shadow-sm">
+                        <div class="card-body text-center p-4">
+                            <div class="bg-primary-custom rounded-circle d-inline-flex align-items-center justify-content-center mb-3" 
+                                 style="width: 60px; height: 60px;">
+                                <i class="bi bi-translate text-white fs-4"></i>
+                            </div>
+                            <h5 class="card-title fw-bold">اللغات والترجمة</h5>
+                            <p class="card-text text-muted">برامج متخصصة في اللغات الأجنبية والترجمة</p>
+                            <a href="#" class="btn btn-outline-primary-custom">تفاصيل أكثر</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center mb-5">
+                    <h2 class="section-title fw-bold">لماذا تختار جامعة خوارزم؟</h2>
+                    <p class="lead text-muted mt-4">مميزات تجعلنا الخيار الأول للطلاب</p>
+                </div>
+            </div>
+            <div class="row g-4">
+                <div class="col-lg-3 col-md-6">
+                    <div class="feature-card card h-100 border-0 rounded-3 shadow-sm p-4 text-center">
+                        <i class="bi bi-award-fill text-primary-custom fs-1 mb-3"></i>
+                        <h5 class="fw-bold">اعتماد دولي</h5>
+                        <p class="text-muted mb-0">جميع برامجنا معتمدة من هيئات دولية مرموقة</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="feature-card card h-100 border-0 rounded-3 shadow-sm p-4 text-center">
+                        <i class="bi bi-laptop text-primary-custom fs-1 mb-3"></i>
+                        <h5 class="fw-bold">تقنيات حديثة</h5>
+                        <p class="text-muted mb-0">فصول ذكية ومختبرات مجهزة بأحدث التقنيات</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="feature-card card h-100 border-0 rounded-3 shadow-sm p-4 text-center">
+                        <i class="bi bi-person-check-fill text-primary-custom fs-1 mb-3"></i>
+                        <h5 class="fw-bold">أعضاء هيئة متميزون</h5>
+                        <p class="text-muted mb-0">نخبة من الأساتذة والخبراء في مختلف المجالات</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="feature-card card h-100 border-0 rounded-3 shadow-sm p-4 text-center">
+                        <i class="bi bi-briefcase-fill text-primary-custom fs-1 mb-3"></i>
+                        <h5 class="fw-bold">فرص وظيفية</h5>
+                        <p class="text-muted mb-0">شراكات مع الشركات لضمان فرص العمل للخريجين</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- News Section -->
+    <section id="news" class="py-5 bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center mb-5">
+                    <h2 class="section-title fw-bold">آخر الأخبار والفعاليات</h2>
+                    <p class="lead text-muted mt-4">تابع أحدث الأخبار والأنشطة الجامعية</p>
+                </div>
+            </div>
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <div class="news-card card border-0 rounded-3 shadow-sm">
+                        <img src="https://images.pexels.com/photos/1181533/pexels-photo-1181533.jpeg?auto=compress&cs=tinysrgb&w=400" 
+                             class="card-img-top" alt="خبر 1" style="height: 200px; object-fit: cover;">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="bi bi-calendar text-primary-custom me-2"></i>
+                                <small class="text-muted">15 ديسمبر 2024</small>
+                            </div>
+                            <h5 class="card-title fw-bold">مؤتمر الابتكار التقني السنوي</h5>
+                            <p class="card-text text-muted">يشارك أكثر من 200 طالب وطالبة في المؤتمر السنوي للابتكار والتقنية...</p>
+                            <a href="#" class="btn btn-outline-primary-custom btn-sm">اقرأ المزيد</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="news-card card border-0 rounded-3 shadow-sm">
+                        <img src="https://images.pexels.com/photos/1181298/pexels-photo-1181298.jpeg?auto=compress&cs=tinysrgb&w=400" 
+                             class="card-img-top" alt="خبر 2" style="height: 200px; object-fit: cover;">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="bi bi-calendar text-primary-custom me-2"></i>
+                                <small class="text-muted">12 ديسمبر 2024</small>
+                            </div>
+                            <h5 class="card-title fw-bold">شراكة جديدة مع جامعة هارفارد</h5>
+                            <p class="card-text text-muted">توقيع اتفاقية تعاون أكاديمي مع جامعة هارفارد لتبادل الطلاب والأساتذة...</p>
+                            <a href="#" class="btn btn-outline-primary-custom btn-sm">اقرأ المزيد</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="news-card card border-0 rounded-3 shadow-sm">
+                        <img src="https://images.pexels.com/photos/1438072/pexels-photo-1438072.jpeg?auto=compress&cs=tinysrgb&w=400" 
+                             class="card-img-top" alt="خبر 3" style="height: 200px; object-fit: cover;">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="bi bi-calendar text-primary-custom me-2"></i>
+                                <small class="text-muted">10 ديسمبر 2024</small>
+                            </div>
+                            <h5 class="card-title fw-bold">افتتاح مختبر الذكاء الاصطناعي</h5>
+                            <p class="card-text text-muted">افتتاح مختبر جديد للذكاء الاصطناعي مجهز بأحدث التقنيات والأجهزة...</p>
+                            <a href="#" class="btn btn-outline-primary-custom btn-sm">اقرأ المزيد</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center mb-5">
+                    <h2 class="section-title fw-bold">تواصل معنا</h2>
+                    <p class="lead text-muted mt-4">نحن هنا للإجابة على جميع استفساراتكم</p>
+                </div>
+            </div>
+            <div class="row g-4">
+                <div class="col-lg-8">
+                    <div class="card border-0 rounded-3 shadow-sm">
+                        <div class="card-body p-4">
+                            <h4 class="fw-bold mb-4">أرسل لنا رسالة</h4>
+                            <form>
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label">الاسم الكامل</label>
+                                        <input type="text" class="form-control" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">البريد الإلكتروني</label>
+                                        <input type="email" class="form-control" required>
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="form-label">الموضوع</label>
+                                        <input type="text" class="form-control" required>
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="form-label">الرسالة</label>
+                                        <textarea class="form-control" rows="5" required></textarea>
+                                    </div>
+                                    <div class="col-12">
+                                        <button type="submit" class="btn btn-primary-custom btn-lg">إرسال الرسالة</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="card border-0 rounded-3 shadow-sm h-100">
+                        <div class="card-body p-4">
+                            <h4 class="fw-bold mb-4">معلومات الاتصال</h4>
+                            <div class="d-flex align-items-center mb-3">
+                                <i class="bi bi-geo-alt-fill text-primary-custom fs-5 me-3"></i>
+                                <div>
+                                    <h6 class="mb-0">العنوان</h6>
+                                    <p class="text-muted mb-0">شارع الجامعة، المدينة الجامعية</p>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center mb-3">
+                                <i class="bi bi-telephone-fill text-primary-custom fs-5 me-3"></i>
+                                <div>
+                                    <h6 class="mb-0">الهاتف</h6>
+                                    <p class="text-muted mb-0">+966 11 123 4567</p>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center mb-3">
+                                <i class="bi bi-envelope-fill text-primary-custom fs-5 me-3"></i>
+                                <div>
+                                    <h6 class="mb-0">البريد الإلكتروني</h6>
+                                    <p class="text-muted mb-0">info@future-university.edu</p>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-clock-fill text-primary-custom fs-5 me-3"></i>
+                                <div>
+                                    <h6 class="mb-0">ساعات العمل</h6>
+                                    <p class="text-muted mb-0">الأحد - الخميس: 8:00 - 16:00</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer py-5 text-white">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <h5 class="fw-bold mb-3">جامعة خوارزم</h5>
+                    <p class="text-light mb-4">نحو غد أفضل من خلال التعليم المتميز والبحث العلمي المبتكر</p>
+                    <div class="d-flex gap-3">
+                        <a href="#" class="social-icon text-decoration-none">
+                            <i class="bi bi-facebook"></i>
+                        </a>
+                        <a href="#" class="social-icon text-decoration-none">
+                            <i class="bi bi-twitter"></i>
+                        </a>
+                        <a href="#" class="social-icon text-decoration-none">
+                            <i class="bi bi-instagram"></i>
+                        </a>
+                        <a href="#" class="social-icon text-decoration-none">
+                            <i class="bi bi-linkedin"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6">
+                    <h6 class="fw-bold mb-3">روابط سريعة</h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#about" class="text-light text-decoration-none">عن الجامعة</a></li>
+                        <li class="mb-2"><a href="#programs" class="text-light text-decoration-none">البرامج</a></li>
+                        <li class="mb-2"><a href="#news" class="text-light text-decoration-none">الأخبار</a></li>
+                        <li class="mb-2"><a href="#contact" class="text-light text-decoration-none">اتصل بنا</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-6">
+                    <h6 class="fw-bold mb-3">الخدمات</h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="text-light text-decoration-none">القبول والتسجيل</a></li>
+                        <li class="mb-2"><a href="#" class="text-light text-decoration-none">المكتبة الرقمية</a></li>
+                        <li class="mb-2"><a href="#" class="text-light text-decoration-none">نظام التعلم الإلكتروني</a></li>
+                        <li class="mb-2"><a href="#" class="text-light text-decoration-none">الخدمات الطلابية</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4">
+                    <h6 class="fw-bold mb-3">النشرة الإخبارية</h6>
+                    <p class="text-light mb-3">اشترك لتصلك آخر الأخبار والفعاليات</p>
+                    <div class="input-group">
+                        <input type="email" class="form-control" placeholder="البريد الإلكتروني">
+                        <button class="btn btn-primary-custom" type="button">اشتراك</button>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4 border-secondary">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <p class="mb-0 text-light">&copy; 2024 جامعة خوارزم. جميع الحقوق محفوظة.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <a href="#" class="text-light text-decoration-none me-3">سياسة الخصوصية</a>
+                    <a href="#" class="text-light text-decoration-none">شروط الاستخدام</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Dark Mode Toggle
+        function toggleDarkMode() {
+            const html = document.documentElement;
+            const body = document.body;
+            const themeIcon = document.getElementById('theme-icon');
+            
+            if (html.getAttribute('data-bs-theme') === 'dark') {
+                html.setAttribute('data-bs-theme', 'light');
+                body.setAttribute('data-bs-theme', 'light');
+                themeIcon.className = 'bi bi-moon-fill';
+                localStorage.setItem('theme', 'light');
+            } else {
+                html.setAttribute('data-bs-theme', 'dark');
+                body.setAttribute('data-bs-theme', 'dark');
+                themeIcon.className = 'bi bi-sun-fill';
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        // Load saved theme
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            const html = document.documentElement;
+            const body = document.body;
+            const themeIcon = document.getElementById('theme-icon');
+            
+            html.setAttribute('data-bs-theme', savedTheme);
+            body.setAttribute('data-bs-theme', savedTheme);
+            themeIcon.className = savedTheme === 'dark' ? 'bi bi-sun-fill' : 'bi bi-moon-fill';
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                // Close mobile menu if open
+                const navbarCollapse = document.querySelector('.navbar-collapse');
+                if (navbarCollapse.classList.contains('show')) {
+                    const bsCollapse = new bootstrap.Collapse(navbarCollapse);
+                    bsCollapse.hide();
+                }
+                
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Active navigation link
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
+            
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (scrollY >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
