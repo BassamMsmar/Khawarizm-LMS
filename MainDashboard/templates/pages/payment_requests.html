@@ -26,7 +26,7 @@
                         <tbody>
                             {% for payment in payments %}
                             <tr>
-                                <td>{{ payment.student.user.username }}</td>
+                                <td>{{ payment.student.user }}</td>
                                 <td>{{ payment.amount }} ريال</td>
                                 <td>{{ payment.reference_number }}</td>
                                 <td>{{ payment.created_at }}</td>
