@@ -1,0 +1,32 @@
+{% extends 'base/base.html' %}
+{% load widget_tweaks %}
+
+{% block content %}
+<div class="main-content">
+    <div class="container-fluid">   
+        <h1 class="h3 mb-4 text-gray-800 text-center">❌ رفض الدفع</h1>
+
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <div class="card shadow mb-4 border-left-danger">
+                    <div class="card-header py-3 bg-danger text-white">
+                        <h6 class="m-0 font-weight-bold">سبب الرفض</h6>
+                    </div>
+                    <div class="card-body">
+                        <form method="post">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="rejection_reason">من فضلك اكتب سبب رفض هذا الدفع:</label>
+                                <textarea class="form-control" id="rejection_reason" name="rejection_reason" rows="3"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-danger w-100 py-2 shadow-sm">
+                                رفض الدفع
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

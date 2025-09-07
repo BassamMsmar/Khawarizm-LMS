@@ -13,15 +13,20 @@ class Student(models.Model):
 
 
 class Payment(models.Model):
-    student = models.ForeignKey("Student", on_delete=models.CASCADE)
-    amount_paid = models.DecimalField(max_digits=10, decimal_places=2)
-    payment_date = models.DateField(auto_now_add=True)
+    STATUS_CHOICES = (
+        ('pending', 'Pending'),
+        ('approved', 'Approved'),
+        ('rejected', 'Rejected'),
+    )
 
-    # الرقم المرجعي للعملية
+    student = models.ForeignKey('Student', on_delete=models.CASCADE, related_name='payments')
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
     reference_number = models.CharField(max_length=100)
-
-    # صورة الايصال
-    receipt_image = models.ImageField(upload_to='receipts/', blank=True, null=True)
+    receipt_image = models.ImageField(upload_to='receipts/')
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
+    rejection_reason = models.TextField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"Payment {self.reference_number} of {self.amount_paid} for {self.student.user.username}"
+        return f'{self.student.user.username} - {self.amount} - {self.status}'

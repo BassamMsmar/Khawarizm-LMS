@@ -1,0 +1,57 @@
+{% extends 'base/base.html' %}
+{% load widget_tweaks %}
+
+{% block content %}
+<div class="main-content">
+    <div class="container-fluid">   
+        <h1 class="h3 mb-4 text-gray-800 text-center">💳 طلبات الدفع</h1>
+
+        <div class="card shadow mb-4 border-left-info">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-info">📑 المدفوعات قيد المراجعة</h6>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered text-center" id="dataTable" width="100%" cellspacing="0">
+                        <thead class="bg-light">
+                            <tr>
+                                <th>👨‍🎓 الطالب</th>
+                                <th>💵 المبلغ</th>
+                                <th>🔑 الرقم المرجعي</th>
+                                <th>📅 تاريخ الدفع</th>
+                                <th>🧾 الإيصال</th>
+                                <th>⚙️ الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for payment in payments %}
+                            <tr>
+                                <td>{{ payment.student.user.username }}</td>
+                                <td>{{ payment.amount }} ريال</td>
+                                <td>{{ payment.reference_number }}</td>
+                                <td>{{ payment.created_at }}</td>
+                                <td>
+                                    {% if payment.receipt_image %}
+                                        <a href="{{ payment.receipt_image.url }}" target="_blank">📎 عرض الإيصال</a>
+                                    {% else %}
+                                        لا يوجد إيصال
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <a href="{% url 'approve_payment' payment.id %}" class="btn btn-success btn-sm">✅ قبول</a>
+                                    <a href="{% url 'reject_payment' payment.id %}" class="btn btn-danger btn-sm">❌ رفض</a>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="6" class="text-muted">لا توجد مدفوعات قيد المراجعة حالياً</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -43,7 +43,7 @@ urlpatterns = [
     path('questions/<int:question_id>/choices/', views.choice_list, name='choice_list'),
     path('questions/<int:question_id>/choices/create/', views.ChoiceCreateView.as_view(), name='create_choice'),
     path('choices/<int:pk>/update/', views.ChoiceUpdateView.as_view(), name='update_choice'),
-    path('choices/<int:pk>/delete/', views.delete_choice, name='delete_choice'),
+    # path('choices/<int:pk>/delete/', views.delete_choice, name='delete_choice'),
     path('course/<int:course_id>/lesson/create/', views.LessonCreateAjaxView.as_view(), name='create_lesson_ajax'),
     path('lesson/update/<int:pk>/', views.LessonUpdateAjaxView.as_view(), name='update_lesson_ajax'),
     path('lesson/delete/<int:pk>/', views.delete_lesson, name='delete_lesson'),
@@ -77,8 +77,10 @@ urlpatterns = [
 
    # ____________________________________________________________________________
 
+    path('payment-requests/', views.payment_requests, name='payment_requests'),
+    path('payment-requests/approve/<int:payment_id>/', views.approve_payment, name='approve_payment'),
+    path('payment-requests/reject/<int:payment_id>/', views.reject_payment, name='reject_payment'),
 
-    
     path('reports', views.reports),
     path('settings', views.settings),
   

@@ -3,108 +3,58 @@
 {% block content %}
 <div class="main-content">
     <div class="container-fluid">   
-        <h1 class="h3 mb-4 text-gray-800 text-center">💳 لوحة المدفوعات</h1>
+        <h1 class="h3 mb-4 text-gray-800 text-center">💳 إرسال دفعة جديدة</h1>
 
-        <div class="row">
-            <!-- تفاصيل الرسوم -->
+        <div class="row justify-content-center">
             <div class="col-lg-6">
-                <div class="card shadow mb-4 border-left-primary">
-                    <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">📊 تفاصيل الرسوم</h6>
+                <div class="card shadow-lg border-0 rounded-3">
+                    <div class="card-header py-3 bg-success text-white text-center rounded-top">
+                        <h5 class="m-0 font-weight-bold">💰 تفاصيل الدفعة</h5>
                     </div>
                     <div class="card-body">
-                        <p><strong>إجمالي الرسوم:</strong> {{ department.subscription_fee }} ريال سعودي</p>
-                        <p><strong>المبلغ المدفوع:</strong> {{ total_paid }} ريال سعودي</p>
-                        <p><strong>المتبقي:</strong> {{ remaining_amount }} ريال سعودي</p>
+                        <form method="post" enctype="multipart/form-data" class="p-2">
+                            {% csrf_token %}
+
+                            <!-- المبلغ -->
+                            <div class="form-group mb-3">
+                                <label for="id_amount" class="fw-bold mb-1">💵 المبلغ</label>
+                                <input type="number" name="amount" step="0.01" min="1"
+                                       class="form-control shadow-sm"
+                                       id="id_amount" placeholder="ادخل المبلغ المطلوب">
+                            </div>
+
+                            <!-- الرقم المرجعي -->
+                            <div class="form-group mb-3">
+                                <label for="id_reference_number" class="fw-bold mb-1">🔢 الرقم المرجعي</label>
+                                <input type="text" name="reference_number"
+                                       class="form-control shadow-sm"
+                                       id="id_reference_number" placeholder="ادخل الرقم المرجعي للدفعة">
+                            </div>
+
+                            <!-- صورة الإيصال -->
+                            <div class="form-group mb-3">
+                                <label for="id_receipt_image" class="fw-bold mb-1">📷 صورة الإيصال</label>
+                                <input type="file" name="receipt_image" 
+                                       class="form-control shadow-sm"
+                                       id="id_receipt_image" accept="image/*">
+                            </div>
+
+                            <!-- زر الإرسال -->
+                            <button type="submit" class="btn btn-success w-100 py-2 shadow-sm fw-bold">
+                                ✅ إرسال الدفعة
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>
-
-            <!-- دفع جديد -->
-                <div class="col-lg-6">
-                    <div class="card shadow mb-4 border-left-success">
-                        <div class="card-header py-3 bg-success text-white">
-                            <h6 class="m-0 font-weight-bold">💰 دفع جديد</h6>
-                        </div>
-                        <div class="card-body">
-                            <form method="post" enctype="multipart/form-data">
-                                {% csrf_token %}
-
-                                <!-- مبلغ الدفع -->
-                                <div class="form-group mb-3">
-                                    <label for="id_amount_paid" class="form-label fw-bold">
-                                        💵 المبلغ
-                                    </label>
-                                    <input type="number" step="0.01" name="amount_paid" id="id_amount_paid"
-                                        class="form-control" value="{{ form.amount_paid.value|default:'' }}">
-                                </div>
-
-                                <!-- الرقم المرجعي -->
-                                <div class="form-group mb-3">
-                                    <label for="id_reference_number" class="form-label fw-bold">
-                                        🔑 الرقم المرجعي
-                                    </label>
-                                    <input type="text" name="reference_number" id="id_reference_number"
-                                        class="form-control" value="{{ form.reference_number.value|default:'' }}">
-                                    <small class="form-text text-muted">
-                                        أدخل الرقم المرجعي من الإيصال أو رسالة الدفع.
-                                    </small>
-                                </div>
-
-                                <!-- صورة الإيصال -->
-                                <div class="form-group mb-4">
-                                    <label for="id_receipt_image" class="form-label fw-bold">
-                                        🧾 صورة الإيصال
-                                    </label>
-                                    <div class="input-group">
-                                        <span class="input-group-text">📎</span>
-                                        <input type="file" name="receipt_image" id="id_receipt_image" class="form-control">
-                                    </div>
-                                    <small class="form-text text-muted">
-                                        يمكنك رفع صورة الإيصال (JPG, PNG, PDF).
-                                    </small>
-                                </div>
-
-                                <!-- زر الدفع -->
-                                <button type="submit" class="btn btn-success w-100 py-2 shadow-sm">
-                                    ✅ تأكيد الدفع
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-
         </div>
 
-        <!-- سجل المدفوعات -->
-        <div class="card shadow mb-4 border-left-info">
-            <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-info">📑 سجل المدفوعات السابقة</h6>
-            </div>
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-bordered text-center" id="dataTable" width="100%" cellspacing="0">
-                        <thead class="bg-light">
-                            <tr>
-                                <th>💵 المبلغ</th>
-                                <th>📅 تاريخ الدفع</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for payment in payments %}
-                            <tr>
-                                <td>{{ payment.amount_paid }} ريال سعودي</td>
-                                <td>{{ payment.payment_date }}</td>
-                            </tr>
-                            {% empty %}
-                            <tr>
-                                <td colspan="2" class="text-muted">لا توجد مدفوعات بعد</td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+        <!-- زر الانتقال للسجل -->
+        <div class="text-center mt-4">
+            <a href="{% url 'student:payment_history' %}" 
+               class="btn btn-info px-4 py-2 shadow-sm fw-bold">
+                📑 عرض سجل الدفعات
+            </a>
         </div>
     </div>
 </div>

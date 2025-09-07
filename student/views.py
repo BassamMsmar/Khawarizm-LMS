@@ -62,30 +62,36 @@ def academic_program(request):
 @login_required
 def my_payments(request):
     student = Student.objects.get(user=request.user)
-    department = student.department
-    payments = Payment.objects.filter(student=student)
-    total_paid = payments.aggregate(Sum('amount_paid'))['amount_paid__sum'] or 0
-    remaining_amount = student.total_fees - total_paid
-
     if request.method == 'POST':
-        form = PaymentForm(request.POST)
+        form = PaymentForm(request.POST, request.FILES)
         if form.is_valid():
             payment = form.save(commit=False)
             payment.student = student
             payment.save()
-            return redirect('student:my_payments')
+            return redirect('student:payment_history')
     else:
         form = PaymentForm()
 
     context = {
+        'form': form,
         'student': student,
-        'department': department,
+    }
+    return render(request, 'student/my_payments.html', context)
+
+@login_required
+def payment_history(request):
+    student = Student.objects.get(user=request.user)
+    payments = Payment.objects.filter(student=student).order_by('-created_at')
+    total_paid = payments.filter(status='approved').aggregate(Sum('amount'))['amount__sum'] or 0
+    remaining_amount = student.total_fees - total_paid
+
+    context = {
+        'student': student,
         'payments': payments,
         'total_paid': total_paid,
         'remaining_amount': remaining_amount,
-        'form': form
     }
-    return render(request, 'student/my_payments.html', context)
+    return render(request, 'student/payment_history.html', context)
 
 @login_required
 def notifications(request):

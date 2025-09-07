@@ -996,8 +996,39 @@ class ChoiceUpdateView(View):
         }
         return render(request, 'pages/choice_form.html', context)
 
-def delete_choice(request, pk):
-    choice = get_object_or_404(Choice, pk=pk)
-    question_id = choice.question.id
-    choice.delete()
-    return redirect('choice_list', question_id=question_id)
+from student.models import Payment
+from django.contrib.auth.decorators import login_required, permission_required
+
+@login_required
+@permission_required('student.change_payment', raise_exception=True)
+def payment_requests(request):
+    payments = Payment.objects.filter(status='pending').order_by('-created_at')
+    context = {
+        'payments': payments,
+    }
+    return render(request, 'pages/payment_requests.html', context)
+
+@login_required
+@permission_required('student.change_payment', raise_exception=True)
+def approve_payment(request, payment_id):
+    payment = get_object_or_404(Payment, id=payment_id)
+    payment.status = 'approved'
+    payment.save()
+    return redirect('payment_requests')
+
+@login_required
+@permission_required('student.change_payment', raise_exception=True)
+def reject_payment(request, payment_id):
+    payment = get_object_or_404(Payment, id=payment_id)
+    if request.method == 'POST':
+        reason = request.POST.get('rejection_reason')
+        if reason:
+            payment.status = 'rejected'
+            payment.rejection_reason = reason
+            payment.save()
+            return redirect('payment_requests')
+
+    context = {
+        'payment': payment,
+    }
+    return render(request, 'pages/reject_payment.html', context)
