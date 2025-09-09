@@ -125,11 +125,20 @@
             </li>
             
             <li class="nav-item">
+                <a class="nav-link" href="{% url 'student:student-profile' %}">
+                    <i class="bi bi-gear"></i>
+                    <span>الملف الشخصي</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
                 <a class="nav-link" href="{% url 'student:settings' %}">
                     <i class="bi bi-gear"></i>
                     <span>الإعدادات</span>
                 </a>
             </li>
+
+
         </ul>
     </nav>
     {% endblock sidebar %}

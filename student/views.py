@@ -108,3 +108,34 @@ def calendar(request):
 @login_required
 def settings(request):
     return render(request, 'student/settings.html')
+
+from django.views.generic import DetailView, UpdateView
+from django.urls import reverse_lazy
+from profiles.models import StudentProfile
+from student.models import Student
+from dashboard.mixins import RolesRequiredMixin
+from django.contrib.auth import get_user_model
+User = get_user_model()
+
+class StudentProfileDetailView(DetailView):
+    model = User
+    template_name = 'student/student_profile.html'
+    context_object_name = 'user'
+
+    def get_object(self, queryset=None):
+        return self.request.user
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['student_profile'], _ = StudentProfile.objects.get_or_create(user=self.request.user)
+        context['student'], _ = Student.objects.get_or_create(user=self.request.user)
+        return context
+
+class StudentProfileUpdateView(UpdateView):
+    model = StudentProfile
+    fields = ['bio', 'profile_picture', 'country', 'city', 'address', 'postal_code', 'certificate_number', 'certificate_file', 'languages']
+    template_name = 'student/student_profile_update.html'
+    success_url = reverse_lazy('student:student-profile')
+
+    def get_object(self, queryset=None):
+        return StudentProfile.objects.get_or_create(user=self.request.user)[0]

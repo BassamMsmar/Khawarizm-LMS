@@ -1,0 +1,46 @@
+{% extends 'student/base/base.html' %}
+
+{% block content %}
+<div class="main-content">
+  
+    <div class="container-fluid">
+            <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Student Profile</h4>
+                    <div class="row">
+                        <div class="col-md-4">
+                            {% if student_profile.profile_picture %}
+                                <img src="{{ student_profile.profile_picture.url }}" alt="Profile Picture" class="img-fluid rounded-circle" width="200">
+                            {% else %}
+                                <p>No profile picture</p>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-8">
+                            <p><strong>Name:</strong> {{ user.get_full_name }}</p>
+                            <p><strong>Email:</strong> {{ user.email }}</p>
+                            <p><strong>Department:</strong> {{ student.department }}</p>
+                            <p><strong>Total Fees:</strong> {{ student.total_fees }}</p>
+                            <p><strong>Bio:</strong> {{ student_profile.bio }}</p>
+                            <p><strong>Country:</strong> {{ student_profile.country }}</p>
+                            <p><strong>City:</strong> {{ student_profile.city }}</p>
+                            <p><strong>Address:</strong> {{ student_profile.address }}</p>
+                            <p><strong>Postal Code:</strong> {{ student_profile.postal_code }}</p>
+                            <p><strong>Certificate Number:</strong> {{ student_profile.certificate_number }}</p>
+                            {% comment %} <p><strong>Certificate File:</strong> <a href="{{ student_profile.certificate_file.url }}">{{ student_profile.certificate_file }}</a></p> {% endcomment %}
+                            <p><strong>Languages:</strong>
+                                {% for lang in student_profile.languages.all %}
+                                    {{ lang.name }}{% if not forloop.last %}, {% endif %}
+                                {% endfor %}
+                            </p>
+                            <a href="{% url 'student:student-profile-update' %}" class="btn btn-primary">Update Profile</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+{% endblock %}
