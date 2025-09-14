@@ -1,349 +1,224 @@
 {% extends 'base/base2.html' %}
 
 {% block content %}
-<div class="rbt-breadcrumb-default ptb--100 ptb_md--50 ptb_sm--30 bg-gradient-1">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="breadcrumb-inner text-center">
-                    <h2 class="title">{{ quiz.title }}</h2>
-                    <ul class="page-list">
-                        <li class="rbt-breadcrumb-item"><a href="{% url 'mainDemo' %}">Home</a></li>
-                        <li class="rbt-breadcrumb-item"><a href="{% url 'courses:course_detail' slug=course.slug %}">{{ course.title }}</a></li>
-                        <li class="rbt-breadcrumb-item active">Taking Quiz</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="rbt-lesson-area bg-color-white rbt-section-gap">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8">
-                <div class="quiz-wrapper">
-                    <!-- Timer Section -->
-                    <div class="quiz-timer-wrapper rbt-shadow-box mb--30">
-                        <div class="inner">
-                            <div class="timer-display">
-                                <div class="timer-icon">
-                                    <i class="feather-clock"></i>
-                                </div>
-                                <div class="timer-content">
-                                    <h6>Time Remaining</h6>
-                                    <div id="quiz-timer" class="timer-countdown">
-                                        <span id="minutes">{{ quiz_duration }}</span>:<span id="seconds">00</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="timer-progress">
-                                <div class="progress">
-                                    <div id="timer-progress-bar" class="progress-bar bg-primary" role="progressbar" style="width: 100%"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Quiz Form -->
-                    <form id="quiz-form" method="post" action="">
-                        {% csrf_token %}
-                        
-                        {% for question in questions %}
-                        <div class="question-wrapper rbt-shadow-box mb--30">
-                            <div class="inner">
-                                <div class="question-header">
-                                    <h5 class="question-number">Question {{ forloop.counter }}</h5>
-                                </div>
-                                <div class="question-content">
-                                    <h6 class="question-text">{{ question.text }}</h6>
-                                    
-                                    <div class="choices-wrapper mt--20">
-                                        {% for choice in question.choices.all %}
-                                        <div class="choice-item">
-                                            <input type="radio" 
-                                                   id="choice_{{ question.id }}_{{ choice.id }}" 
-                                                   name="question_{{ question.id }}" 
-                                                   value="{{ choice.id }}"
-                                                   class="choice-input">
-                                            <label for="choice_{{ question.id }}_{{ choice.id }}" class="choice-label">
-                                                <span class="choice-indicator"></span>
-                                                <span class="choice-text">{{ choice.text }}</span>
-                                            </label>
-                                        </div>
-                                        {% endfor %}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        {% endfor %}
-                        
-                        <div class="quiz-submit-wrapper text-center">
-                            <button type="submit" id="submit-quiz" class="rbt-btn btn-gradient hover-icon-reverse">
-                                <span class="icon-reverse-wrapper">
-                                    <span class="btn-text">Submit Quiz</span>
-                                    <span class="btn-icon"><i class="feather-arrow-right"></i></span>
-                                    <span class="btn-icon"><i class="feather-arrow-right"></i></span>
-                                </span>
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            
-            <div class="col-lg-4">
-                <div class="quiz-sidebar sticky-top">
-                    <div class="quiz-progress-widget rbt-shadow-box">
-                        <div class="inner">
-                            <h5 class="widget-title">Quiz Progress</h5>
-                            <div class="progress-info">
-                                <div class="progress-stats">
-                                    <div class="stat-item">
-                                        <span class="label">Total Questions:</span>
-                                        <span class="value">{{ questions.count }}</span>
-                                    </div>
-                                    <div class="stat-item">
-                                        <span class="label">Answered:</span>
-                                        <span class="value" id="answered-count">0</span>
-                                    </div>
-                                    <div class="stat-item">
-                                        <span class="label">Remaining:</span>
-                                        <span class="value" id="remaining-count">{{ questions.count }}</span>
-                                    </div>
-                                </div>
-                                
-                                <div class="progress-bar-wrapper mt--20">
-                                    <div class="progress">
-                                        <div id="quiz-progress-bar" class="progress-bar bg-success" role="progressbar" style="width: 0%"></div>
-                                    </div>
-                                    <span class="progress-text">0% Complete</span>
-                                </div>
-                            </div>
-                            
-                            <div class="question-navigator mt--30">
-                                <h6>Question Navigator</h6>
-                                <div class="question-grid">
-                                    {% for question in questions %}
-                                    <div class="question-nav-item" data-question="{{ forloop.counter }}">
-                                        {{ forloop.counter }}
-                                    </div>
-                                    {% endfor %}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Time Up Modal -->
-<div class="modal fade" id="timeUpModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Time's Up!</h5>
-            </div>
-            <div class="modal-body text-center">
-                <i class="feather-clock" style="font-size: 48px; color: #dc3545; margin-bottom: 20px;"></i>
-                <p>Your time for this quiz has expired. Your answers will be submitted automatically.</p>
-            </div>
-            <div class="modal-footer justify-content-center">
-                <button type="button" class="rbt-btn btn-gradient" onclick="submitQuiz()">Submit Quiz</button>
-            </div>
-        </div>
-    </div>
-</div>
-
 <style>
-.quiz-timer-wrapper {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-}
+  body {
+    background-color: #f3f4f6;
+    font-family: 'Cairo', sans-serif;
+    direction: rtl;
+  }
 
-.timer-display {
+  .quiz-container-fluid {
     display: flex;
-    align-items: center;
-    margin-bottom: 15px;
-}
+    height: 100vh;
+    overflow: hidden;
+  }
 
-.timer-icon i {
-    font-size: 24px;
-    margin-right: 15px;
-}
+  .quiz-main {
+    flex-grow: 1;
+    padding: 2rem;
+    overflow-y: auto;
+  }
 
-.timer-content h6 {
-    margin: 0 0 5px 0;
-    color: rgba(255,255,255,0.8);
-}
+  .quiz-sidebar {
+    width: 320px;
+    background-color: #fff;
+    box-shadow: 10px 0 30px rgba(0,0,0,0.05);
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+  }
 
-.timer-countdown {
-    font-size: 24px;
-    font-weight: bold;
-    color: white;
-}
+  .quiz-header {
+    margin-bottom: 2rem;
+  }
 
-.timer-progress .progress {
-    height: 6px;
-    background: rgba(255,255,255,0.2);
-}
+  .quiz-header h1 {
+    font-weight: 800;
+    font-size: 2.5rem;
+  }
 
-.question-wrapper {
-    border-left: 4px solid #2f57ef;
-}
+  .question-card {
+    background-color: #fff;
+    border-radius: 15px;
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+  }
 
-.question-header {
-    border-bottom: 1px solid #e9ecef;
-    padding-bottom: 15px;
-    margin-bottom: 20px;
-}
+  .question-number {
+    font-weight: 700;
+    color: #4f46e5;
+    margin-bottom: 1rem;
+  }
 
-.question-number {
-    color: #2f57ef;
+  .question-text {
+    font-size: 1.2rem;
     font-weight: 600;
-    margin: 0;
-}
+    margin-bottom: 2rem;
+  }
 
-.question-text {
-    font-weight: 500;
-    line-height: 1.6;
-    margin-bottom: 0;
-}
-
-.choice-item {
-    margin-bottom: 15px;
-}
-
-.choice-input {
-    display: none;
-}
-
-.choice-label {
-    display: flex;
-    align-items: center;
-    padding: 15px;
-    border: 2px solid #e9ecef;
-    border-radius: 6px;
+  .choice-label {
+    display: block;
+    background-color: #f9fafb;
+    padding: 1rem;
+    border-radius: 10px;
+    margin-bottom: 1rem;
     cursor: pointer;
-    transition: all 0.3s ease;
-}
+    transition: all 0.2s ease;
+    border: 2px solid transparent;
+  }
 
-.choice-label:hover {
-    border-color: #2f57ef;
-    background-color: #f8f9ff;
-}
+  .choice-label:hover {
+    border-color: #a5b4fc;
+  }
 
-.choice-input:checked + .choice-label {
-    border-color: #2f57ef;
-    background-color: #2f57ef;
-    color: white;
-}
-
-.choice-indicator {
-    width: 20px;
-    height: 20px;
-    border: 2px solid #ddd;
-    border-radius: 50%;
-    margin-right: 15px;
-    position: relative;
-}
-
-.choice-input:checked + .choice-label .choice-indicator {
-    border-color: white;
-    background-color: white;
-}
-
-.choice-input:checked + .choice-label .choice-indicator::after {
-    content: '';
-    width: 8px;
-    height: 8px;
-    background-color: #2f57ef;
-    border-radius: 50%;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-.choice-text {
-    flex: 1;
-}
-
-.quiz-progress-widget .stat-item {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 10px;
-}
-
-.stat-item .label {
-    color: #6b7385;
-}
-
-.stat-item .value {
+  .choice-input:checked + .choice-label {
+    background-color: #e0e7ff;
+    border-color: #4f46e5;
     font-weight: 600;
-    color: #1d2327;
-}
+  }
 
-.progress-text {
-    font-size: 12px;
-    color: #6b7385;
-    margin-top: 5px;
-}
+  .timer-card, .progress-card, .navigator-card {
+    background-color: #fff;
+    border-radius: 15px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+  }
 
-.question-grid {
+  .timer-card h5, .progress-card h5, .navigator-card h5 {
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+
+  #quiz-timer {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #4f46e5;
+  }
+
+  .question-grid {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 10px;
-    margin-top: 15px;
-}
+    grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+    gap: 0.5rem;
+  }
 
-.question-nav-item {
-    width: 35px;
-    height: 35px;
+  .question-nav-item {
+    width: 40px;
+    height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 2px solid #e9ecef;
-    border-radius: 6px;
+    border-radius: 8px;
+    background-color: #f3f4f6;
     cursor: pointer;
-    font-weight: 600;
-    transition: all 0.3s ease;
-}
+    transition: all 0.2s ease;
+  }
 
-.question-nav-item:hover {
-    border-color: #2f57ef;
-    color: #2f57ef;
-}
+  .question-nav-item:hover {
+    background-color: #e0e7ff;
+  }
 
-.question-nav-item.answered {
-    background-color: #28a745;
-    border-color: #28a745;
+  .question-nav-item.answered {
+    background-color: #4f46e5;
     color: white;
-}
+  }
 
-.timer-warning {
-    animation: pulse 1s infinite;
-}
+  .btn-submit {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1.1rem;
+    font-weight: 700;
+    border-radius: 10px;
+    background-color: #4f46e5;
+    color: white;
+  }
 
-@keyframes pulse {
-    0% { opacity: 1; }
-    50% { opacity: 0.5; }
-    100% { opacity: 1; }
-}
 </style>
+
+<div class="quiz-container-fluid">
+  <div class="quiz-sidebar">
+    <div class="timer-card">
+      <h5>الوقت المتبقي</h5>
+      <div id="quiz-timer"><span id="minutes">{{ quiz.duration }}</span>:<span id="seconds">00</span></div>
+      <div class="progress mt-2" style="height: 5px;">
+        <div id="timer-progress-bar" class="progress-bar" role="progressbar" style="width: 100%;"></div>
+      </div>
+    </div>
+
+    <div class="progress-card">
+      <h5>تقدم الاختبار</h5>
+      <p>تمت الإجابة على <span id="answered-count">0</span> من {{ questions.count }} أسئلة</p>
+      <div class="progress" style="height: 10px;">
+        <div id="quiz-progress-bar" class="progress-bar" role="progressbar" style="width: 0%;"></div>
+      </div>
+    </div>
+
+    <div class="navigator-card">
+      <h5>مستكشف الأسئلة</h5>
+      <div class="question-grid">
+        {% for question in questions %}
+        <div class="question-nav-item" data-question="{{ forloop.counter }}">{{ forloop.counter }}</div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <button type="submit" form="quiz-form" class="btn btn-submit mt-auto">إرسال الاختبار</button>
+  </div>
+
+  <div class="quiz-main">
+    <div class="quiz-header">
+      <h1>{{ quiz.title }}</h1>
+    </div>
+
+    <form id="quiz-form" method="post">
+      {% csrf_token %}
+      {% for question in questions %}
+      <div class="question-card" id="question-{{ forloop.counter }}">
+        <h5 class="question-number">سؤال {{ forloop.counter }}</h5>
+        <p class="question-text">{{ question.text }}</p>
+        <div class="choices">
+          {% for choice in question.choices.all %}
+          <div>
+            <input type="radio" id="choice-{{ choice.id }}" name="question_{{ question.id }}" value="{{ choice.id }}" class="d-none choice-input">
+            <label for="choice-{{ choice.id }}" class="choice-label">{{ choice.text }}</label>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endfor %}
+    </form>
+  </div>
+</div>
+
+<div class="modal fade" id="timeUpModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">انتهى الوقت!</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center">
+        <i class="bi bi-clock-history" style="font-size: 3rem; color: #ef4444;"></i>
+        <p class="mt-3">لقد انتهى وقتك لهذا الاختبار. سيتم إرسال إجاباتك تلقائيًا.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" onclick="submitQuiz()">إرسال الآن</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Timer functionality
-    let totalMinutes = parseInt('{{ quiz.duration|default:30 }}');
+    const totalMinutes = parseInt('{{ quiz.duration|default:30 }}');
     let totalSeconds = totalMinutes * 60;
     let currentSeconds = totalSeconds;
     
     const minutesDisplay = document.getElementById('minutes');
     const secondsDisplay = document.getElementById('seconds');
     const timerProgressBar = document.getElementById('timer-progress-bar');
-    const timerElement = document.getElementById('quiz-timer');
     
     function updateTimer() {
         const minutes = Math.floor(currentSeconds / 60);
@@ -352,110 +227,69 @@ document.addEventListener('DOMContentLoaded', function() {
         minutesDisplay.textContent = minutes.toString().padStart(2, '0');
         secondsDisplay.textContent = seconds.toString().padStart(2, '0');
         
-        // Update progress bar
         const progressPercentage = (currentSeconds / totalSeconds) * 100;
         timerProgressBar.style.width = progressPercentage + '%';
         
-        // Warning when less than 5 minutes
-        if (currentSeconds <= 300) {
-            timerElement.classList.add('timer-warning');
-            timerProgressBar.classList.remove('bg-primary');
-            timerProgressBar.classList.add('bg-warning');
-        }
-        
-        // Critical when less than 1 minute
-        if (currentSeconds <= 60) {
-            timerProgressBar.classList.remove('bg-warning');
-            timerProgressBar.classList.add('bg-danger');
-        }
-        
         if (currentSeconds <= 0) {
             clearInterval(timerInterval);
-            showTimeUpModal();
+            new bootstrap.Modal(document.getElementById('timeUpModal')).show();
+            setTimeout(() => submitQuiz(), 3000);
         }
         
         currentSeconds--;
     }
     
     const timerInterval = setInterval(updateTimer, 1000);
-    
-    function showTimeUpModal() {
-        const modal = new bootstrap.Modal(document.getElementById('timeUpModal'));
-        modal.show();
-    }
-    
-    // Progress tracking
-    const totalQuestions = parseInt('{{ questions.count }}');
+
+    const totalQuestions = {{ questions.count }};
     const answeredCountElement = document.getElementById('answered-count');
-    const remainingCountElement = document.getElementById('remaining-count');
     const quizProgressBar = document.getElementById('quiz-progress-bar');
-    
+    const questionNavItems = document.querySelectorAll('.question-nav-item');
+
     function updateProgress() {
         const answeredQuestions = document.querySelectorAll('input[type="radio"]:checked').length;
-        const remainingQuestions = totalQuestions - answeredQuestions;
-        const progressPercentage = (answeredQuestions / totalQuestions) * 100;
-        
         answeredCountElement.textContent = answeredQuestions;
-        remainingCountElement.textContent = remainingQuestions;
+        
+        const progressPercentage = (answeredQuestions / totalQuestions) * 100;
         quizProgressBar.style.width = progressPercentage + '%';
-        
-        // Update progress text
-        const progressText = document.querySelector('.progress-text');
-        progressText.textContent = Math.round(progressPercentage) + '% Complete';
-        
-        // Update question navigator
-        document.querySelectorAll('.question-nav-item').forEach((item, index) => {
-            const questionNumber = index + 1;
-            const questionInputs = document.querySelectorAll(`input[name^="question_"]:checked`);
-            let isAnswered = false;
-            questionInputs.forEach(input => {
-                if (input.name === `question_${questionNumber}`) {
-                    isAnswered = true;
-                }
-            });
-            if (isAnswered) {
+
+        const answeredQuestionIds = Array.from(document.querySelectorAll('input[type="radio"]:checked')).map(input => input.name);
+
+        questionNavItems.forEach((item, index) => {
+            const questionId = `question_${questions[index].id}`;
+            if (answeredQuestionIds.includes(questionId)) {
                 item.classList.add('answered');
             } else {
                 item.classList.remove('answered');
             }
         });
     }
-    
-    // Listen for answer changes
+
     document.querySelectorAll('input[type="radio"]').forEach(input => {
         input.addEventListener('change', updateProgress);
     });
-    
-    // Question navigator functionality
-    document.querySelectorAll('.question-nav-item').forEach(item => {
+
+    questionNavItems.forEach(item => {
         item.addEventListener('click', function() {
             const questionNumber = this.dataset.question;
-            const questionElement = document.querySelector(`.question-wrapper:nth-of-type(${questionNumber})`);
-            if (questionElement) {
-                questionElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
+            document.getElementById(`question-${questionNumber}`).scrollIntoView({ behavior: 'smooth', block: 'center' });
         });
     });
-    
-    // Form submission
+
     document.getElementById('quiz-form').addEventListener('submit', function(e) {
-        e.preventDefault();
-        
         const answeredQuestions = document.querySelectorAll('input[type="radio"]:checked').length;
         if (answeredQuestions < totalQuestions) {
-            const confirmSubmit = confirm(`You have answered ${answeredQuestions} out of ${totalQuestions} questions. Are you sure you want to submit?`);
-            if (!confirmSubmit) {
-                return;
+            if (!confirm(`لقد أجبت على ${answeredQuestions} من ${totalQuestions} أسئلة. هل أنت متأكد أنك تريد الإرسال؟`)) {
+                e.preventDefault();
             }
         }
-        
-        clearInterval(timerInterval);
-        this.submit();
     });
-});
 
-function submitQuiz() {
-    document.getElementById('quiz-form').submit();
-}
+    window.submitQuiz = function() {
+        document.getElementById('quiz-form').submit();
+    }
+
+    const questions = [{% for q in questions %}{ id: {{ q.id }} },{% endfor %}];
+});
 </script>
 {% endblock content %}

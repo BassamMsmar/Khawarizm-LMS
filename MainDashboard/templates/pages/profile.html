@@ -1,0 +1,62 @@
+
+{% extends 'base/base.html' %}
+
+{% block content %}
+<div class="main-content">
+  
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Lecturer Profile</h4>
+                    <div class="row">
+                        <div class="col-md-4">
+                            {% if lecturer_profile.profile_picture %}
+                                <img src="{{ lecturer_profile.profile_picture.url }}" alt="Profile Picture" class="img-fluid rounded-circle" width="200">
+                            {% else %}
+                                <p>No profile picture</p>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-8">
+                            <p><strong>Name:</strong> {{ user.get_full_name }}</p>
+                            <p><strong>Email:</strong> {{ user.email }}</p>
+                            <p><strong>Headline:</strong> {{ lecturer_profile.headline }}</p>
+                            <p><strong>Bio:</strong> {{ lecturer_profile.bio }}</p>
+                            <p><strong>Experience:</strong> {{ lecturer_profile.experience }} years</p>
+                            <p><strong>Education:</strong> {{ lecturer_profile.education }}</p>
+                            <p><strong>Certification:</strong> {{ lecturer_profile.certification }}</p>
+                            <p><strong>Country:</strong> {{ lecturer_profile.country }}</p>
+                            <p><strong>City:</strong> {{ lecturer_profile.city }}</p>
+                            <p><strong>Address:</strong> {{ lecturer_profile.address }}</p>
+                            <p><strong>Postal Code:</strong> {{ lecturer_profile.postal_code }}</p>
+                            <p><strong>Colleges:</strong>
+                                {% for college in lecturer_profile.colleges.all %}
+                                    {{ college.title }}{% if not forloop.last %}, {% endif %}
+                                {% endfor %}
+                            </p>
+                            <p><strong>Departments:</strong>
+                                {% for department in lecturer_profile.departments.all %}
+                                    {{ department.name }}{% if not forloop.last %}, {% endif %}
+                                {% endfor %}
+                            </p>
+                            <p><strong>Courses:</strong>
+                                {% for course in lecturer_profile.courses.all %}
+                                    {{ course.title }}{% if not forloop.last %}, {% endif %}
+                                {% endfor %}
+                            </p>
+                            <p><strong>Languages:</strong>
+                                {% for lang in lecturer_profile.languages.all %}
+                                    {{ lang.name }}{% if not forloop.last %}, {% endif %}
+                                {% endfor %}
+                            </p>
+                            <a href="/main-dashboard/profile/update/" class="btn btn-primary">Update Profile</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+{% endblock %}

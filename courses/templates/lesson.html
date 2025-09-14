@@ -1,113 +1,209 @@
 {% extends 'base/base2.html' %}
 {% load custom_filters %}
-{% comment %} {% load custom_tags %} {% endcomment %}
 
 {% block content %}
+<style>
+  body {
+    background-color: #f8f9fa;
+    font-family: 'Roboto', sans-serif;
+  }
 
-    <div class="rbt-lesson-area bg-color-white">
-        <div class="rbt-lesson-content-wrapper">
-            <div class="rbt-lesson-leftsidebar">
-                <div class="rbt-course-feature-inner rbt-search-activation">
-    <div class="section-title">
-        <h4 class="rbt-title-style-3">Course Content</h4>
+  .lesson-wrapper {
+    display: flex;
+    height: 100vh;
+  }
+
+  .lesson-sidebar {
+    width: 350px;
+    background-color: #fff;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .lesson-sidebar-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid #e0e0e0;
+  }
+
+  .lesson-sidebar-header h4 {
+    font-weight: 700;
+    color: #333;
+  }
+
+  .lesson-search {
+    padding: 1rem 1.5rem;
+  }
+
+  .lesson-search input {
+    border-radius: 50px;
+  }
+
+  .lesson-content-list {
+    flex-grow: 1;
+    overflow-y: auto;
+  }
+
+  .accordion-item {
+    border: none;
+  }
+
+  .accordion-button {
+    font-weight: 600;
+    color: #555;
+  }
+
+  .accordion-button:not(.collapsed) {
+    background-color: #eef2ff;
+    color: #4f46e5;
+  }
+
+  .lesson-list a {
+    display: block;
+    padding: 0.8rem 1.5rem;
+    color: #555;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    border-left: 3px solid transparent;
+  }
+
+  .lesson-list a:hover, .lesson-list a.active {
+    background-color: #eef2ff;
+    color: #4f46e5;
+    border-left-color: #4f46e5;
+  }
+
+  .lesson-main-content {
+    flex-grow: 1;
+    padding: 2rem;
+    overflow-y: auto;
+  }
+
+  .lesson-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+
+  .lesson-header h5 {
+    font-weight: 700;
+    font-size: 1.8rem;
+  }
+
+  .video-container {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+    overflow: hidden;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  }
+
+  .video-container video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .lesson-description {
+    margin-top: 2rem;
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 15px;
+  }
+
+  .lesson-description h4 {
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+
+  .lesson-footer {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background-color: #fff;
+    border-radius: 15px;
+    text-align: center;
+  }
+
+  .btn-complete {
+    background-color: #10b981;
+    color: white;
+    font-weight: 600;
+    border-radius: 50px;
+    padding: 0.8rem 2.5rem;
+  }
+
+  .btn-complete.completed {
+    background-color: #6ee7b7;
+    cursor: not-allowed;
+  }
+
+</style>
+
+<div class="lesson-wrapper">
+  <div class="lesson-sidebar">
+    <div class="lesson-sidebar-header">
+      <h4>Course Content</h4>
     </div>
-
-    <div class="lesson-search-wrapper">
-        <form action="#" class="rbt-search-style-1">
-            <input class="rbt-search-active" type="text" placeholder="Search Lesson">
-            <button class="search-btn disabled"><i class="feather-search"></i></button>
-        </form>
+    <div class="lesson-search">
+      <input class="form-control" type="text" placeholder="Search Lesson...">
     </div>
-
-    <hr class="mt--10">
-
-    <div class="rbt-accordion-style rbt-accordion-02 for-right-content accordion">
-        <div class="accordion" id="accordionExample">
-
-            {% for unit in units %}
-                <div class="accordion-item card">
-                    <h2 class="accordion-header card-header" id="heading{{ forloop.counter }}">
-                        <button class="accordion-button {% if not forloop.first %}collapsed{% endif %}" type="button"
-                            data-bs-toggle="collapse"
-                            data-bs-target="#collapse{{ forloop.counter }}"
-                            aria-expanded="{% if forloop.first %}true{% else %}false{% endif %}"
-                            aria-controls="collapse{{ forloop.counter }}">
-                            {{ unit.title }} <span class="rbt-badge-5 ml--10">{{ unit.lessons.count }}</span>
-                        </button>
-                    </h2>
-
-                    <div id="collapse{{ forloop.counter }}"
-                        class="accordion-collapse collapse {% if forloop.first %}show{% endif %}"
-                        aria-labelledby="heading{{ forloop.counter }}">
-                        <div class="accordion-body card-body">
-                            <ul class="rbt-course-main-content liststyle">
-                                {% for lesson_item in unit_lessons|get_item:unit %}
-                                    <li>
-                                        <a href="{% url 'courses:lesson_detail' course_slug=lesson_item.unit.course.slug lesson_slug=lesson_item.slug %}">
-                                            {{ lesson_item.title }}
-                                        </a>
-                                    </li>
-                                {% empty %}
-                                    <li>لا يوجد دروس في هذه الوحدة</li>
-                                {% endfor %}
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            {% endfor %}
-
+    <div class="lesson-content-list">
+      <div class="accordion" id="lessonAccordion">
+        {% for unit in units %}
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="heading{{ forloop.counter }}">
+            <button class="accordion-button {% if not forloop.first %}collapsed{% endif %}" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ forloop.counter }}" aria-expanded="{% if forloop.first %}true{% else %}false{% endif %}" aria-controls="collapse{{ forloop.counter }}">
+              {{ unit.title }}
+            </button>
+          </h2>
+          <div id="collapse{{ forloop.counter }}" class="accordion-collapse collapse {% if forloop.first %}show{% endif %}" aria-labelledby="heading{{ forloop.counter }}" data-bs-parent="#lessonAccordion">
+            <div class="accordion-body p-0">
+              <ul class="list-unstyled lesson-list">
+                {% for lesson_item in unit_lessons|get_item:unit %}
+                <li>
+                  <a href="{% url 'courses:lesson_detail' course_slug=lesson_item.unit.course.slug lesson_slug=lesson_item.slug %}" class="{% if lesson_item.slug == lesson.slug %}active{% endif %}">
+                    <i class="bi bi-play-circle-fill me-2"></i>{{ lesson_item.title }}
+                  </a>
+                </li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
         </div>
+        {% endfor %}
+      </div>
     </div>
+  </div>
+
+  <div class="lesson-main-content">
+    <div class="lesson-header">
+      <h5>{{ lesson.title }}</h5>
+      <a href="{% url 'courseDetails' %}" class="btn btn-light rounded-circle"><i class="bi bi-x-lg"></i></a>
+    </div>
+
+    <div class="video-container">
+      <video controls autoplay>
+        <source src="{{ lesson.video_url }}" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+
+    <div class="lesson-description">
+      <h4>About This Lesson</h4>
+      <p>{{ lesson.description|safe }}</p>
+    </div>
+
+    <div class="lesson-footer">
+      {% if is_completed %}
+        <button class="btn btn-complete completed" disabled>Completed</button>
+      {% else %}
+        <a class="btn btn-complete" href="{% url 'courses:mark_lesson_as_complete' lesson.id %}">Mark as Complete</a>
+      {% endif %}
+    </div>
+  </div>
 </div>
-
-            </div>
-
-            <div class="rbt-lesson-rightsidebar overflow-hidden lesson-video">
-                <div class="lesson-top-bar">
-                    <div class="lesson-top-left">
-                        <div class="rbt-lesson-toggle">
-                            <button class="lesson-toggle-active btn-round-white-opacity" title="Toggle Sidebar"><i
-                    class="feather-arrow-left"></i></button>
-                        </div>
-                        <h5>{{lesson}}</h5>
-                    </div>
-                    <div class="lesson-top-right">
-                        <div class="rbt-btn-close">
-                            <a href="{% url 'courseDetails'%}" title="Go Back to Course" class="rbt-round-btn"><i class="feather-x"></i></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="inner">
-                    <div class="rbtplayer">
-                        <video controls autoplay class="w-100" style="border-radius: 10px;">
-                            <source src="{{lesson.video_url}}" type="video/mp4">
-                            Your browser does not support the video tag.
-                        </video>
-                    </div>
-                    
-
-                    <div class="content">
-                        <div class="section-title">
-                            <h4>About Lesson</h4>
-                            <p>{{lesson.description|safe}}. </p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="bg-color-extra2 ptb--15 overflow-hidden">
-                    <div class="rbt-button-group">
-
-                        {% if is_completed %}
-                            <a class="rbt-btn btn-md btn-success" href="#">Completed</a>
-                        {% else %}
-                            <a class="rbt-btn btn-md btn-success" href="{% url 'courses:mark_lesson_as_complete' lesson.id %}">Mark as Complete</a>
-                        {% endif %}
-
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
-
 {% endblock content %}
