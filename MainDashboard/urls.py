@@ -1,8 +1,7 @@
 from django.urls import path
 from . import views
-from .views import LecturerProfileDetailView, LecturerProfileUpdateView
 
-app_name = 'MainDashboard'
+
 
 urlpatterns = [
     
@@ -76,8 +75,6 @@ urlpatterns = [
     path('teachers/create/ajax/', views.TeacherCreateAjaxView.as_view(), name='create_teacher_ajax'),
     path('teachers/update/<int:pk>/', views.TeacherUpdateAjaxView.as_view(), name='update_teacher_ajax'),
     path('teachers/delete/<int:pk>/', views.delete_teacher, name='delete_teacher'),
-    path('profile/', LecturerProfileDetailView.as_view(), name='lecturer-profile'),
-    path('profile/update/', LecturerProfileUpdateView.as_view(), name='lecturer-profile-update'),
 
 
    # ____________________________________________________________________________

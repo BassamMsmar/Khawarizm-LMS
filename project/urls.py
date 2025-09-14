@@ -20,7 +20,7 @@ urlpatterns = [
     path('college/', include('college.urls')),
     path('degreeLevel/', include('degreeLevel.urls')),
 
-    path("main-dashboard/", include('MainDashboard.urls', namespace='MainDashboard')),
+    path("main-dashboard/", include('MainDashboard.urls')),
     path("student-dashboard/", include('student.urls')),
     path('notifications/', include('notifications.urls', namespace='notifications')), # Added this line
 

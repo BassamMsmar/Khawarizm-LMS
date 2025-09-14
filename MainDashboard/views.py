@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.views.generic import ListView, View, UpdateView, DeleteView, DetailView
+from django.views.generic import ListView, View, UpdateView, DeleteView
 from django.http import JsonResponse
 from django.urls import reverse_lazy
 from django.db.models import Q
@@ -7,10 +7,7 @@ from courses.models import Course, Lesson, Unit, Quiz, Question, Choice
 from college.models import College
 from department.models import Department
 from .forms import CourseForm, CollegeForm, DepartmentForm, StudentForm, LessonForm, UnitForm, QuizForm, QuestionForm, ChoiceForm
-from django.contrib.auth.decorators import login_required
 
-
-@login_required
 def quiz_list(request, unit_id):
     unit = get_object_or_404(Unit, pk=unit_id)
     quizzes = Quiz.objects.filter(unit=unit)
@@ -229,7 +226,6 @@ from django.shortcuts import render
 from courses.models import Course, Lesson  # أو حسب اسم الموديلات عندك
 from accounts.models import User  # حسب مكان تعريف User
 
-@login_required
 def dashboard(request):
     courses_count = Course.objects.count()
 
@@ -1036,28 +1032,3 @@ def reject_payment(request, payment_id):
         'payment': payment,
     }
     return render(request, 'pages/reject_payment.html', context)
-
-from profiles.models import LecturerProfile
-from django.urls import reverse_lazy
-
-class LecturerProfileDetailView(DetailView):
-    model = User
-    template_name = 'pages/lecturer_profile.html'
-    context_object_name = 'user'
-
-    def get_object(self, queryset=None):
-        return self.request.user
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['lecturer_profile'], _ = LecturerProfile.objects.get_or_create(user=self.request.user)
-        return context
-
-class LecturerProfileUpdateView(UpdateView):
-    model = LecturerProfile
-    fields = ['headline', 'bio', 'experience', 'education', 'certification', 'colleges', 'departments', 'courses', 'languages', 'profile_picture', 'country', 'city', 'address', 'postal_code']
-    template_name = 'pages/lecturer_profile_update.html'
-    success_url = reverse_lazy('MainDashboard:lecturer-profile')
-
-    def get_object(self, queryset=None):
-        return LecturerProfile.objects.get_or_create(user=self.request.user)[0]
