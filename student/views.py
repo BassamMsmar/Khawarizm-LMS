@@ -1,11 +1,12 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
+
+from accounts.decorators import student_required
 from courses.models import Course, Unit
 from .models import Student, Payment
 from .forms import PaymentForm
 from django.db.models import Sum
 
-@login_required
+@student_required
 def index(request):
     enrolled_courses = request.user.enrolled_courses.all()
     context = {
@@ -13,7 +14,7 @@ def index(request):
     }
     return render(request, 'student/index.html', context)
 
-@login_required
+@student_required
 def my_courses(request):
     enrolled_courses = request.user.enrolled_courses.all()
     courses_with_progress = []
@@ -47,7 +48,7 @@ def my_courses(request):
     }
     return render(request, 'student/my_courses.html', context)
 
-@login_required
+@student_required
 def academic_program(request):
     student_department = request.user.department
     department_courses = []
@@ -59,7 +60,7 @@ def academic_program(request):
     }
     return render(request, 'student/academic_program.html', context)
 
-@login_required
+@student_required
 def my_payments(request):
     student = Student.objects.get(user=request.user)
     if request.method == 'POST':
@@ -78,7 +79,7 @@ def my_payments(request):
     }
     return render(request, 'student/my_payments.html', context)
 
-@login_required
+@student_required
 def payment_history(request):
     student = Student.objects.get(user=request.user)
     payments = Payment.objects.filter(student=student).order_by('-created_at')
@@ -93,22 +94,23 @@ def payment_history(request):
     }
     return render(request, 'student/payment_history.html', context)
 
-@login_required
+@student_required
 def notifications(request):
     return render(request, 'student/notifications.html')
 
-@login_required
+@student_required
 def my_grades(request):
     return render(request, 'student/my_grades.html')
 
-@login_required
+@student_required
 def calendar(request):
     return render(request, 'student/calendar.html')
 
-@login_required
+@student_required
 def settings(request):
     return render(request, 'student/settings.html')
 
+from django.utils.decorators import method_decorator
 from django.views.generic import DetailView, UpdateView
 from django.urls import reverse_lazy
 from profiles.models import StudentProfile
@@ -117,6 +119,7 @@ from dashboard.mixins import RolesRequiredMixin
 from django.contrib.auth import get_user_model
 User = get_user_model()
 
+@method_decorator(student_required, name='dispatch')
 class StudentProfileDetailView(DetailView):
     model = User
     template_name = 'student/student_profile.html'
@@ -131,6 +134,7 @@ class StudentProfileDetailView(DetailView):
         context['student'], _ = Student.objects.get_or_create(user=self.request.user)
         return context
 
+@method_decorator(student_required, name='dispatch')
 class StudentProfileUpdateView(UpdateView):
     model = StudentProfile
     fields = ['bio', 'profile_picture', 'country', 'city', 'address', 'postal_code', 'certificate_number', 'certificate_file', 'languages']

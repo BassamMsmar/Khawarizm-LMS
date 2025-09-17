@@ -59,8 +59,14 @@
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
-                                <li><a class="dropdown-item" href="#">
-                                        <i class="bi bi-box-arrow-right me-2"></i>تسجيل الخروج</a></li>
+                                <li>
+                                    <form action="{% url 'accounts:logout' %}" method="post" class="d-inline">
+                                        {% csrf_token %}
+                                        <button type="submit" class="dropdown-item">
+                                            <i class="bi bi-box-arrow-right me-2"></i>تسجيل الخروج
+                                        </button>
+                                    </form>
+                                </li>
                             </ul>
                         </div>
                     </div>

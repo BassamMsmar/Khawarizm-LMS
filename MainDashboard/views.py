@@ -7,7 +7,10 @@ from courses.models import Course, Lesson, Unit, Quiz, Question, Choice
 from college.models import College
 from department.models import Department
 from .forms import CourseForm, CollegeForm, DepartmentForm, StudentForm, LessonForm, UnitForm, QuizForm, QuestionForm, ChoiceForm
+from accounts.decorators import staff_required, admin_required
+from django.utils.decorators import method_decorator
 
+@staff_required
 def quiz_list(request, unit_id):
     unit = get_object_or_404(Unit, pk=unit_id)
     quizzes = Quiz.objects.filter(unit=unit)
@@ -17,6 +20,7 @@ def quiz_list(request, unit_id):
     }
     return render(request, 'pages/quiz_list.html', context)
 
+@method_decorator(staff_required, name='dispatch')
 class QuizCreateView(View):
     def get(self, request, unit_id):
         unit = get_object_or_404(Unit, pk=unit_id)
@@ -42,6 +46,7 @@ class QuizCreateView(View):
         }
         return render(request, 'pages/quiz_form.html', context)
 
+@method_decorator(staff_required, name='dispatch')
 class QuizUpdateView(View):
     def get(self, request, pk):
         quiz = get_object_or_404(Quiz, pk=pk)
@@ -64,12 +69,14 @@ class QuizUpdateView(View):
         }
         return render(request, 'pages/quiz_form.html', context)
 
+@staff_required
 def delete_quiz(request, pk):
     quiz = get_object_or_404(Quiz, pk=pk)
     unit_id = quiz.unit.id
     quiz.delete()
     return redirect('quiz_list', unit_id=unit_id)
 
+@staff_required
 def lesson_list(request, unit_id):
     unit = get_object_or_404(Unit, pk=unit_id)
     lessons = Lesson.objects.filter(unit=unit)
@@ -79,6 +86,7 @@ def lesson_list(request, unit_id):
     }
     return render(request, 'pages/lesson_list.html', context)
 
+@method_decorator(staff_required, name='dispatch')
 class LessonCreateView(View):
     def get(self, request, unit_id):
         unit = get_object_or_404(Unit, pk=unit_id)
@@ -104,6 +112,7 @@ class LessonCreateView(View):
         }
         return render(request, 'pages/lesson_form.html', context)
 
+@method_decorator(staff_required, name='dispatch')
 class LessonUpdateView(View):
     def get(self, request, pk):
         lesson = get_object_or_404(Lesson, pk=pk)
@@ -126,12 +135,14 @@ class LessonUpdateView(View):
         }
         return render(request, 'pages/lesson_form.html', context)
 
+@staff_required
 def delete_lesson(request, pk):
     lesson = get_object_or_404(Lesson, pk=pk)
     unit_id = lesson.unit.id
     lesson.delete()
     return redirect('lesson_list', unit_id=unit_id)
 
+@staff_required
 def course_detail(request, course_id):
     course = get_object_or_404(Course, pk=course_id)
     unit_form = UnitForm()
@@ -145,6 +156,7 @@ def course_detail(request, course_id):
     }
     return render(request, 'pages/course_detail.html', context)
 
+@method_decorator(staff_required, name='dispatch')
 class UnitCreateAjaxView(View):
     def post(self, request, course_id, *args, **kwargs):
         course = get_object_or_404(Course, pk=course_id)
@@ -157,6 +169,7 @@ class UnitCreateAjaxView(View):
         else:
             return JsonResponse({'success': False, 'errors': form.errors})
 
+@method_decorator(staff_required, name='dispatch')
 class UnitUpdateAjaxView(View):
     def get(self, request, pk, *args, **kwargs):
         unit = get_object_or_404(Unit, pk=pk)
@@ -174,12 +187,14 @@ class UnitUpdateAjaxView(View):
         else:
             return JsonResponse({'success': False, 'errors': form.errors})
 
+@staff_required
 def delete_unit(request, pk):
     unit = get_object_or_404(Unit, pk=pk)
     course_id = unit.course.id
     unit.delete()
     return redirect('course_detail', course_id=course_id)
 
+@method_decorator(staff_required, name='dispatch')
 class LessonCreateAjaxView(View):
     def post(self, request, course_id, *args, **kwargs):
         course = get_object_or_404(Course, pk=course_id)
@@ -192,6 +207,7 @@ class LessonCreateAjaxView(View):
         else:
             return JsonResponse({'success': False, 'errors': form.errors})
 
+@method_decorator(staff_required, name='dispatch')
 class LessonUpdateAjaxView(View):
     def get(self, request, pk, *args, **kwargs):
         lesson = get_object_or_404(Lesson, pk=pk)
@@ -209,6 +225,7 @@ class LessonUpdateAjaxView(View):
         else:
             return JsonResponse({'success': False, 'errors': form.errors})
 
+@staff_required
 def delete_lesson(request, pk):
     lesson = get_object_or_404(Lesson, pk=pk)
     course_id = lesson.course.id
@@ -226,6 +243,7 @@ from django.shortcuts import render
 from courses.models import Course, Lesson  # أو حسب اسم الموديلات عندك
 from accounts.models import User  # حسب مكان تعريف User
 
+@staff_required
 def dashboard(request):
     courses_count = Course.objects.count()
 
@@ -241,12 +259,14 @@ def dashboard(request):
     return render(request, 'pages/dashboard.html', context)
 
 
+@method_decorator(staff_required, name='dispatch')
 class CollegeListView(ListView):
     model = College
     template_name = 'pages/colleges.html'
     context_object_name = 'colleges'
 
 
+@method_decorator(staff_required, name='dispatch')
 class LessonListView(ListView):
     model = Lesson
     template_name = 'pages/lessons.html'
@@ -258,6 +278,7 @@ class LessonListView(ListView):
         return context
 
 
+@method_decorator(staff_required, name='dispatch')
 class LessonCreateAjaxView(View):
     def post(self, request, *args, **kwargs):
         form = LessonForm(request.POST, request.FILES)
@@ -268,6 +289,7 @@ class LessonCreateAjaxView(View):
             return JsonResponse({'success': False, 'errors': form.errors})
 
 
+@method_decorator(staff_required, name='dispatch')
 class LessonUpdateAjaxView(View):
     def get(self, request, pk, *args, **kwargs):
         lesson = get_object_or_404(Lesson, pk=pk)
@@ -302,12 +324,14 @@ class LessonUpdateAjaxView(View):
             return JsonResponse({'success': False, 'errors': form.errors})
 
 
+@staff_required
 def delete_lesson(request, pk):
     lesson = get_object_or_404(Lesson, pk=pk)
     lesson.delete()
     return redirect('/main-dashboard/lessons/')
 
 
+@staff_required
 def lesson_search_ajax(request):
     search_query = request.GET.get('q', '')
     lessons = Lesson.objects.all()
@@ -337,6 +361,7 @@ def lesson_search_ajax(request):
     return JsonResponse({'lessons': lesson_data})
 
 
+@method_decorator(staff_required, name='dispatch')
 class CollegeCreateAjaxView(View):
     def post(self, request, *args, **kwargs):
         form = CollegeForm(request.POST, request.FILES)
@@ -347,6 +372,7 @@ class CollegeCreateAjaxView(View):
             return JsonResponse({'success': False, 'errors': form.errors})
 
 
+@method_decorator(staff_required, name='dispatch')
 class CollegeUpdateAjaxView(View):
     def get(self, request, pk, *args, **kwargs):
         college = get_object_or_404(College, pk=pk)
@@ -377,12 +403,14 @@ class CollegeUpdateAjaxView(View):
             return JsonResponse({'success': False, 'errors': form.errors})
 
 
+@staff_required
 def delete_college(request, pk):
     college = College.objects.get(pk=pk)
     college.delete()
     return redirect('/main-dashboard/college/')
 
 
+@staff_required
 def college_search_ajax(request):
     search_query = request.GET.get('q', '')
     colleges = College.objects.all()
@@ -410,6 +438,7 @@ def college_search_ajax(request):
 # ____________________________________________________________________
 
 
+@method_decorator(staff_required, name='dispatch')
 class DepartmentListView(ListView):
     model = Department
     template_name = 'pages/departments.html'
@@ -421,6 +450,7 @@ class DepartmentListView(ListView):
         return context
 
 
+@method_decorator(staff_required, name='dispatch')
 class CollegeCreateAjaxView(View):
     def post(self, request, *args, **kwargs):
         form = CollegeForm(request.POST, request.FILES)
@@ -431,6 +461,7 @@ class CollegeCreateAjaxView(View):
             return JsonResponse({'success': False, 'errors': form.errors})
 
 
+@method_decorator(staff_required, name='dispatch')
 class CollegeUpdateAjaxView(View):
     def get(self, request, pk, *args, **kwargs):
         college = get_object_or_404(College, pk=pk)
@@ -461,12 +492,14 @@ class CollegeUpdateAjaxView(View):
             return JsonResponse({'success': False, 'errors': form.errors})
 
 
+@staff_required
 def delete_college(request, pk):
     college = College.objects.get(pk=pk)
     college.delete()
     return redirect('/main-dashboard/college/')
 
 
+@staff_required
 def college_search_ajax(request):
     search_query = request.GET.get('q', '')
     colleges = College.objects.all()
@@ -494,6 +527,7 @@ def college_search_ajax(request):
 # ____________________________________________________________________
 
 
+@method_decorator(staff_required, name='dispatch')
 class DepartmentListView(ListView):
     model = Department
     template_name = 'pages/departments.html'
@@ -505,6 +539,7 @@ class DepartmentListView(ListView):
         return context
 
 
+@method_decorator(staff_required, name='dispatch')
 class DepartmentCreateAjaxView(View):
     def post(self, request, *args, **kwargs):
         form = DepartmentForm(request.POST, request.FILES)
@@ -515,6 +550,7 @@ class DepartmentCreateAjaxView(View):
             return JsonResponse({'success': False, 'errors': form.errors})
 
 
+@method_decorator(staff_required, name='dispatch')
 class DepartmentUpdateAjaxView(View):
     def get(self, request, pk, *args, **kwargs):
         department = get_object_or_404(Department, pk=pk)
@@ -539,12 +575,14 @@ class DepartmentUpdateAjaxView(View):
             return JsonResponse({'success': False, 'errors': form.errors})
 
 
+@staff_required
 def delete_department(request, pk):
     department = get_object_or_404(Department, pk=pk)
     department.delete()
     return redirect('/main-dashboard/departments/')
 
 
+@staff_required
 def department_search_ajax(request):
     search_query = request.GET.get('q', '')
     departments = Department.objects.all()
@@ -575,6 +613,7 @@ def department_search_ajax(request):
 # ____________________________________________________________________
 
 
+@method_decorator(staff_required, name='dispatch')
 class CourseListView(ListView):
     model = Course
     template_name = 'pages/courses.html'
@@ -588,6 +627,7 @@ class CourseListView(ListView):
         return context
 
 
+@method_decorator(staff_required, name='dispatch')
 class CourseCreateAjaxView(View):
     def post(self, request, *args, **kwargs):
         form = CourseForm(request.POST, request.FILES)
@@ -598,6 +638,7 @@ class CourseCreateAjaxView(View):
             return JsonResponse({'success': False, 'errors': form.errors})
 
 
+@method_decorator(staff_required, name='dispatch')
 class CourseUpdateAjaxView(View):
     def get(self, request, pk, *args, **kwargs):
         course = get_object_or_404(Course, pk=pk)
@@ -629,12 +670,14 @@ class CourseUpdateAjaxView(View):
             return JsonResponse({'success': False, 'errors': form.errors})
 
 
+@staff_required
 def delete_course(request, pk):
     course = Course.objects.get(pk=pk)
     course.delete()
     return redirect('/main-dashboard/courses/')
 
 
+@staff_required
 def course_detail(request, course_id):
     course = get_object_or_404(Course, pk=course_id)
     context = {
@@ -642,6 +685,7 @@ def course_detail(request, course_id):
     }
     return render(request, 'pages/course_detail.html', context)
 
+@staff_required
 def course_search_ajax(request):
     search_query = request.GET.get('q', '')
     courses = Course.objects.all()
@@ -674,6 +718,7 @@ User = get_user_model()
 
 import json
 
+@admin_required
 def teachers(request):
     teachers = User.objects.filter(roles__name__iexact='lecturer')
     teacher_data = []
@@ -700,6 +745,7 @@ def teachers(request):
     return render(request, 'pages/teachers.html', {'teacher_data': json.dumps(teacher_data)})
 
 
+@method_decorator(admin_required, name='dispatch')
 class TeacherCreateAjaxView(View):
     def post(self, request, *args, **kwargs):
         form = StudentForm(request.POST)
@@ -718,6 +764,7 @@ class TeacherCreateAjaxView(View):
             return JsonResponse({'success': False, 'errors': form.errors})
 
 
+@method_decorator(admin_required, name='dispatch')
 class TeacherUpdateAjaxView(View):
     def get(self, request, pk, *args, **kwargs):
         teacher = get_object_or_404(User, pk=pk)
@@ -747,6 +794,7 @@ class TeacherUpdateAjaxView(View):
             return JsonResponse({'success': False, 'errors': form.errors})
 
 
+@admin_required
 def delete_teacher(request, pk):
     teacher = get_object_or_404(User, pk=pk)
     teacher.delete()
@@ -766,6 +814,7 @@ User = get_user_model()
 
 import json
 
+@staff_required
 def students(request):
     students = User.objects.filter(roles__name__iexact='student')
     student_data = []
@@ -793,6 +842,7 @@ def students(request):
     return render(request, 'pages/students.html', {'student_data': json.dumps(student_data)})
 
 
+@admin_required
 def toggle_student_status(request, pk):
     student = get_object_or_404(User, pk=pk)
     student.is_active = not student.is_active
@@ -800,6 +850,7 @@ def toggle_student_status(request, pk):
     return JsonResponse({'success': True, 'is_active': student.is_active})
 
 
+@method_decorator(admin_required, name='dispatch')
 class StudentCreateAjaxView(View):
     def post(self, request, *args, **kwargs):
         form = StudentForm(request.POST)
@@ -818,6 +869,7 @@ class StudentCreateAjaxView(View):
             return JsonResponse({'success': False, 'errors': form.errors})
 
 from .forms import UpdateStudentForm
+@method_decorator(admin_required, name='dispatch')
 class StudentUpdateAjaxView(View):
     def get(self, request, pk, *args, **kwargs):
         student = get_object_or_404(User, pk=pk)
@@ -847,6 +899,7 @@ class StudentUpdateAjaxView(View):
             return JsonResponse({'success': False, 'errors': form.errors})
 
 
+@admin_required
 def delete_student(request, pk):
     student = get_object_or_404(User, pk=pk)
     student.delete()
@@ -855,12 +908,14 @@ def delete_student(request, pk):
 # ____________________________________________________________________
 
 
+@staff_required
 def lessons(request):
     return render(request, 'pages/lessons.html')
 
 
 # ____________________________________________________________________
 
+@staff_required
 def quizzes(request):
     return render(request, 'pages/quizzes.html')
 
@@ -868,6 +923,7 @@ def quizzes(request):
 # ____________________________________________________________________
 
 
+@staff_required
 def reports(request):
     return render(request, 'pages/reports.html')
 
@@ -875,11 +931,13 @@ def reports(request):
 # ____________________________________________________________________
 
 
+@staff_required
 def settings(request):
     return render(request, 'pages/settings.html')
 
 # ____________________________________________________________________
 
+@staff_required
 def question_list(request, quiz_id):
     quiz = get_object_or_404(Quiz, pk=quiz_id)
     questions = Question.objects.filter(quiz=quiz)
@@ -889,6 +947,7 @@ def question_list(request, quiz_id):
     }
     return render(request, 'pages/question_list.html', context)
 
+@method_decorator(staff_required, name='dispatch')
 class QuestionCreateView(View):
     def get(self, request, quiz_id):
         quiz = get_object_or_404(Quiz, pk=quiz_id)
@@ -913,6 +972,7 @@ class QuestionCreateView(View):
         }
         return render(request, 'pages/question_form.html', context)
 
+@method_decorator(staff_required, name='dispatch')
 class QuestionUpdateView(View):
     def get(self, request, pk):
         question = get_object_or_404(Question, pk=pk)
@@ -935,12 +995,14 @@ class QuestionUpdateView(View):
         }
         return render(request, 'pages/question_form.html', context)
 
+@staff_required
 def delete_question(request, pk):
     question = get_object_or_404(Question, pk=pk)
     quiz_id = question.quiz.id
     question.delete()
     return redirect('question_list', quiz_id=quiz_id)
 
+@staff_required
 def choice_list(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
     choices = Choice.objects.filter(question=question)
@@ -950,6 +1012,7 @@ def choice_list(request, question_id):
     }
     return render(request, 'pages/choice_list.html', context)
 
+@method_decorator(staff_required, name='dispatch')
 class ChoiceCreateView(View):
     def get(self, request, question_id):
         question = get_object_or_404(Question, pk=question_id)
@@ -974,6 +1037,7 @@ class ChoiceCreateView(View):
         }
         return render(request, 'pages/choice_form.html', context)
 
+@method_decorator(staff_required, name='dispatch')
 class ChoiceUpdateView(View):
     def get(self, request, pk):
         choice = get_object_or_404(Choice, pk=pk)
@@ -999,8 +1063,7 @@ class ChoiceUpdateView(View):
 from student.models import Payment
 from django.contrib.auth.decorators import login_required, permission_required
 
-@login_required
-@permission_required('student.change_payment', raise_exception=True)
+@staff_required
 def payment_requests(request):
     payments = Payment.objects.filter(status='pending').order_by('-created_at')
     context = {
@@ -1008,16 +1071,14 @@ def payment_requests(request):
     }
     return render(request, 'pages/payment_requests.html', context)
 
-@login_required
-@permission_required('student.change_payment', raise_exception=True)
+@staff_required
 def approve_payment(request, payment_id):
     payment = get_object_or_404(Payment, id=payment_id)
     payment.status = 'approved'
     payment.save()
     return redirect('payment_requests')
 
-@login_required
-@permission_required('student.change_payment', raise_exception=True)
+@staff_required
 def reject_payment(request, payment_id):
     payment = get_object_or_404(Payment, id=payment_id)
     if request.method == 'POST':

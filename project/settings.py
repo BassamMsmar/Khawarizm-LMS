@@ -78,7 +78,7 @@ INTERNAL_IPS = [
 ROOT_URLCONF = 'project.urls'
 
 AUTH_USER_MODEL = 'accounts.User'
-LOGIN_REDIRECT_URL = 'dashboard:baseDashboard'
+LOGIN_REDIRECT_URL = 'accounts:user_redirect'
 LOGIN_URL = 'accounts:login'
 
 TEMPLATES = [
