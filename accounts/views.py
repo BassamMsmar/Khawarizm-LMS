@@ -15,3 +15,15 @@ class UserLoginView(LoginView):
 class UserLogoutView(LogoutView):
     def get_next_page(self):
         return reverse_lazy('accounts:login')
+
+def redirect_user(request):
+    if request.user.is_authenticated:
+        if request.user.has_role('student'):
+            return redirect('student:index')
+        elif request.user.has_role('staff') or request.user.has_role('admin'):
+            return redirect('dashboard:index')
+        else:
+            # Handle other roles or users with no roles
+            return redirect('/') # Or a default page
+    else:
+        return redirect('accounts:login')

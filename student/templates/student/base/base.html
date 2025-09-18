@@ -46,23 +46,32 @@
                         <button class="theme-toggle" id="themeToggle" title="تبديل الوضع">
                             <i class="bi bi-sun-fill" id="themeIcon"></i>
                         </button>
-                        {% comment %} <div class="dropdown">
+                                                <div class="dropdown">
                             <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
                                 <i class="bi bi-person-circle me-2"></i>
                                 اسم الطالب
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end">
-                                <li><a class="dropdown-item" href="#">
+                                <li><a class="dropdown-item" href="{% url 'student:student-profile' %}">
                                         <i class="bi bi-person me-2"></i>الملف الشخصي</a></li>
-                                <li><a class="dropdown-item" href="#">
+                                <li><a class="dropdown-item" href="/student-dashboard/id-card/">
+                                        <i class="bi bi-gear me-2"></i>الكارنيه الجامعي </a></li>
+                                <li>
+                                <li><a class="dropdown-item" href="{% url 'student:settings' %}">
                                         <i class="bi bi-gear me-2"></i>الإعدادات</a></li>
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
-                                <li><a class="dropdown-item" href="#">
-                                        <i class="bi bi-box-arrow-right me-2"></i>تسجيل الخروج</a></li>
+                                <li>
+                                    <form action="{% url 'accounts:logout' %}" method="post" class="d-inline">
+                                        {% csrf_token %}
+                                        <button type="submit" class="dropdown-item">
+                                            <i class="bi bi-box-arrow-right me-2"></i>تسجيل الخروج
+                                        </button>
+                                    </form>
+                                </li>
                             </ul>
-                        </div> {% endcomment %}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -125,11 +134,25 @@
             </li>
             
             <li class="nav-item">
+                <a class="nav-link" href="{% url 'student:student-profile' %}">
+                    <i class="bi bi-gear"></i>
+                    <span>الملف الشخصي</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/student-dashboard/id-card/">
+                    <i class="bi bi-gear"></i>
+                    <span> الكارنيه الجامعي </span>
+                </a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" href="{% url 'student:settings' %}">
                     <i class="bi bi-gear"></i>
                     <span>الإعدادات</span>
                 </a>
             </li>
+
+
         </ul>
     </nav>
     {% endblock sidebar %}

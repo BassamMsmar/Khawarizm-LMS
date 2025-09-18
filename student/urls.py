@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from .views import StudentProfileDetailView, StudentProfileUpdateView
 
 app_name = 'student'
 
@@ -13,4 +14,7 @@ urlpatterns = [
     path('my-grades/', views.my_grades, name='my_grades'),
     path('calendar/', views.calendar, name='calendar'),
     path('settings/', views.settings, name='settings'),
+    path('id-card/', views.id_card, name='id_card'),
+    path('profile/', StudentProfileDetailView.as_view(), name='student-profile'),
+    path('profile/update/', StudentProfileUpdateView.as_view(), name='student-profile-update'),
 ]

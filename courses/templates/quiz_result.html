@@ -1,541 +1,185 @@
 {% extends 'base/base2.html' %}
 
 {% block content %}
-<div class="rbt-breadcrumb-default ptb--100 ptb_md--50 ptb_sm--30 bg-gradient-1">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="breadcrumb-inner text-center">
-                    <h2 class="title">Quiz Results</h2>
-                    <ul class="page-list">
-                        <li class="rbt-breadcrumb-item"><a href="{% url 'mainDemo' %}">Home</a></li>
-                        <li class="rbt-breadcrumb-item"><a href="{% url 'courses:course_detail' slug=course.slug %}">{{ course.title }}</a></li>
-                        <li class="rbt-breadcrumb-item active">Quiz Results</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="rbt-lesson-area bg-color-white rbt-section-gap">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8">
-                <div class="quiz-result-wrapper">
-                    <!-- Score Summary -->
-                    <div class="score-summary-wrapper rbt-shadow-box mb--30">
-                        <div class="inner text-center">
-                            <div class="score-circle">
-                                <div class="score-display">
-                                    <span class="score-percentage">{{ score|floatformat:0 }}%</span>
-                                    <span class="score-label">Your Score</span>
-                                </div>
-                            </div>
-                            
-                            <div class="score-details mt--30">
-                                <div class="row g-4">
-                                    <div class="col-md-4">
-                                        <div class="score-stat">
-                                            <div class="stat-number">{{ correct_answers }}</div>
-                                            <div class="stat-label">Correct</div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="score-stat">
-                                            <div class="stat-number">{{ total_questions|add:"-"|add:correct_answers }}</div>
-                                            <div class="stat-label">Incorrect</div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="score-stat">
-                                            <div class="stat-number">{{ total_questions }}</div>
-                                            <div class="stat-label">Total</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="result-status mt--30">
-                                {% if score >= 70 %}
-                                <div class="status-badge success">
-                                    <i class="feather-check-circle"></i>
-                                    <span>Congratulations! You Passed</span>
-                                </div>
-                                {% else %}
-                                <div class="status-badge failed">
-                                    <i class="feather-x-circle"></i>
-                                    <span>You Need to Retake This Quiz</span>
-                                </div>
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Question Review -->
-                    <div class="question-review-wrapper">
-                        <div class="section-title mb--30">
-                            <h4 class="rbt-title-style-3">Question Review</h4>
-                            <p>Review your answers and see the correct solutions below.</p>
-                        </div>
-                        
-                        {% for result in question_results %}
-                        <div class="question-review-item rbt-shadow-box mb--30">
-                            <div class="inner">
-                                <div class="question-header">
-                                    <div class="question-number-badge {% if result.is_correct %}correct{% else %}incorrect{% endif %}">
-                                        <span class="number">{{ forloop.counter }}</span>
-                                        {% if result.is_correct %}
-                                        <i class="feather-check"></i>
-                                        {% else %}
-                                        <i class="feather-x"></i>
-                                        {% endif %}
-                                    </div>
-                                    <h6 class="question-text">{{ result.question.text }}</h6>
-                                </div>
-                                
-                                <div class="answers-section">
-                                    {% for choice in result.question.choices.all %}
-                                    <div class="answer-option 
-                                        {% if choice == result.correct_choice %}correct-answer{% endif %}
-                                        {% if choice == result.user_choice and choice != result.correct_choice %}wrong-answer{% endif %}
-                                        {% if choice == result.user_choice %}user-selected{% endif %}">
-                                        <div class="option-indicator">
-                                            {% if choice == result.correct_choice %}
-                                            <i class="feather-check"></i>
-                                            {% elif choice == result.user_choice and choice != result.correct_choice %}
-                                            <i class="feather-x"></i>
-                                            {% else %}
-                                            <span class="option-letter">{{ forloop.counter0|add:"A"|slice:":1" }}</span>
-                                            {% endif %}
-                                        </div>
-                                        <span class="option-text">{{ choice.text }}</span>
-                                        {% if choice == result.user_choice %}
-                                        <span class="selection-badge">Your Answer</span>
-                                        {% endif %}
-                                        {% if choice == result.correct_choice %}
-                                        <span class="correct-badge">Correct Answer</span>
-                                        {% endif %}
-                                    </div>
-                                    {% endfor %}
-                                </div>
-                                
-                                {% if not result.is_correct %}
-                                <div class="explanation-section">
-                                    <div class="explanation-header">
-                                        <i class="feather-info"></i>
-                                        <span>Explanation</span>
-                                    </div>
-                                    <p>The correct answer is "{{ result.correct_choice.text }}". 
-                                       {% if result.user_choice %}
-                                       You selected "{{ result.user_choice.text }}".
-                                       {% else %}
-                                       You didn't select any answer for this question.
-                                       {% endif %}
-                                    </p>
-                                </div>
-                                {% endif %}
-                            </div>
-                        </div>
-                        {% endfor %}
-                    </div>
-                    
-                    <!-- Action Buttons -->
-                    <div class="quiz-actions text-center mt--40">
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <a href="{% url 'courses:course_detail' slug=course.slug %}" 
-                                   class="rbt-btn btn-border hover-icon-reverse w-100">
-                                    <span class="icon-reverse-wrapper">
-                                        <span class="btn-text">Back to Course</span>
-                                        <span class="btn-icon"><i class="feather-arrow-left"></i></span>
-                                        <span class="btn-icon"><i class="feather-arrow-left"></i></span>
-                                    </span>
-                                </a>
-                            </div>
-                            <div class="col-md-6">
-                                {% if score < 70 %}
-                                <a href="{% url 'courses:quiz_detail' course_slug=course.slug quiz_slug=quiz.slug %}" 
-                                   class="rbt-btn btn-gradient hover-icon-reverse w-100">
-                                    <span class="icon-reverse-wrapper">
-                                        <span class="btn-text">Retake Quiz</span>
-                                        <span class="btn-icon"><i class="feather-refresh-cw"></i></span>
-                                        <span class="btn-icon"><i class="feather-refresh-cw"></i></span>
-                                    </span>
-                                </a>
-                                {% else %}
-                                <a href="{% url 'courses:course_detail' slug=course.slug %}" 
-                                   class="rbt-btn btn-gradient hover-icon-reverse w-100">
-                                    <span class="icon-reverse-wrapper">
-                                        <span class="btn-text">Continue Learning</span>
-                                        <span class="btn-icon"><i class="feather-arrow-right"></i></span>
-                                        <span class="btn-icon"><i class="feather-arrow-right"></i></span>
-                                    </span>
-                                </a>
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-lg-4">
-                <div class="quiz-result-sidebar sticky-top">
-                    <div class="result-summary-widget rbt-shadow-box">
-                        <div class="inner">
-                            <h5 class="widget-title">Quiz Summary</h5>
-                            <ul class="result-stats">
-                                <li>
-                                    <span class="label">Quiz:</span>
-                                    <span class="value">{{ quiz.title }}</span>
-                                </li>
-                                <li>
-                                    <span class="label">Score:</span>
-                                    <span class="value {% if score >= 70 %}text-success{% else %}text-danger{% endif %}">
-                                        {{ score|floatformat:0 }}%
-                                    </span>
-                                </li>
-                                <li>
-                                    <span class="label">Correct Answers:</span>
-                                    <span class="value">{{ correct_answers }}/{{ total_questions }}</span>
-                                </li>
-                                <li>
-                                    <span class="label">Passing Score:</span>
-                                    <span class="value">70%</span>
-                                </li>
-                                <li>
-                                    <span class="label">Status:</span>
-                                    <span class="value {% if score >= 70 %}text-success{% else %}text-danger{% endif %}">
-                                        {% if score >= 70 %}Passed{% else %}Failed{% endif %}
-                                    </span>
-                                </li>
-                            </ul>
-                            
-                            {% if score >= 70 %}
-                            <div class="achievement-badge mt--30">
-                                <div class="badge-icon">
-                                    <i class="feather-award"></i>
-                                </div>
-                                <div class="badge-content">
-                                    <h6>Well Done!</h6>
-                                    <p>You've successfully completed this quiz.</p>
-                                </div>
-                            </div>
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
 <style>
-.score-circle {
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;
-    background: conic-gradient(#28a745 0deg 0deg, #e9ecef 0deg 360deg);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto;
-    position: relative;
-}
+  body {
+    background-color: #f3f4f6;
+    font-family: 'Cairo', sans-serif;
+    direction: rtl;
+  }
 
-.score-circle::before {
-    content: '';
-    width: 160px;
-    height: 160px;
-    background: white;
-    border-radius: 50%;
-    position: absolute;
-}
-
-.score-display {
-    position: relative;
-    z-index: 1;
+  .result-header {
+    background: linear-gradient(to right, #10b981, #34d399);
+    color: white;
+    padding: 4rem 0;
     text-align: center;
-}
+  }
 
-.score-percentage {
-    display: block;
-    font-size: 36px;
-    font-weight: bold;
-    color: #1d2327;
-    line-height: 1;
-}
+  .result-header.failed {
+    background: linear-gradient(to right, #ef4444, #f87171);
+  }
 
-.score-label {
-    display: block;
-    font-size: 14px;
-    color: #6b7385;
-    margin-top: 5px;
-}
+  .result-header h1 {
+    font-weight: 800;
+    font-size: 3.5rem;
+  }
 
-.score-stat {
+  .result-container {
+    margin-top: -60px;
+  }
+
+  .summary-card {
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    padding: 2.5rem;
     text-align: center;
-}
+    margin-bottom: 2rem;
+  }
 
-.stat-number {
-    font-size: 24px;
-    font-weight: bold;
-    color: #1d2327;
-    line-height: 1;
-}
-
-.stat-label {
-    font-size: 14px;
-    color: #6b7385;
-    margin-top: 5px;
-}
-
-.status-badge {
-    display: inline-flex;
-    align-items: center;
-    padding: 12px 24px;
-    border-radius: 25px;
-    font-weight: 600;
-}
-
-.status-badge.success {
-    background-color: #d4edda;
-    color: #155724;
-    border: 1px solid #c3e6cb;
-}
-
-.status-badge.failed {
-    background-color: #f8d7da;
-    color: #721c24;
-    border: 1px solid #f5c6cb;
-}
-
-.status-badge i {
-    margin-right: 8px;
-    font-size: 18px;
-}
-
-.question-number-badge {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    font-weight: bold;
-    margin-right: 15px;
-    flex-shrink: 0;
-}
-
-.question-number-badge.correct {
-    background-color: #28a745;
-    color: white;
-}
-
-.question-number-badge.incorrect {
-    background-color: #dc3545;
-    color: white;
-}
-
-.question-header {
-    display: flex;
-    align-items: flex-start;
-    margin-bottom: 20px;
-    padding-bottom: 15px;
-    border-bottom: 1px solid #e9ecef;
-}
-
-.question-text {
-    margin: 0;
-    font-weight: 500;
-    line-height: 1.5;
-}
-
-.answer-option {
-    display: flex;
-    align-items: center;
-    padding: 12px 15px;
-    margin-bottom: 10px;
-    border-radius: 6px;
-    border: 2px solid #e9ecef;
+  .score-circle {
+    width: 180px;
+    height: 180px;
+    margin: 0 auto 2rem auto;
     position: relative;
-}
+  }
 
-.answer-option.correct-answer {
-    border-color: #28a745;
-    background-color: #d4edda;
-}
-
-.answer-option.wrong-answer {
-    border-color: #dc3545;
-    background-color: #f8d7da;
-}
-
-.answer-option.user-selected:not(.correct-answer):not(.wrong-answer) {
-    border-color: #6c757d;
-    background-color: #f8f9fa;
-}
-
-.option-indicator {
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-right: 12px;
-    font-size: 12px;
-    font-weight: bold;
-}
-
-.correct-answer .option-indicator {
-    background-color: #28a745;
-    color: white;
-}
-
-.wrong-answer .option-indicator {
-    background-color: #dc3545;
-    color: white;
-}
-
-.option-indicator .option-letter {
-    background-color: #6c757d;
-    color: white;
+  .score-circle-inner {
     width: 100%;
     height: 100%;
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 50%;
-}
+    background-color: #e0e7ff;
+  }
 
-.option-text {
-    flex: 1;
-}
+  .score-circle-inner.failed {
+      background-color: #fee2e2;
+  }
 
-.selection-badge,
-.correct-badge {
-    font-size: 11px;
-    padding: 4px 8px;
-    border-radius: 12px;
-    font-weight: 600;
-    margin-left: auto;
-}
+  .score-text {
+    font-size: 3rem;
+    font-weight: 800;
+    color: #4f46e5;
+  }
 
-.selection-badge {
-    background-color: #007bff;
-    color: white;
-}
+  .score-text.failed {
+      color: #ef4444;
+  }
 
-.correct-badge {
-    background-color: #28a745;
-    color: white;
-}
+  .summary-card h2 {
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
 
-.explanation-section {
-    margin-top: 15px;
-    padding: 15px;
-    background-color: #f8f9fa;
-    border-radius: 6px;
-    border-left: 4px solid #17a2b8;
-}
-
-.explanation-header {
+  .summary-stats {
     display: flex;
-    align-items: center;
-    margin-bottom: 8px;
-    font-weight: 600;
-    color: #17a2b8;
-}
+    justify-content: space-around;
+    margin-top: 2rem;
+  }
 
-.explanation-header i {
-    margin-right: 8px;
-}
+  .stat h4 {
+    font-weight: 700;
+    font-size: 2rem;
+  }
 
-.explanation-section p {
-    margin: 0;
-    color: #6b7385;
-    line-height: 1.5;
-}
+  .question-review-card {
+    background-color: white;
+    border-radius: 15px;
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+    border-right: 5px solid;
+    border-left: none;
+  }
 
-.result-stats li {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 8px 0;
-    border-bottom: 1px solid #e9ecef;
-}
+  .question-review-card.correct {
+    border-color: #10b981;
+  }
 
-.result-stats li:last-child {
-    border-bottom: none;
-}
+  .question-review-card.incorrect {
+    border-color: #ef4444;
+  }
 
-.result-stats .label {
-    color: #6b7385;
-}
+  .choice-result {
+    padding: 0.8rem 1rem;
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+  }
 
-.result-stats .value {
-    font-weight: 600;
-    color: #1d2327;
-}
+  .choice-result.correct {
+    background-color: #d1fae5;
+    border: 1px solid #6ee7b7;
+  }
 
-.achievement-badge {
-    text-align: center;
-    padding: 20px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    border-radius: 10px;
-}
+  .choice-result.incorrect {
+    background-color: #fee2e2;
+    border: 1px solid #fca5a5;
+  }
 
-.badge-icon i {
-    font-size: 32px;
-    margin-bottom: 10px;
-}
+  .choice-result.selected:not(.correct) {
+      opacity: 0.7;
+  }
 
-.achievement-badge h6 {
-    margin: 0 0 5px 0;
-    color: white;
-}
-
-.achievement-badge p {
-    margin: 0;
-    font-size: 14px;
-    opacity: 0.9;
-}
-
-.text-success {
-    color: #28a745 !important;
-}
-
-.text-danger {
-    color: #dc3545 !important;
-}
 </style>
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Animate score circle
-    const scoreCircle = document.querySelector('.score-circle');
-    const score = {{ score|floatformat:0 }};
-    
-    if (scoreCircle) {
-        setTimeout(() => {
-            scoreCircle.style.background = `conic-gradient(#28a745 0deg ${score * 3.6}deg, #e9ecef ${score * 3.6}deg 360deg)`;
-        }, 500);
-    }
-    
-    // Add entrance animations
-    const questionItems = document.querySelectorAll('.question-review-item');
-    questionItems.forEach((item, index) => {
-        item.style.opacity = '0';
-        item.style.transform = 'translateY(20px)';
-        
-        setTimeout(() => {
-            item.style.transition = 'all 0.5s ease';
-            item.style.opacity = '1';
-            item.style.transform = 'translateY(0)';
-        }, 200 * (index + 1));
-    });
-});
-</script>
+<div class="result-header {% if score < 70 %}failed{% endif %}">
+  <div class="container">
+    <h1>{% if score >= 70 %}تهانينا!{% else %}استمر في المحاولة!{% endif %}</h1>
+    <p class="lead">لقد أكملت الاختبار: <strong>{{ quiz.title }}</strong></p>
+  </div>
+</div>
+
+<div class="container result-container">
+  <div class="row">
+    <div class="col-lg-4">
+      <div class="summary-card">
+        <h2>نتيجتك</h2>
+        <div class="score-circle">
+            <div class="score-circle-inner {% if score < 70 %}failed{% endif %}">
+                <div class="score-text {% if score < 70 %}failed{% endif %}">{{ score|floatformat:0 }}%</div>
+            </div>
+        </div>
+        <p class="lead">لقد أجبت على {{ correct_answers }} من {{ total_questions }} أسئلة بشكل صحيح.</p>
+        <div class="summary-stats">
+          <div class="stat text-success">
+            <h4>{{ correct_answers }}</h4>
+            <p>صحيح</p>
+          </div>
+          <div class="stat text-danger">
+            <h4>{{ total_questions|add:"-"|add:correct_answers }}</h4>
+            <p>غير صحيح</p>
+          </div>
+        </div>
+        <div class="mt-4">
+            {% if score < 70 %}
+            <a href="{% url 'courses:quiz_detail' course_slug=course.slug quiz_slug=quiz.slug %}" class="btn btn-lg btn-primary">إعادة الاختبار</a>
+            {% else %}
+            <a href="{% url 'courses:course_detail' slug=course.slug %}" class="btn btn-lg btn-primary">العودة إلى الدورة</a>
+            {% endif %}
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-8">
+      <h2 class="mb-4">مراجعة الأسئلة</h2>
+      {% for result in question_results %}
+      <div class="question-review-card {% if result.is_correct %}correct{% else %}incorrect{% endif %}">
+        <h5>السؤال {{ forloop.counter }}: {{ result.question.text }}</h5>
+        <hr>
+        <div class="choices-review">
+          {% for choice in result.question.choices.all %}
+          <div class="choice-result {% if choice == result.correct_choice %}correct{% elif choice == result.user_choice %}incorrect{% endif %} {% if choice == result.user_choice %}selected{% endif %}">
+            <i class="bi {% if choice == result.correct_choice %}bi-check-circle-fill text-success{% elif choice == result.user_choice %}bi-x-circle-fill text-danger{% else %}bi-circle{% endif %} ms-2"></i>
+            {{ choice.text }}
+            {% if choice == result.user_choice %}<span class="badge bg-secondary float-start">إجابتك</span>{% endif %}
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
 {% endblock content %}

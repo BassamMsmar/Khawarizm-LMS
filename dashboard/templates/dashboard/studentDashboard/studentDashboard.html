@@ -860,7 +860,8 @@
                                             <nav class="mainmenu-nav">
                                                 <ul class="dashboard-mainmenu rbt-default-sidebar-list">
                                                     <li><a href="{% url 'studentDashboard' %}"><i class="feather-home"></i><span>Dashboard</span></a></li>
-                                                    <li><a href="{% url 'studentProfile' %}"><i class="feather-user"></i><span>My Profile</span></a></li>
+                                                    <li><a href="{% url 'student:student-profile' %}"><i class="feather-user"></i><span>My Profile</span></a></li>
+                                                    <li><a href="{% url 'student:id_card' %}"><i class="feather-user"></i><span>ID Card</span></a></li>
                                                     <li><a href="{% url 'studentEnrolledCourses' %}"><i class="feather-book-open"></i><span>Enrolled Courses</span></a></li>
                                                     <li><a href="{% url 'studentWishlist' %}"><i class="feather-bookmark"></i><span>Wishlist</span></a></li>
                                                     <li><a href="{% url 'studentReviews' %}"><i class="feather-star"></i><span>Reviews</span></a></li>
