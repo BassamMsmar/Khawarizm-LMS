@@ -119,6 +119,17 @@ from dashboard.mixins import RolesRequiredMixin
 from django.contrib.auth import get_user_model
 User = get_user_model()
 
+@student_required
+def id_card(request):
+    student = Student.objects.get(user=request.user)
+    student_profile, _ = StudentProfile.objects.get_or_create(user=request.user)
+    context = {
+        'student': student,
+        'student_profile': student_profile,
+    }
+    return render(request, 'student/id_card.html', context)
+
+
 @method_decorator(student_required, name='dispatch')
 class StudentProfileDetailView(DetailView):
     model = User

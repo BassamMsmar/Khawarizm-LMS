@@ -1,0 +1,89 @@
+{% extends 'student/base/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="main-content" style="direction: rtl; font-family: 'Cairo', sans-serif; background: #e9eef5; padding: 40px;">
+    <div class="container-fluid" style="display: flex; justify-content: center; gap: 50px; flex-wrap: wrap;">
+
+        <!-- Front Side -->
+        <div id="id-card-front" style="width: 360px; height: 520px; background: linear-gradient(135deg, #167a70 0%, #0f4d46 100%); border-radius: 20px; box-shadow: 0 6px 20px rgba(0,0,0,0.3); overflow: hidden; position: relative; color: white;">
+
+            <!-- Top Ribbon -->
+            <div style="background: rgba(255,255,255,0.12); height: 70px; display: flex; align-items: center; justify-content: center; position: relative;">
+                <img src="https://static.vecteezy.com/system/resources/previews/006/470/649/non_2x/university-education-logo-design-template-free-vector.jpg" alt="شعار الجامعة" style="width: 60px; height: 60px; border-radius: 50%; background: white; padding: 5px; position: absolute; left: 15px;">
+                <h2 style="margin: 0; font-size: 22px; font-weight: bold;">جامعة الخوارزمي</h2>
+            </div>
+
+            <!-- Profile -->
+            <div style="text-align: center; margin-top: 20px;">
+                {% if student_profile.profile_picture %}
+                    <img src="{{ student_profile.profile_picture.url }}" alt="صورة الطالب" style="width: 140px; height: 140px; border-radius: 50%; border: 4px solid #fff; box-shadow: 0 0 10px rgba(255,255,255,0.6);">
+                {% else %}
+                    <img src="{% static 'images/default-user.png' %}" alt="صورة الطالب" style="width: 140px; height: 140px; border-radius: 50%; border: 4px solid #fff; box-shadow: 0 0 10px rgba(255,255,255,0.6);">
+                {% endif %}
+            </div>
+
+            <!-- Info Box -->
+            <div style="margin-top: 20px; background: rgba(255,255,255,0.1); border-radius: 12px; padding: 20px; width: 80%; margin-left: auto; margin-right: auto; text-align: right; font-size: 15px; line-height: 1.8;">
+                <p><strong>الاسم:</strong> {{ user.get_full_name }}</p>
+                <p><strong>البريد:</strong> {{ user.email }}</p>
+                <p><strong>القسم:</strong> {{ student.department }}</p>
+                <p><strong>الرقم الجامعي:</strong> {{ student.id }}</p>
+            </div>
+
+            <!-- QR Code -->
+            <div style="text-align: center; margin-top: 15px;">
+                <!-- <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/QR_code_for_mobile_English_Wikipedia.svg/1200px-QR_code_for_mobile_English_Wikipedia.svg.png" alt="QR" style="width: 90px; height: 90px; background: white; padding: 5px; border-radius: 10px;"> -->
+            </div>
+
+            <!-- Footer -->
+            <div style="position: absolute; bottom: 0; width: 100%; text-align: center; background: rgba(255,255,255,0.15); padding: 8px; font-size: 13px;">
+                <p style="margin: 0;">Khawarizm-LMS | جميع الحقوق محفوظة</p>
+            </div>
+        </div>
+
+        <!-- Back Side -->
+        <div id="id-card-back" style="width: 360px; height: 520px; background: linear-gradient(135deg, #0f4d46 0%, #167a70 100%); border-radius: 20px; box-shadow: 0 6px 20px rgba(0,0,0,0.3); overflow: hidden; position: relative; color: white;">
+
+            <!-- Magnetic Stripe -->
+            <div style="background: black; height: 60px; margin-top: 25px; border-radius: 5px;"></div>
+
+            <!-- Rules -->
+            <div style="padding: 25px; font-size: 14px; line-height: 2;">
+                <h4 style="margin-bottom: 10px; text-align: center; border-bottom: 2px solid rgba(255,255,255,0.5); padding-bottom: 5px;">تعليمات الاستخدام</h4>
+                <ul style="margin: 0; padding-right: 20px; list-style: none;">
+                    <li>🔒 البطاقة شخصية وغير قابلة للإعارة.</li>
+                    <li>📌 في حال الفقدان، يرجى إبلاغ شؤون الطلاب فوراً.</li>
+                    <li>📚 يجب إبراز البطاقة عند دخول القاعات والمكتبة.</li>
+                </ul>
+            </div>
+
+            <!-- Dean Signature -->
+            <div style="position: absolute; bottom: 90px; left: 20px; text-align: center;">
+                <p style="margin: 0; font-size: 14px;">عميد الكلية</p>
+                <img src="https://e7.pngegg.com/pngimages/115/63/png-clipart-signature-text-letter-handwriting-workers-memorial-day-angle-text.png" alt="توقيع العميد" style="width: 130px; height: 45px;">
+            </div>
+
+            <!-- Barcode -->
+            <div style="position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);">
+                <img src="https://www.shutterstock.com/image-vector/realistic-bar-code-icon-sample-260nw-2414678099.jpg" alt="Barcode" style="width: 200px; height: 50px; background: white; border-radius: 5px; padding: 3px;">
+            </div>
+        </div>
+    </div>
+
+    <!-- Print Button -->
+    <div style="text-align: center; margin-top: 30px;">
+        <button onclick="printIdCard()" style="background: #167a70; color: white; padding: 12px 25px; border: none; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.3); transition: 0.3s;">🖨️ طباعة البطاقة</button>
+    </div>
+</div>
+
+<script>
+function printIdCard() {
+    var printContents = document.getElementById('id-card-front').outerHTML + "<br><br>" + document.getElementById('id-card-back').outerHTML;
+    var originalContents = document.body.innerHTML;
+    document.body.innerHTML = printContents;
+    window.print();
+    document.body.innerHTML = originalContents;
+}
+</script>
+{% endblock %}
