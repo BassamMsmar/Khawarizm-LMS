@@ -3,6 +3,7 @@ from django.views.generic import ListView, View, UpdateView, DeleteView
 from django.http import JsonResponse
 from django.urls import reverse_lazy
 from django.db.models import Q
+from .models import Unit
 from courses.models import Course, Lesson, Unit, Quiz, Question, Choice
 from college.models import College
 from department.models import Department
@@ -164,6 +165,11 @@ class UnitCreateAjaxView(View):
         if form.is_valid():
             unit = form.save(commit=False)
             unit.course = course
+            last_unit = course.maindashboard_units.all().order_by('-order').first()
+            if last_unit:
+                unit.order = last_unit.order + 1
+            else:
+                unit.order = 1
             unit.save()
             return JsonResponse({'success': True})
         else:
@@ -264,6 +270,11 @@ class CollegeListView(ListView):
     model = College
     template_name = 'pages/colleges.html'
     context_object_name = 'colleges'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = CollegeForm()
+        return context
 
 
 @method_decorator(staff_required, name='dispatch')
@@ -680,8 +691,14 @@ def delete_course(request, pk):
 @staff_required
 def course_detail(request, course_id):
     course = get_object_or_404(Course, pk=course_id)
+    unit_form = UnitForm()
+    lesson_form = LessonForm()
+    quiz_form = QuizForm()
     context = {
-        'course': course
+        'course': course,
+        'unit_form': unit_form,
+        'lesson_form': lesson_form,
+        'quiz_form': quiz_form
     }
     return render(request, 'pages/course_detail.html', context)
 
@@ -1065,9 +1082,11 @@ from django.contrib.auth.decorators import login_required, permission_required
 
 @staff_required
 def payment_requests(request):
-    payments = Payment.objects.filter(status='pending').order_by('-created_at')
+    pending_payments = Payment.objects.filter(status='pending').order_by('-created_at')
+    other_payments = Payment.objects.exclude(status='pending').order_by('-created_at')
     context = {
-        'payments': payments,
+        'pending_payments': pending_payments,
+        'other_payments': other_payments,
     }
     return render(request, 'pages/payment_requests.html', context)
 
