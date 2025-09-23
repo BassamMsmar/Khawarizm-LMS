@@ -104,6 +104,10 @@ def Lesson_Detail(request, course_slug, lesson_slug):
         unit: unit.lessons.filter(is_active=True) for unit in units
     }
 
+    unit_quizzes = {
+        unit: unit.quizzes.filter(is_active=True) for unit in units
+    }
+
     is_completed = False
     if request.user.is_authenticated:
         is_completed = current_lesson.completed_by.filter(id=request.user.id).exists()
@@ -112,6 +116,7 @@ def Lesson_Detail(request, course_slug, lesson_slug):
         'lesson': current_lesson,
         'units': units,
         'unit_lessons': unit_lessons,
+        'unit_quizzes': unit_quizzes,
         'course': current_lesson.unit.course,
         'is_completed': is_completed,
     }
