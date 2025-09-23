@@ -167,6 +167,9 @@
                 <li>
                   <a href="{% url 'courses:lesson_detail' course_slug=lesson_item.unit.course.slug lesson_slug=lesson_item.slug %}" class="{% if lesson_item.slug == lesson.slug %}active{% endif %}">
                     <i class="bi bi-play-circle-fill me-2"></i>{{ lesson_item.title }}
+                    {% if lesson_item.id in completed_lessons %}
+                      <i class="bi bi-check-circle-fill text-success ms-2"></i>
+                    {% endif %}
                   </a>
                 </li>
                 {% endfor %}

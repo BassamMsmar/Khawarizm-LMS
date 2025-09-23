@@ -126,6 +126,9 @@
                   <li class="list-group-item">
                     <i class="bi bi-play-circle-fill text-primary me-2"></i>
                     <a href="{% url 'courses:lesson_detail' course_slug=course.slug lesson_slug=lesson.slug %}" class="text-decoration-none">{{ lesson.title }}</a>
+                    {% if lesson.id in completed_lessons %}
+                      <i class="bi bi-check-circle-fill text-success ms-2"></i>
+                    {% endif %}
                   </li>
                   {% endfor %}
                   {% for quiz in unit.quizzes.all %}

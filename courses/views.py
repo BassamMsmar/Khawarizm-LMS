@@ -36,6 +36,12 @@ class CourseDetail(LoginRequiredMixin, DetailView):
             unit: unit.quizzes.filter(is_active=True) for unit in units
         }
 
+        completed_lessons = set()
+        if self.request.user.is_authenticated:
+            completed_lessons = set(self.request.user.completed_lessons.values_list('id', flat=True))
+
+        context['completed_lessons'] = completed_lessons
+
         lecturer_user = course.lecturer
         lecturer_profile = getattr(lecturer_user, "lecturer_profile", None)
 
@@ -108,9 +114,11 @@ def Lesson_Detail(request, course_slug, lesson_slug):
         unit: unit.quizzes.filter(is_active=True) for unit in units
     }
 
-    is_completed = False
+    completed_lessons = set()
     if request.user.is_authenticated:
-        is_completed = current_lesson.completed_by.filter(id=request.user.id).exists()
+        completed_lessons = set(request.user.completed_lessons.values_list('id', flat=True))
+
+    is_completed = current_lesson.id in completed_lessons
 
     context = {
         'lesson': current_lesson,
@@ -119,6 +127,7 @@ def Lesson_Detail(request, course_slug, lesson_slug):
         'unit_quizzes': unit_quizzes,
         'course': current_lesson.unit.course,
         'is_completed': is_completed,
+        'completed_lessons': completed_lessons,
     }
 
     return render(request, 'lesson.html', context)
