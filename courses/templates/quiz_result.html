@@ -172,10 +172,21 @@
           <div class="choice-result {% if choice == result.correct_choice %}correct{% elif choice == result.user_choice %}incorrect{% endif %} {% if choice == result.user_choice %}selected{% endif %}">
             <i class="bi {% if choice == result.correct_choice %}bi-check-circle-fill text-success{% elif choice == result.user_choice %}bi-x-circle-fill text-danger{% else %}bi-circle{% endif %} ms-2"></i>
             {{ choice.text }}
-            {% if choice == result.user_choice %}<span class="badge bg-secondary float-start">إجابتك</span>{% endif %}
+            {% if choice == result.user_choice %}
+                <span class="badge bg-secondary float-start">إجابتك</span>
+                {% if not result.is_correct %}
+                    <span class="badge bg-danger float-start ms-1">إجابة خاطئة</span>
+                {% endif %}
+            {% endif %}
+            {% if choice == result.correct_choice and choice != result.user_choice %}<span class="badge bg-success float-start">الإجابة الصحيحة</span>{% endif %}
           </div>
           {% endfor %}
         </div>
+        <hr>
+        <p class="text-muted mt-3">
+          إجابتك: <strong>{{ result.user_choice.text|default:"لم يتم الاختيار" }}</strong> /
+          الإجابة الصحيحة: <strong>{{ result.correct_choice.text }}</strong>
+        </p>
       </div>
       {% endfor %}
     </div>
