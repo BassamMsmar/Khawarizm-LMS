@@ -1,0 +1,18 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block content %}
+<main class="main-content">
+    <div class="container">
+        <h1>Departments</h1>
+        <a href="{% url 'createDepartment' %}" class="btn btn-primary mb-3">Create Department</a>
+        <div class="list-group">
+            {% for department in departments %}
+                <a href="{% url 'departmentDetail' department.slug %}" class="list-group-item list-group-item-action">
+                    {{ department.name }}
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+</main>
+{% endblock %}

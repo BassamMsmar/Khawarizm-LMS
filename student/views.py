@@ -119,6 +119,17 @@ from dashboard.mixins import RolesRequiredMixin
 from django.contrib.auth import get_user_model
 User = get_user_model()
 
+class StudentDetail(DetailView):
+    model = User
+    template_name = 'student/student_detail.html'
+    context_object_name = 'student'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        student_user = self.get_object()
+        context['enrolled_courses'] = student_user.enrolled_courses.all()
+        return context
+
 @student_required
 def id_card(request):
     student = Student.objects.get(user=request.user)

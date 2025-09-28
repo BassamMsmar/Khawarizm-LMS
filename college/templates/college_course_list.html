@@ -1,0 +1,19 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block content %}
+<main class="main-content">
+    <div class="container">
+        <h1>Courses in {{ college.title }}</h1>
+        <div class="list-group">
+            {% for course in courses %}
+                <a href="{% url 'courses:course_detail' course.slug %}" class="list-group-item list-group-item-action">
+                    {{ course.title }}
+                </a>
+            {% empty %}
+                <p>No courses found in this college.</p>
+            {% endfor %}
+        </div>
+    </div>
+</main>
+{% endblock %}

@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-
+from college.views import CollegeDetail
 
 
 urlpatterns = [
@@ -10,6 +10,7 @@ urlpatterns = [
     path('college/update/<int:pk>/', views.CollegeUpdateAjaxView.as_view(), name='update_college_ajax'),
     path('college/delete/<int:pk>/', views.delete_college, name='delete_college'),
     path('college/search/', views.college_search_ajax, name='college_search_ajax'),
+    path('college/<slug:slug>/details/', CollegeDetail.as_view(), name='college_detail_dashboard'),
 
 # ____________________________________________________________________________
 
@@ -75,6 +76,7 @@ urlpatterns = [
     path('teachers/create/ajax/', views.TeacherCreateAjaxView.as_view(), name='create_teacher_ajax'),
     path('teachers/update/<int:pk>/', views.TeacherUpdateAjaxView.as_view(), name='update_teacher_ajax'),
     path('teachers/delete/<int:pk>/', views.delete_teacher, name='delete_teacher'),
+    path('teachers/<int:pk>/', views.TeacherDetail.as_view(), name='teacher_detail'),
 
 
    # ____________________________________________________________________________

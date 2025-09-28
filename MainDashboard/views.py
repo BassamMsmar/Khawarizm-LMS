@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.views.generic import ListView, View, UpdateView, DeleteView
+from django.views.generic import ListView, View, UpdateView, DeleteView, DetailView
 from django.http import JsonResponse
 from django.urls import reverse_lazy
 from django.db.models import Q
@@ -10,6 +10,9 @@ from department.models import Department
 from .forms import CourseForm, CollegeForm, DepartmentForm, StudentForm, LessonForm, UnitForm, QuizForm, QuestionForm, ChoiceForm
 from accounts.decorators import staff_required, admin_required
 from django.utils.decorators import method_decorator
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 @staff_required
 def quiz_list(request, unit_id):
@@ -20,6 +23,23 @@ def quiz_list(request, unit_id):
         'quizzes': quizzes
     }
     return render(request, 'pages/quiz_list.html', context)
+
+# ... (the rest of the file is unchanged until the end)
+
+class TeacherDetail(DetailView):
+    model = User
+    template_name = 'pages/teacher_detail.html'
+    context_object_name = 'teacher'
+
+    def get_queryset(self):
+        return super().get_queryset().filter(roles__name__iexact='lecturer')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        teacher = self.get_object()
+        context['courses_taught'] = Course.objects.filter(lecturer=teacher)
+        return context
+
 
 @method_decorator(staff_required, name='dispatch')
 class QuizCreateView(View):
@@ -273,6 +293,23 @@ class CollegeListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        
+        colleges_with_counts = []
+        for college in context['colleges']:
+            num_departments = college.departments.count()
+            num_courses = Course.objects.filter(department__college=college).count()
+            num_teachers = User.objects.filter(department__college=college, profile_type='lecturer').count()
+            num_students = User.objects.filter(department__college=college, profile_type='student').count()
+            
+            colleges_with_counts.append({
+                'college': college,
+                'num_departments': num_departments,
+                'num_courses': num_courses,
+                'num_teachers': num_teachers,
+                'num_students': num_students,
+            })
+        
+        context['colleges_with_counts'] = colleges_with_counts
         context['form'] = CollegeForm()
         return context
 
@@ -1112,3 +1149,17 @@ def reject_payment(request, payment_id):
         'payment': payment,
     }
     return render(request, 'pages/reject_payment.html', context)
+
+class TeacherDetail(DetailView):
+    model = User
+    template_name = 'pages/teacher_detail.html'
+    context_object_name = 'teacher'
+
+    def get_queryset(self):
+        return super().get_queryset().filter(roles__name__iexact='lecturer')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        teacher = self.get_object()
+        context['courses_taught'] = Course.objects.filter(lecturer=teacher)
+        return context

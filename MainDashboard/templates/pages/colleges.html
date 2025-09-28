@@ -36,35 +36,41 @@
                     <thead>
                         <tr>
                             <th>اسم الكلية</th>
+                            <th>عدد الأقسام</th>
+                            <th>عدد الكورسات</th>
+                            <th>عدد المدرسين</th>
+                            <th>عدد الطلاب</th>
                             <th>أقصى عدد للطلاب</th>
-                            <th>السعر الأساسي</th>
-                            <th>السعر بعد الخصم</th>
-                            <th>الحالة</th>
-                            <th>الإجراءات</th>
+                            <th>التفاصيل</th>
+                            <th>تعديل</th>
+                            <th>حذف</th>
                         </tr>
                     </thead>
                     <tbody id="collegesTableBody">
-                        {% if colleges %}
-                            {% for college in colleges %}
+                        {% if colleges_with_counts %}
+                            {% for item in colleges_with_counts %}
                                 <tr>
-                                    <td>{{ college.title }}</td>
-                                    <td>{{ college.max_students }}</td>
-                                    <td>{{ college.regular_price }}</td>
-                                    <td>{{ college.discounted_price }}</td>
+                                    <td>{{ item.college.title }}</td>
+                                    <td>{{ item.num_departments }}</td>
+                                    <td>{{ item.num_courses }}</td>
+                                    <td>{{ item.num_teachers }}</td>
+                                    <td>{{ item.num_students }}</td>
+                                    <td>{{ item.college.max_students }}</td>
+                                    
                                     <td>
-                                        {% if college.is_public %}
-                                            <span class="badge bg-success">عامة</span>
-                                        {% else %}
-                                            <span class="badge bg-secondary">خاصة</span>
-                                        {% endif %}
+                                        <a href="/main-dashboard/college/{{ item.college.slug }}/details/" class="btn btn-sm btn-secondary">
+                                            تفاصيل
+                                        </a>
                                     </td>
                                     <td>
                                         <button type="button"
                                             class="btn btn-sm btn-primary"
-                                            onclick="openEditCollegeModal({{ college.id }})">
+                                            onclick="openEditCollegeModal({{ item.college.id }})">
                                             تعديل
                                         </button>
-                                        <a href="/main-dashboard/college/delete/{{ college.id }}/" class="btn btn-sm btn-danger" onclick="return confirm('هل أنت متأكد أنك تريد حذف هذه الكلية؟');">
+                                    </td>
+                                    <td>
+                                        <a href="/main-dashboard/college/delete/{{ item.college.id }}/" class="btn btn-sm btn-danger" onclick="return confirm('هل أنت متأكد أنك تريد حذف هذه الكلية؟');">
                                             حذف
                                         </a>
                                     </td>
@@ -72,7 +78,7 @@
                             {% endfor %}
                         {% else %}
                             <tr>
-                                <td colspan="6" class="text-center py-4">
+                                <td colspan="10" class="text-center py-4">
                                     <div class="empty-state">
                                         <i class="bi bi-building"></i>
                                         <p class="mb-0">لا توجد كليات متاحة حالياً</p>
@@ -225,7 +231,7 @@
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                location.reload();
+.                location.reload();
             } else {
                 let errorMessages = '<strong>Please correct the following errors:</strong><ul>';
                 for (const field in data.errors) {
