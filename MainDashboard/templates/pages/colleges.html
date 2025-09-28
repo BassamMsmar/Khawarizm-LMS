@@ -64,8 +64,8 @@
                                     </td>
                                     <td>
                                         <button type="button"
-                                            class="btn btn-sm btn-primary"
-                                            onclick="openEditCollegeModal({{ item.college.id }})">
+                                            class="btn btn-sm btn-primary edit-college-btn"
+                                            data-url="{% url 'update_college_ajax' item.college.id %}">
                                             تعديل
                                         </button>
                                     </td>
@@ -199,20 +199,26 @@
         });
     }
 
-    function openEditCollegeModal(collegeId) {
-        const modal = new bootstrap.Modal(document.getElementById('editCollegeModal'));
-        const errorDiv = document.getElementById('editCollegeError');
-        const formContent = document.getElementById('editCollegeFormContent');
-        document.getElementById('editCollegeId').value = collegeId;
-        errorDiv.style.display = 'none';
+    document.addEventListener('DOMContentLoaded', function () {
+        document.body.addEventListener('click', function(event) {
+            if (event.target.classList.contains('edit-college-btn')) {
+                const url = event.target.getAttribute('data-url');
+                const modal = new bootstrap.Modal(document.getElementById('editCollegeModal'));
+                const errorDiv = document.getElementById('editCollegeError');
+                const formContent = document.getElementById('editCollegeFormContent');
+                const collegeId = url.split('/').slice(-2)[0];
+                document.getElementById('editCollegeId').value = collegeId;
+                errorDiv.style.display = 'none';
 
-        fetch(`{% url 'update_college_ajax' 0 %}`.replace('0', collegeId))
-            .then(response => response.json())
-            .then(data => {
-                formContent.innerHTML = data.form;
-                modal.show();
-            });
-    }
+                fetch(url)
+                    .then(response => response.json())
+                    .then(data => {
+                        formContent.innerHTML = data.form;
+                        modal.show();
+                    });
+            }
+        });
+    });
 
     function updateCollege() {
         const collegeId = document.getElementById('editCollegeId').value;
@@ -221,7 +227,7 @@
         const errorDiv = document.getElementById('editCollegeError');
         errorDiv.style.display = 'none';
 
-        fetch(`{% url 'update_college_ajax' 0 %}`.replace('0', collegeId), {
+        fetch(`/main-dashboard/college/update/${collegeId}/`, {
             method: 'POST',
             headers: {
                 'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
@@ -231,7 +237,7 @@
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-.                location.reload();
+                location.reload();
             } else {
                 let errorMessages = '<strong>Please correct the following errors:</strong><ul>';
                 for (const field in data.errors) {
@@ -272,8 +278,8 @@
                                 </td>
                                 <td>
                                     <button type="button"
-                                        class="btn btn-sm btn-primary"
-                                        onclick="openEditCollegeModal(${college.id})">
+                                        class="btn btn-sm btn-primary edit-college-btn"
+                                        data-url="/main-dashboard/college/update/${college.id}/">
                                         تعديل
                                     </button>
                                     <a href="/main-dashboard/college/delete/${college.id}/" class="btn btn-sm btn-danger" onclick="return confirm('هل أنت متأكد أنك تريد حذف هذه الكلية؟');">
