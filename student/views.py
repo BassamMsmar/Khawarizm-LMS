@@ -52,11 +52,13 @@ def my_courses(request):
 def academic_program(request):
     student_department = request.user.department
     department_courses = []
+    enrolled_courses_ids = request.user.enrolled_courses.values_list('id', flat=True) # Get IDs of enrolled courses
     if student_department:
         department_courses = Course.objects.filter(department=student_department)
     context = {
         'student_department': student_department,
-        'department_courses': department_courses
+        'department_courses': department_courses,
+        'enrolled_courses_ids': list(enrolled_courses_ids) # Pass as a list for easy checking in template
     }
     return render(request, 'student/academic_program.html', context)
 
@@ -165,3 +167,19 @@ class StudentProfileUpdateView(UpdateView):
 
     def get_object(self, queryset=None):
         return StudentProfile.objects.get_or_create(user=self.request.user)[0]
+
+@student_required
+def enroll_courses(request):
+    if request.method == 'POST':
+        course_ids = request.POST.getlist('courses')
+        print(f"Received course IDs: {course_ids}") # Debug print
+        for course_id in course_ids:
+            try:
+                course = Course.objects.get(id=course_id)
+                request.user.enrolled_courses.add(course)
+                print(f"Enrolled user {request.user.username} in course: {course.title}") # Debug print
+            except Course.DoesNotExist:
+                print(f"Course with ID {course_id} does not exist.") # Debug print
+                pass
+        return redirect('student:my_courses')
+    return redirect('student:academic_program')

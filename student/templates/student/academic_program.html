@@ -17,60 +17,87 @@
                 </div>
                 <div class="card-body">
                     {% if department_courses %}
-                        <!-- عرض الكروت -->
-                        <div id="cardsView" class="row">
-                            {% for course in department_courses %}
-                                <div class="col-md-6 col-lg-4 mb-4">
-                                    <div class="card h-100 shadow-sm rounded-3">
-                                        {% if course.image %}
-                                            <img src="{{ course.image.url }}" class="card-img-top rounded-top" alt="{{ course.title }}">
-                                        {% endif %}
-                                        <div class="card-body">
-                                            <h5 class="card-title">{{ course.title }}</h5>
-                                            <p class="card-text text-muted small">{{ course.short_description|default:"لا يوجد وصف متاح." }}</p>
-                                            <a href="{% url 'courses:course_detail' course.slug %}" class="btn btn-sm btn-primary">عرض الدورة</a>
-                                        </div>
-                                        <div class="card-footer text-muted small">
-                                            المحاضر: {{ course.lecturer.get_full_name|default:"غير محدد" }}
+                        <form method="post" action="{% url 'student:enroll_courses' %}">
+                            {% csrf_token %}
+                            <!-- عرض الكروت -->
+                            <div id="cardsView" class="row">
+                                {% for course in department_courses %}
+                                    <div class="col-md-6 col-lg-4 mb-4">
+                                        <div class="card h-100 shadow-sm rounded-3">
+                                            {% if course.image %}
+                                                <img src="{{ course.image.url }}" class="card-img-top rounded-top" alt="{{ course.title }}">
+                                            {% endif %}
+                                            <div class="card-body">
+                                                <h5 class="card-title">{{ course.title }}</h5>
+                                                <p class="card-text text-muted small">{{ course.short_description|default:"لا يوجد وصف متاح." }}</p>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" name="courses" value="{{ course.id }}" id="course-{{ course.id }}" {% if course.id in enrolled_courses_ids %}checked disabled{% endif %}>
+                                                    <label class="form-check-label" for="course-{{ course.id }}">
+                                                        {% if course.id in enrolled_courses_ids %}
+                                                            مسجل بالفعل
+                                                        {% else %}
+                                                            إضافة إلى دوراتي
+                                                        {% endif %}
+                                                    </label>
+                                                </div>
+                                                <a href="{% url 'courses:course_detail' course.slug %}" class="btn btn-sm btn-primary mt-2">عرض الدورة</a>
+                                            </div>
+                                            <div class="card-footer text-muted small">
+                                                المحاضر: {{ course.lecturer.get_full_name|default:"غير محدد" }}
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            {% endfor %}
-                        </div>
+                                {% endfor %}
+                            </div>
 
-                        <!-- عرض الجدول -->
-                        <div id="tableView" class="table-responsive d-none">
-                            <table class="table table-bordered table-striped align-middle text-center shadow-sm">
-                                <thead class="table-primary">
-                                    <tr>
-                                        <th>الصورة</th>
-                                        <th>العنوان</th>
-                                        <th>الوصف</th>
-                                        <th>المحاضر</th>
-                                        <th>تفاصيل</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for course in department_courses %}
+                            <!-- عرض الجدول -->
+                            <div id="tableView" class="table-responsive d-none">
+                                <table class="table table-bordered table-striped align-middle text-center shadow-sm">
+                                    <thead class="table-primary">
                                         <tr>
-                                            <td>
-                                                {% if course.image %}
-                                                    <img src="{{ course.image.url }}" alt="{{ course.title }}" width="60" class="rounded">
-                                                {% else %}
-                                                    <span class="text-muted">لا يوجد</span>
-                                                {% endif %}
-                                            </td>
-                                            <td>{{ course.title }}</td>
-                                            <td>{{ course.short_description|default:"لا يوجد وصف متاح."|truncatechars:50 }}</td>
-                                            <td>{{ course.lecturer.get_full_name|default:"غير محدد" }}</td>
-                                            <td>
-                                                <a href="{% url 'courses:course_detail' course.slug %}" class="btn btn-sm btn-outline-primary">عرض</a>
-                                            </td>
+                                            <th>الصورة</th>
+                                            <th>العنوان</th>
+                                            <th>الوصف</th>
+                                            <th>المحاضر</th>
+                                            <th>تفاصيل</th>
+                                            <th>إضافة</th>
                                         </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
+                                    </thead>
+                                    <tbody>
+                                        {% for course in department_courses %}
+                                            <tr>
+                                                <td>
+                                                    {% if course.image %}
+                                                        <img src="{{ course.image.url }}" alt="{{ course.title }}" width="60" class="rounded">
+                                                    {% else %}
+                                                        <span class="text-muted">لا يوجد</span>
+                                                    {% endif %}
+                                                </td>
+                                                <td>{{ course.title }}</td>
+                                                <td>{{ course.short_description|default:"لا يوجد وصف متاح."|truncatechars:50 }}</td>
+                                                <td>{{ course.lecturer.get_full_name|default:"غير محدد" }}</td>
+                                                <td>
+                                                    <a href="{% url 'courses:course_detail' course.slug %}" class="btn btn-sm btn-outline-primary">عرض</a>
+                                                </td>
+                                                <td>
+                                                    <div class="form-check d-flex justify-content-center">
+                                                        <input class="form-check-input" type="checkbox" name="courses" value="{{ course.id }}" id="course-table-{{ course.id }}" {% if course.id in enrolled_courses_ids %}checked disabled{% endif %}>
+                                                        <label class="form-check-label visually-hidden" for="course-table-{{ course.id }}">
+                                                            {% if course.id in enrolled_courses_ids %}
+                                                                مسجل بالفعل
+                                                            {% else %}
+                                                                إضافة إلى دوراتي
+                                                            {% endif %}
+                                                        </label>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <button type="submit" class="btn btn-success mt-3">إضافة الدورات المختارة</button>
+                        </form>
                     {% else %}
                         <p>لا توجد دورات متاحة حالياً في قسمك.</p>
                     {% endif %}
@@ -85,24 +112,5 @@
     </div>
 </div>
 
-<!-- JavaScript للتبديل بين الجدول والكروت -->
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const toggleBtn = document.getElementById("toggleViewBtn");
-        const cardsView = document.getElementById("cardsView");
-        const tableView = document.getElementById("tableView");
 
-        toggleBtn.addEventListener("click", function() {
-            cardsView.classList.toggle("d-none");
-            tableView.classList.toggle("d-none");
-
-            // تغيير الأيقونة والنص
-            if (cardsView.classList.contains("d-none")) {
-                toggleBtn.innerHTML = '<i class="bi bi-card-list"></i> عرض كروت';
-            } else {
-                toggleBtn.innerHTML = '<i class="bi bi-grid"></i> عرض جدول';
-            }
-        });
-    });
-</script>
 {% endblock content %}
