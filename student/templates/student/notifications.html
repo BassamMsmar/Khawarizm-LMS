@@ -12,30 +12,20 @@
             </div>
             <div class="card-body">
                 <ul class="list-group list-group-flush">
+                    {% for notification in notifications %}
                     <li class="list-group-item">
                         <div class="d-flex w-100 justify-content-between">
-                            <h5 class="mb-1">واجب جديد: مقدمة في البرمجة - الواجب الأول</h5>
-                            <small class="text-muted">منذ 3 أيام</small>
+                            <h5 class="mb-1">{{ notification.verb }}</h5>
+                            <small class="text-muted">{{ notification.timestamp|timesince }} ago</small>
                         </div>
-                        <p class="mb-1">تم نشر واجب جديد لدورة مقدمة في البرمجة. الموعد النهائي: 2025-09-01.</p>
-                        <small>المحاضر: أ. أحمد</small>
+                        <p class="mb-1">{{ notification.description }}</p>
+                        <small>From: {{ notification.actor }}</small>
                     </li>
+                    {% empty %}
                     <li class="list-group-item">
-                        <div class="d-flex w-100 justify-content-between">
-                            <h5 class="mb-1">درجات الاختبار: الفيزياء - الاختبار النهائي</h5>
-                            <small class="text-muted">منذ يوم واحد</small>
-                        </div>
-                        <p class="mb-1">تم نشر درجات الاختبار النهائي لمادة الفيزياء. يمكنك الاطلاع عليها في صفحة درجاتي.</p>
-                        <small>المحاضر: د. سارة</small>
+                        <p class="mb-0 text-muted">No notifications yet.</p>
                     </li>
-                    <li class="list-group-item">
-                        <div class="d-flex w-100 justify-content-between">
-                            <h5 class="mb-1">تذكير: موعد نهائي للواجب - تاريخ الفن</h5>
-                            <small class="text-muted">اليوم</small>
-                        </div>
-                        <p class="mb-1">تذكير بأن الموعد النهائي لتقديم مشروع تاريخ الفن هو اليوم.</p>
-                        <small>النظام</small>
-                    </li>
+                    {% endfor %}
                 </ul>
             </div>
         </div>

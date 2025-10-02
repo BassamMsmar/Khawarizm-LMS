@@ -11,6 +11,7 @@ def test(request):
 urlpatterns = [
     # path('', test, name='test'),
     path('', baseDashboard, name='baseDashboard'),
+    path('index/', baseDashboard, name='index'),
     path('admin/', include('dashboard.urls.admin_urls', namespace='admin')),
     path('staff/', include('dashboard.urls.staff_urls', namespace='staff')),
     path('student/', include('dashboard.urls.student_urls', namespace='student')),

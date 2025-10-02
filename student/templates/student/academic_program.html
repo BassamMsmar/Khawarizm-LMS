@@ -1,4 +1,5 @@
 {% extends 'student/base/base.html' %}
+{% load student_tags %}
 
 {% block content %}
 <div class="main-content">
@@ -31,14 +32,22 @@
                                                 <h5 class="card-title">{{ course.title }}</h5>
                                                 <p class="card-text text-muted small">{{ course.short_description|default:"لا يوجد وصف متاح." }}</p>
                                                 <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" name="courses" value="{{ course.id }}" id="course-{{ course.id }}" {% if course.id in enrolled_courses_ids %}checked disabled{% endif %}>
-                                                    <label class="form-check-label" for="course-{{ course.id }}">
-                                                        {% if course.id in enrolled_courses_ids %}
-                                                            مسجل بالفعل
-                                                        {% else %}
-                                                            إضافة إلى دوراتي
-                                                        {% endif %}
-                                                    </label>
+                                                    {% with course_status=registration_status|get_item:course.id %}
+                                                        <input class="form-check-input" type="checkbox" name="courses" value="{{ course.id }}" id="course-{{ course.id }}" 
+                                                            {% if course.id in enrolled_courses_ids or course_status == 'pending' or course_status == 'approved' %}disabled{% endif %}
+                                                            {% if course.id in enrolled_courses_ids or course_status == 'approved' %}checked{% endif %}>
+                                                        <label class="form-check-label" for="course-{{ course.id }}">
+                                                            {% if course.id in enrolled_courses_ids or course_status == 'approved' %}
+                                                                مسجل بالفعل
+                                                            {% elif course_status == 'pending' %}
+                                                                قيد المراجعة
+                                                            {% elif course_status == 'rejected' %}
+                                                                تم الرفض - يمكنك المحاولة مرة أخرى
+                                                            {% else %}
+                                                                إضافة إلى دوراتي
+                                                            {% endif %}
+                                                        </label>
+                                                    {% endwith %}
                                                 </div>
                                                 <a href="{% url 'courses:course_detail' course.slug %}" class="btn btn-sm btn-primary mt-2">عرض الدورة</a>
                                             </div>
@@ -81,14 +90,22 @@
                                                 </td>
                                                 <td>
                                                     <div class="form-check d-flex justify-content-center">
-                                                        <input class="form-check-input" type="checkbox" name="courses" value="{{ course.id }}" id="course-table-{{ course.id }}" {% if course.id in enrolled_courses_ids %}checked disabled{% endif %}>
-                                                        <label class="form-check-label visually-hidden" for="course-table-{{ course.id }}">
-                                                            {% if course.id in enrolled_courses_ids %}
-                                                                مسجل بالفعل
-                                                            {% else %}
-                                                                إضافة إلى دوراتي
-                                                            {% endif %}
-                                                        </label>
+                                                        {% with course_status=registration_status|get_item:course.id %}
+                                                            <input class="form-check-input" type="checkbox" name="courses" value="{{ course.id }}" id="course-table-{{ course.id }}"
+                                                                {% if course.id in enrolled_courses_ids or course_status == 'pending' or course_status == 'approved' %}disabled{% endif %}
+                                                                {% if course.id in enrolled_courses_ids or course_status == 'approved' %}checked{% endif %}>
+                                                            <label class="form-check-label visually-hidden" for="course-table-{{ course.id }}">
+                                                                {% if course.id in enrolled_courses_ids or course_status == 'approved' %}
+                                                                    مسجل بالفعل
+                                                                {% elif course_status == 'pending' %}
+                                                                    قيد المراجعة
+                                                                {% elif course_status == 'rejected' %}
+                                                                    تم الرفض - يمكنك المحاولة مرة أخرى
+                                                                {% else %}
+                                                                    إضافة إلى دوراتي
+                                                                {% endif %}
+                                                            </label>
+                                                        {% endwith %}
                                                     </div>
                                                 </td>
                                             </tr>

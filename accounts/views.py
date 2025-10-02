@@ -21,6 +21,8 @@ def redirect_user(request):
         if request.user.has_role('student'):
             return redirect('student:index')
         elif request.user.has_role('staff') or request.user.has_role('admin'):
+            # TODO: There is no 'index' in the 'dashboard' namespace.
+            # The correct redirect should be to 'dashboard:baseDashboard'.
             return redirect('dashboard:index')
         else:
             # Handle other roles or users with no roles

@@ -85,6 +85,10 @@ urlpatterns = [
     path('payment-requests/approve/<int:payment_id>/', views.approve_payment, name='approve_payment'),
     path('payment-requests/reject/<int:payment_id>/', views.reject_payment, name='reject_payment'),
 
+    path('course-registration-requests/', views.course_registration_requests, name='course_registration_requests'),
+    path('course-registration-requests/approve/<int:registration_id>/', views.approve_registration, name='approve_registration'),
+    path('course-registration-requests/reject/<int:registration_id>/', views.reject_registration, name='reject_registration'),
+
     path('reports', views.reports),
     path('settings', views.settings),
   
