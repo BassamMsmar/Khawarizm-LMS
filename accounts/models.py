@@ -83,9 +83,17 @@ class User(AbstractBaseUser, PermissionsMixin):
         # Return the user's full name (first name + last name)
         return f"{self.first_name} {self.last_name}"
 
-    def has_role(self, slug):
-        # Check if the user has a specific role by slug
-        return self.roles.filter(slug=slug).exists()
+    def has_role(self, role_name):
+        # Check if the user has a specific role by name
+        return self.roles.filter(name=role_name).exists()
+
+    @property
+    def is_student(self):
+        return self.has_role('student')
+
+    @property
+    def is_lecturer(self):
+        return self.has_role('lecturer')
 
     def save(self, *args, **kwargs):
         # Save the user first to get the ID

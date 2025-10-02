@@ -316,13 +316,17 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#contact">اتصل بنا</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/main-dashboard/dashboard"> لوحه التحكم معلم</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="/student-dashboard/">  لوحه التحكم طالب</a>
-                    </li>
+                    {% if user.is_authenticated %}
+                        {% if user.is_lecturer %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="/main-dashboard/dashboard">لوحة تحكم المعلم</a>
+                            </li>
+                        {% elif user.is_student %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="/student-dashboard/">لوحة تحكم الطالب</a>
+                            </li>
+                        {% endif %}
+                    {% endif %}
 
                 </ul>
             </div>
