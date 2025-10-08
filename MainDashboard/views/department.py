@@ -14,6 +14,15 @@ class DepartmentListView(ListView):
     template_name = 'pages/departments.html'
     context_object_name = 'departments'
 
+    def get_queryset(self):
+        user = self.request.user
+        if user.has_role('admin'):
+            return Department.objects.all()
+        elif user.has_role('lecturer'):
+            if user.department and user.department.college:
+                return Department.objects.filter(college=user.department.college)
+        return Department.objects.none()
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['form'] = DepartmentForm() # Add DepartmentForm to context
@@ -66,7 +75,17 @@ def delete_department(request, pk):
 @staff_required
 def department_search_ajax(request):
     search_query = request.GET.get('q', '')
-    departments = Department.objects.all()
+    user = request.user
+
+    if user.has_role('admin'):
+        departments = Department.objects.all()
+    elif user.has_role('lecturer'):
+        if user.department and user.department.college:
+            departments = Department.objects.filter(college=user.department.college)
+        else:
+            departments = Department.objects.none()
+    else:
+        departments = Department.objects.none()
 
     if search_query:
         departments = departments.filter(

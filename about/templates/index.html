@@ -297,7 +297,7 @@
             </div>
 
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
+                <ul class="navbar-nav ms-auto align-items-center">
                     <li class="nav-item">
                         <a class="nav-link" href="#home">الرئيسية</a>
                     </li>
@@ -316,6 +316,7 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#contact">اتصل بنا</a>
                     </li>
+
                     {% if user.is_authenticated %}
                         {% if user.is_lecturer %}
                             <li class="nav-item">
@@ -326,23 +327,24 @@
                                 <a class="nav-link" href="/student-dashboard/">لوحة تحكم الطالب</a>
                             </li>
                         {% endif %}
+
+                        <!-- أيقونة تسجيل الخروج -->
                         <li class="nav-item">
-                            <li>
-                                    <form action="{% url 'accounts:logout' %}" method="post" class="d-inline">
-                                        {% csrf_token %}
-                                        <button type="submit" class="dropdown-item">
-                                            <i class="bi bi-box-arrow-right me-2"></i>تسجيل الخروج
-                                        </button>
-                                    </form>
-                                </li>
-                            <!-- <a class="nav-link" href="{% url 'accounts:logout' %}">تسجيل الخروج</a> -->
+                            <form action="{% url 'accounts:logout' %}" method="post" class="d-inline">
+                                {% csrf_token %}
+                                <button type="submit" class="nav-link btn btn-link p-0 text-danger" style="border: none;">
+                                    <i class="bi bi-box-arrow-right" style="font-size: 1.2rem;"></i>
+                                </button>
+                            </form>
                         </li>
+
                     {% else %}
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'accounts:login' %}">تسجيل الدخول</a>
                         </li>
                     {% endif %}
                 </ul>
+
             </div>
         </div>
     </nav>

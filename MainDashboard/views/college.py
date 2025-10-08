@@ -18,11 +18,21 @@ class CollegeListView(ListView):
     template_name = 'pages/colleges.html'
     context_object_name = 'colleges'
 
+    def get_queryset(self):
+        user = self.request.user
+        if user.has_role('admin'):
+            return College.objects.all()
+        elif user.has_role('lecturer'):
+            if user.department and user.department.college:
+                return College.objects.filter(pk=user.department.college.pk)
+        return College.objects.none()
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         
         colleges_with_counts = []
-        for college in context['colleges']:
+        # Iterate over the queryset returned by get_queryset
+        for college in self.get_queryset():
             num_departments = college.departments.count()
             num_courses = Course.objects.filter(department__college=college).count()
             num_teachers = User.objects.filter(department__college=college, profile_type='lecturer').count()
@@ -93,7 +103,17 @@ def delete_college(request, pk):
 @staff_required
 def college_search_ajax(request):
     search_query = request.GET.get('q', '')
-    colleges = College.objects.all()
+    user = request.user
+
+    if user.has_role('admin'):
+        colleges = College.objects.all()
+    elif user.has_role('lecturer'):
+        if user.department and user.department.college:
+            colleges = College.objects.filter(pk=user.department.college.pk)
+        else:
+            colleges = College.objects.none()
+    else:
+        colleges = College.objects.none()
 
     if search_query:
         colleges = colleges.filter(

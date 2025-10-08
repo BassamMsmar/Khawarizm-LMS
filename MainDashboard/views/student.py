@@ -13,7 +13,17 @@ User = get_user_model()
 
 @staff_required
 def students(request):
-    students = User.objects.filter(roles__name__iexact='student')
+    user = request.user
+    if user.has_role('admin'):
+        students = User.objects.filter(roles__name__iexact='student')
+    elif user.has_role('lecturer'):
+        if user.department and user.department.college:
+            students = User.objects.filter(roles__name__iexact='student', department__college=user.department.college)
+        else:
+            students = User.objects.none()
+    else:
+        students = User.objects.none()
+
     student_data = []
     for student in students:
         department = student.department

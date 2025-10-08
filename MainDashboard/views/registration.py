@@ -6,8 +6,17 @@ from accounts.decorators import staff_required
 
 @staff_required
 def course_registration_requests(request):
-    pending_registrations = CourseRegistration.objects.filter(status='pending').order_by('-created_at')
-    other_registrations = CourseRegistration.objects.exclude(status='pending').order_by('-created_at')
+    user = request.user
+    if user.has_role('admin'):
+        pending_registrations = CourseRegistration.objects.filter(status='pending').order_by('-created_at')
+        other_registrations = CourseRegistration.objects.exclude(status='pending').order_by('-created_at')
+    elif user.has_role('lecturer'):
+        pending_registrations = CourseRegistration.objects.filter(status='pending', course__lecturer=user).order_by('-created_at')
+        other_registrations = CourseRegistration.objects.exclude(status='pending').filter(course__lecturer=user).order_by('-created_at')
+    else:
+        pending_registrations = CourseRegistration.objects.none()
+        other_registrations = CourseRegistration.objects.none()
+
     context = {
         'pending_registrations': pending_registrations,
         'other_registrations': other_registrations,
