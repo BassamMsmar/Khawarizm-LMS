@@ -2,6 +2,7 @@ from django.urls import path
 from . import views
 from college.views import CollegeDetail
 
+# app_name = 'MainDashboard'
 
 urlpatterns = [
     

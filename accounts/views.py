@@ -23,7 +23,7 @@ def redirect_user(request):
         elif request.user.has_role('staff') or request.user.has_role('admin'):
             # TODO: There is no 'index' in the 'dashboard' namespace.
             # The correct redirect should be to 'dashboard:baseDashboard'.
-            return redirect('dashboard:index')
+            return redirect('/main-dashboard/dashboard')
         else:
             # Handle other roles or users with no roles
             return redirect('/') # Or a default page
