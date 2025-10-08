@@ -7,4 +7,6 @@ urlpatterns = [
     path('login/', views.UserLoginView.as_view(), name='login'),
     path('logout/', views.UserLogoutView.as_view(next_page='accounts:login'), name='logout'),
     path('redirect/', views.redirect_user, name='user_redirect'),
+    path('unauthorized/', views.unauthorized_view, name='unauthorized'),
+
 ]

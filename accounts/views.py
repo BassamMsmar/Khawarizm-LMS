@@ -29,3 +29,9 @@ def redirect_user(request):
             return redirect('/') # Or a default page
     else:
         return redirect('accounts:login')
+
+# accounts/views.py
+from django.shortcuts import render
+
+def unauthorized_view(request):
+    return render(request, 'accounts/unauthorized.html', status=403)

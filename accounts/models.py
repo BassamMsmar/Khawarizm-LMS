@@ -10,6 +10,7 @@ ROLE_CHOICES = (
     ('admin', 'Admin'),
     # ('department_manager', 'Department Manager'),
     ('staff', 'Staff'),
+    ('lecturer', 'Lecturer'),
     # ('course_supervisor', 'Course Supervisor'),
     ('student', 'Student'),
 )
