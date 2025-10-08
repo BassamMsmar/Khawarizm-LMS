@@ -50,13 +50,23 @@ def my_courses(request):
 
 @student_required
 def academic_program(request):
+    student = Student.objects.get(user=request.user)
     student_department = request.user.department
     department_courses = []
+    enrolled_courses_ids = request.user.enrolled_courses.values_list('id', flat=True)
+    
+    # Get course registration requests
+    registration_requests = CourseRegistration.objects.filter(student=student)
+    registration_status = {req.course.id: req.status for req in registration_requests}
+
     if student_department:
         department_courses = Course.objects.filter(department=student_department)
+        
     context = {
         'student_department': student_department,
-        'department_courses': department_courses
+        'department_courses': department_courses,
+        'enrolled_courses_ids': list(enrolled_courses_ids),
+        'registration_status': registration_status,
     }
     return render(request, 'student/academic_program.html', context)
 
@@ -96,7 +106,11 @@ def payment_history(request):
 
 @student_required
 def notifications(request):
-    return render(request, 'student/notifications.html')
+    notifications = request.user.notifications.all()
+    context = {
+        'notifications': notifications,
+    }
+    return render(request, 'student/notifications.html', context)
 
 @student_required
 def my_grades(request):
@@ -118,6 +132,17 @@ from student.models import Student
 from dashboard.mixins import RolesRequiredMixin
 from django.contrib.auth import get_user_model
 User = get_user_model()
+
+class StudentDetail(DetailView):
+    model = User
+    template_name = 'student/student_detail.html'
+    context_object_name = 'student'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        student_user = self.get_object()
+        context['enrolled_courses'] = student_user.enrolled_courses.all()
+        return context
 
 @student_required
 def id_card(request):
@@ -154,3 +179,20 @@ class StudentProfileUpdateView(UpdateView):
 
     def get_object(self, queryset=None):
         return StudentProfile.objects.get_or_create(user=self.request.user)[0]
+
+from .models import CourseRegistration
+
+@student_required
+def enroll_courses(request):
+    if request.method == 'POST':
+        course_ids = request.POST.getlist('courses')
+        student = Student.objects.get(user=request.user)
+        for course_id in course_ids:
+            try:
+                course = Course.objects.get(id=course_id)
+                # Create a course registration request
+                CourseRegistration.objects.create(student=student, course=course)
+            except Course.DoesNotExist:
+                pass
+        return redirect('student:my_courses')
+    return redirect('student:academic_program')

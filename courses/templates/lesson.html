@@ -54,8 +54,8 @@
   }
 
   .accordion-button:not(.collapsed) {
-    background-color: #eef2ff;
-    color: #4f46e5;
+    background-color: #e0f2f1;
+    color: #14b8a6;
   }
 
   .lesson-list a {
@@ -68,9 +68,9 @@
   }
 
   .lesson-list a:hover, .lesson-list a.active {
-    background-color: #eef2ff;
-    color: #4f46e5;
-    border-left-color: #4f46e5;
+    background-color: #e0f2f1;
+    color: #14b8a6;
+    border-left-color: #14b8a6;
   }
 
   .lesson-main-content {
@@ -167,6 +167,18 @@
                 <li>
                   <a href="{% url 'courses:lesson_detail' course_slug=lesson_item.unit.course.slug lesson_slug=lesson_item.slug %}" class="{% if lesson_item.slug == lesson.slug %}active{% endif %}">
                     <i class="bi bi-play-circle-fill me-2"></i>{{ lesson_item.title }}
+                    {% if lesson_item.id in completed_lessons %}
+                      <i class="bi bi-check-circle-fill text-success ms-2"></i>
+                    {% endif %}
+                  </a>
+                </li>
+                {% endfor %}
+              </ul>
+              <ul class="list-unstyled lesson-list">
+                {% for quiz_item in unit_quizzes|get_item:unit %}
+                <li>
+                  <a href="{% url 'courses:quiz_detail' course_slug=quiz_item.unit.course.slug quiz_slug=quiz_item.slug %}" class="">
+                    <i class="bi bi-patch-question-fill me-2"></i>{{ quiz_item.title }}
                   </a>
                 </li>
                 {% endfor %}

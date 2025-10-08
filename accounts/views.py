@@ -21,9 +21,17 @@ def redirect_user(request):
         if request.user.has_role('student'):
             return redirect('student:index')
         elif request.user.has_role('staff') or request.user.has_role('admin'):
-            return redirect('dashboard:index')
+            # TODO: There is no 'index' in the 'dashboard' namespace.
+            # The correct redirect should be to 'dashboard:baseDashboard'.
+            return redirect('/main-dashboard/dashboard')
         else:
             # Handle other roles or users with no roles
             return redirect('/') # Or a default page
     else:
         return redirect('accounts:login')
+
+# accounts/views.py
+from django.shortcuts import render
+
+def unauthorized_view(request):
+    return render(request, 'accounts/unauthorized.html', status=403)

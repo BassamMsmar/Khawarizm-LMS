@@ -203,3 +203,24 @@ class Review(models.Model):
     
     def __str__(self) -> str:
         return f"{self.comment[:20]} for course {self.course}"
+
+class QuizAttempt(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='quiz_attempts')
+    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE, related_name='attempts')
+    score = models.FloatField()
+    completed_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-completed_at']
+
+    def __str__(self):
+        return f'{self.user.username} - {self.quiz.title} - {self.score}%'
+
+class AnsweredQuestion(models.Model):
+    quiz_attempt = models.ForeignKey(QuizAttempt, on_delete=models.CASCADE, related_name='answered_questions')
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    selected_choice = models.ForeignKey(Choice, on_delete=models.CASCADE, null=True, blank=True)
+    is_correct = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f'{self.quiz_attempt.user.username} - {self.question.text[:50]} - {self.is_correct}'

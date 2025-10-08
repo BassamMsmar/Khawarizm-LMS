@@ -1,0 +1,19 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block content %}
+<main class="main-content">
+    <div class="container">
+        <h1>Departments in {{ college.title }}</h1>
+        <div class="list-group">
+            {% for department in departments %}
+                <a href="{% url 'departmentDetail' department.slug %}" class="list-group-item list-group-item-action">
+                    {{ department.name }}
+                </a>
+            {% empty %}
+                <p>No departments found in this college.</p>
+            {% endfor %}
+        </div>
+    </div>
+</main>
+{% endblock %}

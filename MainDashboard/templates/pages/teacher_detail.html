@@ -1,0 +1,50 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block content %}
+<main class="main-content">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <img src="{% if teacher.lecturerprofile.profile_picture %}{{ teacher.lecturerprofile.profile_picture.url }}{% else %}{% static 'images/default-avatar.png' %}{% endif %}" alt="{{ teacher.get_full_name }}" class="img-fluid rounded-circle mb-3" width="150">
+                        <h4>{{ teacher.get_full_name }}</h4>
+                        <p class="text-muted">@{{ teacher.email }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Teacher Information</h4>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Full Name:</strong> {{ teacher.get_full_name }}</p>
+                        <p><strong>Email:</strong> {{ teacher.email }}</p>
+                        <p><strong>Phone Number:</strong> {{ teacher.phone_number }}</p>
+                        <p><strong>Department:</strong> {{ teacher.department.name }}</p>
+                        <p><strong>College:</strong> {{ teacher.department.college.title }}</p>
+                    </div>
+                </div>
+                <div class="card mt-3">
+                    <div class="card-header">
+                        <h4>Courses Taught</h4>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group">
+                            {% for course in courses_taught %}
+                                <li class="list-group-item">
+                                    <a href="#">{{ course.title }}</a>
+                                </li>
+                            {% empty %}
+                                <li class="list-group-item">This teacher is not teaching any courses yet.</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

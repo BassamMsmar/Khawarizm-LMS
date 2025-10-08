@@ -1,7 +1,8 @@
 from django.urls import path
 from . import views
+from college.views import CollegeDetail
 
-
+# app_name = 'MainDashboard'
 
 urlpatterns = [
     
@@ -10,6 +11,7 @@ urlpatterns = [
     path('college/update/<int:pk>/', views.CollegeUpdateAjaxView.as_view(), name='update_college_ajax'),
     path('college/delete/<int:pk>/', views.delete_college, name='delete_college'),
     path('college/search/', views.college_search_ajax, name='college_search_ajax'),
+    path('college/<slug:slug>/details/', CollegeDetail.as_view(), name='college_detail_dashboard'),
 
 # ____________________________________________________________________________
 
@@ -53,7 +55,7 @@ urlpatterns = [
 # ____________________________________________________________________________
 
     path('dashboard', views.dashboard),
-    path('lessons/', views.LessonListView.as_view(), name='lessons'),
+    # path('lessons/', views.LessonListView.as_view(), name='lessons'),
     path('lessons/create/ajax/', views.LessonCreateAjaxView.as_view(), name='create_lesson_ajax'),
     path('lessons/update/<int:pk>/', views.LessonUpdateAjaxView.as_view(), name='update_lesson_ajax'),
     path('lessons/delete/<int:pk>/', views.delete_lesson, name='delete_lesson'),
@@ -75,6 +77,7 @@ urlpatterns = [
     path('teachers/create/ajax/', views.TeacherCreateAjaxView.as_view(), name='create_teacher_ajax'),
     path('teachers/update/<int:pk>/', views.TeacherUpdateAjaxView.as_view(), name='update_teacher_ajax'),
     path('teachers/delete/<int:pk>/', views.delete_teacher, name='delete_teacher'),
+    path('teachers/<int:pk>/', views.TeacherDetail.as_view(), name='teacher_detail'),
 
 
    # ____________________________________________________________________________
@@ -82,6 +85,10 @@ urlpatterns = [
     path('payment-requests/', views.payment_requests, name='payment_requests'),
     path('payment-requests/approve/<int:payment_id>/', views.approve_payment, name='approve_payment'),
     path('payment-requests/reject/<int:payment_id>/', views.reject_payment, name='reject_payment'),
+
+    path('course-registration-requests/', views.course_registration_requests, name='course_registration_requests'),
+    path('course-registration-requests/approve/<int:registration_id>/', views.approve_registration, name='approve_registration'),
+    path('course-registration-requests/reject/<int:registration_id>/', views.reject_registration, name='reject_registration'),
 
     path('reports', views.reports),
     path('settings', views.settings),

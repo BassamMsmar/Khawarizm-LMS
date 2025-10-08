@@ -72,7 +72,7 @@
                                             <div>
                                                 <a href="{% url 'lesson_list' unit.id %}" class="btn btn-sm btn-info me-2">Manage Lessons</a>
                                                 <a href="{% url 'quiz_list' unit.id %}" class="btn btn-sm btn-info me-2">Manage Quizzes</a>
-                                                <button class="btn btn-sm btn-primary me-2" data-bs-toggle="modal" data-bs-target="#editUnitModal" data-unit-id="{{ unit.id }}" data-unit-title="{{ unit.title }}" data-unit-description="{{ unit.description }}" data-unit-order="{{ unit.order }}">Edit</button>
+                                                <button class="btn btn-sm btn-primary me-2" data-bs-toggle="modal" data-bs-target="#editUnitModal" data-unit-id="{{ unit.id }}" data-unit-title="{{ unit.title }}">Edit</button>
                                                 {% comment %} <a href="{% url 'delete_unit' unit.id %}" class="btn btn-sm btn-danger">Delete</a> {% endcomment %}
                                             </div>
                                         </div>
@@ -120,6 +120,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
+                    <div id="addUnitError" class="alert alert-danger" style="display: none;"></div>
                     {% csrf_token %}
                     {{ unit_form.as_p }}
                 </div>
@@ -132,83 +133,61 @@
     </div>
 </div>
 
-<div class="modal fade" id="editUnitModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <form id="editUnitForm">
-                <div class="modal-header">
-                    <h5 class="modal-title">Edit Unit</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    {% csrf_token %}
-                    <input type="hidden" id="editUnitId" name="unit_id">
-                    <div id="editUnitFormContent"></div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" onclick="updateUnit()">Save Changes</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+
 
 <script>
     function addUnit() {
         const form = document.getElementById('addUnitForm');
         const formData = new FormData(form);
+        const errorDiv = document.getElementById('addUnitError');
+        if (errorDiv) {
+            errorDiv.style.display = 'none'; // Hide previous errors
+        }
+
         fetch('{% url "create_unit_ajax" course.id %}', {
             method: 'POST',
+            headers: {
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+            },
             body: formData
         })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                return response.text().then(text => {
+                    throw new Error('Network response was not ok. Status: ' + response.status + ', Body: ' + text);
+                });
+            }
+            return response.json();
+        })
         .then(data => {
             if (data.success) {
                 location.reload();
             } else {
-                alert(JSON.stringify(data.errors));
+                let errorMessages = '<strong>Please correct the following errors:</strong><ul>';
+                for (const field in data.errors) {
+                    errorMessages += `<li>${field}: ${data.errors[field].join(', ')}</li>`;
+                }
+                errorMessages += '</ul>';
+                if (errorDiv) {
+                    errorDiv.innerHTML = errorMessages;
+                    errorDiv.style.display = 'block';
+                } else {
+                    alert(errorMessages);
+                }
             }
-        });
-    }
-
-    function updateUnit() {
-        const unitId = document.getElementById('editUnitId').value;
-        const form = document.getElementById('editUnitForm');
-        const formData = new FormData(form);
-        fetch(`/main-dashboard/unit/update/${unitId}/`, {
-            method: 'POST',
-            body: formData
         })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                location.reload();
+        .catch(error => {
+            console.error('Error:', error);
+            if (errorDiv) {
+                errorDiv.innerHTML = 'An unexpected error occurred: ' + error.message;
+                errorDiv.style.display = 'block';
             } else {
-                alert(JSON.stringify(data.errors));
+                alert('An unexpected error occurred: ' + error.message);
             }
         });
     }
 
-    const editUnitModal = document.getElementById('editUnitModal');
-    editUnitModal.addEventListener('show.bs.modal', function (event) {
-        const button = event.relatedTarget;
-        const unitId = button.getAttribute('data-unit-id');
-        const unitTitle = button.getAttribute('data-unit-title');
-        const unitDescription = button.getAttribute('data-unit-description');
-        const unitOrder = button.getAttribute('data-unit-order');
-
-        const modalTitle = editUnitModal.querySelector('.modal-title');
-        const formContent = editUnitModal.querySelector('#editUnitFormContent');
-        document.getElementById('editUnitId').value = unitId;
-
-        modalTitle.textContent = 'Edit ' + unitTitle;
-        fetch(`/main-dashboard/unit/update/${unitId}/`)
-            .then(response => response.json())
-            .then(data => {
-                formContent.innerHTML = data.form;
-            });
-    });
+    
 </script>
 
 <div class="modal fade" id="addLessonModal" tabindex="-1">

@@ -10,7 +10,7 @@
   }
 
   .course-header {
-    background: linear-gradient(to right, #6a11cb, #2575fc);
+    background: linear-gradient(to right, #14b8a6, #0d9488);
     color: white;
     padding: 3rem 0;
     text-align: center;
@@ -40,7 +40,7 @@
   .course-card h2 {
     font-weight: 600;
     margin-bottom: 1.5rem;
-    border-bottom: 2px solid #6a11cb;
+    border-bottom: 2px solid #14b8a6;
     padding-bottom: 0.5rem;
     display: inline-block;
   }
@@ -50,19 +50,19 @@
   }
 
   .accordion-button:not(.collapsed) {
-    background-color: #f0e8ff;
-    color: #6a11cb;
+    background-color: #e0f2f1;
+    color: #14b8a6;
   }
 
   .review-card {
-    background-color: #f0e8ff;
+    background-color: #e0f2f1;
     border-radius: 10px;
     padding: 1.5rem;
     margin-bottom: 1rem;
   }
 
   .review-card strong {
-    color: #6a11cb;
+    color: #14b8a6;
   }
 
   .enroll-card {
@@ -76,11 +76,11 @@
   .enroll-card .price {
     font-size: 2.5rem;
     font-weight: 700;
-    color: #6a11cb;
+    color: #14b8a6;
   }
 
   .enroll-card .btn-enroll {
-    background: linear-gradient(to right, #6a11cb, #2575fc);
+    background: linear-gradient(to right, #14b8a6, #0d9488);
     color: white;
     font-weight: 600;
     border-radius: 50px;
@@ -126,6 +126,9 @@
                   <li class="list-group-item">
                     <i class="bi bi-play-circle-fill text-primary me-2"></i>
                     <a href="{% url 'courses:lesson_detail' course_slug=course.slug lesson_slug=lesson.slug %}" class="text-decoration-none">{{ lesson.title }}</a>
+                    {% if lesson.id in completed_lessons %}
+                      <i class="bi bi-check-circle-fill text-success ms-2"></i>
+                    {% endif %}
                   </li>
                   {% endfor %}
                   {% for quiz in unit.quizzes.all %}

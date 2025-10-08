@@ -1,0 +1,55 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block content %}
+<main class="main-content">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h1>{{ department.name }}</h1>
+                    </div>
+                    <div class="card-body">
+                        {% if department.image %}
+                            <img src="{{ department.image.url }}" alt="{{ department.name }}" class="img-fluid mb-3">
+                        {% endif %}
+                        
+                        <h5 class="card-title">Description</h5>
+                        <p class="card-text">{{ department.description }}</p>
+                        
+                        <h5 class="card-title">Courses</h5>
+                        <ul class="list-group">
+                            {% for course in courses %}
+                                <li class="list-group-item">
+                                    <a href="#">{{ course.title }}</a>
+                                </li>
+                            {% empty %}
+                                <li class="list-group-item">No courses in this department yet.</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Department Info</h4>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <strong>College:</strong> <a href="#">{{ department.college.title }}</a>
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Admin:</strong> {{ department.admin.get_full_name }}
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Subscription Fee:</strong> {{ department.subscription_fee }}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

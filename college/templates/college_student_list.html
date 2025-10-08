@@ -1,0 +1,19 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block content %}
+<main class="main-content">
+    <div class="container">
+        <h1>Students in {{ college.title }}</h1>
+        <div class="list-group">
+            {% for student in students %}
+                <a href="{% url 'student:student_detail' student.pk %}" class="list-group-item list-group-item-action">
+                    {{ student.get_full_name }}
+                </a>
+            {% empty %}
+                <p>No students found in this college.</p>
+            {% endfor %}
+        </div>
+    </div>
+</main>
+{% endblock %}

@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Course, Lesson, Quiz, Unit, Question, Choice, Review
+from .models import Course, Lesson, Quiz, Unit, Question, Choice, Review, QuizAttempt, AnsweredQuestion
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
@@ -35,6 +35,12 @@ class CourseDetail(LoginRequiredMixin, DetailView):
         unit_quizzes = {
             unit: unit.quizzes.filter(is_active=True) for unit in units
         }
+
+        completed_lessons = set()
+        if self.request.user.is_authenticated:
+            completed_lessons = set(self.request.user.completed_lessons.values_list('id', flat=True))
+
+        context['completed_lessons'] = completed_lessons
 
         lecturer_user = course.lecturer
         lecturer_profile = getattr(lecturer_user, "lecturer_profile", None)
@@ -104,16 +110,24 @@ def Lesson_Detail(request, course_slug, lesson_slug):
         unit: unit.lessons.filter(is_active=True) for unit in units
     }
 
-    is_completed = False
+    unit_quizzes = {
+        unit: unit.quizzes.filter(is_active=True) for unit in units
+    }
+
+    completed_lessons = set()
     if request.user.is_authenticated:
-        is_completed = current_lesson.completed_by.filter(id=request.user.id).exists()
+        completed_lessons = set(request.user.completed_lessons.values_list('id', flat=True))
+
+    is_completed = current_lesson.id in completed_lessons
 
     context = {
         'lesson': current_lesson,
         'units': units,
         'unit_lessons': unit_lessons,
+        'unit_quizzes': unit_quizzes,
         'course': current_lesson.unit.course,
         'is_completed': is_completed,
+        'completed_lessons': completed_lessons,
     }
 
     return render(request, 'lesson.html', context)
@@ -142,25 +156,40 @@ def take_quiz(request, course_slug, quiz_slug):
         correct_answers = 0
         total_questions = questions.count()
         
+        # Create QuizAttempt
+        quiz_attempt = QuizAttempt.objects.create(
+            user=request.user,
+            quiz=quiz,
+            score=0 # Will update later
+        )
+
         for question in questions:
             answer_key = f'question_{question.id}'
+            selected_choice = None
             if answer_key in request.POST:
                 selected_choice_id = request.POST[answer_key]
+                selected_choice = Choice.objects.get(id=int(selected_choice_id))
                 user_answers[question.id] = int(selected_choice_id)
                 
-                correct_choice = question.choices.filter(is_correct=True).first()
-                if correct_choice and correct_choice.id == int(selected_choice_id):
-                    correct_answers += 1
+            correct_choice = question.choices.filter(is_correct=True).first()
+            is_correct = (selected_choice == correct_choice)
+
+            if is_correct:
+                correct_answers += 1
+            
+            # Create AnsweredQuestion
+            AnsweredQuestion.objects.create(
+                quiz_attempt=quiz_attempt,
+                question=question,
+                selected_choice=selected_choice,
+                is_correct=is_correct
+            )
         
         score = (correct_answers / total_questions) * 100 if total_questions > 0 else 0
+        quiz_attempt.score = score
+        quiz_attempt.save()
         
-        request.session['quiz_results'] = {
-            'quiz_id': quiz.id,
-            'score': score,
-            'correct_answers': correct_answers,
-            'total_questions': total_questions,
-            'user_answers': user_answers,
-        }
+        request.session['quiz_attempt_id'] = quiz_attempt.id
         
         return redirect('courses:quiz_result', course_slug=course_slug, quiz_slug=quiz_slug)
     
@@ -178,40 +207,46 @@ def quiz_result(request, course_slug, quiz_slug):
     quiz = get_object_or_404(Quiz, slug=quiz_slug)
     course = get_object_or_404(Course, slug=course_slug)
     
-    quiz_results = request.session.get('quiz_results', {})
-    
-    if not quiz_results or quiz_results.get('quiz_id') != quiz.id:
+    quiz_attempt_id = request.session.get('quiz_attempt_id')
+
+    if not quiz_attempt_id:
         return redirect('courses:quiz_detail', course_slug=course_slug, quiz_slug=quiz_slug)
+
+    quiz_attempt = get_object_or_404(QuizAttempt, id=quiz_attempt_id, user=request.user, quiz=quiz)
     
-    questions = quiz.questions.all().prefetch_related('choices')
     question_results = []
-    
-    for question in questions:
-        user_answer_id = quiz_results['user_answers'].get(question.id)
-        user_choice = None
+    correct_answers_count = 0
+    total_questions_count = 0
+
+    for answered_question in quiz_attempt.answered_questions.all().prefetch_related('question__choices', 'selected_choice'):
+        question = answered_question.question
+        user_choice = answered_question.selected_choice
         correct_choice = question.choices.filter(is_correct=True).first()
-        
-        if user_answer_id:
-            user_choice = question.choices.filter(id=user_answer_id).first()
-        
+        is_correct = answered_question.is_correct
+
+        if is_correct:
+            correct_answers_count += 1
+        total_questions_count += 1
+
         question_results.append({
             'question': question,
             'user_choice': user_choice,
             'correct_choice': correct_choice,
-            'is_correct': user_choice == correct_choice if user_choice else False,
+            'is_correct': is_correct,
+            'all_choices': question.choices.all(),
         })
     
     context = {
         'quiz': quiz,
         'course': course,
-        'score': quiz_results['score'],
-        'correct_answers': quiz_results['correct_answers'],
-        'total_questions': quiz_results['total_questions'],
+        'score': quiz_attempt.score,
+        'correct_answers': correct_answers_count,
+        'total_questions': total_questions_count,
         'question_results': question_results,
     }
     
-    if 'quiz_results' in request.session:
-        del request.session['quiz_results']
+    if 'quiz_attempt_id' in request.session:
+        del request.session['quiz_attempt_id']
     
     return render(request, 'quiz_result.html', context)
 
