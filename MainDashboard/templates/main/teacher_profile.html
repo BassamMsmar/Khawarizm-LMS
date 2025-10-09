@@ -1,0 +1,84 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+<main class="main-content py-4">
+  <div class="container">
+    <style>
+      :root {
+        --custom-primary: #369283;
+      }
+
+      .text-primary {
+        color: var(--custom-primary) !important;
+      }
+
+      .bg-primary {
+        background-color: var(--custom-primary) !important;
+      }
+
+      .btn-primary {
+        background-color: var(--custom-primary) !important;
+        border-color: var(--custom-primary) !important;
+      }
+
+      .btn-outline-primary {
+        border-color: var(--custom-primary) !important;
+        color: var(--custom-primary) !important;
+      }
+
+      .btn-outline-primary:hover {
+        background-color: var(--custom-primary) !important;
+        color: #fff !important;
+      }
+
+      .list-group-item span.fw-semibold {
+        color: #1f2937;
+      }
+    </style>
+
+    <!-- Teacher Info Card -->
+    <div class="card shadow-sm border-0 mb-4">
+      <div class="card-body text-center py-5">
+        <div class="mb-3">
+          <i class="bi bi-person-circle fs-1 text-primary"></i>
+        </div>
+        <h2 class="fw-bold mb-1">{{ teacher.first_name }} {{ teacher.last_name }}</h2>
+        <p class="text-muted mb-3">{{ teacher.department.college.title }}</p>
+        <div class="d-flex justify-content-center gap-4 flex-wrap">
+          <div class="text-start">
+            <p class="mb-1"><strong>Email:</strong> {{ teacher.email }}</p>
+            <p class="mb-1"><strong>Department:</strong> {{ teacher.department.name }}</p>
+            <p class="mb-1"><strong>College:</strong> {{ teacher.department.college.title }}</p>
+          </div>
+        </div>
+        <div class="mt-4">
+          <a href="{% url 'teacher_id_card' pk=teacher.id %}" class="btn btn-primary">View ID Card</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Courses Section -->
+    <div class="card shadow-sm border-0">
+      <div class="card-header bg-primary text-white">
+        <h4 class="mb-0"><i class="bi bi-journal-bookmark-fill me-2"></i>Courses Taught</h4>
+      </div>
+      <div class="card-body">
+        {% if courses_taught %}
+          <ul class="list-group list-group-flush">
+            {% for course in courses_taught %}
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                <span class="fw-semibold">{{ course.title }}</span>
+                <a href="{% url 'course_detail' course.id %}" class="btn btn-sm btn-outline-primary">
+                  تفاصيل
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p class="text-muted mb-0">No courses assigned yet.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock %}

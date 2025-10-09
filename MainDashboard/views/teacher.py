@@ -7,6 +7,7 @@ from MainDashboard.forms import StudentForm, UpdateStudentForm
 from accounts.decorators import admin_required
 from django.utils.decorators import method_decorator
 import json
+from courses.models import Course
 
 User = get_user_model()
 
@@ -107,3 +108,28 @@ class TeacherDetail(DetailView):
         teacher = self.get_object()
         context['courses_taught'] = Course.objects.filter(lecturer=teacher)
         return context
+
+def teacher_profile(request, pk):
+    teacher = get_object_or_404(User, pk=pk, roles__name__iexact='lecturer')
+
+    if not request.user.is_staff and request.user != teacher:
+        return redirect('dashboard') # Or some other appropriate redirect/error
+    courses_taught = Course.objects.filter(lecturer=teacher)
+    
+    context = {
+        'teacher': teacher,
+        'courses_taught': courses_taught,
+    }
+    return render(request, 'main/teacher_profile.html', context)
+
+
+def teacher_id_card(request, pk):
+    teacher = get_object_or_404(User, pk=pk, roles__name__iexact='lecturer')
+
+    if not request.user.is_staff and request.user != teacher:
+        return redirect('dashboard') # Or some other appropriate redirect/error
+
+    context = {
+        'teacher': teacher,
+    }
+    return render(request, 'main/teacher_id_card.html', context)

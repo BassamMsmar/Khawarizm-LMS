@@ -78,6 +78,8 @@ urlpatterns = [
     path('teachers/update/<int:pk>/', views.TeacherUpdateAjaxView.as_view(), name='update_teacher_ajax'),
     path('teachers/delete/<int:pk>/', views.delete_teacher, name='delete_teacher'),
     path('teachers/<int:pk>/', views.TeacherDetail.as_view(), name='teacher_detail'),
+    path('teachers/<int:pk>/profile/', views.teacher_profile, name='teacher_profile'),
+    path('teachers/<int:pk>/id-card/', views.teacher_id_card, name='teacher_id_card'),
 
 
    # ____________________________________________________________________________
