@@ -1,0 +1,140 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block content %}
+<main class="main-content py-4">
+  <div class="container">
+    <style>
+      .id-card-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: calc(100vh - 120px);
+      }
+
+      .id-card {
+        width: 360px;
+        background: #ffffff;
+        border-radius: 16px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        transition: all 0.3s ease;
+        position: relative;
+      }
+
+      .id-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 14px 30px rgba(0, 0, 0, 0.15);
+      }
+
+      .id-card-header {
+        background: linear-gradient(135deg, #12a39b, #1f697d);
+        color: #fff;
+        text-align: center;
+        padding: 18px 0;
+        font-weight: 600;
+        font-size: 1.3em;
+        letter-spacing: 0.5px;
+      }
+
+      .id-card-body {
+        padding: 25px 20px;
+        text-align: center;
+      }
+
+      .id-card-body img {
+        width: 110px;
+        height: 110px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 4px solid #007bff;
+        margin-bottom: 15px;
+        box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+      }
+
+      .id-card-body h5 {
+        margin-bottom: 5px;
+        font-weight: 600;
+        color: #212529;
+        font-size: 1.1rem;
+      }
+
+      .id-card-body p {
+        margin-bottom: 6px;
+        font-size: 0.9rem;
+        color: #6c757d;
+      }
+
+      .id-card-body p strong {
+        color: #007bff;
+        font-weight: 600;
+      }
+
+      .id-card-footer {
+        background-color: #f8f9fa;
+        text-align: center;
+        padding: 12px;
+        font-size: 0.85rem;
+        color: #495057;
+        border-top: 1px solid #e9ecef;
+      }
+
+      /* Optional QR Section */
+      .qr-section {
+        text-align: center;
+        margin-top: 12px;
+      }
+
+      .qr-section img {
+        width: 70px;
+        height: 70px;
+        opacity: 0.8;
+      }
+
+      /* Subtle shine effect */
+      .id-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -75%;
+        width: 50%;
+        height: 100%;
+        background: linear-gradient(120deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 80%);
+        transform: skewX(-25deg);
+        transition: 0.8s;
+      }
+
+      .id-card:hover::before {
+        left: 125%;
+      }
+    </style>
+
+    <div class="id-card-container">
+      <div class="id-card">
+        <div class="id-card-header">
+          Teacher ID Card
+        </div>
+        <div class="id-card-body">
+          {% if teacher.profile_picture %}
+            <img src="{{ teacher.profile_picture.url }}" alt="Profile Picture">
+          {% else %}
+            <img src="data:image/png;base64,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" alt="Default Profile Picture">
+          {% endif %}
+          <h5>{{ teacher.first_name }} {{ teacher.last_name }}</h5>
+          <p><strong>Email:</strong> {{ teacher.email }}</p>
+          <p><strong>Department:</strong> {{ teacher.department.name }}</p>
+          <p><strong>College:</strong> {{ teacher.department.college.title }}</p>
+          <p><strong>Role:</strong> Lecturer</p>
+
+          <div class="qr-section">
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAPIAAACDCAMAAACAyLbyAAAABlBMVEX///8AAABVwtN+AAABFElEQVR4nO3WWw6CMBRAwd79b1oNwu0DiR9ELc75qAVRmaQpliJJkqSvFPce4zLPs/m6XJFH9ef62XLUXjf+Tn3Verb9lqNPjuf6uxm/ExkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRn5V8iSTiiGyexFtWU0O0pOu9m480xWbEPZ2+ibh8M22/AfvtlzaslJGZ6COey8O1XV4oy0v0uecV2/IMewdFtymZqcQw3t/lBda2HncLhBRamh05OjcpdysGOX52zyHXtdzrFPvuBzWZIkSfrPbh9XJNkDJkHLAAAAAElFTkSuQmCC" alt="QR Code">
+          </div>
+        </div>
+        <div class="id-card-footer">
+          Khawarizm-LMS
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock %}

@@ -126,6 +126,18 @@
                     <span>المعلمين</span>
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'teacher_profile' pk=user.id %}">
+                    <i class="bi bi-person"></i>
+                    <span>ملفي الشخصي</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'teacher_id_card' pk=user.id %}">
+                    <i class="bi bi-card-list"></i>
+                    <span>بطاقة الهوية</span>
+                </a>
+            </li>
 
             <li class="nav-item">
                 <a class="nav-link" href="/main-dashboard/students">
