@@ -86,13 +86,12 @@ class Unit(models.Model):
 
 
 class Lesson(models.Model):
-    LESSON_TYPES = [
-        ('video', 'Video'),
-        ('article', 'Article'),
-        ('pdf', 'PDF'),
-        ('image', 'Image'),
-        ('url', 'URL'),
-    ]
+    class LessonType(models.TextChoices):
+        VIDEO = 'video', 'Video'
+        ARTICLE = 'article', 'Article'
+        PDF = 'pdf', 'PDF'
+        IMAGE = 'image', 'Image'
+        URL = 'url', 'URL'
     
     course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='lessons', null=True, blank=True)
     unit = models.ForeignKey(Unit, on_delete=models.CASCADE, related_name='lessons', null=True, blank=True)
@@ -112,8 +111,8 @@ class Lesson(models.Model):
     )
     lesson_type = models.CharField(
         max_length=20,
-        choices=LESSON_TYPES,
-        default='video'
+        choices=LessonType.choices,
+        default=LessonType.VIDEO
     )
     pdf_file = models.FileField(
         upload_to='lesson_pdfs/',

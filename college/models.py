@@ -1,14 +1,6 @@
 from django.db import models
-from django.utils.text import slugify
 from django_ckeditor_5.fields import CKEditor5Field
-
-
-class Question(models.Model):
-    question = models.TextField(max_length=1000, blank=True, null=True)
-    answer = models.TextField(max_length=1000, blank=True, null=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    is_active = models.BooleanField(default=True)
+from utils.slug import get_unique_slug
 
 # Create your models here.
 class College(models.Model):
@@ -27,14 +19,25 @@ class College(models.Model):
     description = models.TextField(blank=True)
     tags = models.CharField(max_length=255, blank=True)  # مفصولة بفواصل
     targeted_audience = models.TextField(blank=True)
-    questions = models.ForeignKey(Question, blank=True, null=True, on_delete=models.CASCADE)
+    
+    # Removed 'questions' FK from here.
+    # questions = models.ForeignKey(Question, blank=True, null=True, on_delete=models.CASCADE)
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = slugify(self.title)
+            self.slug = get_unique_slug(College, self.title)
         super().save(*args, **kwargs)
 
     def __str__(self):
         return self.title
 
+class Question(models.Model):
+    college = models.ForeignKey(College, related_name='questions', on_delete=models.CASCADE, null=True, blank=True)
+    question = models.TextField(max_length=1000, blank=True, null=True)
+    answer = models.TextField(max_length=1000, blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    is_active = models.BooleanField(default=True)
 
+    def __str__(self):
+        return self.question[:50]

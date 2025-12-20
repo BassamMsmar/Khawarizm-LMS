@@ -1,29 +1,25 @@
 from django.db import models
 from django.conf import settings
 
-class Student(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    department = models.ForeignKey('department.Department', on_delete=models.CASCADE, null=True, blank=True)
-    total_fees = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+class PaymentStatus(models.TextChoices):
+    PENDING = 'pending', 'Pending'
+    APPROVED = 'approved', 'Approved'
+    REJECTED = 'rejected', 'Rejected'
 
-    def __str__(self):
-        return self.user.email
-
-
-
+class RegistrationStatus(models.TextChoices):
+    PENDING = 'pending', 'Pending'
+    APPROVED = 'approved', 'Approved'
+    REJECTED = 'rejected', 'Rejected'
 
 class Payment(models.Model):
-    STATUS_CHOICES = (
-        ('pending', 'Pending'),
-        ('approved', 'Approved'),
-        ('rejected', 'Rejected'),
-    )
-
-    student = models.ForeignKey('Student', on_delete=models.CASCADE, related_name='payments')
+    # Changed from Student to StudentProfile/User. Direct link to user avoids circular imports if Profile imports this.
+    # However, to simulate 'Student' model replacement, let's link to StudentProfile or User.
+    # Ideally link to User for payments.
+    student = models.ForeignKey('profiles.StudentProfile', on_delete=models.CASCADE, related_name='payments')
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     reference_number = models.CharField(max_length=100)
     receipt_image = models.ImageField(upload_to='receipts/')
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
+    status = models.CharField(max_length=10, choices=PaymentStatus.choices, default=PaymentStatus.PENDING)
     rejection_reason = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -32,15 +28,9 @@ class Payment(models.Model):
         return f'{self.student.user.username} - {self.amount} - {self.status}'
 
 class CourseRegistration(models.Model):
-    STATUS_CHOICES = (
-        ('pending', 'Pending'),
-        ('approved', 'Approved'),
-        ('rejected', 'Rejected'),
-    )
-
-    student = models.ForeignKey('Student', on_delete=models.CASCADE, related_name='course_registrations')
+    student = models.ForeignKey('profiles.StudentProfile', on_delete=models.CASCADE, related_name='course_registrations')
     course = models.ForeignKey('courses.Course', on_delete=models.CASCADE, related_name='course_registrations')
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
+    status = models.CharField(max_length=10, choices=RegistrationStatus.choices, default=RegistrationStatus.PENDING)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

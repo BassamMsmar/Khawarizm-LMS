@@ -1,5 +1,6 @@
 from django.db import models
-from django.utils.text import slugify
+from django.db import models
+from utils.slug import get_unique_slug
 
 from courses.models import Course
 from department.models import Department
@@ -23,7 +24,7 @@ class DegreeLevel(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = slugify(self.name)
+            self.slug = get_unique_slug(DegreeLevel, self.name)
         super().save(*args, **kwargs)
 
     def __str__(self):

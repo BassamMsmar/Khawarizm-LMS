@@ -2,28 +2,27 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, Permission
 from django_countries.fields import CountryField
 from phonenumber_field.modelfields import PhoneNumberField
-from django.utils.text import slugify
+from utils.slug import get_unique_slug
 from .managers import UserManager
 
 # Role choices for use in admin or other parts of the app (optional)
-ROLE_CHOICES = (
-    ('admin', 'Admin'),
-    # ('department_manager', 'Department Manager'),
-    ('staff', 'Staff'),
-    ('lecturer', 'Lecturer'),
-    # ('course_supervisor', 'Course Supervisor'),
-    ('student', 'Student'),
-)
+# Role choices
+class UserRole(models.TextChoices):
+    ADMIN = 'admin', 'Admin'
+    STAFF = 'staff', 'Staff'
+    LECTURER = 'lecturer', 'Lecturer'
+    STUDENT = 'student', 'Student'
+
 
 class Role(models.Model):
-    name = models.CharField(max_length=100, unique=True, choices=ROLE_CHOICES)
+    name = models.CharField(max_length=100, unique=True, choices=UserRole.choices)
     slug = models.SlugField(unique=True, max_length=100)
     description = models.TextField(blank=True)
 
     def save(self, *args, **kwargs):
         # Automatically generate slug from name if not provided
         if not self.slug:
-            self.slug = slugify(self.name)
+            self.slug = get_unique_slug(Role, self.name)
         super().save(*args, **kwargs)
 
     def __str__(self):
@@ -36,18 +35,22 @@ class User(AbstractBaseUser, PermissionsMixin):
     department = models.ForeignKey('department.Department', null=True, blank=True, on_delete=models.SET_NULL)
 
     # USER_TYPE_CHOICES for profile 
-    PROFILE_TYPE_CHOICES = (
-        ('student', 'Student'),
-        ('lecturer', 'Lecturer'),
-    )
-    profile_type = models.CharField(max_length=20, choices=PROFILE_TYPE_CHOICES, default='student')
+    class ProfileType(models.TextChoices):
+        STUDENT = 'student', 'Student'
+        LECTURER = 'lecturer', 'Lecturer'
+
+    profile_type = models.CharField(max_length=20, choices=ProfileType.choices, default=ProfileType.STUDENT)
 
     # Basic user info
     first_name = models.CharField(max_length=30, blank=True)
     last_name = models.CharField(max_length=30, blank=True)
     email = models.EmailField(unique=True)
     phone_number = PhoneNumberField(blank=True, null=True)
-    gender = models.CharField(max_length=10, choices=[('male', 'Male'), ('female', 'Female')], blank=True, null=True)
+    class Gender(models.TextChoices):
+        MALE = 'male', 'Male'
+        FEMALE = 'female', 'Female'
+
+    gender = models.CharField(max_length=10, choices=Gender.choices, blank=True, null=True)
     date_of_birth = models.DateField(blank=True, null=True)
     email_verified = models.BooleanField(default=False)
     phone_verified = models.BooleanField(default=False)

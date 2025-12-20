@@ -28,6 +28,9 @@ class StudentProfile(models.Model):
     city = models.CharField(max_length=100, blank=True, null=True)
     address = models.TextField(blank=True, null=True)
     postal_code = models.CharField(max_length=20, blank=True, null=True)
+    
+    # Moved from student.models.Student
+    total_fees = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
     certificate_number = models.CharField(max_length=50, blank=True, null=True)
     certificate_file = models.FileField(upload_to='student_certificates/', blank=True, null=True)
