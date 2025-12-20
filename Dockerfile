@@ -10,7 +10,7 @@ ENV PYTHONUNBUFFERED=1
 WORKDIR /app
 
 # Install system dependencies
-# libpq-dev is for postgres, libjpeg-dev/zlib1g-dev for pillow
+# libpq-dev is for postgres, libjpeg/zlib for pillow
 RUN apt-get update && apt-get install -y \
     build-essential \
     libpq-dev \
@@ -18,16 +18,23 @@ RUN apt-get update && apt-get install -y \
     zlib1g-dev \
     && rm -rf /var/lib/apt/lists/*
 
+# Create a non-root user
+RUN addgroup --system app && adduser --system --group app
+
 # Install dependencies
 COPY requirements.txt /app/
 RUN pip install --upgrade pip && pip install -r requirements.txt
 
 # Copy project
 COPY . /app/
+RUN chown -R app:app /app
 
 # Copy and setup entrypoint
 COPY entrypoint.sh /app/
-RUN chmod +x /app/entrypoint.sh
+RUN chmod +x /app/entrypoint.sh && chown app:app /app/entrypoint.sh
+
+# Switch to non-root user
+USER app
 
 # Expose port
 EXPOSE 8000
