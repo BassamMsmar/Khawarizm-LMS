@@ -1,6 +1,7 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="ar" dir="rtl" data-bs-theme="light">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,6 +13,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- <script src="{% static 'script.js' %}"></script> -->
 </head>
+
 <body>
     {% block header %}
     <!-- Header -->
@@ -46,12 +48,23 @@
                         <button class="theme-toggle" id="themeToggle" title="تبديل الوضع">
                             <i class="bi bi-sun-fill" id="themeIcon"></i>
                         </button>
-                                                <div class="dropdown">
-                            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                        <div class="dropdown">
+                            <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                                data-bs-toggle="dropdown">
                                 <i class="bi bi-person-circle me-2"></i>
-                                اسم الطالب
+                                {{ request.user.get_full_name|default:request.user.email }}
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end">
+                                {% if request.user.is_authenticated %}
+                                {% if request.user.is_superuser or request.user.is_staff or request.user.is_admin %}
+                                <li><a class="dropdown-item" href="/main-dashboard/dashboard">
+                                        <i class="bi bi-speedometer2 me-2"></i>الانتقال الى الادارة</a></li>
+                                {% endif %}
+                                {% if request.user.is_student %}
+                                <li><a class="dropdown-item" href="{% url 'student:index' %}">
+                                        <i class="bi bi-speedometer2 me-2"></i>لوحة التحكم الطالب</a></li>
+                                {% endif %}
+                                {% endif %}
                                 <li><a class="dropdown-item" href="{% url 'student:student-profile' %}">
                                         <i class="bi bi-person me-2"></i>الملف الشخصي</a></li>
                                 <li><a class="dropdown-item" href="/student-dashboard/id-card/">
@@ -84,13 +97,13 @@
     <nav class="sidebar" id="sidebar">
         <ul class="nav flex-column sidebar-nav">
             <li class="nav-item">
-                <a class="nav-link active" href="/student-dashboard/" >
+                <a class="nav-link active" href="/student-dashboard/">
                     <i class="bi bi-house"></i>
                     <span>الرئيسية</span>
                 </a>
             </li>
 
-            
+
 
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'student:my_courses' %}">
@@ -119,7 +132,7 @@
                     <span>الاشعارات</span>
                 </a>
             </li>
-            
+
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'student:my_grades' %}">
                     <i class="bi bi-file-earmark-bar-graph"></i>
@@ -132,7 +145,7 @@
                     <span>التقويم</span>
                 </a>
             </li>
-            
+
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'student:student-profile' %}">
                     <i class="bi bi-gear"></i>
@@ -164,4 +177,5 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{% static 'js/student_script.js' %}"></script>
 </body>
+
 </html>
