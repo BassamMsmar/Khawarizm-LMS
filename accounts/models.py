@@ -96,6 +96,10 @@ class User(AbstractBaseUser, PermissionsMixin):
     def is_lecturer(self):
         return self.has_role('lecturer')
 
+    @property
+    def is_admin(self):
+        return self.has_role('admin')
+
     def save(self, *args, **kwargs):
         # Save the user first to get the ID
         super().save(*args, **kwargs)
