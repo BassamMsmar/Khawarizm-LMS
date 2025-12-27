@@ -93,73 +93,138 @@
     {% endblock header %}
 
     {% block sidebar %}
+    <style>
+        /* Custom Sidebar Overrides */
+        :root {
+            --sidebar-top-spacing: 20px;
+        }
+
+        .sidebar {
+            /* Fix top alignment */
+            top: calc(var(--header-height) + var(--sidebar-top-spacing)) !important;
+            margin-top: 0 !important;
+            height: calc(100vh - var(--header-height) - var(--sidebar-top-spacing) - 20px) !important;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            /* Refined Gradient */
+            background: linear-gradient(180deg, #1f697d 0%, #175464 100%) !important;
+        }
+
+        .sidebar-nav {
+            padding: 1rem 0.75rem;
+        }
+
+        .nav-link {
+            border-radius: 10px;
+            margin-bottom: 5px;
+            padding: 12px 16px;
+            color: rgba(255, 255, 255, 0.85) !important;
+            font-weight: 500;
+            transition: all 0.2s ease-in-out;
+            border: 1px solid transparent;
+        }
+
+        .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff !important;
+            transform: translateX(-2px);
+        }
+
+        /* Active State Styling */
+        .nav-link.active {
+            background-color: #fff !important;
+            color: var(--primary-color) !important;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            font-weight: 700;
+            transform: translateX(-2px);
+        }
+
+        .nav-link.active i {
+            color: var(--primary-color) !important;
+        }
+
+        .nav-link i {
+            font-size: 1.25rem;
+            width: 24px;
+            text-align: center;
+            transition: color 0.2s;
+        }
+    </style>
+
     <!-- Sidebar -->
     <nav class="sidebar" id="sidebar">
         <ul class="nav flex-column sidebar-nav">
             <li class="nav-item">
-                <a class="nav-link active" href="/student-dashboard/">
+                <a class="nav-link {% if request.resolver_match.view_name == 'student:index' %}active{% endif %}"
+                    href="{% url 'student:index' %}">
                     <i class="bi bi-house"></i>
                     <span>الرئيسية</span>
                 </a>
             </li>
 
-
-
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'student:my_courses' %}">
+                <a class="nav-link {% if 'courses' in request.path %}active{% endif %}"
+                    href="{% url 'student:my_courses' %}">
                     <i class="bi bi-mortarboard"></i>
                     <span>المواد الحاليه</span>
                 </a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'student:academic_program' %}">
-                    <i class="bi bi-mortarboard"></i>
+                <a class="nav-link {% if 'academic-program' in request.path %}active{% endif %}"
+                    href="{% url 'student:academic_program' %}">
+                    <i class="bi bi-diagram-3"></i>
                     <span>البرنامج الاكاديمي</span>
                 </a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'student:my_payments' %}">
-                    <i class="bi bi-journal-text"></i>
+                <a class="nav-link {% if 'payments' in request.path %}active{% endif %}"
+                    href="{% url 'student:my_payments' %}">
+                    <i class="bi bi-credit-card"></i>
                     <span>مدفوعاتي</span>
                 </a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="/notifications/list">
-                    <i class="bi bi-journal-text"></i>
+                <a class="nav-link {% if 'notifications' in request.path %}active{% endif %}"
+                    href="/notifications/list">
+                    <i class="bi bi-bell"></i>
                     <span>الاشعارات</span>
                 </a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'student:my_grades' %}">
+                <a class="nav-link {% if 'grades' in request.path %}active{% endif %}"
+                    href="{% url 'student:my_grades' %}">
                     <i class="bi bi-file-earmark-bar-graph"></i>
                     <span>درجاتي</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'student:calendar' %}">
+                <a class="nav-link {% if 'calendar' in request.path %}active{% endif %}"
+                    href="{% url 'student:calendar' %}">
                     <i class="bi bi-calendar-event"></i>
                     <span>التقويم</span>
                 </a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'student:student-profile' %}">
-                    <i class="bi bi-gear"></i>
+                <a class="nav-link {% if 'profile' in request.path and 'update' not in request.path %}active{% endif %}"
+                    href="{% url 'student:student-profile' %}">
+                    <i class="bi bi-person-badge"></i>
                     <span>الملف الشخصي</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/student-dashboard/id-card/">
-                    <i class="bi bi-gear"></i>
+                <a class="nav-link {% if 'id-card' in request.path %}active{% endif %}"
+                    href="/student-dashboard/id-card/">
+                    <i class="bi bi-card-heading"></i>
                     <span> الكارنيه الجامعي </span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'student:settings' %}">
+                <a class="nav-link {% if 'settings' in request.path or 'update' in request.path %}active{% endif %}"
+                    href="{% url 'student:settings' %}">
                     <i class="bi bi-gear"></i>
                     <span>الإعدادات</span>
                 </a>

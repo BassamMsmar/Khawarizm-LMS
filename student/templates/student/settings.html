@@ -1,60 +1,173 @@
 {% extends 'student/base/base.html' %}
+{% load static %}
 
 {% block content %}
-<div class="main-content">
-    <div class="container-fluid">
-        <h1 class="mb-4">الإعدادات</h1>
+<main class="main-content py-5 bg-light">
+    <div class="container">
+        <style>
+            :root {
+                --primary-color: #1f697d;
+                --primary-hover: #164f5e;
+                --text-color: #333;
+                --border-radius: 12px;
+                --input-bg: #f8f9fa;
+                --input-border: #e9ecef;
+            }
 
-        <div class="card mb-4">
-            <div class="card-header">
-                معلومات الملف الشخصي
-            </div>
-            <div class="card-body">
-                <form>
-                    <div class="mb-3">
-                        <label for="firstName" class="form-label">الاسم الأول</label>
-                        <input type="text" class="form-control" id="firstName" value="اسم الطالب">
+            .settings-card {
+                background: white;
+                border-radius: var(--border-radius);
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+                border: none;
+                overflow: hidden;
+                margin-bottom: 2rem;
+            }
+
+            .card-header-custom {
+                background: linear-gradient(135deg, var(--primary-color) 0%, #175464 100%);
+                padding: 1.25rem 1.5rem;
+                color: white;
+                display: flex;
+                align-items: center;
+            }
+
+            .section-title {
+                font-size: 1.2rem;
+                font-weight: 700;
+                margin: 0;
+            }
+
+            .form-label {
+                font-weight: 600;
+                color: #555;
+                margin-bottom: 0.5rem;
+            }
+
+            .form-control {
+                background-color: var(--input-bg);
+                border: 1px solid var(--input-border);
+                padding: 0.75rem 1rem;
+                border-radius: 8px;
+                transition: all 0.3s;
+            }
+
+            .form-control:focus {
+                border-color: var(--primary-color);
+                box-shadow: 0 0 0 4px rgba(31, 105, 125, 0.1);
+                background-color: white;
+            }
+
+            .btn-save {
+                background-color: var(--primary-color);
+                color: white;
+                padding: 12px 30px;
+                border-radius: 50px;
+                border: none;
+                font-weight: 600;
+                font-size: 1rem;
+                transition: all 0.3s;
+            }
+
+            .btn-save:hover {
+                background-color: var(--primary-hover);
+                color: white;
+                transform: translateY(-2px);
+                box-shadow: 0 6px 15px rgba(31, 105, 125, 0.4);
+            }
+        </style>
+
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+
+                <!-- Header -->
+                <div class="d-flex align-items-center mb-4">
+                    <div class="bg-white p-3 rounded-circle shadow-sm ms-3 text-primary">
+                        <i class="bi bi-gear-fill fs-4"></i>
                     </div>
-                    <div class="mb-3">
-                        <label for="lastName" class="form-label">الاسم الأخير</label>
-                        <input type="text" class="form-control" id="lastName" value="الأخير">
+                    <div>
+                        <h2 class="fw-bold mb-1" style="color: var(--primary-color);">الإعدادات</h2>
+                        <p class="text-muted mb-0">إدارة حسابك وتفضيلات الأمان</p>
                     </div>
-                    <div class="mb-3">
-                        <label for="email" class="form-label">البريد الإلكتروني</label>
-                        <input type="email" class="form-control" id="email" value="student@example.com">
+                </div>
+
+                <!-- Account Info -->
+                <div class="settings-card">
+                    <div class="card-header-custom">
+                        <i class="bi bi-person-lines-fill me-2 fs-5"></i>
+                        <h3 class="section-title">معلومات الحساب</h3>
                     </div>
-                    <div class="mb-3">
-                        <label for="phone" class="form-label">رقم الهاتف</label>
-                        <input type="tel" class="form-control" id="phone" value="+966501234567">
+                    <div class="card-body p-4">
+                        <form onsubmit="event.preventDefault();"> <!-- Prevent default for prototype -->
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">الاسم الأول</label>
+                                    <input type="text" class="form-control" value="{{ request.user.first_name }}"
+                                        readonly>
+                                    <div class="form-text text-muted small">لا يمكن تغيير الاسم من هنا، يرجى مراجعة شؤون
+                                        الطلاب.</div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">الاسم الأخير</label>
+                                    <input type="text" class="form-control" value="{{ request.user.last_name }}"
+                                        readonly>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label">البريد الإلكتروني الجامعي</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light border-end-0"><i
+                                                class="bi bi-envelope"></i></span>
+                                        <input type="email" class="form-control border-start-0"
+                                            value="{{ request.user.email }}" readonly>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label">رقم الهاتف</label>
+                                    <input type="tel" class="form-control"
+                                        value="{{ request.user.phone_number|default:'' }}" placeholder="أدخل رقم هاتفك">
+                                </div>
+                            </div>
+                            <div class="mt-4 text-end">
+                                <button type="submit" class="btn btn-save">
+                                    <i class="bi bi-check-lg me-2"></i> حفظ التغييرات
+                                </button>
+                            </div>
+                        </form>
                     </div>
-                    <button type="submit" class="btn btn-primary">حفظ التغييرات</button>
-                </form>
+                </div>
+
+                <!-- Security -->
+                <div class="settings-card">
+                    <div class="card-header-custom">
+                        <i class="bi bi-shield-lock-fill me-2 fs-5"></i>
+                        <h3 class="section-title">الأمان وكلمة المرور</h3>
+                    </div>
+                    <div class="card-body p-4">
+                        <form action="#" method="post">
+                            <div class="mb-3">
+                                <label class="form-label">كلمة المرور الحالية</label>
+                                <input type="password" class="form-control" placeholder="••••••••">
+                            </div>
+                            <div class="row g-3 mb-4">
+                                <div class="col-md-6">
+                                    <label class="form-label">كلمة المرور الجديدة</label>
+                                    <input type="password" class="form-control" placeholder="••••••••">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">تأكيد كلمة المرور</label>
+                                    <input type="password" class="form-control" placeholder="••••••••">
+                                </div>
+                            </div>
+                            <div class="text-end">
+                                <button type="submit" class="btn btn-save">
+                                    <i class="bi bi-key me-2"></i> تغيير كلمة المرور
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
             </div>
         </div>
-
-        <div class="card">
-            <div class="card-header">
-                تغيير كلمة المرور
-            </div>
-            <div class="card-body">
-                <form>
-                    <div class="mb-3">
-                        <label for="currentPassword" class="form-label">كلمة المرور الحالية</label>
-                        <input type="password" class="form-control" id="currentPassword">
-                    </div>
-                    <div class="mb-3">
-                        <label for="newPassword" class="form-label">كلمة المرور الجديدة</label>
-                        <input type="password" class="form-control" id="newPassword">
-                    </div>
-                    <div class="mb-3">
-                        <label for="confirmPassword" class="form-label">تأكيد كلمة المرور الجديدة</label>
-                        <input type="password" class="form-control" id="confirmPassword">
-                    </div>
-                    <button type="submit" class="btn btn-primary">تغيير كلمة المرور</button>
-                </form>
-            </div>
-        </div>
-
     </div>
-</div>
+</main>
 {% endblock content %}

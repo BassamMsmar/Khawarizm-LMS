@@ -112,9 +112,31 @@ def notifications(request):
     }
     return render(request, 'student/notifications.html', context)
 
+from courses.models import QuizAttempt
+from django.db.models import Avg
+
 @student_required
 def my_grades(request):
-    return render(request, 'student/my_grades.html')
+    quiz_attempts = QuizAttempt.objects.filter(user=request.user).select_related('quiz', 'quiz__unit', 'quiz__unit__course').order_by('-completed_at')
+    
+    # Calculate statistics
+    total_attempts = quiz_attempts.count()
+    passed_quizzes = quiz_attempts.filter(score__gte=60) # Assuming 60% is passing
+    passed_count = passed_quizzes.count()
+    
+    average_score = quiz_attempts.aggregate(Avg('score'))['score__avg']
+    if average_score:
+        average_score = round(average_score, 1)
+    else:
+        average_score = 0
+        
+    context = {
+        'quiz_attempts': quiz_attempts,
+        'average_score': average_score,
+        'passed_count': passed_count,
+        'total_attempts': total_attempts,
+    }
+    return render(request, 'student/my_grades.html', context)
 
 @student_required
 def calendar(request):
