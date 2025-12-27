@@ -50,7 +50,7 @@ def my_courses(request):
 
 @student_required
 def academic_program(request):
-    student = Student.objects.get(user=request.user)
+    student, _ = Student.objects.get_or_create(user=request.user)
     student_department = request.user.department
     department_courses = []
     enrolled_courses_ids = request.user.enrolled_courses.values_list('id', flat=True)
@@ -72,7 +72,7 @@ def academic_program(request):
 
 @student_required
 def my_payments(request):
-    student = Student.objects.get(user=request.user)
+    student, _ = Student.objects.get_or_create(user=request.user)
     if request.method == 'POST':
         form = PaymentForm(request.POST, request.FILES)
         if form.is_valid():
@@ -91,7 +91,7 @@ def my_payments(request):
 
 @student_required
 def payment_history(request):
-    student = Student.objects.get(user=request.user)
+    student, _ = Student.objects.get_or_create(user=request.user)
     payments = Payment.objects.filter(student=student).order_by('-created_at')
     total_paid = payments.filter(status='approved').aggregate(Sum('amount'))['amount__sum'] or 0
     remaining_amount = student.total_fees - total_paid
@@ -146,7 +146,7 @@ class StudentDetail(DetailView):
 
 @student_required
 def id_card(request):
-    student = Student.objects.get(user=request.user)
+    student, _ = Student.objects.get_or_create(user=request.user)
     student_profile, _ = StudentProfile.objects.get_or_create(user=request.user)
     context = {
         'student': student,
@@ -186,7 +186,7 @@ from .models import CourseRegistration
 def enroll_courses(request):
     if request.method == 'POST':
         course_ids = request.POST.getlist('courses')
-        student = Student.objects.get(user=request.user)
+        student, _ = Student.objects.get_or_create(user=request.user)
         for course_id in course_ids:
             try:
                 course = Course.objects.get(id=course_id)
