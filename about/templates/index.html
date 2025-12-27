@@ -320,24 +320,70 @@
                     </li>
 
                     {% if user.is_authenticated %}
-                    {% if user.is_lecturer %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="/main-dashboard/dashboard">لوحة تحكم المعلم</a>
-                    </li>
-                    {% elif user.is_student %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="/student-dashboard/">لوحة تحكم الطالب</a>
-                    </li>
-                    {% endif %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-person-circle fs-5 me-1"></i>
+                            مرحبا {{ user.first_name }}
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="userDropdown">
+                            <!-- Dashboard -->
+                            <li>
+                                {% if user.is_lecturer or user.is_staff or user.is_superuser %}
+                                <a class="dropdown-item" href="/main-dashboard/dashboard">
+                                    <i class="bi bi-speedometer2 me-2"></i> لوحة التحكم
+                                </a>
+                                {% elif user.is_student %}
+                                <a class="dropdown-item" href="{% url 'student:index' %}">
+                                    <i class="bi bi-speedometer2 me-2"></i> لوحة التحكم
+                                </a>
+                                {% endif %}
+                            </li>
 
-                    <!-- أيقونة تسجيل الخروج -->
-                    <li class="nav-item">
-                        <form action="{% url 'accounts:logout' %}" method="post" class="d-inline">
-                            {% csrf_token %}
-                            <button type="submit" class="nav-link btn btn-link p-0 text-danger" style="border: none;">
-                                <i class="bi bi-box-arrow-right" style="font-size: 1.2rem;"></i>
-                            </button>
-                        </form>
+                            <!-- Settings -->
+                            <li>
+                                {% if user.is_student %}
+                                <a class="dropdown-item" href="{% url 'student:settings' %}">
+                                    <i class="bi bi-gear me-2"></i> الإعدادات
+                                </a>
+                                {% else %}
+                                <a class="dropdown-item" href="/main-dashboard/settings">
+                                    <i class="bi bi-gear me-2"></i> الإعدادات
+                                </a>
+                                {% endif %}
+                            </li>
+
+                            <!-- Profile -->
+                            <li>
+                                {% if user.is_student %}
+                                <a class="dropdown-item" href="{% url 'student:student-profile' %}">
+                                    <i class="bi bi-person me-2"></i> الملف الشخصي
+                                </a>
+                                {% elif user.is_lecturer %}
+                                <a class="dropdown-item" href="{% url 'teacher_profile' user.pk %}">
+                                    <i class="bi bi-person me-2"></i> الملف الشخصي
+                                </a>
+                                {% else %}
+                                <a class="dropdown-item" href="#">
+                                    <i class="bi bi-person me-2"></i> الملف الشخصي
+                                </a>
+                                {% endif %}
+                            </li>
+
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+
+                            <!-- Logout -->
+                            <li>
+                                <form action="{% url 'accounts:logout' %}" method="post" class="d-inline w-100">
+                                    {% csrf_token %}
+                                    <button type="submit" class="dropdown-item text-danger">
+                                        <i class="bi bi-box-arrow-right me-2"></i> تسجيل الخروج
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
                     </li>
 
                     {% else %}
