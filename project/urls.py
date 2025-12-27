@@ -25,7 +25,7 @@ urlpatterns = [
     path('notifications/', include('notifications.urls', namespace='notifications')), # Added this line
 
 
-    path('', include('HiStudyApp.urls')),
+    # path('', include('HiStudyApp.urls')),
     path('__debug__/', include(debug_toolbar_urls)),
 
 ]
