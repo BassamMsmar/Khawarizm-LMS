@@ -24,7 +24,7 @@ urlpatterns = [
     path('notifications/', include('notifications.urls', namespace='notifications')), # Added this line
 
 
-    path('', include('HiStudyApp.urls')),
+    # path('', include('HiStudyApp.urls')),
 
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
