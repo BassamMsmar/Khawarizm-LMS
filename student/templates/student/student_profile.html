@@ -2,111 +2,266 @@
 {% load static %}
 
 {% block content %}
-<main class="main-content py-4">
+<main class="main-content py-5 bg-light">
   <div class="container">
     <style>
       :root {
-        --main-color: #1f697d; /* اللون الأساسي */
+        --primary-color: #1f697d;
+        --secondary-color: #f8f9fa;
+        --text-color: #333;
+        --text-muted: #6c757d;
+        --border-radius: 12px;
+        --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
       }
 
       .card {
         border: none;
-        border-radius: 15px;
-        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        border-radius: var(--border-radius);
+        box-shadow: var(--box-shadow);
+        background: #fff;
+        margin-bottom: 24px;
         overflow: hidden;
       }
 
       .card-header {
-        background: var(--main-color);
-        color: #fff;
-        padding: 1rem 1.5rem;
-        font-size: 1.3rem;
-        font-weight: 600;
-        border-bottom: none;
+        background-color: transparent;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        padding: 1.25rem 1.5rem;
+      }
+
+      .section-title {
+        color: var(--primary-color);
+        font-weight: 700;
+        margin: 0;
+        font-size: 1.1rem;
+        position: relative;
+        padding-right: 15px;
+      }
+
+      .section-title::before {
+        content: '';
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 4px;
+        height: 20px;
+        background-color: var(--primary-color);
+        border-radius: 2px;
+      }
+
+      .profile-header-card {
+        text-align: center;
+        padding: 30px;
+      }
+
+      .profile-img-container {
+        position: relative;
+        width: 150px;
+        height: 150px;
+        margin: 0 auto 20px;
       }
 
       .profile-img {
-        width: 200px;
-        height: 200px;
-        border-radius: 50%;
+        width: 100%;
+        height: 100%;
         object-fit: cover;
-        border: 5px solid var(--main-color);
-        box-shadow: 0 4px 10px rgba(31, 105, 125, 0.3);
+        border-radius: 50%;
+        border: 4px solid #fff;
+        box-shadow: 0 5px 15px rgba(31, 105, 125, 0.2);
+      }
+
+      .user-name {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--text-color);
+        margin-bottom: 5px;
+      }
+
+      .user-role {
+        color: var(--text-muted);
+        font-size: 0.95rem;
+        margin-bottom: 15px;
+      }
+
+      .info-list-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 12px 0;
+        border-bottom: 1px solid #f0f0f0;
+        font-size: 0.95rem;
+      }
+
+      .info-list-item:last-child {
+        border-bottom: none;
       }
 
       .info-label {
         font-weight: 600;
-        color: var(--main-color);
+        color: var(--text-muted);
+        display: flex;
+        align-items: center;
       }
 
-      .btn-primary {
-        background-color: var(--main-color);
-        border-color: var(--main-color);
-        transition: all 0.3s ease;
+      .info-label i {
+        margin-left: 8px;
+        color: var(--primary-color);
+        width: 20px;
+        text-align: center;
       }
 
-      .btn-primary:hover {
-        background-color: #14505f;
-        border-color: #14505f;
+      .info-value {
+        font-weight: 500;
+        color: var(--text-color);
+        text-align: left;
       }
 
-      .profile-section {
-        background-color: #444948;
-        padding: 2rem;
-        border-radius: 15px;
+      .badge-custom {
+        background-color: rgba(31, 105, 125, 0.1);
+        color: var(--primary-color);
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        margin: 0 4px 8px 0;
+        display: inline-block;
       }
 
-      .info-item {
-        margin-bottom: 0.6rem;
+      .btn-primary-custom {
+        background-color: var(--primary-color);
+        color: #fff;
+        border: none;
+        padding: 10px 24px;
+        border-radius: 50px;
+        font-weight: 600;
+        transition: all 0.3s;
+      }
+
+      .btn-primary-custom:hover {
+        background-color: #164f5e;
+        color: #fff;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(31, 105, 125, 0.3);
+      }
+
+      .bio-text {
+        color: #555;
+        line-height: 1.7;
         font-size: 1rem;
-      }
-
-      .info-item strong {
-        color: var(--main-color);
       }
     </style>
 
-    <!-- بطاقة الملف الشخصي -->
-    <div class="card mb-4">
-      <div class="card-header text-center">
-        الملف الشخصي للطالب
-      </div>
-      <div class="card-body">
-        <div class="row align-items-center">
-          <!-- الصورة الشخصية -->
-          <div class="col-md-4 text-center mb-4 mb-md-0">
+    <div class="row g-4">
+      <!-- العمود الجانبي -->
+      <div class="col-lg-4">
+        <!-- بطاقة التعريف الأساسية -->
+        <div class="card profile-header-card">
+          <div class="profile-img-container">
             {% if student_profile.profile_picture %}
-              <img src="{{ student_profile.profile_picture.url }}" alt="صورة الطالب" class="profile-img">
+            <img src="{{ student_profile.profile_picture.url }}" alt="{{ user.get_full_name }}" class="profile-img">
             {% else %}
-              <img src="data:image/png;base64,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" alt="صورة افتراضية" class="profile-img">
+            <img
+              src="https://ui-avatars.com/api/?name={{ user.get_full_name|urlencode }}&background=1f697d&color=fff&size=150"
+              alt="صورة افتراضية" class="profile-img">
             {% endif %}
           </div>
+          <h1 class="user-name">{{ user.get_full_name }}</h1>
+          <p class="user-role">{{ student.department|default:"طالب جامعي" }}</p>
 
-          <!-- المعلومات -->
-          <div class="col-md-8">
-            <div class="profile-section">
-              <p class="info-item"><strong class="info-label">الاسم:</strong> {{ user.get_full_name }}</p>
-              <p class="info-item"><strong class="info-label">البريد الإلكتروني:</strong> {{ user.email }}</p>
-              <p class="info-item"><strong class="info-label">القسم:</strong> {{ student.department }}</p>
-              <!-- <p class="info-item"><strong class="info-label">إجمالي الرسوم:</strong> {{ student.total_fees }}</p> -->
-              <p class="info-item"><strong class="info-label">نبذة:</strong> {{ student_profile.bio }}</p>
-              <p class="info-item"><strong class="info-label">البلد:</strong> {{ student_profile.country }}</p>
-              <p class="info-item"><strong class="info-label">المدينة:</strong> {{ student_profile.city }}</p>
-              <p class="info-item"><strong class="info-label">العنوان:</strong> {{ student_profile.address }}</p>
-              <!-- <p class="info-item"><strong class="info-label">الرمز البريدي:</strong> {{ student_profile.postal_code }}</p> -->
-              <p class="info-item"><strong class="info-label">رقم الشهادة:</strong> {{ student_profile.certificate_number }}</p>
+          <div class="mt-3">
+            <a href="{% url 'student:student-profile-update' %}" class="btn btn-primary-custom w-100">
+              <i class="bi bi-pencil-square me-2"></i> تحديث الملف الشخصي
+            </a>
+          </div>
+        </div>
 
-              <p class="info-item">
-                <strong class="info-label">اللغات:</strong>
-                {% for lang in student_profile.languages.all %}
-                  {{ lang.name }}{% if not forloop.last %}، {% endif %}
-                {% endfor %}
-              </p>
+        <!-- معلومات التواصل -->
+        <div class="card">
+          <div class="card-header">
+            <h5 class="section-title">معلومات التواصل</h5>
+          </div>
+          <div class="card-body">
+            <div class="info-list-item">
+              <span class="info-label"><i class="bi bi-envelope"></i> البريد الإلكتروني</span>
+              <span class="info-value text-break">{{ user.email }}</span>
+            </div>
+            <div class="info-list-item">
+              <span class="info-label"><i class="bi bi-telephone"></i> الهاتف</span>
+              <span class="info-value" dir="ltr">{{ user.phone_number|default:"غير محدد" }}</span>
+            </div>
+            <div class="info-list-item">
+              <span class="info-label"><i class="bi bi-geo-alt"></i> العنوان</span>
+              <span class="info-value">{{ student_profile.city|default:"-" }}، {{
+                student_profile.country.name|default:"-" }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
 
-              <div class="text-center mt-4">
-                <a href="{% url 'student:student-profile-update' %}" class="btn btn-primary px-4 py-2">
-                  تحديث الملف الشخصي
-                </a>
+      <!-- العمود الرئيسي -->
+      <div class="col-lg-8">
+        <!-- نبذة عني -->
+        <div class="card">
+          <div class="card-header">
+            <h5 class="section-title">نبذة عني</h5>
+          </div>
+          <div class="card-body">
+            {% if student_profile.bio %}
+            <p class="bio-text">{{ student_profile.bio }}</p>
+            {% else %}
+            <p class="text-muted fst-italic text-center py-3">لا توجد نبذة شخصية مضافة حتى الآن. يمكنك إضافتها من خلال
+              تحديث الملف الشخصي.</p>
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- المعلومات الأكاديمية والشخصية -->
+        <div class="row g-4">
+          <div class="col-md-6">
+            <div class="card h-100">
+              <div class="card-header">
+                <h5 class="section-title">المعلومات الأكاديمية</h5>
+              </div>
+              <div class="card-body">
+                <div class="info-list-item">
+                  <span class="info-label"><i class="bi bi-building"></i> الكلية</span>
+                  <span class="info-value">{{ student_profile.college|default:"غير محدد" }}</span>
+                </div>
+                <div class="info-list-item">
+                  <span class="info-label"><i class="bi bi-diagram-3"></i> القسم</span>
+                  <span class="info-value">{{ student.department|default:"غير محدد" }}</span>
+                </div>
+                <div class="info-list-item">
+                  <span class="info-label"><i class="bi bi-card-heading"></i> رقم الشهادة</span>
+                  <span class="info-value">{{ student_profile.certificate_number|default:"غير متوفر" }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="card h-100">
+              <div class="card-header">
+                <h5 class="section-title">تفاصيل إضافية</h5>
+              </div>
+              <div class="card-body">
+                <div class="info-list-item">
+                  <span class="info-label"><i class="bi bi-house-door"></i> العنوان التفصيلي</span>
+                  <span class="info-value">{{ student_profile.address|default:"غير محدد" }}</span>
+                </div>
+                <div class="info-list-item">
+                  <span class="info-label"><i class="bi bi-mailbox"></i> الرمز البريدي</span>
+                  <span class="info-value">{{ student_profile.postal_code|default:"-" }}</span>
+                </div>
+                <div class="mt-3">
+                  <div class="d-flex flex-wrap">
+                    {% for lang in student_profile.languages.all %}
+                    <span class="badge-custom"><i class="bi bi-translate me-1"></i> {{ lang.name }}</span>
+                    {% empty %}
+                    <span class="text-muted small">لم يتم إضافة لغات</span>
+                    {% endfor %}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
