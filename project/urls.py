@@ -24,7 +24,7 @@ urlpatterns = [
     path('notifications/', include('notifications.urls', namespace='notifications')), # Added this line
 
 
-    path('__debug__/', include(debug_toolbar_urls)),
+    # path('__debug__/', include(debug_toolbar_urls)),
 
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
