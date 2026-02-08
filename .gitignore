@@ -104,6 +104,7 @@ env/
 venv/ 
 ENV/ 
 env.bak/ 
+.env
 venv.bak/ 
 
 # mkdocs documentation 
