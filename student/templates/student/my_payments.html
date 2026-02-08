@@ -1,61 +1,61 @@
 {% extends 'student/base/base.html' %}
 
 {% block content %}
-<div class="main-content">
-    <div class="container-fluid">   
-        <h1 class="h3 mb-4 text-gray-800 text-center">💳 إرسال دفعة جديدة</h1>
+    <div class="main-content">
+        <div class="container-fluid">
+            <h1 class="h3 mb-4 text-gray-800 text-center">💳 إرسال دفعة جديدة</h1>
 
-        <div class="row justify-content-center">
-            <div class="col-lg-6">
-                <div class="card shadow-lg border-0 rounded-3">
-                    <div class="card-header py-3 bg-success text-white text-center rounded-top">
-                        <h5 class="m-0 font-weight-bold">💰 تفاصيل الدفعة</h5>
-                    </div>
-                    <div class="card-body">
-                        <form method="post" enctype="multipart/form-data" class="p-2">
-                            {% csrf_token %}
+            <div class="row justify-content-center">
+                <div class="col-lg-6">
+                    <div class="card shadow-lg border-0 rounded-3">
+                        <div class="card-header py-3 bg-success text-white text-center rounded-top">
+                            <h5 class="m-0 font-weight-bold">💰 تفاصيل الدفعة</h5>
+                        </div>
+                        <div class="card-body">
+                            <form method="post" enctype="multipart/form-data" class="p-2">
+                                {% csrf_token %}
 
                             <!-- المبلغ -->
-                            <div class="form-group mb-3">
-                                <label for="id_amount" class="fw-bold mb-1">💵 المبلغ</label>
-                                <input type="number" name="amount" step="0.01" min="1"
-                                       class="form-control shadow-sm"
-                                       id="id_amount" placeholder="ادخل المبلغ المطلوب">
-                            </div>
+                                <div class="form-group mb-3">
+                                    <label for="id_amount" class="fw-bold mb-1">💵 المبلغ</label>
+                                    <input type="number" name="amount" step="0.01" min="1"
+                                           class="form-control shadow-sm"
+                                           id="id_amount" placeholder="ادخل المبلغ المطلوب">
+                                </div>
 
                             <!-- الرقم المرجعي -->
-                            <div class="form-group mb-3">
-                                <label for="id_reference_number" class="fw-bold mb-1">🔢 الرقم المرجعي</label>
-                                <input type="text" name="reference_number"
-                                       class="form-control shadow-sm"
-                                       id="id_reference_number" placeholder="ادخل الرقم المرجعي للدفعة">
-                            </div>
+                                <div class="form-group mb-3">
+                                    <label for="id_reference_number" class="fw-bold mb-1">🔢 الرقم المرجعي</label>
+                                    <input type="text" name="reference_number"
+                                           class="form-control shadow-sm"
+                                           id="id_reference_number" placeholder="ادخل الرقم المرجعي للدفعة">
+                                </div>
 
                             <!-- صورة الإيصال -->
-                            <div class="form-group mb-3">
-                                <label for="id_receipt_image" class="fw-bold mb-1">📷 صورة الإيصال</label>
-                                <input type="file" name="receipt_image" 
-                                       class="form-control shadow-sm"
-                                       id="id_receipt_image" accept="image/*">
-                            </div>
+                                <div class="form-group mb-3">
+                                    <label for="id_receipt_image" class="fw-bold mb-1">📷 صورة الإيصال</label>
+                                    <input type="file" name="receipt_image"
+                                           class="form-control shadow-sm"
+                                           id="id_receipt_image" accept="image/*">
+                                </div>
 
                             <!-- زر الإرسال -->
-                            <button type="submit" class="btn btn-success w-100 py-2 shadow-sm fw-bold">
-                                ✅ إرسال الدفعة
-                            </button>
-                        </form>
+                                <button type="submit" class="btn btn-success w-100 py-2 shadow-sm fw-bold">
+                                    ✅ إرسال الدفعة
+                                </button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
         <!-- زر الانتقال للسجل -->
-        <div class="text-center mt-4">
-            <a href="{% url 'student:payment_history' %}" 
-               class="btn btn-info px-4 py-2 shadow-sm fw-bold">
-                📑 عرض سجل الدفعات
-            </a>
+            <div class="text-center mt-4">
+                <a href="{% url 'student:payment_history' %}"
+                   class="btn btn-info px-4 py-2 shadow-sm fw-bold">
+                    📑 عرض سجل الدفعات
+                </a>
+            </div>
         </div>
     </div>
-</div>
 {% endblock %}

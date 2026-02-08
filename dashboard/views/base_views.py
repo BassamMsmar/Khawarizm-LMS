@@ -7,7 +7,7 @@ def baseDashboard(request):
     
     if request.user.roles.first().name == 'student':
         return redirect('dashboard:student')
-    elif request.user.roles.first().name == 'staff':
+    elif request.user.roles.first().name == 'staff' or request.user.roles.first().name == 'lecturer':
         return redirect('dashboard:staff')
     elif request.user.roles.first().name == 'admin':
         return redirect('admin/')
