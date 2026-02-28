@@ -1,19 +1,21 @@
 
         // Theme Management
-        // Theme Management
         const themeToggle = document.getElementById('themeToggle');
         const themeIcon = document.getElementById('themeIcon');
+        const themeSelect = document.getElementById('themeSelect');
         
         function setTheme(theme) {
             document.documentElement.setAttribute('data-bs-theme', theme);
             localStorage.setItem('theme', theme);
             
-            if (themeIcon) {
-                if (theme === 'dark') {
-                    themeIcon.className = 'bi bi-moon-fill';
-                } else {
-                    themeIcon.className = 'bi bi-sun-fill';
-                }
+            if (theme === 'dark') {
+                themeIcon.className = 'bi bi-moon-fill';
+            } else {
+                themeIcon.className = 'bi bi-sun-fill';
+            }
+            
+            if (themeSelect) {
+                themeSelect.value = theme;
             }
         }
 
@@ -27,8 +29,12 @@
         const savedTheme = localStorage.getItem('theme') || 'light';
         setTheme(savedTheme);
 
-        if (themeToggle) {
-            themeToggle.addEventListener('click', toggleTheme);
+        themeToggle.addEventListener('click', toggleTheme);
+        
+        if (themeSelect) {
+            themeSelect.addEventListener('change', (e) => {
+                setTheme(e.target.value);
+            });
         }
 
         // Mobile sidebar toggle

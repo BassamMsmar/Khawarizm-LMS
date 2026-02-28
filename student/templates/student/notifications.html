@@ -1,35 +1,35 @@
 {% extends 'student/base/base.html' %}
 
 {% block content %}
-<div class="main-content">
-  
-    <div class="container-fluid">
-        <h1 class="mb-4">الاشعارات</h1>
+    <div class="main-content">
 
-        <div class="card">
-            <div class="card-header">
-                إشعاراتك الأخيرة
+        <div class="container-fluid">
+            <h1 class="mb-4">الاشعارات</h1>
+
+            <div class="card">
+                <div class="card-header">
+                    إشعاراتك الأخيرة
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        {% for notification in notifications %}
+                            <li class="list-group-item">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h5 class="mb-1">{{ notification.verb }}</h5>
+                                    <small class="text-muted">{{ notification.timestamp|timesince }} ago</small>
+                                </div>
+                                <p class="mb-1">{{ notification.description }}</p>
+                                <small>From: {{ notification.actor }}</small>
+                            </li>
+                        {% empty %}
+                            <li class="list-group-item">
+                                <p class="mb-0 text-muted">No notifications yet.</p>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
             </div>
-            <div class="card-body">
-                <ul class="list-group list-group-flush">
-                    {% for notification in notifications %}
-                    <li class="list-group-item">
-                        <div class="d-flex w-100 justify-content-between">
-                            <h5 class="mb-1">{{ notification.verb }}</h5>
-                            <small class="text-muted">{{ notification.timestamp|timesince }} ago</small>
-                        </div>
-                        <p class="mb-1">{{ notification.description }}</p>
-                        <small>From: {{ notification.actor }}</small>
-                    </li>
-                    {% empty %}
-                    <li class="list-group-item">
-                        <p class="mb-0 text-muted">No notifications yet.</p>
-                    </li>
-                    {% endfor %}
-                </ul>
-            </div>
+
         </div>
-
     </div>
-</div>
 {% endblock content %}

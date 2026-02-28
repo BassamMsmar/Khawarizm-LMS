@@ -1,75 +1,136 @@
-{% extends 'student/base/base.html' %}
+{% extends 'student/base/base.html' %} {% load static %} {% block content %}
+<main class="main-content py-5 bg-light">
+  <div class="container">
+    <!-- Styles removed and moved to styles.css -->
 
-{% block content %}
-<div class="main-content">
-    <div class="container-fluid">
-        <h1 class="mb-4">لوحة تحكم الطالب</h1>
-
-        <div class="row">
-            <div class="col-md-6 col-lg-3 mb-4">
-                <div class="card stats-card">
-                    <div class="card-body">
-                        <h5 class="card-title text-white">الدورات المسجل بها</h5>
-                        <p class="stats-number">{{ enrolled_courses.count }}</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-3 mb-4">
-                <div class="card stats-card">
-                    <div class="card-body">
-                        <h5 class="card-title text-white">الواجبات المكتملة</h5>
-                        <p class="stats-number">0</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-3 mb-4">
-                <div class="card stats-card">
-                    <div class="card-body">
-                        <h5 class="card-title text-white">الاختبارات المكتملة</h5>
-                        <p class="stats-number">0</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-3 mb-4">
-                <div class="card stats-card">
-                    <div class="card-body">
-                        <h5 class="card-title text-white">الدرجة الكلية</h5>
-                        <p class="stats-number">N/A</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <h2 class="mb-3">دوراتي</h2>
-        <div class="row">
-            {% if enrolled_courses %}
-                {% for course in enrolled_courses %}
-                    <div class="col-md-6 col-lg-4 mb-4">
-                        <div class="card h-100">
-                            {% if course.image %}
-                                <img src="{{ course.image.url }}" class="card-img-top" alt="{{ course.title }}">
-                            {% endif %}
-                            <div class="card-body">
-                                <h5 class="card-title">{{ course.title }}</h5>
-                                <p class="card-text">{{ course.short_description|default:"لا يوجد وصف متاح." }}</p>
-                                <a href="{% url 'courses:course_detail' course.slug %}" class="btn btn-primary">عرض الدورة</a>
-                            </div>
-                            <div class="card-footer text-muted">
-                                <small>المحاضر: {{ course.lecturer.get_full_name|default:"غير محدد" }}</small>
-                            </div>
-                        </div>
-                    </div>
-                {% endfor %}
-            {% else %}
-                <div class="col-12">
-                    <div class="empty-state">
-                        <i class="bi bi-mortarboard"></i>
-                        <p>لم تسجل في أي دورات بعد.</p>
-                        <a href="{% url 'courses:course_list' %}" class="btn btn-primary">تصفح الدورات</a>
-                    </div>
-                </div>
-            {% endif %}
-        </div>
+    <!-- Welcome Banner -->
+    <div class="welcome-banner">
+      <div class="position-relative z-1">
+        <h2 class="fw-bold mb-2">مرحباً، {{ request.user.first_name }}! 👋</h2>
+        <p class="mb-0 opacity-75">
+          نتمنى لك يوماً دراسياً موفقاً ومليئاً بالإنجازات.
+        </p>
+      </div>
     </div>
-</div>
+
+    <!-- Stats Row -->
+    <div class="row g-4 mb-5">
+      <div class="col-md-6 col-lg-3">
+        <div class="stats-card-home">
+          <div>
+            <div class="stats-icon-wrapper bg-icon-primary">
+              <i class="bi bi-mortarboard-fill"></i>
+            </div>
+            <h5 class="text-muted small mb-1">الدورات المسجلة</h5>
+            <h3 class="fw-bold mb-0 text-dark">{{ enrolled_courses.count }}</h3>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="stats-card-home">
+          <div>
+            <div class="stats-icon-wrapper bg-icon-success">
+              <i class="bi bi-check-circle-fill"></i>
+            </div>
+            <h5 class="text-muted small mb-1">الواجبات المكتملة</h5>
+            <h3 class="fw-bold mb-0 text-dark">0</h3>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="stats-card-home">
+          <div>
+            <div class="stats-icon-wrapper bg-icon-warning">
+              <i class="bi bi-pencil-fill"></i>
+            </div>
+            <h5 class="text-muted small mb-1">الاختبارات المنجزة</h5>
+            <h3 class="fw-bold mb-0 text-dark">0</h3>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="stats-card-home">
+          <div>
+            <div class="stats-icon-wrapper bg-icon-info">
+              <i class="bi bi-graph-up-arrow"></i>
+            </div>
+            <h5 class="text-muted small mb-1">المعدل العام</h5>
+            <h3 class="fw-bold mb-0 text-dark">--</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Courses Section -->
+    <div class="section-header">
+      <h3 class="fw-bold text-dark m-0">
+        <i class="bi bi-journal-richtext me-2 text-primary"></i> دوراتي الدراسية
+      </h3>
+      <a
+        href="{% url 'student:my_courses' %}"
+        class="btn btn-outline-primary rounded-pill btn-sm px-3"
+      >
+        عرض الكل</a
+      >
+    </div>
+
+    <div class="row g-4">
+      {% if enrolled_courses %} {% for course in enrolled_courses %}
+      <div class="col-md-6 col-lg-4">
+        <div class="course-card-home">
+          {% if course.image %}
+          <img
+            src="{{ course.image.url }}"
+            class="course-img-home w-100"
+            alt="{{ course.title }}"
+          />
+          {% else %}
+          <div
+            class="course-img-home w-100 bg-secondary d-flex align-items-center justify-content-center text-white"
+          >
+            <i class="bi bi-book fs-1"></i>
+          </div>
+          {% endif %}
+          <div class="card-body p-4">
+            <h5 class="card-title fw-bold mb-2">{{ course.title }}</h5>
+            <p class="card-text text-muted small mb-3">
+              {{ course.short_description|default:"لا يوجد وصف
+              متاح."|truncatechars:80 }}
+            </p>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <small class="text-muted"
+                ><i class="bi bi-person me-1"></i> {{
+                course.lecturer.get_full_name|default:"غير محدد" }}</small
+              >
+            </div>
+            <a
+              href="{% url 'courses:course_detail' course.slug %}"
+              class="btn btn-primary w-100 rounded-pill"
+            >
+              <i class="bi bi-box-arrow-in-right me-2"></i> الدخول للدورة</a
+            >
+          </div>
+        </div>
+      </div>
+      {% endfor %} {% else %}
+      <div class="col-12">
+        <div class="empty-state-home">
+          <i class="bi bi-mortarboard fs-1 text-muted mb-3 d-block"></i>
+          <h4 class="fw-bold mb-3">لم تسجل في أي دورات بعد</h4>
+          <p class="text-muted mb-4">
+            ابدأ رحلتك التعليمية الآن باستعراض البرنامج الأكاديمي وتسجيل المواد
+            المتاحة.
+          </p>
+          <a
+            href="{% url 'student:academic_program' %}"
+            class="btn btn-primary px-4 py-2 rounded-pill"
+          >
+            <i class="bi bi-search me-2"></i> استعراض البرنامج الأكاديمي
+          </a>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</main>
 {% endblock content %}

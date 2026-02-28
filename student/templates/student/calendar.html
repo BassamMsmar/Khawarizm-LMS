@@ -1,72 +1,177 @@
 {% extends 'student/base/base.html' %}
+{% load static %}
 
 {% block content %}
-<div class="main-content">
-    <div class="container-fluid">
-        <h1 class="mb-4">التقويم</h1>
+    <main class="main-content py-5 bg-light">
+        <div class="container">
 
-        <div class="card shadow-sm">
-            <div class="card-header">
-                <i class="bi bi-calendar3"></i> تقويم الطالب
+        <!-- Styles -->
+            <style>
+                :root {
+                    --primary-color: #1f697d;
+                    --primary-hover: #164f5e;
+                    --text-color: #333;
+                    --border-radius: 12px;
+                    --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+                }
+
+                .calendar-card {
+                    background: white;
+                    border-radius: var(--border-radius);
+                    box-shadow: var(--card-shadow);
+                    border: none;
+                    overflow: hidden;
+                    padding: 1.5rem;
+                }
+
+                .page-header {
+                    background: white;
+                    border-radius: var(--border-radius);
+                    padding: 1.5rem;
+                    margin-bottom: 2rem;
+                    box-shadow: var(--card-shadow);
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    border-right: 5px solid var(--primary-color);
+                }
+
+                .page-title {
+                    color: var(--primary-color);
+                    font-weight: 700;
+                    margin: 0;
+                }
+
+            /* FullCalendar Customization */
+                .fc {
+                    font-family: 'Cairo', sans-serif;
+                }
+
+                .fc-toolbar-title {
+                    color: var(--primary-color) !important;
+                    font-weight: 700 !important;
+                }
+
+                .fc-button-primary {
+                    background-color: var(--primary-color) !important;
+                    border-color: var(--primary-color) !important;
+                    transition: all 0.3s ease;
+                }
+
+                .fc-button-primary:hover {
+                    background-color: var(--primary-hover) !important;
+                    border-color: var(--primary-hover) !important;
+                }
+
+                .fc-button-active {
+                    background-color: var(--primary-hover) !important;
+                    border-color: var(--primary-hover) !important;
+                }
+
+                .fc-day-today {
+                    background-color: rgba(31, 105, 125, 0.05) !important;
+                }
+
+                .fc-event {
+                    border-radius: 4px;
+                    border: none;
+                    padding: 2px 5px;
+                    font-size: 0.85em;
+                    cursor: pointer;
+                    transition: transform 0.2s;
+                }
+
+                .fc-event:hover {
+                    transform: scale(1.02);
+                }
+
+                .fc-daygrid-event-dot {
+                    border-width: 4px;
+                }
+            </style>
+
+        <!-- Page Header -->
+            <div class="page-header">
+                <div>
+                    <h2 class="page-title"><i class="bi bi-calendar-check me-2"></i> التقويم الأكاديمي</h2>
+                    <p class="text-muted mb-0 mt-2 ms-4">متابعة مواعيد المحاضرات، الاختبارات، والواجبات</p>
+                </div>
+                <div>
+                    <button class="btn btn-outline-primary" id="todayBtn">
+                        <i class="bi bi-calendar-event me-2"></i> اليوم
+                    </button>
+                </div>
             </div>
-            <div class="card-body">
-                <!-- مكان عرض الكاليندر -->
+
+        <!-- Calendar Card -->
+            <div class="calendar-card">
                 <div id="calendar"></div>
             </div>
         </div>
-    </div>
-</div>
+    </main>
 
-<!-- استدعاء مكتبة FullCalendar من CDN -->
-<link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.js"></script>
+<!-- FullCalendar Library -->
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.js"></script>
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    var calendarEl = document.getElementById('calendar');
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var calendarEl = document.getElementById('calendar');
 
-    var calendar = new FullCalendar.Calendar(calendarEl, {
-        initialView: 'dayGridMonth',  // العرض الشهري
-        locale: 'ar',                 // اللغة عربي
-        direction: 'rtl',             // من اليمين لليسار
-        themeSystem: 'bootstrap5',    // شكل متناسق مع bootstrap
-        headerToolbar: {
-            left: 'prev,next today',
-            center: 'title',
-            right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
-        },
-        events: [
-            {
-                title: 'موعد نهائي للواجب - مقدمة في البرمجة',
-                start: '2025-08-26T23:59:00',
-                color: '#0d6efd'
-            },
-            {
-                title: 'محاضرة مباشرة - الرياضيات المتقدمة',
-                start: '2025-08-28T10:00:00',
-                end: '2025-08-28T12:00:00',
-                color: '#0dcaf0'
-            },
-            {
-                title: 'اختبار قصير - الفيزياء',
-                start: '2025-08-30T09:00:00',
-                color: '#dc3545'
-            },
-            {
-                title: 'عطلة رسمية - عيد الاستقلال',
-                start: '2025-09-02',
-                allDay: true,
-                color: '#6c757d'
-            },
-            {
-                title: 'موعد نهائي للمشروع - تاريخ الفن',
-                start: '2025-09-12T23:59:00',
-                color: '#0d6efd'
-            }
-        ]
-    });
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                locale: 'ar',
+                direction: 'rtl',
+                themeSystem: 'bootstrap5',
+                headerToolbar: {
+                    left: 'prev,next',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,listWeek'
+                },
+                buttonText: {
+                    today: 'اليوم',
+                    month: 'شهر',
+                    week: 'أسبوع',
+                    day: 'يوم',
+                    list: 'قائمة'
+                },
+                height: 'auto',
+                aspectRatio: 1.8,
+                events: [
+                    {
+                        title: 'بداية الفصل الدراسي',
+                        start: new Date().getFullYear() + '-09-01',
+                        color: '#1f697d',
+                        allDay: true
+                    },
+                    {
+                        title: 'موعد تسليم الواجب الأول',
+                        start: new Date(new Date().setDate(new Date().getDate() + 3)).toISOString().split('T')[0],
+                        color: '#dc3545'
+                    },
+                    {
+                        title: 'محاضرة مقدمة في البرمجة',
+                        start: new Date(new Date().setDate(new Date().getDate() + 5)).toISOString().split('T')[0] + 'T10:00:00',
+                        end: new Date(new Date().setDate(new Date().getDate() + 5)).toISOString().split('T')[0] + 'T12:00:00',
+                        color: '#198754'
+                    },
+                    {
+                        title: 'اختبار نصفي - رياضيات',
+                        start: new Date(new Date().setDate(new Date().getDate() + 10)).toISOString().split('T')[0],
+                        color: '#fd7e14'
+                    }
+                ],
+                eventClick: function (info) {
+                    alert('عنوان الحدث: ' + info.event.title);
+                }
+            });
 
-    calendar.render();
-});
-</script>
+            calendar.render();
+
+        // Link custom button
+            document.getElementById('todayBtn').addEventListener('click', function () {
+                calendar.today();
+            });
+        });
+    </script>
 {% endblock content %}

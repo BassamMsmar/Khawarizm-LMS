@@ -1,248 +1,258 @@
+// Global variables
+let courses = [];
+let lessons = [];
+let quizzes = [];
+let students = [];
+let questionCounter = 0;
 
-        // Global variables
-        let courses = [];
-        let lessons = [];
-        let quizzes = [];
-        let students = [];
-        let questionCounter = 0;
+// Theme Management
+const themeToggle = document.getElementById("themeToggle");
+const themeIcon = document.getElementById("themeIcon");
 
-        // Theme Management
-        const themeToggle = document.getElementById('themeToggle');
-        const themeIcon = document.getElementById('themeIcon');
-        const themeSelect = document.getElementById('themeSelect');
-        
-        function setTheme(theme) {
-            document.documentElement.setAttribute('data-bs-theme', theme);
-            localStorage.setItem('theme', theme);
-            
-            if (theme === 'dark') {
-                themeIcon.className = 'bi bi-moon-fill';
-            } else {
-                themeIcon.className = 'bi bi-sun-fill';
-            }
-            
-            if (themeSelect) {
-                themeSelect.value = theme;
-            }
+function setTheme(theme) {
+  document.documentElement.setAttribute("data-bs-theme", theme);
+  localStorage.setItem("theme", theme);
+
+  if (themeIcon) {
+    if (theme === "dark") {
+      themeIcon.className = "bi bi-moon-fill";
+    } else {
+      themeIcon.className = "bi bi-sun-fill";
+    }
+  }
+}
+
+function toggleTheme() {
+  const currentTheme = document.documentElement.getAttribute("data-bs-theme");
+  const newTheme = currentTheme === "dark" ? "light" : "dark";
+  setTheme(newTheme);
+}
+
+// Initialize theme
+const savedTheme = localStorage.getItem("theme") || "light";
+setTheme(savedTheme);
+
+if (themeToggle) {
+  themeToggle.addEventListener("click", toggleTheme);
+}
+
+// Navigation Management
+function showSection(sectionId) {
+  // Hide all sections
+  document.querySelectorAll(".content-section").forEach((section) => {
+    section.style.display = "none";
+  });
+
+  // Show selected section
+  const targetSection = document.getElementById(sectionId + "-section");
+  if (targetSection) {
+    targetSection.style.display = "block";
+    targetSection.classList.add("fade-in");
+  }
+
+  // Update active nav link
+  document.querySelectorAll(".nav-link").forEach((link) => {
+    link.classList.remove("active");
+  });
+
+  const activeLink = document.querySelector(`[data-section="${sectionId}"]`);
+  if (activeLink) {
+    activeLink.classList.add("active");
+  }
+}
+
+// Sidebar navigation
+document.querySelectorAll("[data-section]").forEach((link) => {
+  link.addEventListener("click", (e) => {
+    e.preventDefault();
+    const section = e.target
+      .closest("[data-section]")
+      .getAttribute("data-section");
+    showSection(section);
+  });
+});
+
+// Mobile sidebar toggle
+const sidebarToggle = document.getElementById("sidebarToggle");
+const sidebar = document.getElementById("sidebar");
+
+if (sidebarToggle) {
+  sidebarToggle.addEventListener("click", () => {
+    sidebar.classList.toggle("show");
+  });
+}
+
+// Course Management
+function addCourse() {
+  const form = document.getElementById("addCourseForm");
+  const formData = new FormData(form);
+  const errorDiv = document.getElementById("addCourseError");
+  errorDiv.style.display = "none"; // Hide previous errors
+
+  fetch("/main-dashboard/courses/create/ajax/", {
+    method: "POST",
+    headers: {
+      "X-CSRFToken": document.querySelector("[name=csrfmiddlewaretoken]").value,
+    },
+    body: formData,
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(
+          "Network response was not ok. Status: " + response.status,
+        );
+      }
+      return response.json();
+    })
+    .then((data) => {
+      if (data.success) {
+        location.reload();
+      } else {
+        let errorMessages =
+          "<strong>Please correct the following errors:</strong><ul>";
+        for (const field in data.errors) {
+          errorMessages += `<li>${field}: ${data.errors[field].join(", ")}</li>`;
         }
+        errorMessages += "</ul>";
+        errorDiv.innerHTML = errorMessages;
+        errorDiv.style.display = "block";
+      }
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+      errorDiv.innerHTML =
+        "An unexpected error occurred. Please check the browser console for details.";
+      errorDiv.style.display = "block";
+    });
+}
 
-        function toggleTheme() {
-            const currentTheme = document.documentElement.getAttribute('data-bs-theme');
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            setTheme(newTheme);
+function updateCoursesTable() {
+  // This function is no longer needed as the page reloads on success.
+}
+
+function updateCourseSelects() {
+  // This function can be expanded later if needed for dynamic updates.
+}
+
+function deleteCourse(id) {
+  if (confirm("هل أنت متأكد من حذف هذه الدورة؟")) {
+    fetch(`/main-dashboard/courses/delete/${id}/`, {
+      method: "POST",
+      headers: {
+        "X-CSRFToken": document.querySelector("[name=csrfmiddlewaretoken]")
+          .value,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          location.reload();
+        } else {
+          alert("حدث خطأ أثناء الحذف");
         }
+      });
+  }
+}
 
-        // Initialize theme
-        const savedTheme = localStorage.getItem('theme') || 'light';
-        setTheme(savedTheme);
+function openEditCourseModal(courseId) {
+  const modal = new bootstrap.Modal(document.getElementById("editCourseModal"));
+  const errorDiv = document.getElementById("editCourseError");
+  const formContent = document.getElementById("editCourseFormContent");
+  document.getElementById("editCourseId").value = courseId;
+  errorDiv.style.display = "none";
 
-        themeToggle.addEventListener('click', toggleTheme);
-        
-        if (themeSelect) {
-            themeSelect.addEventListener('change', (e) => {
-                setTheme(e.target.value);
-            });
+  fetch(`/main-dashboard/courses/update/${courseId}/`)
+    .then((response) => response.json())
+    .then((data) => {
+      formContent.innerHTML = data.form;
+      modal.show();
+    });
+}
+
+function updateCourse() {
+  const courseId = document.getElementById("editCourseId").value;
+  const form = document.getElementById("editCourseForm");
+  const formData = new FormData(form);
+  const errorDiv = document.getElementById("editCourseError");
+  errorDiv.style.display = "none";
+
+  fetch(`/main-dashboard/courses/update/${courseId}/`, {
+    method: "POST",
+    headers: {
+      "X-CSRFToken": document.querySelector("[name=csrfmiddlewaretoken]").value,
+    },
+    body: formData,
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.success) {
+        location.reload();
+      } else {
+        let errorMessages =
+          "<strong>Please correct the following errors:</strong><ul>";
+        for (const field in data.errors) {
+          errorMessages += `<li>${field}: ${data.errors[field].join(", ")}</li>`;
         }
+        errorMessages += "</ul>";
+        errorDiv.innerHTML = errorMessages;
+        errorDiv.style.display = "block";
+      }
+    });
+}
 
-        // Navigation Management
-        function showSection(sectionId) {
-            // Hide all sections
-            document.querySelectorAll('.content-section').forEach(section => {
-                section.style.display = 'none';
-            });
-            
-            // Show selected section
-            const targetSection = document.getElementById(sectionId + '-section');
-            if (targetSection) {
-                targetSection.style.display = 'block';
-                targetSection.classList.add('fade-in');
-            }
-            
-            // Update active nav link
-            document.querySelectorAll('.nav-link').forEach(link => {
-                link.classList.remove('active');
-            });
-            
-            const activeLink = document.querySelector(`[data-section="${sectionId}"]`);
-            if (activeLink) {
-                activeLink.classList.add('active');
-            }
-        }
+// Lesson Management (Client-side, only if not on Django lessons page)
+if (window.location.pathname !== "/main-dashboard/lessons/") {
+  function toggleLessonContent(type) {
+    document.getElementById("videoContent").style.display =
+      type === "video" ? "block" : "none";
+    document.getElementById("textContent").style.display =
+      type === "text" ? "block" : "none";
+    document.getElementById("fileContent").style.display =
+      type === "file" ? "block" : "none";
+  }
 
-        // Sidebar navigation
-        document.querySelectorAll('[data-section]').forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                const section = e.target.closest('[data-section]').getAttribute('data-section');
-                showSection(section);
-            });
-        });
+  function addLesson() {
+    const form = document.getElementById("addLessonForm");
+    const formData = new FormData(form);
 
-        // Mobile sidebar toggle
-        const sidebarToggle = document.getElementById('sidebarToggle');
-        const sidebar = document.getElementById('sidebar');
-        
-        if (sidebarToggle) {
-            sidebarToggle.addEventListener('click', () => {
-                sidebar.classList.toggle('show');
-            });
-        }
+    const lesson = {
+      id: Date.now(),
+      title: formData.get("lessonTitle"),
+      courseId: formData.get("courseId"),
+      courseName:
+        courses.find((c) => c.id == formData.get("courseId"))?.name ||
+        "غير محدد",
+      type: formData.get("lessonType"),
+      duration: formData.get("duration"),
+      description: formData.get("description"),
+      content:
+        formData.get("videoUrl") ||
+        formData.get("textContent") ||
+        formData.get("lessonFile")?.name,
+      status: "نشط",
+      createdAt: new Date().toLocaleDateString("ar-SA"),
+    };
 
-        // Course Management
-        function addCourse() {
-            const form = document.getElementById('addCourseForm');
-            const formData = new FormData(form);
-            const errorDiv = document.getElementById('addCourseError');
-            errorDiv.style.display = 'none'; // Hide previous errors
+    lessons.push(lesson);
+    updateLessonsTable();
 
-            fetch("/main-dashboard/courses/create/ajax/", {
-                method: 'POST',
-                headers: {
-                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
-                },
-                body: formData
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok. Status: ' + response.status);
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data.success) {
-                    location.reload();
-                } else {
-                    let errorMessages = '<strong>Please correct the following errors:</strong><ul>';
-                    for (const field in data.errors) {
-                        errorMessages += `<li>${field}: ${data.errors[field].join(', ')}</li>`;
-                    }
-                    errorMessages += '</ul>';
-                    errorDiv.innerHTML = errorMessages;
-                    errorDiv.style.display = 'block';
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                errorDiv.innerHTML = 'An unexpected error occurred. Please check the browser console for details.';
-                errorDiv.style.display = 'block';
-            });
-        }
+    // Close modal and reset form
+    const modal = bootstrap.Modal.getInstance(
+      document.getElementById("addLessonModal"),
+    );
+    modal.hide();
+    form.reset();
+    toggleLessonContent("video");
 
-        function updateCoursesTable() {
-            // This function is no longer needed as the page reloads on success.
-        }
+    showNotification("تم إضافة الدرس بنجاح", "success");
+  }
 
-        function updateCourseSelects() {
-            // This function can be expanded later if needed for dynamic updates.
-        }
+  function updateLessonsTable() {
+    const tbody = document.getElementById("lessonsTableBody");
+    if (!tbody) return; // Added check
 
-        function deleteCourse(id) {
-            if (confirm('هل أنت متأكد من حذف هذه الدورة؟')) {
-                fetch(`/main-dashboard/courses/delete/${id}/`, {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
-                    }
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        location.reload();
-                    } else {
-                        alert('حدث خطأ أثناء الحذف');
-                    }
-                });
-            }
-        }
-
-        function openEditCourseModal(courseId) {
-            const modal = new bootstrap.Modal(document.getElementById('editCourseModal'));
-            const errorDiv = document.getElementById('editCourseError');
-            const formContent = document.getElementById('editCourseFormContent');
-            document.getElementById('editCourseId').value = courseId;
-            errorDiv.style.display = 'none';
-
-            fetch(`/main-dashboard/courses/update/${courseId}/`)
-                .then(response => response.json())
-                .then(data => {
-                    formContent.innerHTML = data.form;
-                    modal.show();
-                });
-        }
-
-        function updateCourse() {
-            const courseId = document.getElementById('editCourseId').value;
-            const form = document.getElementById('editCourseForm');
-            const formData = new FormData(form);
-            const errorDiv = document.getElementById('editCourseError');
-            errorDiv.style.display = 'none';
-
-            fetch(`/main-dashboard/courses/update/${courseId}/`, {
-                method: 'POST',
-                headers: {
-                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
-                },
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    location.reload();
-                } else {
-                    let errorMessages = '<strong>Please correct the following errors:</strong><ul>';
-                    for (const field in data.errors) {
-                        errorMessages += `<li>${field}: ${data.errors[field].join(', ')}</li>`;
-                    }
-                    errorMessages += '</ul>';
-                    errorDiv.innerHTML = errorMessages;
-                    errorDiv.style.display = 'block';
-                }
-            });
-        }
-
-        // Lesson Management (Client-side, only if not on Django lessons page)
-        if (window.location.pathname !== '/main-dashboard/lessons/') {
-            function toggleLessonContent(type) {
-                document.getElementById('videoContent').style.display = type === 'video' ? 'block' : 'none';
-                document.getElementById('textContent').style.display = type === 'text' ? 'block' : 'none';
-                document.getElementById('fileContent').style.display = type === 'file' ? 'block' : 'none';
-            }
-
-            function addLesson() {
-                const form = document.getElementById('addLessonForm');
-                const formData = new FormData(form);
-                
-                const lesson = {
-                    id: Date.now(),
-                    title: formData.get('lessonTitle'),
-                    courseId: formData.get('courseId'),
-                    courseName: courses.find(c => c.id == formData.get('courseId'))?.name || 'غير محدد',
-                    type: formData.get('lessonType'),
-                    duration: formData.get('duration'),
-                    description: formData.get('description'),
-                    content: formData.get('videoUrl') || formData.get('textContent') || formData.get('lessonFile')?.name,
-                    status: 'نشط',
-                    createdAt: new Date().toLocaleDateString('ar-SA')
-                };
-                
-                lessons.push(lesson);
-                updateLessonsTable();
-                
-                // Close modal and reset form
-                const modal = bootstrap.Modal.getInstance(document.getElementById('addLessonModal'));
-                modal.hide();
-                form.reset();
-                toggleLessonContent('video');
-                
-                showNotification('تم إضافة الدرس بنجاح', 'success');
-            }
-
-            function updateLessonsTable() {
-                const tbody = document.getElementById('lessonsTableBody');
-                if (!tbody) return; // Added check
-                
-                if (lessons.length === 0) {
-                    tbody.innerHTML = `
+    if (lessons.length === 0) {
+      tbody.innerHTML = `
                         <tr>
                             <td colspan="6" class="text-center py-4">
                                 <div class="empty-state">
@@ -252,16 +262,18 @@
                             </td>
                         </tr>
                     `;
-                    return;
-                }
-                
-                tbody.innerHTML = lessons.map(lesson => `
+      return;
+    }
+
+    tbody.innerHTML = lessons
+      .map(
+        (lesson) => `
                     <tr>
                         <td>${lesson.title}</td>
                         <td>${lesson.courseName}</td>
                         <td>
                             <span class="badge bg-info">
-                                ${lesson.type === 'video' ? 'فيديو' : lesson.type === 'text' ? 'نص' : 'ملف'}
+                                ${lesson.type === "video" ? "فيديو" : lesson.type === "text" ? "نص" : "ملف"}
                             </span>
                         </td>
                         <td>${lesson.duration} دقيقة</td>
@@ -277,28 +289,30 @@
                             </div>
                         </td>
                     </tr>
-                `).join('');
-            }
+                `,
+      )
+      .join("");
+  }
 
-            function deleteLesson(id) {
-                if (confirm('هل أنت متأكد من حذف هذا الدرس؟')) {
-                    lessons = lessons.filter(lesson => lesson.id !== id);
-                    updateLessonsTable();
-                    showNotification('تم حذف الدرس بنجاح', 'success');
-                }
-            }
-        }
+  function deleteLesson(id) {
+    if (confirm("هل أنت متأكد من حذف هذا الدرس؟")) {
+      lessons = lessons.filter((lesson) => lesson.id !== id);
+      updateLessonsTable();
+      showNotification("تم حذف الدرس بنجاح", "success");
+    }
+  }
+}
 
-        // Quiz Management
-        function addQuestion() {
-            questionCounter++;
-            const questionsContainer = document.getElementById('questionsContainer');
-            
-            if (questionsContainer.querySelector('.text-center')) {
-                questionsContainer.innerHTML = '';
-            }
-            
-            const questionHtml = `
+// Quiz Management
+function addQuestion() {
+  questionCounter++;
+  const questionsContainer = document.getElementById("questionsContainer");
+
+  if (questionsContainer.querySelector(".text-center")) {
+    questionsContainer.innerHTML = "";
+  }
+
+  const questionHtml = `
                 <div class="card mb-3" id="question-${questionCounter}">
                     <div class="card-header">
                         <div class="d-flex justify-content-between align-items-center">
@@ -359,29 +373,29 @@
                     </div>
                 </div>
             `;
-            
-            questionsContainer.insertAdjacentHTML('beforeend', questionHtml);
-        }
 
-        function removeQuestion(id) {
-            document.getElementById(`question-${id}`).remove();
-            
-            const questionsContainer = document.getElementById('questionsContainer');
-            if (questionsContainer.children.length === 0) {
-                questionsContainer.innerHTML = `
+  questionsContainer.insertAdjacentHTML("beforeend", questionHtml);
+}
+
+function removeQuestion(id) {
+  document.getElementById(`question-${id}`).remove();
+
+  const questionsContainer = document.getElementById("questionsContainer");
+  if (questionsContainer.children.length === 0) {
+    questionsContainer.innerHTML = `
                     <div class="text-center text-muted py-4">
                         <i class="bi bi-question-circle fs-1"></i>
                         <p>لم يتم إضافة أسئلة بعد</p>
                     </div>
                 `;
-            }
-        }
+  }
+}
 
-        function toggleAnswerOptions(questionId, type) {
-            const answersDiv = document.getElementById(`answers_${questionId}`);
-            
-            if (type === 'truefalse') {
-                answersDiv.innerHTML = `
+function toggleAnswerOptions(questionId, type) {
+  const answersDiv = document.getElementById(`answers_${questionId}`);
+
+  if (type === "truefalse") {
+    answersDiv.innerHTML = `
                     <label class="form-label">الإجابة الصحيحة</label>
                     <div class="mb-2">
                         <div class="form-check">
@@ -396,14 +410,14 @@
                         </div>
                     </div>
                 `;
-            } else if (type === 'text') {
-                answersDiv.innerHTML = `
+  } else if (type === "text") {
+    answersDiv.innerHTML = `
                     <label class="form-label">الإجابة النموذجية</label>
                     <textarea class="form-control" name="textAnswer_${questionId}" rows="2" placeholder="اكتب الإجابة النموذجية هنا..."></textarea>
                 `;
-            } else {
-                // Multiple choice - restore original options
-                answersDiv.innerHTML = `
+  } else {
+    // Multiple choice - restore original options
+    answersDiv.innerHTML = `
                     <label class="form-label">الخيارات</label>
                     <div class="mb-2">
                         <div class="input-group">
@@ -438,50 +452,53 @@
                         </div>
                     </div>
                 `;
-            }
-        }
+  }
+}
 
-        function addQuiz() {
-            const form = document.getElementById('addQuizForm');
-            const formData = new FormData(form);
-            
-            const quiz = {
-                id: Date.now(),
-                title: formData.get('quizTitle'),
-                courseId: formData.get('courseId'),
-                courseName: courses.find(c => c.id == formData.get('courseId'))?.name || 'غير محدد',
-                description: formData.get('description'),
-                timeLimit: formData.get('timeLimit'),
-                passingScore: formData.get('passingScore'),
-                attempts: formData.get('attempts'),
-                questions: questionCounter,
-                status: 'نشط',
-                createdAt: new Date().toLocaleDateString('ar-SA')
-            };
-            
-            quizzes.push(quiz);
-            updateQuizzesTable();
-            
-            // Close modal and reset form
-            const modal = bootstrap.Modal.getInstance(document.getElementById('addQuizModal'));
-            modal.hide();
-            form.reset();
-            document.getElementById('questionsContainer').innerHTML = `
+function addQuiz() {
+  const form = document.getElementById("addQuizForm");
+  const formData = new FormData(form);
+
+  const quiz = {
+    id: Date.now(),
+    title: formData.get("quizTitle"),
+    courseId: formData.get("courseId"),
+    courseName:
+      courses.find((c) => c.id == formData.get("courseId"))?.name || "غير محدد",
+    description: formData.get("description"),
+    timeLimit: formData.get("timeLimit"),
+    passingScore: formData.get("passingScore"),
+    attempts: formData.get("attempts"),
+    questions: questionCounter,
+    status: "نشط",
+    createdAt: new Date().toLocaleDateString("ar-SA"),
+  };
+
+  quizzes.push(quiz);
+  updateQuizzesTable();
+
+  // Close modal and reset form
+  const modal = bootstrap.Modal.getInstance(
+    document.getElementById("addQuizModal"),
+  );
+  modal.hide();
+  form.reset();
+  document.getElementById("questionsContainer").innerHTML = `
                 <div class="text-center text-muted py-4">
                     <i class="bi bi-question-circle fs-1"></i>
                     <p>لم يتم إضافة أسئلة بعد</p>
                 </div>
             `;
-            questionCounter = 0;
-            
-            showNotification('تم إنشاء الاختبار بنجاح', 'success');
-        }
+  questionCounter = 0;
 
-        function updateQuizzesTable() {
-            const tbody = document.getElementById('quizzesTableBody');
-            
-            if (quizzes.length === 0) {
-                tbody.innerHTML = `
+  showNotification("تم إنشاء الاختبار بنجاح", "success");
+}
+
+function updateQuizzesTable() {
+  const tbody = document.getElementById("quizzesTableBody");
+
+  if (quizzes.length === 0) {
+    tbody.innerHTML = `
                     <tr>
                         <td colspan="6" class="text-center py-4">
                             <div class="empty-state">
@@ -491,10 +508,12 @@
                         </td>
                     </tr>
                 `;
-                return;
-            }
-            
-            tbody.innerHTML = quizzes.map(quiz => `
+    return;
+  }
+
+  tbody.innerHTML = quizzes
+    .map(
+      (quiz) => `
                 <tr>
                     <td>${quiz.title}</td>
                     <td>${quiz.courseName}</td>
@@ -512,49 +531,53 @@
                         </div>
                     </td>
                 </tr>
-            `).join('');
-        }
+            `,
+    )
+    .join("");
+}
 
-        function deleteQuiz(id) {
-            if (confirm('هل أنت متأكد من حذف هذا الاختبار؟')) {
-                quizzes = quizzes.filter(quiz => quiz.id !== id);
-                updateQuizzesTable();
-                showNotification('تم حذف الاختبار بنجاح', 'success');
-            }
-        }
+function deleteQuiz(id) {
+  if (confirm("هل أنت متأكد من حذف هذا الاختبار؟")) {
+    quizzes = quizzes.filter((quiz) => quiz.id !== id);
+    updateQuizzesTable();
+    showNotification("تم حذف الاختبار بنجاح", "success");
+  }
+}
 
-        // Student Management
-        function addStudent() {
-            const form = document.getElementById('addStudentForm');
-            const formData = new FormData(form);
-            
-            const student = {
-                id: Date.now(),
-                name: formData.get('studentName'),
-                email: formData.get('email'),
-                phone: formData.get('phone'),
-                enrolledCourses: Array.from(formData.getAll('enrolledCourses')),
-                progress: Math.floor(Math.random() * 100),
-                registrationDate: new Date().toLocaleDateString('ar-SA'),
-                status: 'نشط'
-            };
-            
-            students.push(student);
-            updateStudentsTable();
-            
-            // Close modal and reset form
-            const modal = bootstrap.Modal.getInstance(document.getElementById('addStudentModal'));
-            modal.hide();
-            form.reset();
-            
-            showNotification('تم إضافة الطالب بنجاح', 'success');
-        }
+// Student Management
+function addStudent() {
+  const form = document.getElementById("addStudentForm");
+  const formData = new FormData(form);
 
-        function updateStudentsTable() {
-            const tbody = document.getElementById('studentsTableBody');
-            
-            if (students.length === 0) {
-                tbody.innerHTML = `
+  const student = {
+    id: Date.now(),
+    name: formData.get("studentName"),
+    email: formData.get("email"),
+    phone: formData.get("phone"),
+    enrolledCourses: Array.from(formData.getAll("enrolledCourses")),
+    progress: Math.floor(Math.random() * 100),
+    registrationDate: new Date().toLocaleDateString("ar-SA"),
+    status: "نشط",
+  };
+
+  students.push(student);
+  updateStudentsTable();
+
+  // Close modal and reset form
+  const modal = bootstrap.Modal.getInstance(
+    document.getElementById("addStudentModal"),
+  );
+  modal.hide();
+  form.reset();
+
+  showNotification("تم إضافة الطالب بنجاح", "success");
+}
+
+function updateStudentsTable() {
+  const tbody = document.getElementById("studentsTableBody");
+
+  if (students.length === 0) {
+    tbody.innerHTML = `
                     <tr>
                         <td colspan="6" class="text-center py-4">
                             <div class="empty-state">
@@ -564,10 +587,12 @@
                         </td>
                     </tr>
                 `;
-                return;
-            }
-            
-            tbody.innerHTML = students.map(student => `
+    return;
+  }
+
+  tbody.innerHTML = students
+    .map(
+      (student) => `
                 <tr>
                     <td>${student.name}</td>
                     <td>${student.email}</td>
@@ -589,69 +614,76 @@
                         </div>
                     </td>
                 </tr>
-            `).join('');
-        }
+            `,
+    )
+    .join("");
+}
 
-        function deleteStudent(id) {
-            if (confirm('هل أنت متأكد من حذف هذا الطالب؟')) {
-                students = students.filter(student => student.id !== id);
-                updateStudentsTable();
-                showNotification('تم حذف الطالب بنجاح', 'success');
-            }
-        }
+function deleteStudent(id) {
+  if (confirm("هل أنت متأكد من حذف هذا الطالب؟")) {
+    students = students.filter((student) => student.id !== id);
+    updateStudentsTable();
+    showNotification("تم حذف الطالب بنجاح", "success");
+  }
+}
 
-        // Notification System
-        function showNotification(message, type = 'info') {
-            const notification = document.createElement('div');
-            notification.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
-            notification.style.cssText = 'top: 20px; left: 20px; z-index: 9999; min-width: 300px;';
-            notification.innerHTML = `
+// Notification System
+function showNotification(message, type = "info") {
+  const notification = document.createElement("div");
+  notification.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+  notification.style.cssText =
+    "top: 20px; left: 20px; z-index: 9999; min-width: 300px;";
+  notification.innerHTML = `
                 ${message}
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             `;
-            
-            document.body.appendChild(notification);
-            
-            setTimeout(() => {
-                if (notification.parentNode) {
-                    notification.remove();
-                }
-            }, 5000);
-        }
 
-        // Update current date and time
-        function updateDateTime() {
-            const now = new Date();
-            const options = {
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit'
-            };
-            
-            const dateTimeElement = document.getElementById('currentDateTime');
-            if (dateTimeElement) {
-                dateTimeElement.textContent = now.toLocaleDateString('ar-SA', options);
-            }
-        }
+  document.body.appendChild(notification);
 
-        // Initialize
-        document.addEventListener('DOMContentLoaded', function() {
-            updateDateTime();
-            setInterval(updateDateTime, 60000); // Update every minute
-            
-            // Initialize empty tables if they exist
-            if (document.getElementById('coursesTableBody')) updateCoursesTable();
-            if (document.getElementById('lessonsTableBody')) updateLessonsTable();
-            if (document.getElementById('quizzesTableBody')) updateQuizzesTable();
-            if (document.getElementById('studentsTableBody')) updateStudentsTable();
-        });
+  setTimeout(() => {
+    if (notification.parentNode) {
+      notification.remove();
+    }
+  }, 5000);
+}
 
-        // Handle modal events to update course selects
-        document.addEventListener('shown.bs.modal', function(e) {
-            if (e.target.id === 'addLessonModal' || e.target.id === 'addQuizModal' || e.target.id === 'addStudentModal') {
-                updateCourseSelects();
-            }
-        });
+// Update current date and time
+function updateDateTime() {
+  const now = new Date();
+  const options = {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  };
+
+  const dateTimeElement = document.getElementById("currentDateTime");
+  if (dateTimeElement) {
+    dateTimeElement.textContent = now.toLocaleDateString("ar-SA", options);
+  }
+}
+
+// Initialize
+document.addEventListener("DOMContentLoaded", function () {
+  updateDateTime();
+  setInterval(updateDateTime, 60000); // Update every minute
+
+  // Initialize empty tables if they exist
+  if (document.getElementById("coursesTableBody")) updateCoursesTable();
+  if (document.getElementById("lessonsTableBody")) updateLessonsTable();
+  if (document.getElementById("quizzesTableBody")) updateQuizzesTable();
+  if (document.getElementById("studentsTableBody")) updateStudentsTable();
+});
+
+// Handle modal events to update course selects
+document.addEventListener("shown.bs.modal", function (e) {
+  if (
+    e.target.id === "addLessonModal" ||
+    e.target.id === "addQuizModal" ||
+    e.target.id === "addStudentModal"
+  ) {
+    updateCourseSelects();
+  }
+});

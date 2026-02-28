@@ -18,12 +18,11 @@ class UserLogoutView(LogoutView):
 
 def redirect_user(request):
     if request.user.is_authenticated:
-        if request.user.has_role('student'):
-            return redirect('student:index')
-        elif request.user.has_role('staff') or request.user.has_role('admin'):
-            # TODO: There is no 'index' in the 'dashboard' namespace.
-            # The correct redirect should be to 'dashboard:baseDashboard'.
+        if request.user.is_superuser or request.user.has_role('staff') or request.user.has_role('admin'):
+            # Redirect to the main dashboard
             return redirect('/main-dashboard/dashboard')
+        elif request.user.has_role('student'):
+            return redirect('student:index')
         else:
             # Handle other roles or users with no roles
             return redirect('/') # Or a default page
