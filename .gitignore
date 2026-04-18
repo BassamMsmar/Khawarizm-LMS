@@ -3,7 +3,7 @@
 *.pot
 *.pyc
 __pycache__
-db.sqlite3
+# db.sqlite3
 media
 
 # Backup files # 
@@ -104,6 +104,7 @@ env/
 venv/ 
 ENV/ 
 env.bak/ 
+.env
 venv.bak/ 
 
 # mkdocs documentation 
