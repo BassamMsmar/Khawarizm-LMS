@@ -1,189 +1,346 @@
 {% load static %}
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ar" dir="rtl" data-bs-theme="light">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student_Hub</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'style.css' %}">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Khawarizm LMS | Dashboard</title>
+    <!-- Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Bootstrap & Icons -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="{% static 'style.css' %}" />
+
+    <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <!-- <script src="{% static 'script.js' %}"></script> -->
-</head>
-<body>
+  </head>
+
+  <body>
     {% block header %}
     <!-- Header -->
-    <header class="main-header">
-        <div class="container-fluid h-100">
-            <div class="row h-100 align-items-center">
-                <div class="col-md-3">
-                    <div class="d-flex align-items-center">
+    <header class="main-header sticky-top">
+      <div class="container-fluid h-100">
+        <div class="row h-100 align-items-center">
+          <!-- Branding & Sidebar Toggle -->
+          <div class="col-6 col-md-3 d-flex align-items-center">
+            <button
+              class="btn btn-link text-body d-md-none me-2 p-0"
+              id="sidebarToggle"
+            >
+              <i class="bi bi-list fs-4"></i>
+            </button>
+            <a
+              class="navbar-brand fw-bold text-primary d-flex align-items-center gap-2"
+              href="/"
+            >
+              <i class="bi bi-mortarboard-fill fs-4"></i>
+              <span>{{ company_name|default:"Khawarizm LMS" }}</span>
+            </a>
+          </div>
 
-                        <button class="btn d-md-none me-2" id="sidebarToggle">
-                            <i class="bi bi-list"></i>
-                        </button>
-
-                        <a class="logo text-decoration-none" href="/">
-                            خوارزم
-                        </a>
-
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="search-box">
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="البحث في الدورات والدروس...">
-                            <button class="btn btn-outline-secondary" type="button">
-                                <i class="bi bi-search"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="d-flex align-items-center justify-content-end gap-3">
-                        <button class="theme-toggle" id="themeToggle" title="تبديل الوضع">
-                            <i class="bi bi-sun-fill" id="themeIcon"></i>
-                        </button>
-                        <div class="dropdown">
-                            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                                <i class="bi bi-person-circle me-2"></i>
-                                محمد عبدالمنعم
-                            </button>
-                            <ul class="dropdown-menu dropdown-menu-end">
-                                <li><a class="dropdown-item" href="#">
-                                        <i class="bi bi-person me-2"></i>الملف الشخصي</a></li>
-                                <li><a class="dropdown-item" href="#">
-                                        <i class="bi bi-gear me-2"></i>الإعدادات</a></li>
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
-                                <li>
-                                    <form action="{% url 'accounts:logout' %}" method="post" class="d-inline">
-                                        {% csrf_token %}
-                                        <button type="submit" class="dropdown-item">
-                                            <i class="bi bi-box-arrow-right me-2"></i>تسجيل الخروج
-                                        </button>
-                                    </form>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
+          <!-- Search (Desktop) -->
+          <div class="col-md-6 d-none d-md-block">
+            <div class="search-box position-relative w-75 mx-auto">
+              <i
+                class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"
+              ></i>
+              <input
+                type="text"
+                class="form-control rounded-pill ps-5 bg-light border-0"
+                placeholder="البحث في الدورات، الطلاب، التقارير..."
+              />
             </div>
+          </div>
+
+          <!-- User & Actions -->
+          <div class="col-6 col-md-3">
+            <div class="d-flex align-items-center justify-content-end gap-3">
+              <!-- Theme Toggle -->
+              <button
+                class="btn btn-icon btn-ghost rounded-circle"
+                id="themeToggle"
+                title="تبديل الوضع"
+              >
+                <i class="bi bi-sun-fill" id="themeIcon"></i>
+              </button>
+
+              <!-- User Dropdown -->
+              <div class="dropdown">
+                <button
+                  class="btn d-flex align-items-center gap-2 border-0 bg-transparent p-0"
+                  type="button"
+                  data-bs-toggle="dropdown"
+                >
+                  <div
+                    class="avatar avatar-sm bg-primary-subtle text-primary rounded-circle d-flex align-items-center justify-content-center"
+                    style="width: 32px; height: 32px"
+                  >
+                    {{ request.user.first_name|first|default:"A" }}
+                  </div>
+                  <span class="d-none d-md-block small fw-medium"
+                    >{{ request.user.get_full_name|default:request.user.email
+                    }}</span
+                  >
+                  <i class="bi bi-chevron-down small text-muted"></i>
+                </button>
+                <ul
+                  class="dropdown-menu dropdown-menu-end shadow-sm border-0 rounded-3 mt-2"
+                >
+                  <li class="px-3 py-2 border-bottom">
+                    <h6 class="mb-0">{{ request.user.get_full_name }}</h6>
+                    <small class="text-muted">{{ request.user.email }}</small>
+                  </li>
+                  {% if request.user.is_authenticated %} {% if
+                  request.user.is_superuser or request.user.is_staff or
+                  request.user.is_admin %}
+                  <li>
+                    <a
+                      class="dropdown-item py-2"
+                      href="/main-dashboard/dashboard"
+                    >
+                      <i class="bi bi-speedometer2 me-2 text-primary"></i>لوحة
+                      التحكم
+                    </a>
+                  </li>
+                  {% endif %} {% if request.user.is_student %}
+                  <li>
+                    <a
+                      class="dropdown-item py-2"
+                      href="{% url 'student:index' %}"
+                    >
+                      <i class="bi bi-mortarboard me-2 text-info"></i>بوابة
+                      الطالب
+                    </a>
+                  </li>
+                  {% endif %} {% endif %}
+                  <li>
+                    <a
+                      class="dropdown-item py-2"
+                      href="{% url 'teacher_profile' pk=user.id %}"
+                    >
+                      <i class="bi bi-person me-2"></i>الملف الشخصي
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      class="dropdown-item py-2"
+                      href="/main-dashboard/settings"
+                    >
+                      <i class="bi bi-gear me-2"></i>الإعدادات
+                    </a>
+                  </li>
+                  <li><hr class="dropdown-divider" /></li>
+                  <li>
+                    <form
+                      action="{% url 'accounts:logout' %}"
+                      method="post"
+                      class="d-inline"
+                    >
+                      {% csrf_token %}
+                      <button
+                        type="submit"
+                        class="dropdown-item py-2 text-danger"
+                      >
+                        <i class="bi bi-box-arrow-right me-2"></i>تسجيل الخروج
+                      </button>
+                    </form>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
     </header>
     {% endblock header %}
 
-    {% block sidebar %}
-    <!-- Sidebar -->
-    <nav class="sidebar" id="sidebar">
-        <ul class="nav flex-column sidebar-nav">
-            <li class="nav-item">
-                <a class="nav-link active" href="/main-dashboard/dashboard" >
-                    <i class="bi bi-house"></i>
-                    <span>الرئيسية</span>
+    <div class="container-fluid">
+      <div class="row">
+        {% block sidebar %}
+        <!-- Sidebar -->
+        <nav
+          id="sidebar"
+          class="col-md-3 col-lg-2 d-md-block sidebar collapse vh-100 position-fixed start-0 top-0 overflow-y-auto pt-5 mt-3 z-1"
+        >
+          <div class="position-sticky pt-3">
+            <ul class="nav flex-column gap-1 px-2">
+              <li class="nav-item">
+                <a
+                  class="nav-link {% if '/main-dashboard/dashboard' in request.path %}active{% endif %}"
+                  href="/main-dashboard/dashboard"
+                >
+                  <i class="bi bi-grid-fill me-2"></i>
+                  <span>الرئيسية</span>
                 </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/main-dashboard/college">
-                    <i class="bi bi-building"></i> <!-- أيقونة الكليات -->
-                    <span> الكليات</span>
+              </li>
+              <li
+                class="nav-header small text-uppercase text-muted fw-bold mt-3 mb-1 ms-3"
+              >
+                إدارة الأكاديمية
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link {% if '/college' in request.path %}active{% endif %}"
+                  href="/main-dashboard/college"
+                >
+                  <i class="bi bi-building me-2"></i>
+                  <span>الكليات</span>
                 </a>
-            </li>
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link {% if '/departments' in request.path %}active{% endif %}"
+                  href="/main-dashboard/departments"
+                >
+                  <i class="bi bi-diagram-3 me-2"></i>
+                  <span>الأقسام</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link {% if '/courses' in request.path %}active{% endif %}"
+                  href="/main-dashboard/courses"
+                >
+                  <i class="bi bi-journal-check me-2"></i>
+                  <span>الدورات التدريبية</span>
+                </a>
+              </li>
 
-            <li class="nav-item">
-                <a class="nav-link" href="/main-dashboard/departments">
-                    <i class="bi bi-diagram-3"></i> <!-- أيقونة الأقسام -->
-                    <span> الأقسام</span>
+              <li
+                class="nav-header small text-uppercase text-muted fw-bold mt-3 mb-1 ms-3"
+              >
+                المستخدمين
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link {% if '/teachers' in request.path %}active{% endif %}"
+                  href="/main-dashboard/teachers"
+                >
+                  <i class="bi bi-person-video3 me-2"></i>
+                  <span>المعلمين</span>
                 </a>
-            </li>
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link {% if '/students' in request.path %}active{% endif %}"
+                  href="/main-dashboard/students"
+                >
+                  <i class="bi bi-people me-2"></i>
+                  <span>الطلاب</span>
+                </a>
+              </li>
 
-            <li class="nav-item">
-                <a class="nav-link" href="/main-dashboard/courses">
-                    <i class="bi bi-mortarboard"></i> <!-- أيقونة الدورات التدريبية -->
-                    <span> الدورات التدريبية</span>
+              <li
+                class="nav-header small text-uppercase text-muted fw-bold mt-3 mb-1 ms-3"
+              >
+                المالية والطلبات
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link {% if '/payment-requests' in request.path %}active{% endif %}"
+                  href="/main-dashboard/payment-requests/"
+                >
+                  <i class="bi bi-credit-card me-2"></i>
+                  <span>المدفوعات</span>
                 </a>
-            </li>
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link {% if '/course-registration-requests' in request.path %}active{% endif %}"
+                  href="/main-dashboard/course-registration-requests/"
+                >
+                  <i class="bi bi-list-check me-2"></i>
+                  <span>طلبات التسجيل</span>
+                </a>
+              </li>
 
-            <!-- <li class="nav-item">
-                <a class="nav-link" href="/main-dashboard/lessons">
-                    <i class="bi bi-play-circle"></i>
-                    <span>الدروس</span>
+              <li
+                class="nav-header small text-uppercase text-muted fw-bold mt-3 mb-1 ms-3"
+              >
+                النظام
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link {% if '/reports' in request.path %}active{% endif %}"
+                  href="/main-dashboard/reports"
+                >
+                  <i class="bi bi-graph-up-arrow me-2"></i>
+                  <span>التقارير</span>
                 </a>
-            </li> -->
-            <!-- <li class="nav-item">
-                <a class="nav-link" href="/courses/quizzes/">
-                    <i class="bi bi-question-circle"></i>
-                    <span>الاختبارات</span>
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link {% if '/settings' in request.path %}active{% endif %}"
+                  href="/main-dashboard/settings"
+                >
+                  <i class="bi bi-gear-fill me-2"></i>
+                  <span>الإعدادات</span>
                 </a>
-            </li> -->
+              </li>
+            </ul>
 
-            <li class="nav-item">
-                <a class="nav-link" href="/main-dashboard/teachers">
-                    <i class="bi bi-person-badge"></i>
-                    <span>المعلمين</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'teacher_profile' pk=user.id %}">
-                    <i class="bi bi-person"></i>
-                    <span>ملفي الشخصي</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'teacher_id_card' pk=user.id %}">
-                    <i class="bi bi-card-list"></i>
-                    <span>بطاقة الهوية</span>
-                </a>
-            </li>
+            <div class="mt-5 px-3 pb-4">
+              <div
+                class="p-3 bg-white bg-opacity-10 rounded-3 border border-white border-opacity-10"
+              >
+                <div class="d-flex align-items-center mb-2">
+                  <i class="bi bi-info-circle text-info me-2"></i>
+                  <small class="text-white text-opacity-75"
+                    >نسخة النظام v1.0</small
+                  >
+                </div>
+                <small
+                  class="d-block text-white text-opacity-50"
+                  style="font-size: 0.75rem"
+                  >جميع الحقوق محفوظة &copy; {{ now|date:"Y" }}</small
+                >
+              </div>
+            </div>
+          </div>
+        </nav>
+        {% endblock sidebar %}
 
-            <li class="nav-item">
-                <a class="nav-link" href="/main-dashboard/students">
-                    <i class="bi bi-mortarboard"></i> <!-- أيقونة مختلفة للطلاب -->
-                    <span>الطلاب</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/main-dashboard/payment-requests/">
-                    <i class="bi bi-gear"></i> <!-- أيقونة مختلفة  -->
-                    <span>مراجعه المدفوعات</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/main-dashboard/course-registration-requests/">
-                    <i class="bi bi-card-checklist"></i> <!-- Or any other appropriate icon -->
-                    <span>طلبات تسجيل المقررات</span>
-                </a>
-            </li>
-            
+        <!-- Main Content -->
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4 mb-5">
+          {% if messages %}
+          <div class="row">
+            <div class="col-12">
+              {% for message in messages %}
+              <div
+                class="alert alert-{{ message.tags }} alert-dismissible fade show shadow-sm border-0"
+                role="alert"
+              >
+                {{ message }}
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="alert"
+                  aria-label="Close"
+                ></button>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+          {% endif %} {% block content %} {% endblock content %}
+        </main>
+      </div>
+    </div>
 
-            <li class="nav-item">
-                <a class="nav-link" href="/main-dashboard/reports">
-                    <i class="bi bi-graph-up"></i>
-                    <span>التقارير</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/main-dashboard/settings" >
-                    <i class="bi bi-gear"></i>
-                    <span>الإعدادات</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
-    {% endblock sidebar %}
-
-    {% block content %}
-    {% endblock content %}
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{% static 'script.js' %}"></script>
-</body>
+  </body>
 </html>
-    
-
-
-    

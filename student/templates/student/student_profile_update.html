@@ -2,31 +2,285 @@
 {% load widget_tweaks %}
 
 {% block content %}
-<div class="main-content">
+    <main class="main-content py-5 bg-light">
+        <div class="container">
+            <style>
+                :root {
+                    --primary-color: #1f697d;
+                    --primary-hover: #164f5e;
+                    --text-color: #333;
+                    --border-radius: 12px;
+                    --input-bg: #f8f9fa;
+                    --input-border: #e9ecef;
+                }
 
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title">Update Profile</h4>
+                .update-card {
+                    background: white;
+                    border-radius: var(--border-radius);
+                    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+                    border: none;
+                    overflow: hidden;
+                }
+
+                .card-header-custom {
+                    background: linear-gradient(135deg, var(--primary-color) 0%, #175464 100%);
+                    padding: 1.5rem;
+                    color: white;
+                    text-align: center;
+                }
+
+                .form-section-title {
+                    color: var(--primary-color);
+                    font-weight: 700;
+                    margin-bottom: 1.25rem;
+                    padding-bottom: 0.5rem;
+                    border-bottom: 2px solid #f0f0f0;
+                    position: relative;
+                }
+
+                .form-section-title::after {
+                    content: '';
+                    position: absolute;
+                    bottom: -2px;
+                    right: 0;
+                    width: 50px;
+                    height: 2px;
+                    background-color: var(--primary-color);
+                }
+
+                .form-label {
+                    font-weight: 600;
+                    color: #555;
+                    margin-bottom: 0.5rem;
+                }
+
+                .form-control,
+                .form-select {
+                    background-color: var(--input-bg);
+                    border: 1px solid var(--input-border);
+                    padding: 0.75rem 1rem;
+                    border-radius: 8px;
+                    transition: all 0.3s;
+                }
+
+                .form-control:focus,
+                .form-select:focus {
+                    border-color: var(--primary-color);
+                    box-shadow: 0 0 0 4px rgba(31, 105, 125, 0.1);
+                    background-color: white;
+                }
+
+                .image-upload-container {
+                    position: relative;
+                    width: 150px;
+                    height: 150px;
+                    margin: 0 auto;
+                    margin-bottom: 2rem;
+                }
+
+                .image-preview {
+                    width: 150px;
+                    height: 150px;
+                    border-radius: 50%;
+                    object-fit: cover;
+                    border: 4px solid white;
+                    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+                    background-color: #eee;
+                }
+
+                .upload-icon {
+                    position: absolute;
+                    bottom: 5px;
+                    right: 5px;
+                    background-color: var(--primary-color);
+                    color: white;
+                    width: 35px;
+                    height: 35px;
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    cursor: pointer;
+                    transition: all 0.2s;
+                    border: 2px solid white;
+                }
+
+                .upload-icon:hover {
+                    transform: scale(1.1);
+                    background-color: var(--primary-hover);
+                }
+
+            /* Hiding the default file input but keeping it functional */
+                input[type="file"].profile-pic-input {
+                    position: absolute;
+                    width: 100%;
+                    height: 100%;
+                    top: 0;
+                    left: 0;
+                    opacity: 0;
+                    cursor: pointer;
+                }
+
+                .btn-save {
+                    background-color: var(--primary-color);
+                    color: white;
+                    padding: 12px 30px;
+                    border-radius: 50px;
+                    border: none;
+                    font-weight: 600;
+                    font-size: 1rem;
+                    transition: all 0.3s;
+                }
+
+                .btn-save:hover {
+                    background-color: var(--primary-hover);
+                    color: white;
+                    transform: translateY(-2px);
+                    box-shadow: 0 6px 15px rgba(31, 105, 125, 0.4);
+                }
+
+                .btn-cancel {
+                    background-color: #e9ecef;
+                    color: #495057;
+                    padding: 12px 30px;
+                    border-radius: 50px;
+                    border: none;
+                    font-weight: 600;
+                    font-size: 1rem;
+                    transition: all 0.3s;
+                    margin-left: 10px;
+                }
+
+                .btn-cancel:hover {
+                    background-color: #dee2e6;
+                    color: #212529;
+                }
+            </style>
+
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
                     <form method="post" enctype="multipart/form-data">
                         {% csrf_token %}
-                        {% for field in form %}
-                            <div class="mb-3">
-                                <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
-                                {{ field|add_class:"form-control" }}
-                                {% for error in field.errors %}
-                                    <div class="invalid-feedback d-block">{{ error }}</div>
-                                {% endfor %}
+
+                        <div class="update-card">
+                            <div class="card-header-custom">
+                                <h3 class="mb-0 fw-bold"><i class="bi bi-person-gear me-2"></i> تحديث الملف الشخصي</h3>
+                                <p class="mb-0 opacity-75 mt-2">قم بتحديث بياناتك الشخصية والأكاديمية</p>
                             </div>
-                        {% endfor %}
-                        <button type="submit" class="btn btn-primary">Update</button>
+
+                            <div class="card-body p-4 p-md-5">
+
+                            <!-- صورة الملف الشخصي -->
+                                <div class="text-center">
+                                    <div class="image-upload-container">
+                                        {% if form.instance.profile_picture %}
+                                            <img src="{{ form.instance.profile_picture.url }}" id="preview-img"
+                                                 class="image-preview" alt="Profile Picture">
+                                        {% else %}
+                                            <img src="https://ui-avatars.com/api/?name={{ request.user.get_full_name|urlencode }}&background=1f697d&color=fff&size=150"
+                                                 id="preview-img" class="image-preview" alt="Default Profile">
+                                        {% endif %}
+                                        <div class="upload-btn-wrapper">
+                                            <div class="upload-icon">
+                                                <i class="bi bi-camera-fill"></i>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="text-muted small mb-4">اضغط على الكاميرا لتغيير الصورة</div>
+                                </div>
+
+                            <!-- القسم الأول: المعلومات الأساسية -->
+                                <h5 class="form-section-title mt-2"><i class="bi bi-person-vcard me-2"></i> المعلومات
+                                    الأساسية</h5>
+                                <div class="row g-4 mb-4">
+                                    <div class="col-12">
+                                        <label class="form-label">نبذة عني</label>
+
+                                        {% if form.bio.errors %}
+                                            <div class="text-danger small mt-1">{{ form.bio.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+
+                            <!-- القسم الثاني: الموقع والعنوان -->
+                                <h5 class="form-section-title"><i class="bi bi-geo-alt me-2"></i> الموقع والعنوان</h5>
+                                <div class="row g-3 mb-4">
+                                    <div class="col-md-6">
+                                        <label class="form-label">الدولة</label>
+                                        {% render_field form.country class="form-select" %}
+                                        {% if form.country.errors %}
+                                            <div class="text-danger small mt-1">{{ form.country.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">المدينة</label>
+                                        {% render_field form.city class="form-control" placeholder="اسم المدينة" %}
+                                        {% if form.city.errors %}
+                                            <div class="text-danger small mt-1">{{ form.city.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-md-8">
+                                        <label class="form-label">العنوان</label>
+
+                                        {% if form.address.errors %}
+                                            <div class="text-danger small mt-1">{{ form.address.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label">الرمز البريدي</label>
+                                        {% render_field form.postal_code class="form-control" placeholder="00000" %}
+                                        {% if form.postal_code.errors %}
+                                            <div class="text-danger small mt-1">{{ form.postal_code.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+
+                            <!-- القسم الثالث: المؤهلات والمهارات -->
+                                <h5 class="form-section-title"><i class="bi bi-award me-2"></i> المؤهلات والمهارات</h5>
+                                <div class="row g-3 mb-4">
+                                    <div class="col-md-6">
+                                        <label class="form-label">رقم الشهادة القديمة (إن وجد)</label>
+                                        {% render_field form.certificate_number class="form-control" %}
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">اللغات</label>
+                                        {% render_field form.languages class="form-select" %}
+                                        <div class="form-text small">يمكنك اختيار أكثر من لغة بالضغط على زر ctrl</div>
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="form-label">ملف الشهادة / السيرة الذاتية (PDF)</label>
+                                        {% render_field form.certificate_file class="form-control" %}
+                                    </div>
+                                </div>
+
+                            <!-- الأزرار -->
+                                <div class="d-flex justify-content-center gap-3 mt-5">
+                                    <a href="{% url 'student:student-profile' %}" class="btn btn-cancel">إلغاء</a>
+                                    <button type="submit" class="btn btn-save px-5">
+                                        <i class="bi bi-check-lg me-2"></i> حفظ التغييرات
+                                    </button>
+                                </div>
+
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>
         </div>
-    </div>
-</div>
-</div>
+    </main>
+
+    <script>
+        function previewImage(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    document.getElementById('preview-img').src = e.target.result;
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
 {% endblock %}

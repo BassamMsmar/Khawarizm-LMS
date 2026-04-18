@@ -50,7 +50,7 @@ def my_courses(request):
 
 @student_required
 def academic_program(request):
-    student = Student.objects.get(user=request.user)
+    student, _ = Student.objects.get_or_create(user=request.user)
     student_department = request.user.department
     department_courses = []
     enrolled_courses_ids = request.user.enrolled_courses.values_list('id', flat=True)
@@ -72,7 +72,7 @@ def academic_program(request):
 
 @student_required
 def my_payments(request):
-    student = Student.objects.get(user=request.user)
+    student, _ = Student.objects.get_or_create(user=request.user)
     if request.method == 'POST':
         form = PaymentForm(request.POST, request.FILES)
         if form.is_valid():
@@ -91,7 +91,7 @@ def my_payments(request):
 
 @student_required
 def payment_history(request):
-    student = Student.objects.get(user=request.user)
+    student, _ = Student.objects.get_or_create(user=request.user)
     payments = Payment.objects.filter(student=student).order_by('-created_at')
     total_paid = payments.filter(status='approved').aggregate(Sum('amount'))['amount__sum'] or 0
     remaining_amount = student.total_fees - total_paid
@@ -112,9 +112,31 @@ def notifications(request):
     }
     return render(request, 'student/notifications.html', context)
 
+from courses.models import QuizAttempt
+from django.db.models import Avg
+
 @student_required
 def my_grades(request):
-    return render(request, 'student/my_grades.html')
+    quiz_attempts = QuizAttempt.objects.filter(user=request.user).select_related('quiz', 'quiz__unit', 'quiz__unit__course').order_by('-completed_at')
+    
+    # Calculate statistics
+    total_attempts = quiz_attempts.count()
+    passed_quizzes = quiz_attempts.filter(score__gte=60) # Assuming 60% is passing
+    passed_count = passed_quizzes.count()
+    
+    average_score = quiz_attempts.aggregate(Avg('score'))['score__avg']
+    if average_score:
+        average_score = round(average_score, 1)
+    else:
+        average_score = 0
+        
+    context = {
+        'quiz_attempts': quiz_attempts,
+        'average_score': average_score,
+        'passed_count': passed_count,
+        'total_attempts': total_attempts,
+    }
+    return render(request, 'student/my_grades.html', context)
 
 @student_required
 def calendar(request):
@@ -146,7 +168,7 @@ class StudentDetail(DetailView):
 
 @student_required
 def id_card(request):
-    student = Student.objects.get(user=request.user)
+    student, _ = Student.objects.get_or_create(user=request.user)
     student_profile, _ = StudentProfile.objects.get_or_create(user=request.user)
     context = {
         'student': student,
@@ -186,7 +208,7 @@ from .models import CourseRegistration
 def enroll_courses(request):
     if request.method == 'POST':
         course_ids = request.POST.getlist('courses')
-        student = Student.objects.get(user=request.user)
+        student, _ = Student.objects.get_or_create(user=request.user)
         for course_id in course_ids:
             try:
                 course = Course.objects.get(id=course_id)

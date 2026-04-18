@@ -5,4 +5,4 @@ from dashboard.mixins import RolesRequiredMixin
 
 class StaffDashboardView(RolesRequiredMixin, TemplateView):
     template_name = 'dashboard/staffDashboard/staffDashboard.html'
-    allowed_roles = ['staff']
+    allowed_roles = ['staff', 'lecturer']
