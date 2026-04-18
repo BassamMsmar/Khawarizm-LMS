@@ -8,10 +8,12 @@
             document.documentElement.setAttribute('data-bs-theme', theme);
             localStorage.setItem('theme', theme);
             
-            if (theme === 'dark') {
-                themeIcon.className = 'bi bi-moon-fill';
-            } else {
-                themeIcon.className = 'bi bi-sun-fill';
+            if (themeIcon) {
+                if (theme === 'dark') {
+                    themeIcon.className = 'bi bi-moon-fill';
+                } else {
+                    themeIcon.className = 'bi bi-sun-fill';
+                }
             }
             
             if (themeSelect) {
@@ -29,7 +31,9 @@
         const savedTheme = localStorage.getItem('theme') || 'light';
         setTheme(savedTheme);
 
-        themeToggle.addEventListener('click', toggleTheme);
+        if (themeToggle) {
+            themeToggle.addEventListener('click', toggleTheme);
+        }
         
         if (themeSelect) {
             themeSelect.addEventListener('change', (e) => {
@@ -40,12 +44,36 @@
         // Mobile sidebar toggle
         const sidebarToggle = document.getElementById('sidebarToggle');
         const sidebar = document.getElementById('sidebar');
+        const sidebarBackdrop = document.getElementById('sidebarBackdrop');
         
-        if (sidebarToggle) {
+        if (sidebarToggle && sidebar) {
             sidebarToggle.addEventListener('click', () => {
                 sidebar.classList.toggle('show');
+                if (sidebarBackdrop) {
+                    sidebarBackdrop.classList.toggle('show');
+                }
             });
         }
+
+        if (sidebarBackdrop && sidebar) {
+            sidebarBackdrop.addEventListener('click', () => {
+                sidebar.classList.remove('show');
+                sidebarBackdrop.classList.remove('show');
+            });
+        }
+
+        document.addEventListener('click', (e) => {
+            if (window.innerWidth > 768 || !sidebar || !sidebarBackdrop) {
+                return;
+            }
+
+            const clickedInsideSidebar = sidebar.contains(e.target);
+            const clickedToggle = sidebarToggle && sidebarToggle.contains(e.target);
+            if (!clickedInsideSidebar && !clickedToggle) {
+                sidebar.classList.remove('show');
+                sidebarBackdrop.classList.remove('show');
+            }
+        });
 
         // Update current date and time
         function updateDateTime() {

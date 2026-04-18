@@ -2,90 +2,90 @@
 {% load static %}
 
 {% block content %}
-    <main class="main-content py-4">
-        <div class="container">
+<main class="main-content py-4">
+  <div class="container">
 <!-- <div class="main-content" style="direction: rtl; font-family: 'Cairo', sans-serif; background: #e9eef5; padding: 40px;"> -->
-            <div class="container-fluid" style="display: flex; justify-content: center; gap: 50px; flex-wrap: wrap;">
+    <div class="container-fluid" style="display: flex; justify-content: center; gap: 50px; flex-wrap: wrap;">
 
         <!-- Front Side -->
-                <div id="id-card-front" style="width: 360px; height: 520px; background: linear-gradient(135deg, #167a70 0%, #0f4d46 100%); border-radius: 20px; box-shadow: 0 6px 20px rgba(0,0,0,0.3); overflow: hidden; position: relative; color: white;">
+        <div id="id-card-front" style="width: 360px; height: 520px; background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 100%); border-radius: 20px; box-shadow: 0 6px 20px rgba(0,0,0,0.3); overflow: hidden; position: relative; color: white;">
 
             <!-- Top Ribbon -->
-                    <div style="background: rgba(255,255,255,0.12); height: 70px; display: flex; align-items: center; justify-content: center; position: relative;">
-                        <img src="https://static.vecteezy.com/system/resources/previews/006/470/649/non_2x/university-education-logo-design-template-free-vector.jpg" alt="شعار الجامعة" style="width: 60px; height: 60px; border-radius: 50%; background: white; padding: 5px; position: absolute; left: 15px;">
-                        <h2 style="margin: 0; font-size: 22px; font-weight: bold;">جامعة الخوارزمي</h2>
-                    </div>
-
-            <!-- Profile -->
-                    <div style="text-align: center; margin-top: 20px;">
-                        {% if student_profile.profile_picture %}
-                            <img src="{{ student_profile.profile_picture.url }}" alt="صورة الطالب" style="width: 140px; height: 140px; border-radius: 50%; border: 4px solid #fff; box-shadow: 0 0 10px rgba(255,255,255,0.6);">
-                        {% else %}
-                            <img src="data:image/png;base64,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" alt="صورة الطالب" style="width: 140px; height: 140px; border-radius: 50%; border: 4px solid #fff; box-shadow: 0 0 10px rgba(255,255,255,0.6);">
-                        {% endif %}
-                    </div>
-
-            <!-- Info Box -->
-                    <div style="margin-top: 20px; background: rgba(255,255,255,0.1); border-radius: 12px; padding: 20px; width: 80%; margin-left: auto; margin-right: auto; text-align: right; font-size: 15px; line-height: 1.8;">
-                        <p><strong>الاسم:</strong> {{ user.get_full_name }}</p>
-                        <p><strong>البريد:</strong> {{ user.email }}</p>
-                        <p><strong>القسم:</strong> {{ student.department }}</p>
-                        <p><strong>الرقم الجامعي:</strong> {{ student.id }}</p>
-                    </div>
-
-            <!-- QR Code -->
-                    <div style="text-align: center; margin-top: 15px;">
-                <!-- <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/QR_code_for_mobile_English_Wikipedia.svg/1200px-QR_code_for_mobile_English_Wikipedia.svg.png" alt="QR" style="width: 90px; height: 90px; background: white; padding: 5px; border-radius: 10px;"> -->
-                    </div>
-
-            <!-- Footer -->
-                    <div style="position: absolute; bottom: 0; width: 100%; text-align: center; background: rgba(255,255,255,0.15); padding: 8px; font-size: 13px;">
-                        <p style="margin: 0;">Khawarizm-LMS | جميع الحقوق محفوظة</p>
-                    </div>
-                </div>
-
-        <!-- Back Side -->
-                <div id="id-card-back" style="width: 360px; height: 520px; background: linear-gradient(135deg, #0f4d46 0%, #167a70 100%); border-radius: 20px; box-shadow: 0 6px 20px rgba(0,0,0,0.3); overflow: hidden; position: relative; color: white;">
-
-            <!-- Magnetic Stripe -->
-                    <div style="background: black; height: 60px; margin-top: 25px; border-radius: 5px;"></div>
-
-            <!-- Rules -->
-                    <div style="padding: 25px; font-size: 14px; line-height: 2;">
-                        <h4 style="margin-bottom: 10px; text-align: center; border-bottom: 2px solid rgba(255,255,255,0.5); padding-bottom: 5px;">تعليمات الاستخدام</h4>
-                        <ul style="margin: 0; padding-right: 20px; list-style: none;">
-                            <li>🔒 البطاقة شخصية وغير قابلة للإعارة.</li>
-                            <li>📌 في حال الفقدان، يرجى إبلاغ شؤون الطلاب فوراً.</li>
-                            <li>📚 يجب إبراز البطاقة عند دخول القاعات والمكتبة.</li>
-                        </ul>
-                    </div>
-
-            <!-- Dean Signature -->
-                    <div style="position: absolute; bottom: 90px; left: 20px; text-align: center;">
-                        <p style="margin: 0; font-size: 14px;">عميد الكلية</p>
-                        <img src="https://e7.pngegg.com/pngimages/115/63/png-clipart-signature-text-letter-handwriting-workers-memorial-day-angle-text.png" alt="توقيع العميد" style="width: 130px; height: 45px;">
-                    </div>
-
-            <!-- Barcode -->
-                    <div style="position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);">
-                        <img src="https://www.shutterstock.com/image-vector/realistic-bar-code-icon-sample-260nw-2414678099.jpg" alt="Barcode" style="width: 200px; height: 50px; background: white; border-radius: 5px; padding: 3px;">
-                    </div>
-                </div>
+            <div style="background: rgba(255,255,255,0.12); height: 70px; display: flex; align-items: center; justify-content: center; position: relative;">
+                <img src="https://static.vecteezy.com/system/resources/previews/006/470/649/non_2x/university-education-logo-design-template-free-vector.jpg" alt="شعار الجامعة" style="width: 60px; height: 60px; border-radius: 50%; background: white; padding: 5px; position: absolute; left: 15px;">
+                <h2 style="margin: 0; font-size: 22px; font-weight: bold;">جامعة الخوارزمي</h2>
             </div>
 
-    <!-- Print Button -->
-            <div style="text-align: center; margin-top: 30px;">
-                <button onclick="printIdCard()" style="background: #167a70; color: white; padding: 12px 25px; border: none; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.3); transition: 0.3s;">🖨️ طباعة البطاقة</button>
+            <!-- Profile -->
+            <div style="text-align: center; margin-top: 20px;">
+                {% if student_profile.profile_picture %}
+                    <img src="{{ student_profile.profile_picture.url }}" alt="صورة الطالب" style="width: 140px; height: 140px; border-radius: 50%; border: 4px solid #fff; box-shadow: 0 0 10px rgba(255,255,255,0.6);">
+                {% else %}
+                    <img src="data:image/png;base64,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" alt="صورة الطالب" style="width: 140px; height: 140px; border-radius: 50%; border: 4px solid #fff; box-shadow: 0 0 10px rgba(255,255,255,0.6);">
+                {% endif %}
+            </div>
+
+            <!-- Info Box -->
+            <div style="margin-top: 20px; background: rgba(255,255,255,0.1); border-radius: 12px; padding: 20px; width: 80%; margin-left: auto; margin-right: auto; text-align: right; font-size: 15px; line-height: 1.8;">
+                <p><strong>الاسم:</strong> {{ user.get_full_name }}</p>
+                <p><strong>البريد:</strong> {{ user.email }}</p>
+                <p><strong>القسم:</strong> {{ student.department }}</p>
+                <p><strong>الرقم الجامعي:</strong> {{ student.id }}</p>
+            </div>
+
+            <!-- QR Code -->
+            <div style="text-align: center; margin-top: 15px;">
+                <!-- <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/QR_code_for_mobile_English_Wikipedia.svg/1200px-QR_code_for_mobile_English_Wikipedia.svg.png" alt="QR" style="width: 90px; height: 90px; background: white; padding: 5px; border-radius: 10px;"> -->
+            </div>
+
+            <!-- Footer -->
+            <div style="position: absolute; bottom: 0; width: 100%; text-align: center; background: rgba(255,255,255,0.15); padding: 8px; font-size: 13px;">
+                <p style="margin: 0;">Khawarizm-LMS | جميع الحقوق محفوظة</p>
             </div>
         </div>
 
-        <script>
-            function printIdCard() {
-                var printContents = document.getElementById('id-card-front').outerHTML + "<br><br>" + document.getElementById('id-card-back').outerHTML;
-                var originalContents = document.body.innerHTML;
-                document.body.innerHTML = printContents;
-                window.print();
-                document.body.innerHTML = originalContents;
-            }
-        </script>
+        <!-- Back Side -->
+        <div id="id-card-back" style="width: 360px; height: 520px; background: linear-gradient(135deg, #0b5ed7 0%, #0d6efd 100%); border-radius: 20px; box-shadow: 0 6px 20px rgba(0,0,0,0.3); overflow: hidden; position: relative; color: white;">
+
+            <!-- Magnetic Stripe -->
+            <div style="background: black; height: 60px; margin-top: 25px; border-radius: 5px;"></div>
+
+            <!-- Rules -->
+            <div style="padding: 25px; font-size: 14px; line-height: 2;">
+                <h4 style="margin-bottom: 10px; text-align: center; border-bottom: 2px solid rgba(255,255,255,0.5); padding-bottom: 5px;">تعليمات الاستخدام</h4>
+                <ul style="margin: 0; padding-right: 20px; list-style: none;">
+                    <li>🔒 البطاقة شخصية وغير قابلة للإعارة.</li>
+                    <li>📌 في حال الفقدان، يرجى إبلاغ شؤون الطلاب فوراً.</li>
+                    <li>📚 يجب إبراز البطاقة عند دخول القاعات والمكتبة.</li>
+                </ul>
+            </div>
+
+            <!-- Dean Signature -->
+            <div style="position: absolute; bottom: 90px; left: 20px; text-align: center;">
+                <p style="margin: 0; font-size: 14px;">عميد الكلية</p>
+                <img src="https://e7.pngegg.com/pngimages/115/63/png-clipart-signature-text-letter-handwriting-workers-memorial-day-angle-text.png" alt="توقيع العميد" style="width: 130px; height: 45px;">
+            </div>
+
+            <!-- Barcode -->
+            <div style="position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);">
+                <img src="https://www.shutterstock.com/image-vector/realistic-bar-code-icon-sample-260nw-2414678099.jpg" alt="Barcode" style="width: 200px; height: 50px; background: white; border-radius: 5px; padding: 3px;">
+            </div>
+        </div>
+    </div>
+
+    <!-- Print Button -->
+    <div style="text-align: center; margin-top: 30px;">
+        <button onclick="printIdCard()" style="background: #0d6efd; color: white; padding: 12px 25px; border: none; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.3); transition: 0.3s;">🖨️ طباعة البطاقة</button>
+    </div>
+</div>
+
+<script>
+function printIdCard() {
+    var printContents = document.getElementById('id-card-front').outerHTML + "<br><br>" + document.getElementById('id-card-back').outerHTML;
+    var originalContents = document.body.innerHTML;
+    document.body.innerHTML = printContents;
+    window.print();
+    document.body.innerHTML = originalContents;
+}
+</script>
 {% endblock %}

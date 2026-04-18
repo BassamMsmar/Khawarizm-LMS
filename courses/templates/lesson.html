@@ -3,92 +3,149 @@
 
 {% block content %}
 <style>
-  body {
-    background-color: #f8f9fa;
-    font-family: 'Roboto', sans-serif;
+  .lesson-page {
+    --brand-700: #1f4f8a;
+    --brand-600: #2f73bf;
+    --brand-500: #4a95db;
+    --brand-100: #ebf4ff;
+    --surface: #ffffff;
+    --line: rgba(31, 79, 138, 0.15);
+    --ink: #1b3d67;
+    --ink-soft: #5d7b9f;
+    min-height: calc(100vh - 76px);
+    background:
+      radial-gradient(circle at 12% 8%, rgba(74, 149, 219, 0.16), transparent 30%),
+      radial-gradient(circle at 95% 18%, rgba(47, 115, 191, 0.12), transparent 36%),
+      linear-gradient(180deg, #f4f8ff 0%, #edf4ff 100%);
+    padding: 1.1rem;
   }
 
   .lesson-wrapper {
-    display: flex;
-    height: 100vh;
+    display: grid;
+    grid-template-columns: 340px 1fr;
+    gap: 1rem;
+    min-height: calc(100vh - 120px);
   }
 
   .lesson-sidebar {
-    width: 350px;
-    background-color: #fff;
-    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 16px;
     display: flex;
     flex-direction: column;
+    box-shadow: 0 10px 26px rgba(20, 62, 112, 0.1);
+    overflow: hidden;
   }
 
   .lesson-sidebar-header {
-    padding: 1.5rem;
-    border-bottom: 1px solid #e0e0e0;
+    padding: 1rem 1.1rem;
+    border-bottom: 1px solid var(--line);
+    background: linear-gradient(140deg, #143f70, #2f73bf);
   }
 
   .lesson-sidebar-header h4 {
-    font-weight: 700;
-    color: #333;
+    margin: 0;
+    color: #e8f2ff;
+    font-weight: 800;
+    font-size: 1rem;
   }
 
   .lesson-search {
-    padding: 1rem 1.5rem;
+    padding: 0.85rem 1rem;
+    border-bottom: 1px solid var(--line);
+    background: #f9fcff;
   }
 
   .lesson-search input {
-    border-radius: 50px;
+    border-radius: 999px;
+    border-color: rgba(31, 79, 138, 0.24);
   }
 
   .lesson-content-list {
     flex-grow: 1;
     overflow-y: auto;
+    padding: 0.6rem;
   }
 
   .accordion-item {
-    border: none;
+    border: 1px solid var(--line);
+    border-radius: 12px !important;
+    overflow: hidden;
+    margin-bottom: 0.6rem;
   }
 
   .accordion-button {
-    font-weight: 600;
-    color: #555;
+    font-weight: 700;
+    color: var(--ink);
+    background: #fff;
   }
 
   .accordion-button:not(.collapsed) {
-    background-color: #e0f2f1;
-    color: #14b8a6;
+    background-color: var(--brand-100);
+    color: var(--brand-700);
+    box-shadow: none;
   }
 
   .lesson-list a {
-    display: block;
-    padding: 0.8rem 1.5rem;
-    color: #555;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.68rem 0.9rem;
+    color: #3a5a81;
     text-decoration: none;
     transition: all 0.2s ease;
-    border-left: 3px solid transparent;
+    border-right: 3px solid transparent;
+    font-size: 0.92rem;
+    border-radius: 8px;
+    margin: 0.25rem;
   }
 
-  .lesson-list a:hover, .lesson-list a.active {
-    background-color: #e0f2f1;
-    color: #14b8a6;
-    border-left-color: #14b8a6;
+  .lesson-list a:hover,
+  .lesson-list a.active {
+    background-color: var(--brand-100);
+    color: var(--brand-700);
+    border-right-color: var(--brand-600);
   }
 
   .lesson-main-content {
-    flex-grow: 1;
-    padding: 2rem;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 1.2rem;
     overflow-y: auto;
+    box-shadow: 0 12px 28px rgba(20, 62, 112, 0.1);
   }
 
   .lesson-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
+    gap: 0.7rem;
   }
 
   .lesson-header h5 {
+    margin: 0;
+    font-weight: 800;
+    color: var(--ink);
+    font-size: clamp(1.1rem, 2.8vw, 1.7rem);
+  }
+
+  .back-btn {
+    border: 1px solid rgba(31, 79, 138, 0.2);
+    color: var(--brand-700);
+    background: #fff;
+    border-radius: 10px;
+    padding: 0.42rem 0.72rem;
+    text-decoration: none;
     font-weight: 700;
-    font-size: 1.8rem;
+  }
+
+  .video-shell {
+    background: #0c2747;
+    border-radius: 14px;
+    padding: 0.6rem;
+    box-shadow: 0 12px 28px rgba(10, 34, 62, 0.2);
   }
 
   .video-container {
@@ -96,8 +153,8 @@
     padding-bottom: 56.25%;
     height: 0;
     overflow: hidden;
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    border-radius: 10px;
+    background: #000;
   }
 
   .video-container video {
@@ -106,116 +163,145 @@
     left: 0;
     width: 100%;
     height: 100%;
+    object-fit: contain;
   }
 
   .lesson-description {
-    margin-top: 2rem;
-    background-color: #fff;
-    padding: 2rem;
-    border-radius: 15px;
+    margin-top: 1rem;
+    background-color: #f8fbff;
+    border: 1px solid var(--line);
+    padding: 1rem;
+    border-radius: 12px;
   }
 
   .lesson-description h4 {
-    font-weight: 700;
-    margin-bottom: 1rem;
+    color: var(--ink);
+    font-weight: 800;
+    margin-bottom: 0.6rem;
+    font-size: 1.05rem;
+  }
+
+  .lesson-description p {
+    margin: 0;
+    color: #4c668a;
+    line-height: 1.8;
   }
 
   .lesson-footer {
-    margin-top: 2rem;
-    padding: 1.5rem;
-    background-color: #fff;
-    border-radius: 15px;
+    margin-top: 1rem;
+    padding: 0.95rem;
+    background-color: #f8fbff;
+    border: 1px solid var(--line);
+    border-radius: 12px;
     text-align: center;
   }
 
   .btn-complete {
-    background-color: #10b981;
+    background: linear-gradient(135deg, #2f73bf, #4a95db);
     color: white;
-    font-weight: 600;
-    border-radius: 50px;
-    padding: 0.8rem 2.5rem;
+    font-weight: 700;
+    border-radius: 999px;
+    padding: 0.72rem 1.9rem;
+    border: none;
+    box-shadow: 0 10px 20px rgba(47, 115, 191, 0.28);
   }
 
   .btn-complete.completed {
-    background-color: #6ee7b7;
+    background: #87b9e8;
     cursor: not-allowed;
+    box-shadow: none;
+  }
+
+  @media (max-width: 992px) {
+    .lesson-wrapper {
+      grid-template-columns: 1fr;
+      min-height: auto;
+    }
+
+    .lesson-sidebar {
+      max-height: 420px;
+    }
   }
 
 </style>
 
-<div class="lesson-wrapper">
-  <div class="lesson-sidebar">
-    <div class="lesson-sidebar-header">
-      <h4>Course Content</h4>
-    </div>
-    <div class="lesson-search">
-      <input class="form-control" type="text" placeholder="Search Lesson...">
-    </div>
-    <div class="lesson-content-list">
-      <div class="accordion" id="lessonAccordion">
-        {% for unit in units %}
-        <div class="accordion-item">
-          <h2 class="accordion-header" id="heading{{ forloop.counter }}">
-            <button class="accordion-button {% if not forloop.first %}collapsed{% endif %}" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ forloop.counter }}" aria-expanded="{% if forloop.first %}true{% else %}false{% endif %}" aria-controls="collapse{{ forloop.counter }}">
-              {{ unit.title }}
-            </button>
-          </h2>
-          <div id="collapse{{ forloop.counter }}" class="accordion-collapse collapse {% if forloop.first %}show{% endif %}" aria-labelledby="heading{{ forloop.counter }}" data-bs-parent="#lessonAccordion">
-            <div class="accordion-body p-0">
-              <ul class="list-unstyled lesson-list">
-                {% for lesson_item in unit_lessons|get_item:unit %}
-                <li>
-                  <a href="{% url 'courses:lesson_detail' course_slug=lesson_item.unit.course.slug lesson_slug=lesson_item.slug %}" class="{% if lesson_item.slug == lesson.slug %}active{% endif %}">
-                    <i class="bi bi-play-circle-fill me-2"></i>{{ lesson_item.title }}
-                    {% if lesson_item.id in completed_lessons %}
-                      <i class="bi bi-check-circle-fill text-success ms-2"></i>
-                    {% endif %}
-                  </a>
-                </li>
-                {% endfor %}
-              </ul>
-              <ul class="list-unstyled lesson-list">
-                {% for quiz_item in unit_quizzes|get_item:unit %}
-                <li>
-                  <a href="{% url 'courses:quiz_detail' course_slug=quiz_item.unit.course.slug quiz_slug=quiz_item.slug %}" class="">
-                    <i class="bi bi-patch-question-fill me-2"></i>{{ quiz_item.title }}
-                  </a>
-                </li>
-                {% endfor %}
-              </ul>
+<div class="lesson-page">
+  <div class="lesson-wrapper">
+    <aside class="lesson-sidebar">
+      <div class="lesson-sidebar-header">
+        <h4>محتوى الدورة</h4>
+      </div>
+      <div class="lesson-search">
+        <input class="form-control" type="text" placeholder="بحث في الدروس...">
+      </div>
+      <div class="lesson-content-list">
+        <div class="accordion" id="lessonAccordion">
+          {% for unit in units %}
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="heading{{ forloop.counter }}">
+              <button class="accordion-button {% if not forloop.first %}collapsed{% endif %}" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ forloop.counter }}" aria-expanded="{% if forloop.first %}true{% else %}false{% endif %}" aria-controls="collapse{{ forloop.counter }}">
+                {{ unit.title }}
+              </button>
+            </h2>
+            <div id="collapse{{ forloop.counter }}" class="accordion-collapse collapse {% if forloop.first %}show{% endif %}" aria-labelledby="heading{{ forloop.counter }}" data-bs-parent="#lessonAccordion">
+              <div class="accordion-body p-0">
+                <ul class="list-unstyled lesson-list mb-1">
+                  {% for lesson_item in unit_lessons|get_item:unit %}
+                  <li>
+                    <a href="{% url 'courses:lesson_detail' course_slug=lesson_item.unit.course.slug lesson_slug=lesson_item.slug %}" class="{% if lesson_item.slug == lesson.slug %}active{% endif %}">
+                      <i class="bi bi-play-circle-fill"></i>{{ lesson_item.title }}
+                      {% if lesson_item.id in completed_lessons %}
+                        <i class="bi bi-check-circle-fill text-success ms-auto"></i>
+                      {% endif %}
+                    </a>
+                  </li>
+                  {% endfor %}
+                </ul>
+                <ul class="list-unstyled lesson-list mb-0">
+                  {% for quiz_item in unit_quizzes|get_item:unit %}
+                  <li>
+                    <a href="{% url 'courses:quiz_detail' course_slug=quiz_item.unit.course.slug quiz_slug=quiz_item.slug %}">
+                      <i class="bi bi-patch-question-fill"></i>{{ quiz_item.title }}
+                    </a>
+                  </li>
+                  {% endfor %}
+                </ul>
+              </div>
             </div>
           </div>
+          {% endfor %}
         </div>
-        {% endfor %}
       </div>
-    </div>
-  </div>
+    </aside>
 
-  <div class="lesson-main-content">
-    <div class="lesson-header">
-      <h5>{{ lesson.title }}</h5>
-      <a href="{% url 'courseDetails' %}" class="btn btn-light rounded-circle"><i class="bi bi-x-lg"></i></a>
-    </div>
+    <main class="lesson-main-content">
+      <div class="lesson-header">
+        <h5>{{ lesson.title }}</h5>
+        <a href="{% url 'courses:course_detail' slug=course.slug %}" class="back-btn"><i class="bi bi-arrow-right-short"></i> العودة للدورة</a>
+      </div>
 
-    <div class="video-container">
-      <video controls autoplay>
-        <source src="{{ lesson.video_url }}" type="video/mp4">
-        Your browser does not support the video tag.
-      </video>
-    </div>
+      <div class="video-shell">
+        <div class="video-container">
+          <video controls autoplay>
+            <source src="{{ lesson.video_url }}" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </div>
+      </div>
 
-    <div class="lesson-description">
-      <h4>About This Lesson</h4>
-      <p>{{ lesson.description|safe }}</p>
-    </div>
+      <section class="lesson-description">
+        <h4>عن هذا الدرس</h4>
+        <p>{{ lesson.description|safe }}</p>
+      </section>
 
-    <div class="lesson-footer">
-      {% if is_completed %}
-        <button class="btn btn-complete completed" disabled>Completed</button>
-      {% else %}
-        <a class="btn btn-complete" href="{% url 'courses:mark_lesson_as_complete' lesson.id %}">Mark as Complete</a>
-      {% endif %}
-    </div>
+      <div class="lesson-footer">
+        {% if is_completed %}
+          <button class="btn btn-complete completed" disabled>تم إكمال الدرس</button>
+        {% else %}
+          <a class="btn btn-complete" href="{% url 'courses:mark_lesson_as_complete' lesson.id %}">تحديد الدرس كمكتمل</a>
+        {% endif %}
+      </div>
+    </main>
   </div>
 </div>
 {% endblock content %}
