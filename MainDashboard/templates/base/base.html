@@ -103,33 +103,35 @@
                     <h6 class="mb-0">{{ request.user.get_full_name }}</h6>
                     <small class="text-muted">{{ request.user.email }}</small>
                   </li>
-                  {% if request.user.is_authenticated %} {% if
-                  request.user.is_superuser or request.user.is_staff or
-                  request.user.is_admin %}
+                  {% if request.user.is_authenticated %}
+                    {% if request.user.is_superuser or request.user.is_staff or request.user.is_admin %}
+                      <li>
+                        <a
+                          class="dropdown-item py-2"
+                          href="/main-dashboard/dashboard"
+                        >
+                          <i class="bi bi-speedometer2 me-2 text-primary"></i>لوحة
+                          التحكم
+                        </a>
+                      </li>
+                    {% endif %}
+                    
+                    {% if request.user.is_student %}
+                      <li>
+                        <a
+                          class="dropdown-item py-2"
+                          href="{% url 'student:index' %}"
+                        >
+                          <i class="bi bi-mortarboard me-2 text-info"></i>بوابة
+                          الطالب
+                        </a>
+                      </li>
+                    {% endif %}
+                  {% endif %}
                   <li>
                     <a
                       class="dropdown-item py-2"
-                      href="/main-dashboard/dashboard"
-                    >
-                      <i class="bi bi-speedometer2 me-2 text-primary"></i>لوحة
-                      التحكم
-                    </a>
-                  </li>
-                  {% endif %} {% if request.user.is_student %}
-                  <li>
-                    <a
-                      class="dropdown-item py-2"
-                      href="{% url 'student:index' %}"
-                    >
-                      <i class="bi bi-mortarboard me-2 text-info"></i>بوابة
-                      الطالب
-                    </a>
-                  </li>
-                  {% endif %} {% endif %}
-                  <li>
-                    <a
-                      class="dropdown-item py-2"
-                      href="{% url 'teacher_profile' pk=user.id %}"
+                      href="{% url 'teacher_profile' pk=request.user.id %}"
                     >
                       <i class="bi bi-person me-2"></i>الملف الشخصي
                     </a>
@@ -305,7 +307,7 @@
                 <small
                   class="d-block text-white text-opacity-50"
                   style="font-size: 0.75rem"
-                  >جميع الحقوق محفوظة &copy; {{ now|date:"Y" }}</small
+                  >جميع الحقوق محفوظة &copy; {% now "Y" %}</small
                 >
               </div>
             </div>
