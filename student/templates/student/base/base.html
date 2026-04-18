@@ -53,17 +53,26 @@
                                 {{ request.user.get_full_name|default:request.user.username }}
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end">
+                                {% if request.user.is_superuser or request.user.is_staff or request.user.is_admin %}
+                                <li><a class="dropdown-item text-primary" href="/main-dashboard/dashboard">
+                                        <i class="bi bi-speedometer2 me-2"></i>لوحة تحكم الإدارة</a></li>
+                                {% endif %}
+                                {% if request.user.is_lecturer %}
+                                <li><a class="dropdown-item text-success" href="{% url 'teacher_profile' pk=request.user.id %}">
+                                        <i class="bi bi-person-video3 me-2"></i>بوابة المعلم</a></li>
+                                {% endif %}
+                                <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item" href="{% url 'student:student-profile' %}">
                                         <i class="bi bi-person me-2"></i>الملف الشخصي</a></li>
                                 <li><a class="dropdown-item" href="/student-dashboard/id-card/">
-                                        <i class="bi bi-gear me-2"></i>الكارنيه الجامعي </a></li>
+                                        <i class="bi bi-card-heading me-2"></i>الكارنيه الجامعي </a></li>
                                 <li><a class="dropdown-item" href="{% url 'student:settings' %}">
                                         <i class="bi bi-gear me-2"></i>الإعدادات</a></li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li>
                                     <form action="{% url 'accounts:logout' %}" method="post" class="d-inline">
                                         {% csrf_token %}
-                                        <button type="submit" class="dropdown-item">
+                                        <button type="submit" class="dropdown-item text-danger">
                                             <i class="bi bi-box-arrow-right me-2"></i>تسجيل الخروج
                                         </button>
                                     </form>

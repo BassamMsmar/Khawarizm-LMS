@@ -1,0 +1,82 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>{% block title %}أكاديمية خوارزم{% endblock %}</title>
+    <meta name="robots" content="noindex, follow" />
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'images/favicon.png' %}">
+
+    <!-- CSS 
+    ============================================ -->
+    <link rel="stylesheet" href="{% static 'css/vendor/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/vendor/slick.css' %}">
+    <link rel="stylesheet" href="{% static 'css/vendor/slick-theme.css' %}">
+    <link rel="stylesheet" href="{% static 'css/plugins/sal.css' %}">
+    <link rel="stylesheet" href="{% static 'css/plugins/feather.css' %}">
+    <link rel="stylesheet" href="{% static 'css/plugins/fontawesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/plugins/euclid-circulara.css' %}">
+    <link rel="stylesheet" href="{% static 'css/plugins/swiper.css' %}">
+    <link rel="stylesheet" href="{% static 'css/plugins/magnify.css' %}">
+    <link rel="stylesheet" href="{% static 'css/plugins/odometer.css' %}">
+    <link rel="stylesheet" href="{% static 'css/plugins/animation.css' %}">
+    <link rel="stylesheet" href="{% static 'css/plugins/bootstrap-select.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/plugins/jquery-ui.css' %}">
+    <link rel="stylesheet" href="{% static 'css/plugins/magnigy-popup.min.css' %}">
+    
+    <!-- Main Style CSS -->
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body class="rbt-header-sticky">
+
+    {% block content %}{% endblock %}
+
+    <!-- JS 
+    ============================================ -->
+    <!-- Modernizer JS -->
+    <script src="{% static 'js/vendor/modernizr.min.js' %}"></script>
+    <!-- jQuery JS -->
+    <script src="{% static 'js/vendor/jquery.js' %}"></script>
+    <!-- Bootstrap JS -->
+    <script src="{% static 'js/vendor/bootstrap.min.js' %}"></script>
+    <!-- sal.js -->
+    <script src="{% static 'js/vendor/sal.js' %}"></script>
+    <script src="{% static 'js/vendor/swiper.js' %}"></script>
+    <script src="{% static 'js/vendor/magnify.min.js' %}"></script>
+    <script src="{% static 'js/vendor/jquery-appear.js' %}"></script>
+    <script src="{% static 'js/vendor/odometer.js' %}"></script>
+    <script src="{% static 'js/vendor/backtotop.js' %}"></script>
+    <script src="{% static 'js/vendor/isotop.js' %}"></script>
+    <script src="{% static 'js/vendor/imageloaded.js' %}"></script>
+
+    <script src="{% static 'js/vendor/wow.js' %}"></script>
+    <script src="{% static 'js/vendor/waypoint.min.js' %}"></script>
+    <script src="{% static 'js/vendor/easypie.js' %}"></script>
+    <script src="{% static 'js/vendor/text-type.js' %}"></script>
+    <script src="{% static 'js/vendor/jquery-one-page-nav.js' %}"></script>
+    <script src="{% static 'js/vendor/bootstrap-select.min.js' %}"></script>
+    <script src="{% static 'js/vendor/jquery-ui.js' %}"></script>
+    <script src="{% static 'js/vendor/magnify-popup.min.js' %}"></script>
+    <script src="{% static 'js/vendor/paralax-scroll.js' %}"></script>
+    <script src="{% static 'js/vendor/paralax.min.js' %}"></script>
+    <script src="{% static 'js/vendor/countdown.js' %}"></script>
+    <script src="{% static 'js/vendor/plyr.js' %}"></script>
+    <!-- Main JS -->
+    <script src="{% static 'js/main.js' %}"></script>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+
+</html>
+
+
+
