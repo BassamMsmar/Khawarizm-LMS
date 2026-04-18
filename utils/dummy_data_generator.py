@@ -26,6 +26,7 @@ from department.models import Department
 from courses.models import Course, Unit, Lesson, Quiz, Question, Choice, Review, QuizAttempt, AnsweredQuestion
 from profiles.models import Language, StudentProfile, LecturerProfile
 from degreeLevel.models import DegreeLevel
+from student.models import Student as StudentModel, Payment, CourseRegistration
 
 User = get_user_model()
 
@@ -729,6 +730,15 @@ def create_students(departments, roles):
             
             # Add languages
             profile.languages.add(*Language.objects.filter(code__in=['ar', 'en']))
+            
+            # Create Student model for billing and registration
+            StudentModel.objects.get_or_create(
+                user=user,
+                defaults={
+                    'department': dept,
+                    'total_fees': dept.subscription_fee
+                }
+            )
         
         students.append(user)
     
@@ -915,6 +925,16 @@ def enroll_students_and_create_progress(courses, students):
     reviews = 0
     
     for student in students:
+        student_model, _ = StudentModel.objects.get_or_create(user=student)
+        
+        # Create a payment for the student
+        Payment.objects.create(
+            student=student_model,
+            amount=student_model.department.subscription_fee if student_model.department else 5000,
+            reference_number=f"PAY-{random.randint(100000, 999999)}",
+            status='approved'
+        )
+
         # Each student enrolls in 2-5 courses
         num_courses = random.randint(2, 5)
         student_courses = random.sample(list(courses), min(num_courses, len(courses)))
@@ -923,6 +943,13 @@ def enroll_students_and_create_progress(courses, students):
             # Enroll student
             course.students_enrolled.add(student)
             enrollments += 1
+            
+            # Create CourseRegistration
+            CourseRegistration.objects.create(
+                student=student_model,
+                course=course,
+                status='approved'
+            )
             
             # Add course to student profile
             if hasattr(student, 'student_profile'):

@@ -5,12 +5,14 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.shortcuts import render
 from about import views
+from accounts.views import redirect_user
 
 
 urlpatterns = [
 
     path('admin/', admin.site.urls),
     path('', views.home, name='home'),
+    path('profile/', redirect_user, name='profile'),
     path("ckeditor5/", include('django_ckeditor_5.urls')),
     path('accounts/', include('accounts.urls')),
     path('dashboard/', include('dashboard.base_urls')),

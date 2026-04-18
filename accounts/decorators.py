@@ -9,10 +9,10 @@ def role_required(role_slugs):
         def _wrapped_view(request, *args, **kwargs):
             if not request.user.is_authenticated:
                 return redirect('accounts:login')
-            if not any(request.user.has_role(role_slug) for role_slug in role_slugs):
-                # عرض قالب HTML جميل، مع رمز حالة 403
-                return render(request, 'accounts/unauthorized.html', status=403)
-            return view_func(request, *args, **kwargs)
+            if request.user.is_superuser or any(request.user.has_role(role_slug) for role_slug in role_slugs):
+                return view_func(request, *args, **kwargs)
+            # عرض قالب HTML جميل، مع رمز حالة 403
+            return render(request, 'accounts/unauthorized.html', status=403)
         return _wrapped_view
     return decorator
 

@@ -68,9 +68,9 @@ class Course(models.Model):
     # _________________________________________________________________________________________
 
 class Unit(models.Model):
-    title = models.CharField(max_length=40)
+    title = models.CharField(max_length=200)
     course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name="units")
-    slug = models.SlugField(unique=True, max_length=150, null=True, blank=True)
+    slug = models.SlugField(unique=True, max_length=200, null=True, blank=True)
 
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -159,7 +159,7 @@ class Quiz(models.Model):
     duration = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=True)
-    slug = models.SlugField(unique=True, max_length=150, null=True, blank=True)
+    slug = models.SlugField(unique=True, max_length=200, null=True, blank=True)
 
     def __str__(self):
         return f"Quiz for Unit {self.unit}"
