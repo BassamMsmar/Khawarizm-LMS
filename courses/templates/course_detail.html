@@ -4,190 +4,336 @@
 
 {% block content %}
 <style>
-  body {
-    background-color: #f9f9f9;
-    font-family: 'Poppins', sans-serif;
+  .course-page {
+    --brand-700: #1f4f8a;
+    --brand-600: #2f73bf;
+    --brand-500: #4a95db;
+    --brand-100: #e8f2ff;
+    --ink: #183a63;
+    --ink-soft: #5f7fa3;
+    --surface: #ffffff;
+    --line: rgba(31, 79, 138, 0.16);
+    background:
+      radial-gradient(circle at 10% 10%, rgba(74, 149, 219, 0.18), transparent 28%),
+      radial-gradient(circle at 90% 5%, rgba(47, 115, 191, 0.14), transparent 34%),
+      linear-gradient(180deg, #f4f8ff 0%, #ecf4ff 100%);
+    padding-bottom: 2rem;
   }
 
-  .course-header {
-    background: linear-gradient(to right, #14b8a6, #0d9488);
-    color: white;
-    padding: 3rem 0;
-    text-align: center;
+  .course-hero {
+    background: linear-gradient(135deg, #0f3663, #1f4f8a 55%, #2f73bf);
+    color: #fff;
+    padding: 3.2rem 0 4.6rem;
+    position: relative;
+    overflow: hidden;
   }
 
-  .course-header h1 {
+  .course-hero::after {
+    content: "";
+    position: absolute;
+    width: 260px;
+    height: 260px;
+    border-radius: 42px;
+    background: rgba(255, 255, 255, 0.1);
+    top: -70px;
+    left: -60px;
+    transform: rotate(18deg);
+  }
+
+  .course-hero h1 {
+    font-size: clamp(1.7rem, 4vw, 2.8rem);
+    font-weight: 800;
+    margin-bottom: 0.55rem;
+  }
+
+  .course-hero p {
+    margin-bottom: 0.35rem;
+    color: #dcecff;
+  }
+
+  .hero-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+    margin-top: 1rem;
+  }
+
+  .hero-badge {
+    background: rgba(255, 255, 255, 0.14);
+    border: 1px solid rgba(220, 236, 255, 0.34);
+    color: #e8f2ff;
+    border-radius: 999px;
+    font-size: 0.86rem;
     font-weight: 700;
-    font-size: 3rem;
+    padding: 0.34rem 0.75rem;
   }
 
-  .course-header p {
-    font-size: 1.2rem;
+  .course-shell {
+    margin-top: -2.4rem;
   }
 
-  .course-container {
-    margin-top: -50px;
-  }
-
-  .course-card {
-    background-color: white;
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    padding: 2rem;
-    margin-bottom: 2rem;
-  }
-
-  .course-card h2 {
-    font-weight: 600;
-    margin-bottom: 1.5rem;
-    border-bottom: 2px solid #14b8a6;
-    padding-bottom: 0.5rem;
-    display: inline-block;
-  }
-
-  .accordion-button {
-    font-weight: 600;
-  }
-
-  .accordion-button:not(.collapsed) {
-    background-color: #e0f2f1;
-    color: #14b8a6;
-  }
-
-  .review-card {
-    background-color: #e0f2f1;
-    border-radius: 10px;
-    padding: 1.5rem;
+  .panel {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    box-shadow: 0 12px 28px rgba(20, 62, 112, 0.1);
+    padding: 1.25rem;
     margin-bottom: 1rem;
   }
 
-  .review-card strong {
-    color: #14b8a6;
+  .panel-title {
+    color: var(--ink);
+    font-weight: 800;
+    font-size: 1.12rem;
+    margin-bottom: 0.9rem;
+    display: inline-block;
+    border-bottom: 2px solid rgba(47, 115, 191, 0.28);
+    padding-bottom: 0.28rem;
+  }
+
+  .desc {
+    color: #3f5879;
+    line-height: 1.8;
+  }
+
+  .accordion-item {
+    border: 1px solid var(--line);
+    border-radius: 12px !important;
+    margin-bottom: 0.6rem;
+    overflow: hidden;
+  }
+
+  .accordion-button {
+    font-weight: 700;
+    color: var(--ink);
+    background: #fff;
+  }
+
+  .accordion-button:not(.collapsed) {
+    color: var(--brand-700);
+    background: var(--brand-100);
+    box-shadow: none;
+  }
+
+  .list-group-item {
+    border-color: rgba(31, 79, 138, 0.1);
+    font-size: 0.95rem;
+    color: #355272;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.6rem;
+  }
+
+  .list-group-item a {
+    color: #244d7d;
+    font-weight: 600;
+  }
+
+  .list-group-item a:hover {
+    color: var(--brand-700);
   }
 
   .enroll-card {
-    background-color: white;
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    padding: 2rem;
-    text-align: center;
+    position: sticky;
+    top: 92px;
   }
 
-  .enroll-card .price {
-    font-size: 2.5rem;
+  .course-thumb {
+    border-radius: 12px;
+    width: 100%;
+    aspect-ratio: 16/10;
+    object-fit: cover;
+    border: 1px solid var(--line);
+    margin-bottom: 1rem;
+  }
+
+  .price {
+    font-size: 2.1rem;
+    font-weight: 800;
+    color: var(--brand-700);
+    margin-bottom: 0.8rem;
+  }
+
+  .btn-brand {
+    background: linear-gradient(135deg, var(--brand-600), var(--brand-500));
+    border: none;
+    color: #fff;
     font-weight: 700;
-    color: #14b8a6;
+    border-radius: 999px;
+    padding: 0.72rem 1.2rem;
+    width: 100%;
+    transition: 0.2s ease;
+    box-shadow: 0 10px 20px rgba(47, 115, 191, 0.28);
   }
 
-  .enroll-card .btn-enroll {
-    background: linear-gradient(to right, #14b8a6, #0d9488);
-    color: white;
+  .btn-brand:hover {
+    transform: translateY(-1px);
+    color: #fff;
+  }
+
+  .meta-list {
+    margin-top: 0.85rem;
+    padding: 0;
+    list-style: none;
+    color: var(--ink-soft);
+    text-align: start;
+  }
+
+  .meta-list li {
+    margin-bottom: 0.55rem;
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+  }
+
+  .review-card {
+    background: #f3f8ff;
+    border: 1px solid rgba(47, 115, 191, 0.18);
+    border-radius: 12px;
+    padding: 0.95rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .review-author {
+    color: #1f4f8a;
+    font-weight: 700;
+    margin-bottom: 0.3rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .review-body {
+    color: #4a6486;
+    margin: 0;
+  }
+
+  .form-label {
+    color: var(--ink);
     font-weight: 600;
-    border-radius: 50px;
-    padding: 0.8rem 2rem;
-    transition: all 0.3s ease;
   }
 
-  .enroll-card .btn-enroll:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  @media (max-width: 992px) {
+    .enroll-card {
+      position: static;
+      top: auto;
+    }
   }
 </style>
 
-<div class="course-header">
-  <div class="container">
-    <h1>{{ object.title }}</h1>
-    <p>By <strong>{{ object.lecturer }}</strong></p>
-  </div>
-</div>
-
-<div class="container course-container">
-  <div class="row">
-    <div class="col-lg-8">
-      <div class="course-card">
-        <h2>Course Description</h2>
-        <p>{{ object.description|safe }}</p>
-      </div>
-
-      <div class="course-card">
-        <h2>Course Content</h2>
-        <div class="accordion" id="courseContentAccordion">
-          {% for unit in related_units %}
-          <div class="accordion-item">
-            <h2 class="accordion-header" id="heading{{ forloop.counter }}">
-              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ forloop.counter }}" aria-expanded="true" aria-controls="collapse{{ forloop.counter }}">
-                {{ unit.title }}
-              </button>
-            </h2>
-            <div id="collapse{{ forloop.counter }}" class="accordion-collapse collapse {% if forloop.first %}show{% endif %}" aria-labelledby="heading{{ forloop.counter }}" data-bs-parent="#courseContentAccordion">
-              <div class="accordion-body">
-                <ul class="list-group list-group-flush">
-                  {% for lesson in unit.lessons.all %}
-                  <li class="list-group-item">
-                    <i class="bi bi-play-circle-fill text-primary me-2"></i>
-                    <a href="{% url 'courses:lesson_detail' course_slug=course.slug lesson_slug=lesson.slug %}" class="text-decoration-none">{{ lesson.title }}</a>
-                    {% if lesson.id in completed_lessons %}
-                      <i class="bi bi-check-circle-fill text-success ms-2"></i>
-                    {% endif %}
-                  </li>
-                  {% endfor %}
-                  {% for quiz in unit.quizzes.all %}
-                  <li class="list-group-item">
-                    <i class="bi bi-question-circle-fill text-info me-2"></i>
-                    <a href="{% url 'courses:quiz_detail' course_slug=course.slug quiz_slug=quiz.slug %}" class="text-decoration-none">{{ quiz.title }}</a>
-                  </li>
-                  {% endfor %}
-                </ul>
-              </div>
-            </div>
-          </div>
-          {% endfor %}
-        </div>
+<div class="course-page">
+  <section class="course-hero">
+    <div class="container">
+      <h1>{{ object.title }}</h1>
+      <p>المحاضر: <strong>{{ object.lecturer }}</strong></p>
+      <div class="hero-meta">
+        <span class="hero-badge"><i class="bi bi-collection-play"></i> {{ related_units|length }} وحدات</span>
+        <span class="hero-badge"><i class="bi bi-journal-check"></i> {{ review_count }} مراجعات</span>
+        <span class="hero-badge"><i class="bi bi-star-fill"></i> {{ average_rating }}/5</span>
       </div>
     </div>
+  </section>
 
-    <div class="col-lg-4">
-      <div class="enroll-card">
-        <img src="{{object.image.url}}" class="img-fluid rounded-top mb-3" alt="Course Thumbnail">
-        <div class="price mb-3">$49.99</div>
-        <a href="#" class="btn btn-enroll">Enroll Now</a>
-        <hr>
-        <ul class="list-unstyled text-start">
-          <li><i class="bi bi-camera-video-fill me-2"></i> 10 hours of video</li>
-          <li><i class="bi bi-file-earmark-text-fill me-2"></i> 25 articles</li>
-          <li><i class="bi bi-infinity me-2"></i> Full lifetime access</li>
-          <li><i class="bi bi-phone-fill me-2"></i> Access on mobile and TV</li>
-        </ul>
+  <div class="container course-shell">
+    <div class="row g-3">
+      <div class="col-lg-8">
+        <article class="panel">
+          <h2 class="panel-title">وصف الدورة</h2>
+          <div class="desc">{{ object.description|safe }}</div>
+        </article>
+
+        <article class="panel">
+          <h2 class="panel-title">محتوى الدورة</h2>
+          <div class="accordion" id="courseContentAccordion">
+            {% for unit in related_units %}
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="heading{{ forloop.counter }}">
+                <button class="accordion-button {% if not forloop.first %}collapsed{% endif %}" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ forloop.counter }}" aria-expanded="{% if forloop.first %}true{% else %}false{% endif %}" aria-controls="collapse{{ forloop.counter }}">
+                  {{ unit.title }}
+                </button>
+              </h2>
+              <div id="collapse{{ forloop.counter }}" class="accordion-collapse collapse {% if forloop.first %}show{% endif %}" aria-labelledby="heading{{ forloop.counter }}" data-bs-parent="#courseContentAccordion">
+                <div class="accordion-body p-0">
+                  <ul class="list-group list-group-flush">
+                    {% for lesson in unit.lessons.all %}
+                    <li class="list-group-item">
+                      <span>
+                        <i class="bi bi-play-circle-fill text-primary me-2"></i>
+                        <a href="{% url 'courses:lesson_detail' course_slug=course.slug lesson_slug=lesson.slug %}" class="text-decoration-none">{{ lesson.title }}</a>
+                      </span>
+                      {% if lesson.id in completed_lessons %}
+                        <i class="bi bi-check-circle-fill text-success"></i>
+                      {% endif %}
+                    </li>
+                    {% endfor %}
+                    {% for quiz in unit.quizzes.all %}
+                    <li class="list-group-item">
+                      <span>
+                        <i class="bi bi-question-circle-fill text-info me-2"></i>
+                        <a href="{% url 'courses:quiz_detail' course_slug=course.slug quiz_slug=quiz.slug %}" class="text-decoration-none">{{ quiz.title }}</a>
+                      </span>
+                    </li>
+                    {% endfor %}
+                  </ul>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </article>
       </div>
 
-      <div class="course-card mt-4">
-        <h2>Reviews</h2>
-        {% if reviews %}
-          {% for review in reviews %}
-          <div class="review-card">
-            <p class="mb-1"><strong>{{ review.user.full_name }}</strong> - ⭐ {{ review.rate }}/5</p>
-            <p class="mb-0">{{ review.comment }}</p>
-          </div>
-          {% endfor %}
-        {% else %}
-          <p class="text-muted">No reviews yet. Be the first!</p>
-        {% endif %}
-      </div>
+      <div class="col-lg-4">
+        <aside class="panel enroll-card">
+          {% if object.image %}
+            <img src="{{ object.image.url }}" class="course-thumb" alt="Course Thumbnail">
+          {% endif %}
 
-      <div class="course-card mt-4">
-        <h2>Add a Review</h2>
-        <form method="post">
-          {% csrf_token %}
-          <div class="mb-3">
-            <label for="id_rate" class="form-label">Your Rating</label>
-            {{ review_form.rate }}
-          </div>
-          <div class="mb-3">
-            <label for="id_comment" class="form-label">Your Review</label>
-            {{ review_form.comment }}
-          </div>
-          <button type="submit" class="btn btn-primary">Submit Review</button>
-        </form>
+          <div class="price">$49.99</div>
+          <a href="#" class="btn btn-brand">الالتحاق الآن</a>
+
+          <hr>
+          <ul class="meta-list">
+            <li><i class="bi bi-camera-video-fill"></i> 10 ساعات فيديو</li>
+            <li><i class="bi bi-file-earmark-text-fill"></i> 25 مقالا</li>
+            <li><i class="bi bi-infinity"></i> وصول كامل مدى الحياة</li>
+            <li><i class="bi bi-phone-fill"></i> الوصول عبر الهاتف والتلفاز</li>
+          </ul>
+        </aside>
+
+        <article class="panel">
+          <h2 class="panel-title">التقييمات</h2>
+          {% if reviews %}
+            {% for review in reviews %}
+            <div class="review-card">
+              <div class="review-author">
+                <span>{{ review.user.get_full_name|default:review.user.username }}</span>
+                <span>⭐ {{ review.rate }}/5</span>
+              </div>
+              <p class="review-body">{{ review.comment }}</p>
+            </div>
+            {% endfor %}
+          {% else %}
+            <p class="text-muted mb-0">لا توجد تقييمات بعد.</p>
+          {% endif %}
+        </article>
+
+        <article class="panel">
+          <h2 class="panel-title">أضف تقييمك</h2>
+          <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+              <label for="id_rate" class="form-label">تقييمك</label>
+              {{ review_form.rate }}
+            </div>
+            <div class="mb-3">
+              <label for="id_comment" class="form-label">مراجعتك</label>
+              {{ review_form.comment }}
+            </div>
+            <button type="submit" class="btn btn-brand">إرسال التقييم</button>
+          </form>
+        </article>
       </div>
     </div>
   </div>

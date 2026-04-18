@@ -1,70 +1,274 @@
 {% extends 'student/base/base.html' %}
 
 {% block content %}
-<div class="main-content">
-    <div class="container-fluid">
-        <h1 class="mb-4">لوحة تحكم الطالب</h1>
+<div class="main-content dashboard-home">
+    <style>
+        .dashboard-home {
+            color: var(--text-main);
+        }
 
-        <div class="row">
-            <div class="col-md-6 col-lg-3 mb-4">
-                <div class="card stats-card">
-                    <div class="card-body">
-                        <h5 class="card-title text-white">الدورات المسجل بها</h5>
-                        <p class="stats-number">{{ enrolled_courses.count }}</p>
+        .hero-panel {
+            position: relative;
+            overflow: hidden;
+            border-radius: 18px;
+            border: 1px solid rgba(31, 79, 138, 0.16);
+            background:
+                radial-gradient(circle at 85% 10%, rgba(74, 149, 219, 0.26), transparent 38%),
+                linear-gradient(155deg, #ffffff 0%, #edf5ff 100%);
+            padding: 1.6rem;
+            box-shadow: 0 12px 26px rgba(20, 62, 112, 0.12);
+            margin-bottom: 1.2rem;
+        }
+
+        [data-bs-theme="dark"] .hero-panel {
+            border-color: #2b476d;
+            background:
+                radial-gradient(circle at 85% 10%, rgba(74, 149, 219, 0.24), transparent 42%),
+                linear-gradient(155deg, #17385f 0%, #122b4d 100%);
+        }
+
+        .hero-panel h1 {
+            margin: 0;
+            font-size: clamp(1.35rem, 2.8vw, 2rem);
+            font-weight: 800;
+            color: #123e72;
+        }
+
+        .hero-panel p {
+            margin: 0.55rem 0 0;
+            color: var(--text-soft);
+        }
+
+        .quick-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.55rem;
+            margin-top: 1rem;
+        }
+
+        .quick-link {
+            text-decoration: none;
+            font-size: 0.86rem;
+            font-weight: 700;
+            color: #1f4f8a;
+            background: rgba(47, 115, 191, 0.1);
+            border: 1px solid rgba(47, 115, 191, 0.22);
+            border-radius: 999px;
+            padding: 0.38rem 0.8rem;
+            transition: 0.2s ease;
+        }
+
+        .quick-link:hover {
+            transform: translateY(-1px);
+            background: rgba(47, 115, 191, 0.16);
+        }
+
+        .dashboard-stat {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.7rem;
+        }
+
+        .dashboard-stat .meta {
+            margin: 0;
+            color: rgba(255, 255, 255, 0.92);
+            font-size: 0.9rem;
+        }
+
+        .dashboard-stat .stats-number {
+            margin: 0;
+            line-height: 1.1;
+        }
+
+        .dashboard-stat i {
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 1.2rem 0 0.9rem;
+        }
+
+        .section-title h2 {
+            margin: 0;
+            font-size: 1.28rem;
+            color: #123e72;
+            font-weight: 800;
+        }
+
+        .section-title .badge-soft {
+            background: rgba(47, 115, 191, 0.1);
+            color: #1f4f8a;
+            border: 1px solid rgba(47, 115, 191, 0.2);
+            border-radius: 999px;
+            padding: 0.28rem 0.7rem;
+            font-size: 0.82rem;
+            font-weight: 700;
+        }
+
+        .course-card {
+            overflow: hidden;
+        }
+
+        .course-card .thumb {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            object-fit: cover;
+            border-bottom: 1px solid rgba(31, 79, 138, 0.12);
+        }
+
+        .course-placeholder {
+            aspect-ratio: 16 / 9;
+            display: grid;
+            place-items: center;
+            background: linear-gradient(135deg, #d9e9fb, #edf5ff);
+            color: #2f73bf;
+            font-size: 2rem;
+            border-bottom: 1px solid rgba(31, 79, 138, 0.12);
+        }
+
+        [data-bs-theme="dark"] .course-placeholder {
+            background: linear-gradient(135deg, #20436c, #17385f);
+            color: #9dc5f1;
+            border-bottom-color: #2b476d;
+        }
+
+        .course-card .card-body {
+            padding: 1rem;
+        }
+
+        .course-card .card-title {
+            margin-bottom: 0.35rem;
+            color: var(--text-main);
+            font-weight: 800;
+        }
+
+        .course-card .card-text {
+            color: var(--text-soft);
+            min-height: 3.1rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .course-meta {
+            color: var(--text-soft);
+            font-size: 0.85rem;
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        [data-bs-theme="dark"] .hero-panel h1,
+        [data-bs-theme="dark"] .section-title h2,
+        [data-bs-theme="dark"] .quick-link,
+        [data-bs-theme="dark"] .section-title .badge-soft {
+            color: #e4efff;
+        }
+
+        [data-bs-theme="dark"] .quick-link,
+        [data-bs-theme="dark"] .section-title .badge-soft {
+            background: rgba(74, 149, 219, 0.18);
+            border-color: rgba(169, 197, 232, 0.25);
+        }
+    </style>
+
+    <div class="container-fluid px-0">
+        <section class="hero-panel fade-in">
+            <h1>أهلا {{ request.user.get_full_name|default:request.user.username }}، مرحبا بك في لوحتك</h1>
+            <p>هنا تجد ملخص دراستك، موادك الحالية، وأسرع اختصارات للمهام اليومية.</p>
+            <div class="quick-links">
+                <a class="quick-link" href="{% url 'student:my_courses' %}"><i class="bi bi-mortarboard"></i> موادي</a>
+                <a class="quick-link" href="{% url 'student:my_payments' %}"><i class="bi bi-wallet2"></i> المدفوعات</a>
+                <a class="quick-link" href="{% url 'student:student-profile' %}"><i class="bi bi-person"></i> الملف الشخصي</a>
+            </div>
+        </section>
+
+        <div class="row g-3">
+            <div class="col-sm-6 col-xl-3">
+                <div class="card stats-card h-100">
+                    <div class="card-body dashboard-stat">
+                        <div>
+                            <p class="meta">الدورات المسجل بها</p>
+                            <p class="stats-number">{{ enrolled_courses.count }}</p>
+                        </div>
+                        <i class="bi bi-mortarboard"></i>
                     </div>
                 </div>
             </div>
-            <div class="col-md-6 col-lg-3 mb-4">
-                <div class="card stats-card">
-                    <div class="card-body">
-                        <h5 class="card-title text-white">الواجبات المكتملة</h5>
-                        <p class="stats-number">0</p>
+            <div class="col-sm-6 col-xl-3">
+                <div class="card stats-card h-100">
+                    <div class="card-body dashboard-stat">
+                        <div>
+                            <p class="meta">الدورات النشطة</p>
+                            <p class="stats-number">{{ enrolled_courses.count }}</p>
+                        </div>
+                        <i class="bi bi-journal-check"></i>
                     </div>
                 </div>
             </div>
-            <div class="col-md-6 col-lg-3 mb-4">
-                <div class="card stats-card">
-                    <div class="card-body">
-                        <h5 class="card-title text-white">الاختبارات المكتملة</h5>
-                        <p class="stats-number">0</p>
+            <div class="col-sm-6 col-xl-3">
+                <div class="card stats-card h-100">
+                    <div class="card-body dashboard-stat">
+                        <div>
+                            <p class="meta">المهام المكتملة</p>
+                            <p class="stats-number">0</p>
+                        </div>
+                        <i class="bi bi-check2-square"></i>
                     </div>
                 </div>
             </div>
-            <div class="col-md-6 col-lg-3 mb-4">
-                <div class="card stats-card">
-                    <div class="card-body">
-                        <h5 class="card-title text-white">الدرجة الكلية</h5>
-                        <p class="stats-number">N/A</p>
+            <div class="col-sm-6 col-xl-3">
+                <div class="card stats-card h-100">
+                    <div class="card-body dashboard-stat">
+                        <div>
+                            <p class="meta">التقييم العام</p>
+                            <p class="stats-number">N/A</p>
+                        </div>
+                        <i class="bi bi-bar-chart-line"></i>
                     </div>
                 </div>
             </div>
         </div>
 
-        <h2 class="mb-3">دوراتي</h2>
-        <div class="row">
+        <div class="section-title">
+            <h2>دوراتي الحالية</h2>
+            <span class="badge-soft">{{ enrolled_courses.count }} دورة</span>
+        </div>
+
+        <div class="row g-3">
             {% if enrolled_courses %}
                 {% for course in enrolled_courses %}
-                    <div class="col-md-6 col-lg-4 mb-4">
-                        <div class="card h-100">
+                    <div class="col-md-6 col-xl-4">
+                        <article class="card course-card h-100 fade-in">
                             {% if course.image %}
-                                <img src="{{ course.image.url }}" class="card-img-top" alt="{{ course.title }}">
+                                <img src="{{ course.image.url }}" class="thumb" alt="{{ course.title }}">
+                            {% else %}
+                                <div class="course-placeholder">
+                                    <i class="bi bi-image"></i>
+                                </div>
                             {% endif %}
-                            <div class="card-body">
+
+                            <div class="card-body d-flex flex-column">
                                 <h5 class="card-title">{{ course.title }}</h5>
-                                <p class="card-text">{{ course.short_description|default:"لا يوجد وصف متاح." }}</p>
-                                <a href="{% url 'courses:course_detail' course.slug %}" class="btn btn-primary">عرض الدورة</a>
+                                <p class="card-text">{{ course.short_description|default:"لا يوجد وصف متاح."|truncatechars:110 }}</p>
+                                <div class="course-meta">
+                                    <i class="bi bi-person-badge"></i>
+                                    <span>المحاضر: {{ course.lecturer.get_full_name|default:"غير محدد" }}</span>
+                                </div>
+                                <a href="{% url 'courses:course_detail' course.slug %}" class="btn btn-primary mt-auto">عرض الدورة</a>
                             </div>
-                            <div class="card-footer text-muted">
-                                <small>المحاضر: {{ course.lecturer.get_full_name|default:"غير محدد" }}</small>
-                            </div>
-                        </div>
+                        </article>
                     </div>
                 {% endfor %}
             {% else %}
                 <div class="col-12">
-                    <div class="empty-state">
+                    <div class="empty-state fade-in">
                         <i class="bi bi-mortarboard"></i>
-                        <p>لم تسجل في أي دورات بعد.</p>
+                        <p class="mb-2">لم تسجل في أي دورات بعد.</p>
                         <a href="{% url 'courses:course_list' %}" class="btn btn-primary">تصفح الدورات</a>
                     </div>
                 </div>

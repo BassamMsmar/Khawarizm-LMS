@@ -3,12 +3,12 @@
 {% block content %}
 <div class="main-content">
     <div class="container-fluid">   
-        <h1 class="h3 mb-4 text-gray-800 text-center">💳 إرسال دفعة جديدة</h1>
+        <h1 class="h3 mb-4 text-primary text-center fw-bold">💳 إرسال دفعة جديدة</h1>
 
         <div class="row justify-content-center">
             <div class="col-lg-6">
                 <div class="card shadow-lg border-0 rounded-3">
-                    <div class="card-header py-3 bg-success text-white text-center rounded-top">
+                    <div class="card-header py-3 bg-primary text-white text-center rounded-top">
                         <h5 class="m-0 font-weight-bold">💰 تفاصيل الدفعة</h5>
                     </div>
                     <div class="card-body">
@@ -40,7 +40,7 @@
                             </div>
 
                             <!-- زر الإرسال -->
-                            <button type="submit" class="btn btn-success w-100 py-2 shadow-sm fw-bold">
+                            <button type="submit" class="btn btn-primary w-100 py-2 shadow-sm fw-bold">
                                 ✅ إرسال الدفعة
                             </button>
                         </form>
@@ -52,7 +52,7 @@
         <!-- زر الانتقال للسجل -->
         <div class="text-center mt-4">
             <a href="{% url 'student:payment_history' %}" 
-               class="btn btn-info px-4 py-2 shadow-sm fw-bold">
+               class="btn btn-outline-primary px-4 py-2 shadow-sm fw-bold">
                 📑 عرض سجل الدفعات
             </a>
         </div>

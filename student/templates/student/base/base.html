@@ -18,15 +18,16 @@
     <header class="main-header">
         <div class="container-fluid h-100">
             <div class="row h-100 align-items-center">
-                <div class="col-md-3">
-                    <div class="d-flex align-items-center">
+                <div class="col-7 col-md-3">
+                    <div class="d-flex align-items-center header-brand-wrap">
 
                         <button class="btn d-md-none me-2" id="sidebarToggle">
                             <i class="bi bi-list"></i>
                         </button>
 
                         <a class="logo text-decoration-none" href="/">
-                            خوارزم
+                            <span class="logo-mark"><i class="bi bi-mortarboard-fill"></i></span>
+                            <span class="logo-text">الجامعة الإسلامية بمنيسوتا</span>
                         </a>
 
                     </div>
@@ -41,7 +42,7 @@
                         </div>
                     </div>
                 </div> {% endcomment %}
-                <div class="col-md-9">
+                <div class="col-5 col-md-9">
                     <div class="d-flex align-items-center justify-content-end gap-3">
                         <button class="theme-toggle" id="themeToggle" title="تبديل الوضع">
                             <i class="bi bi-sun-fill" id="themeIcon"></i>
@@ -49,19 +50,16 @@
                                                 <div class="dropdown">
                             <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
                                 <i class="bi bi-person-circle me-2"></i>
-                                اسم الطالب
+                                {{ request.user.get_full_name|default:request.user.username }}
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end">
                                 <li><a class="dropdown-item" href="{% url 'student:student-profile' %}">
                                         <i class="bi bi-person me-2"></i>الملف الشخصي</a></li>
                                 <li><a class="dropdown-item" href="/student-dashboard/id-card/">
                                         <i class="bi bi-gear me-2"></i>الكارنيه الجامعي </a></li>
-                                <li>
                                 <li><a class="dropdown-item" href="{% url 'student:settings' %}">
                                         <i class="bi bi-gear me-2"></i>الإعدادات</a></li>
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
+                                <li><hr class="dropdown-divider"></li>
                                 <li>
                                     <form action="{% url 'accounts:logout' %}" method="post" class="d-inline">
                                         {% csrf_token %}
@@ -84,7 +82,7 @@
     <nav class="sidebar" id="sidebar">
         <ul class="nav flex-column sidebar-nav">
             <li class="nav-item">
-                <a class="nav-link active" href="/student-dashboard/" >
+                <a class="nav-link {% if request.resolver_match.url_name == 'index' %}active{% endif %}" href="/student-dashboard/" >
                     <i class="bi bi-house"></i>
                     <span>الرئيسية</span>
                 </a>
@@ -93,60 +91,60 @@
             
 
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'student:my_courses' %}">
+                <a class="nav-link {% if request.resolver_match.url_name == 'my_courses' %}active{% endif %}" href="{% url 'student:my_courses' %}">
                     <i class="bi bi-mortarboard"></i>
                     <span>المواد الحاليه</span>
                 </a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'student:academic_program' %}">
+                <a class="nav-link {% if request.resolver_match.url_name == 'academic_program' %}active{% endif %}" href="{% url 'student:academic_program' %}">
                     <i class="bi bi-mortarboard"></i>
                     <span>البرنامج الاكاديمي</span>
                 </a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'student:my_payments' %}">
+                <a class="nav-link {% if request.resolver_match.url_name == 'my_payments' or request.resolver_match.url_name == 'payment_history' %}active{% endif %}" href="{% url 'student:my_payments' %}">
                     <i class="bi bi-journal-text"></i>
                     <span>مدفوعاتي</span>
                 </a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="/notifications/list">
+                <a class="nav-link {% if request.path == '/notifications/list/' %}active{% endif %}" href="{% url 'notifications:notification_list' %}">
                     <i class="bi bi-journal-text"></i>
                     <span>الاشعارات</span>
                 </a>
             </li>
             
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'student:my_grades' %}">
+                <a class="nav-link {% if request.resolver_match.url_name == 'my_grades' %}active{% endif %}" href="{% url 'student:my_grades' %}">
                     <i class="bi bi-file-earmark-bar-graph"></i>
                     <span>درجاتي</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'student:calendar' %}">
+                <a class="nav-link {% if request.resolver_match.url_name == 'calendar' %}active{% endif %}" href="{% url 'student:calendar' %}">
                     <i class="bi bi-calendar-event"></i>
                     <span>التقويم</span>
                 </a>
             </li>
             
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'student:student-profile' %}">
+                <a class="nav-link {% if request.resolver_match.url_name == 'student-profile' or request.resolver_match.url_name == 'student-profile-update' %}active{% endif %}" href="{% url 'student:student-profile' %}">
                     <i class="bi bi-gear"></i>
                     <span>الملف الشخصي</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/student-dashboard/id-card/">
+                <a class="nav-link {% if request.resolver_match.url_name == 'id_card' %}active{% endif %}" href="/student-dashboard/id-card/">
                     <i class="bi bi-gear"></i>
                     <span> الكارنيه الجامعي </span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'student:settings' %}">
+                <a class="nav-link {% if request.resolver_match.url_name == 'settings' %}active{% endif %}" href="{% url 'student:settings' %}">
                     <i class="bi bi-gear"></i>
                     <span>الإعدادات</span>
                 </a>
@@ -155,6 +153,7 @@
 
         </ul>
     </nav>
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
     {% endblock sidebar %}
 
     {% block content %}

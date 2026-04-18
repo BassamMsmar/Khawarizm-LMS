@@ -2,152 +2,243 @@
 
 {% block content %}
 <style>
-  body {
-    background-color: #f8f9fa;
-    font-family: 'Cairo', sans-serif;
+  .quiz-page {
+    --brand-700: #1f4f8a;
+    --brand-600: #2f73bf;
+    --brand-500: #4a95db;
+    --brand-100: #eaf4ff;
+    --surface: #ffffff;
+    --line: rgba(31, 79, 138, 0.16);
+    --ink: #1a3f6c;
+    --ink-soft: #5f7fa3;
     direction: rtl;
+    background:
+      radial-gradient(circle at 10% 8%, rgba(74, 149, 219, 0.2), transparent 30%),
+      radial-gradient(circle at 90% 8%, rgba(47, 115, 191, 0.14), transparent 35%),
+      linear-gradient(180deg, #f4f8ff 0%, #edf4ff 100%);
+    padding-bottom: 2rem;
   }
 
-  .quiz-header {
-    background: linear-gradient(to right, #4f46e5, #818cf8);
-    color: white;
-    padding: 4rem 0;
-    text-align: center;
+  .quiz-hero {
+    background: linear-gradient(135deg, #0f3663, #1f4f8a 55%, #2f73bf);
+    color: #fff;
+    padding: 3.1rem 0 4.4rem;
+    position: relative;
+    overflow: hidden;
   }
 
-  .quiz-header h1 {
-    font-weight: 700;
-    font-size: 3.5rem;
+  .quiz-hero::before {
+    content: "";
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    border-radius: 48px;
+    background: rgba(255, 255, 255, 0.09);
+    top: -80px;
+    right: -85px;
+    transform: rotate(20deg);
   }
 
-  .quiz-container {
-    margin-top: -60px;
+  .quiz-hero h1 {
+    font-weight: 800;
+    font-size: clamp(1.6rem, 4vw, 2.7rem);
+    margin-bottom: 0.65rem;
   }
 
-  .quiz-card {
-    background-color: white;
-    border-radius: 15px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-    padding: 2.5rem;
-    margin-bottom: 2rem;
+  .quiz-hero .sub {
+    color: #dcecff;
+    margin: 0;
   }
 
-  .quiz-card h2 {
-    font-weight: 700;
-    margin-bottom: 2rem;
-    color: #333;
+  .quiz-breadcrumb .breadcrumb-item,
+  .quiz-breadcrumb .breadcrumb-item a {
+    color: #e5f1ff;
+    text-decoration: none;
+  }
+
+  .quiz-breadcrumb .breadcrumb-item + .breadcrumb-item::before {
+    color: rgba(229, 241, 255, 0.8);
+  }
+
+  .quiz-shell {
+    margin-top: -2.4rem;
+  }
+
+  .panel {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    box-shadow: 0 12px 28px rgba(20, 62, 112, 0.1);
+    padding: 1.35rem;
+    margin-bottom: 1rem;
+  }
+
+  .panel-title {
+    color: var(--ink);
+    font-size: 1.1rem;
+    font-weight: 800;
+    margin-bottom: 0.95rem;
+    display: inline-block;
+    border-bottom: 2px solid rgba(47, 115, 191, 0.28);
+    padding-bottom: 0.25rem;
   }
 
   .info-card {
     display: flex;
     align-items: center;
-    background-color: #f3f4f6;
-    padding: 1.5rem;
-    border-radius: 10px;
-    margin-bottom: 1rem;
+    gap: 0.7rem;
+    background: #f7fbff;
+    border: 1px solid rgba(31, 79, 138, 0.14);
+    padding: 1rem;
+    border-radius: 12px;
+    height: 100%;
   }
 
-  .info-card i {
-    font-size: 2rem;
-    color: #4f46e5;
-    margin-left: 1.5rem;
-    margin-right: 0;
+  .info-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: grid;
+    place-items: center;
+    font-size: 1.25rem;
+    color: var(--brand-700);
+    background: var(--brand-100);
+    border: 1px solid rgba(47, 115, 191, 0.24);
   }
 
   .info-card h6 {
-    font-weight: 600;
-    margin-bottom: 0.25rem;
+    margin-bottom: 0.2rem;
+    color: var(--ink);
+    font-weight: 700;
   }
 
-  .instructions-list li {
+  .info-card span {
+    color: var(--ink-soft);
+    font-weight: 600;
+  }
+
+  .instructions {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .instructions li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    color: #486688;
     margin-bottom: 0.75rem;
+    line-height: 1.6;
   }
 
-  .start-quiz-card {
-    background-color: white;
-    border-radius: 15px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-    padding: 2rem;
+  .instructions li i {
+    color: #2f73bf;
+    margin-top: 0.15rem;
+  }
+
+  .cta-card {
     text-align: center;
+    position: sticky;
+    top: 92px;
   }
 
-  .start-quiz-card h4 {
-    font-weight: 600;
-    margin-bottom: 1.5rem;
+  .cta-card p {
+    color: var(--ink-soft);
+    margin-bottom: 1rem;
   }
 
   .btn-start-quiz {
-    background: linear-gradient(to right, #4f46e5, #818cf8);
-    color: white;
-    font-weight: 600;
-    border-radius: 50px;
-    padding: 1rem 3rem;
-    font-size: 1.2rem;
-    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    width: 100%;
+    background: linear-gradient(135deg, var(--brand-600), var(--brand-500));
+    color: #fff;
+    font-weight: 700;
+    border-radius: 999px;
+    padding: 0.85rem 1.2rem;
+    border: none;
+    text-decoration: none;
+    box-shadow: 0 10px 22px rgba(47, 115, 191, 0.3);
+    transition: 0.2s ease;
   }
 
   .btn-start-quiz:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+    color: #fff;
+    transform: translateY(-1px);
+  }
+
+  @media (max-width: 992px) {
+    .cta-card {
+      position: static;
+      top: auto;
+    }
   }
 </style>
 
-<div class="quiz-header">
-  <div class="container">
-    <h1>{{ quiz.title }}</h1>
-    <nav aria-label="breadcrumb">
-      <ol class="breadcrumb justify-content-center mb-0">
-        <li class="breadcrumb-item"><a href="{% url 'mainDemo' %}" class="text-white">الرئيسية</a></li>
-        <li class="breadcrumb-item"><a href="{% url 'courses:course_detail' slug=course.slug %}" class="text-white">{{ course.title }}</a></li>
-        <li class="breadcrumb-item active text-white-50" aria-current="page">{{ quiz.title }}</li>
-      </ol>
-    </nav>
-  </div>
-</div>
-
-<div class="container quiz-container">
-  <div class="row justify-content-center">
-    <div class="col-lg-8">
-      <div class="quiz-card">
-        <h2>تفاصيل الاختبار</h2>
-        <div class="row g-4">
-          <div class="col-md-6">
-            <div class="info-card">
-              <i class="bi bi-question-circle-fill"></i>
-              <div>
-                <h6>مجموع الأسئلة</h6>
-                <span>{{ questions_count }}</span>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="info-card">
-              <i class="bi bi-clock-fill"></i>
-              <div>
-                <h6>المدة</h6>
-                <span>{{ quiz.duration }} دقائق</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <hr class="my-4">
-        <div>
-          <h4>تعليمات</h4>
-          <ul class="list-unstyled instructions-list">
-            <li><i class="bi bi-check-circle-fill text-success me-2"></i>اقرأ كل سؤال بعناية.</li>
-            <li><i class="bi bi-check-circle-fill text-success me-2"></i>لديك {{ quiz.duration }} دقائق لإكمال الاختبار.</li>
-            <li><i class="bi bi-check-circle-fill text-success me-2"></i>لا يمكنك تغيير إجاباتك بعد الإرسال.</li>
-            <li><i class="bi bi-check-circle-fill text-success me-2"></i>تأكد من وجود اتصال ثابت بالإنترنت.</li>
-          </ul>
-        </div>
-      </div>
+<div class="quiz-page">
+  <section class="quiz-hero">
+    <div class="container">
+      <h1>{{ quiz.title }}</h1>
+      <p class="sub">استعد للاختبار وراجع التفاصيل قبل البدء</p>
+      <nav class="quiz-breadcrumb" aria-label="breadcrumb">
+        <ol class="breadcrumb justify-content-center mb-0 mt-2">
+          <li class="breadcrumb-item"><a href="{% url 'home' %}">الرئيسية</a></li>
+          <li class="breadcrumb-item"><a href="{% url 'courses:course_detail' slug=course.slug %}">{{ course.title }}</a></li>
+          <li class="breadcrumb-item active" aria-current="page">{{ quiz.title }}</li>
+        </ol>
+      </nav>
     </div>
-    <div class="col-lg-4">
-        <div class="start-quiz-card">
-            <h4>هل أنت مستعد للبدء؟</h4>
-            <p>اختبر معلوماتك وانظر كم تعلمت.</p>
-            <a href="{% url 'courses:take_quiz' course_slug=course.slug quiz_slug=quiz.slug %}" class="btn btn-start-quiz">ابدأ الاختبار</a>
-        </div>
+  </section>
+
+  <div class="container quiz-shell">
+    <div class="row g-3 justify-content-center">
+      <div class="col-lg-8">
+        <article class="panel">
+          <h2 class="panel-title">معلومات الاختبار</h2>
+          <div class="row g-3 mb-3">
+            <div class="col-md-6">
+              <div class="info-card">
+                <div class="info-icon"><i class="bi bi-question-circle-fill"></i></div>
+                <div>
+                  <h6>عدد الأسئلة</h6>
+                  <span>{{ questions_count }}</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="info-card">
+                <div class="info-icon"><i class="bi bi-clock-fill"></i></div>
+                <div>
+                  <h6>المدة</h6>
+                  <span>{{ quiz.duration }} دقيقة</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <h3 class="panel-title">تعليمات مهمة</h3>
+          <ul class="instructions">
+            <li><i class="bi bi-check-circle-fill"></i><span>اقرأ كل سؤال بعناية قبل اختيار الإجابة.</span></li>
+            <li><i class="bi bi-check-circle-fill"></i><span>لديك {{ quiz.duration }} دقيقة لإكمال الاختبار بالكامل.</span></li>
+            <li><i class="bi bi-check-circle-fill"></i><span>بعد الإرسال لن تتمكن من تعديل الإجابات.</span></li>
+            <li><i class="bi bi-check-circle-fill"></i><span>تأكد من ثبات اتصال الإنترنت أثناء التقديم.</span></li>
+          </ul>
+        </article>
+      </div>
+
+      <div class="col-lg-4">
+        <aside class="panel cta-card">
+          <h4 class="panel-title">جاهز للبدء؟</h4>
+          <p>ابدأ الاختبار الآن وشاهد نتيجتك فور الإنهاء.</p>
+          <a href="{% url 'courses:take_quiz' course_slug=course.slug quiz_slug=quiz.slug %}" class="btn-start-quiz">
+            <i class="bi bi-play-fill"></i>
+            ابدأ الاختبار
+          </a>
+        </aside>
+      </div>
     </div>
   </div>
 </div>
